@@ -1,5 +1,17 @@
 """Canonical Company Intelligence contracts and compatibility adapters."""
 
+from dealix.company_intelligence.action_contracts import (
+    ActionStatus,
+    ActionType,
+    AutonomyLevel,
+    CanonicalAction,
+    RiskLevel,
+    build_action,
+    compute_priority_score,
+    is_valid_transition,
+    transition_action,
+    valid_transitions_from,
+)
 from dealix.company_intelligence.company_brain import (
     CanonicalCompanyBrain,
     build_customer_company_brain,
@@ -40,6 +52,10 @@ build_proof_event = _outcome_contracts.build_proof_event
 _outcome_contracts.normalize_proof_event = normalize_proof_event
 
 __all__ = [
+    "ActionStatus",
+    "ActionType",
+    "AutonomyLevel",
+    "CanonicalAction",
     "CanonicalApproval",
     "CanonicalCompanyBrain",
     "CanonicalDailyCommand",
@@ -57,6 +73,8 @@ __all__ = [
     "ProofType",
     "ProofSourceEventType",
     "ProvenanceRef",
+    "RiskLevel",
+    "build_action",
     "build_customer_company_brain",
     "build_daily_command",
     "build_draft",
@@ -64,7 +82,11 @@ __all__ = [
     "build_learning_event",
     "build_outcome_event",
     "build_proof_event",
+    "compute_priority_score",
+    "is_valid_transition",
     "normalize_approval",
     "normalize_opportunity",
     "normalize_proof_event",
+    "transition_action",
+    "valid_transitions_from",
 ]
