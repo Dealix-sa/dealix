@@ -18,16 +18,6 @@ from dealix.company_intelligence.company_brain import (
     build_internal_company_brain,
 )
 from dealix.company_intelligence.contracts import CompanyBrainSource, ProvenanceRef
-from dealix.company_intelligence.graph_contracts import (
-    CanonicalCompany,
-    CanonicalContact,
-    CompanyStatus,
-    ContactRole,
-    ContactStatus,
-    RelationshipStrength,
-    build_company,
-    build_contact,
-)
 from dealix.company_intelligence.execution_contracts import (
     CanonicalApproval,
     CanonicalDraft,
@@ -37,6 +27,16 @@ from dealix.company_intelligence.execution_contracts import (
     build_draft,
     normalize_approval,
     normalize_opportunity,
+)
+from dealix.company_intelligence.graph_contracts import (
+    CanonicalCompany,
+    CanonicalContact,
+    CompanyStatus,
+    ContactRole,
+    ContactStatus,
+    RelationshipStrength,
+    build_company,
+    build_contact,
 )
 from dealix.company_intelligence.proof_adapter import normalize_proof_event
 from dealix.company_intelligence.signal_contracts import (
@@ -50,6 +50,15 @@ from dealix.company_intelligence.signal_contracts import (
     is_valid_signal_transition,
     transition_signal,
     valid_signal_transitions_from,
+)
+from dealix.company_intelligence.source_contracts import (
+    CanonicalSource,
+    SourcePolicyStatus,
+    SourceStatus,
+    SourceType,
+    build_source,
+    compute_source_score,
+    is_source_stale,
 )
 
 from . import outcome_contracts as _outcome_contracts
@@ -89,6 +98,7 @@ __all__ = [
     "CanonicalOutcomeEvent",
     "CanonicalProofEvent",
     "CanonicalSignal",
+    "CanonicalSource",
     "CompanyBrainSource",
     "CompanyStatus",
     "ConsentStatus",
@@ -107,6 +117,9 @@ __all__ = [
     "SignalSensitivity",
     "SignalStatus",
     "SignalType",
+    "SourcePolicyStatus",
+    "SourceStatus",
+    "SourceType",
     "build_action",
     "build_company",
     "build_contact",
@@ -118,8 +131,11 @@ __all__ = [
     "build_outcome_event",
     "build_proof_event",
     "build_signal",
+    "build_source",
     "compute_priority_score",
+    "compute_source_score",
     "is_signal_stale",
+    "is_source_stale",
     "is_valid_signal_transition",
     "is_valid_transition",
     "normalize_approval",
