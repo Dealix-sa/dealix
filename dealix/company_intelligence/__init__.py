@@ -62,7 +62,17 @@ from dealix.company_intelligence.partnership_contracts import (
     PartnershipType,
     build_partnership_opportunity,
 )
+from dealix.company_intelligence.playbook_contracts import (
+    CanonicalPlaybookVersion,
+    PlaybookApprovalStatus,
+    build_playbook_version,
+)
 from dealix.company_intelligence.proof_adapter import normalize_proof_event
+from dealix.company_intelligence.proposal_contracts import (
+    CanonicalProposal,
+    ProposalStatus,
+    build_proposal,
+)
 from dealix.company_intelligence.relationship_contracts import (
     CanonicalRelationship,
     EntityType,
@@ -130,7 +140,9 @@ __all__ = [
     "CanonicalOpportunity",
     "CanonicalOutcomeEvent",
     "CanonicalPartnershipOpportunity",
+    "CanonicalPlaybookVersion",
     "CanonicalProofEvent",
+    "CanonicalProposal",
     "CanonicalRelationship",
     "CanonicalSignal",
     "CanonicalSource",
@@ -151,9 +163,11 @@ __all__ = [
     "OutcomeEventType",
     "PartnershipStage",
     "PartnershipType",
+    "PlaybookApprovalStatus",
     "PlanPriority",
     "PlanStatus",
     "ProofType",
+    "ProposalStatus",
     "ProofSourceEventType",
     "ProvenanceRef",
     "RelationshipStatus",
@@ -178,7 +192,9 @@ __all__ = [
     "build_learning_event",
     "build_outcome_event",
     "build_partnership_opportunity",
+    "build_playbook_version",
     "build_proof_event",
+    "build_proposal",
     "build_relationship",
     "build_signal",
     "build_source",
