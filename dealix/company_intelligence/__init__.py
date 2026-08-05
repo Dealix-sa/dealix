@@ -56,6 +56,10 @@ from dealix.company_intelligence.graph_contracts import (
     build_company,
     build_contact,
 )
+from dealix.company_intelligence.offer_adapter import (
+    normalize_catalog,
+    normalize_service_offering,
+)
 from dealix.company_intelligence.offer_contracts import (
     CanonicalOffer,
     OfferApprovalPolicy,
@@ -68,6 +72,9 @@ from dealix.company_intelligence.partnership_contracts import (
     PartnershipStage,
     PartnershipType,
     build_partnership_opportunity,
+    is_valid_partnership_transition,
+    transition_partnership,
+    valid_partnership_transitions_from,
 )
 from dealix.company_intelligence.persona_contracts import (
     CanonicalPersona,
@@ -84,6 +91,9 @@ from dealix.company_intelligence.proposal_contracts import (
     CanonicalProposal,
     ProposalStatus,
     build_proposal,
+    is_valid_proposal_transition,
+    transition_proposal,
+    valid_proposal_transitions_from,
 )
 from dealix.company_intelligence.relationship_contracts import (
     CanonicalRelationship,
@@ -234,15 +244,23 @@ __all__ = [
     "is_signal_stale",
     "is_source_stale",
     "is_valid_consent_transition",
+    "is_valid_partnership_transition",
+    "is_valid_proposal_transition",
     "is_valid_signal_transition",
     "is_valid_transition",
     "normalize_approval",
+    "normalize_catalog",
     "normalize_opportunity",
     "normalize_proof_event",
+    "normalize_service_offering",
     "transition_action",
     "transition_consent_basis",
+    "transition_partnership",
+    "transition_proposal",
     "transition_signal",
     "valid_consent_transitions_from",
+    "valid_partnership_transitions_from",
+    "valid_proposal_transitions_from",
     "valid_signal_transitions_from",
     "valid_transitions_from",
 ]

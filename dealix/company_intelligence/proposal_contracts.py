@@ -204,3 +204,71 @@ def build_proposal(
         sent_at=sent_at,
         expires_at=expires_at,
     )
+
+
+# ---------------------------------------------------------------------------
+# State machine
+# ---------------------------------------------------------------------------
+
+
+_PROPOSAL_TRANSITIONS: dict[ProposalStatus, frozenset[ProposalStatus]] = {
+    ProposalStatus.DRAFT: frozenset({
+        ProposalStatus.PENDING_REVIEW,
+        ProposalStatus.WITHDRAWN,
+    }),
+    ProposalStatus.PENDING_REVIEW: frozenset({
+        ProposalStatus.APPROVED,
+        ProposalStatus.REJECTED,
+        ProposalStatus.WITHDRAWN,
+    }),
+    ProposalStatus.APPROVED: frozenset({
+        ProposalStatus.SENT,
+        ProposalStatus.EXPIRED,
+        ProposalStatus.WITHDRAWN,
+    }),
+    ProposalStatus.SENT: frozenset({
+        ProposalStatus.ACCEPTED,
+        ProposalStatus.REJECTED,
+        ProposalStatus.EXPIRED,
+        ProposalStatus.WITHDRAWN,
+    }),
+    # Terminal states — no outbound transitions
+    ProposalStatus.ACCEPTED: frozenset(),
+    ProposalStatus.REJECTED: frozenset(),
+    ProposalStatus.EXPIRED: frozenset(),
+    ProposalStatus.WITHDRAWN: frozenset(),
+}
+
+
+def valid_proposal_transitions_from(status: ProposalStatus) -> frozenset[ProposalStatus]:
+    """Return the set of valid next statuses from the given status."""
+    return _PROPOSAL_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_proposal_transition(
+    from_status: ProposalStatus,
+    to_status: ProposalStatus,
+) -> bool:
+    """Check whether a transition between two proposal statuses is valid."""
+    return to_status in valid_proposal_transitions_from(from_status)
+
+
+def transition_proposal(
+    proposal: CanonicalProposal,
+    *,
+    to_status: ProposalStatus,
+    sent_at: datetime | None = None,
+) -> CanonicalProposal:
+    """Return a new Proposal with an updated status after validating the transition.
+
+    The returned Proposal is a new frozen instance — the original is unchanged.
+    """
+    if not is_valid_proposal_transition(proposal.status, to_status):
+        raise ValueError(
+            f"invalid proposal transition: {proposal.status.value} → {to_status.value}"
+        )
+
+    updates: dict[str, Any] = {"status": to_status}
+    if sent_at is not None:
+        updates["sent_at"] = sent_at
+    return proposal.model_copy(update=updates)

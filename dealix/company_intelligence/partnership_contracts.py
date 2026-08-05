@@ -210,3 +210,78 @@ def build_partnership_opportunity(
         expected_value=expected_value,
         last_reviewed_at=last_reviewed_at,
     )
+
+
+# ---------------------------------------------------------------------------
+# State machine
+# ---------------------------------------------------------------------------
+
+
+_PARTNERSHIP_TRANSITIONS: dict[PartnershipStage, frozenset[PartnershipStage]] = {
+    PartnershipStage.SIGNAL_DETECTED: frozenset({
+        PartnershipStage.RESEARCHED,
+        PartnershipStage.DISSOLVED,
+    }),
+    PartnershipStage.RESEARCHED: frozenset({
+        PartnershipStage.QUALIFIED,
+        PartnershipStage.DISSOLVED,
+    }),
+    PartnershipStage.QUALIFIED: frozenset({
+        PartnershipStage.PROPOSAL_DRAFTED,
+        PartnershipStage.DISSOLVED,
+    }),
+    PartnershipStage.PROPOSAL_DRAFTED: frozenset({
+        PartnershipStage.UNDER_REVIEW,
+        PartnershipStage.DISSOLVED,
+    }),
+    PartnershipStage.UNDER_REVIEW: frozenset({
+        PartnershipStage.APPROVED,
+        PartnershipStage.DISSOLVED,
+    }),
+    PartnershipStage.APPROVED: frozenset({
+        PartnershipStage.ACTIVE,
+        PartnershipStage.DISSOLVED,
+    }),
+    PartnershipStage.ACTIVE: frozenset({
+        PartnershipStage.PAUSED,
+        PartnershipStage.DISSOLVED,
+    }),
+    PartnershipStage.PAUSED: frozenset({
+        PartnershipStage.ACTIVE,
+        PartnershipStage.DISSOLVED,
+    }),
+    # Terminal
+    PartnershipStage.DISSOLVED: frozenset(),
+}
+
+
+def valid_partnership_transitions_from(
+    stage: PartnershipStage,
+) -> frozenset[PartnershipStage]:
+    """Return the set of valid next stages from the given stage."""
+    return _PARTNERSHIP_TRANSITIONS.get(stage, frozenset())
+
+
+def is_valid_partnership_transition(
+    from_stage: PartnershipStage,
+    to_stage: PartnershipStage,
+) -> bool:
+    """Check whether a transition between two partnership stages is valid."""
+    return to_stage in valid_partnership_transitions_from(from_stage)
+
+
+def transition_partnership(
+    partnership: CanonicalPartnershipOpportunity,
+    *,
+    to_stage: PartnershipStage,
+) -> CanonicalPartnershipOpportunity:
+    """Return a new Partnership with an updated stage after validating the transition.
+
+    The returned Partnership is a new frozen instance — the original is unchanged.
+    """
+    if not is_valid_partnership_transition(partnership.stage, to_stage):
+        raise ValueError(
+            f"invalid partnership transition: "
+            f"{partnership.stage.value} → {to_stage.value}"
+        )
+    return partnership.model_copy(update={"stage": to_stage})
