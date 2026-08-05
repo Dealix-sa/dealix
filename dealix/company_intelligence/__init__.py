@@ -29,6 +29,18 @@ from dealix.company_intelligence.execution_contracts import (
     normalize_opportunity,
 )
 from dealix.company_intelligence.proof_adapter import normalize_proof_event
+from dealix.company_intelligence.signal_contracts import (
+    CanonicalSignal,
+    ConsentStatus,
+    SignalSensitivity,
+    SignalStatus,
+    SignalType,
+    build_signal,
+    is_signal_stale,
+    is_valid_signal_transition,
+    transition_signal,
+    valid_signal_transitions_from,
+)
 
 from . import outcome_contracts as _outcome_contracts
 
@@ -64,7 +76,9 @@ __all__ = [
     "CanonicalOpportunity",
     "CanonicalOutcomeEvent",
     "CanonicalProofEvent",
+    "CanonicalSignal",
     "CompanyBrainSource",
+    "ConsentStatus",
     "DraftChannel",
     "EvidenceState",
     "LawfulContactBasis",
@@ -74,6 +88,9 @@ __all__ = [
     "ProofSourceEventType",
     "ProvenanceRef",
     "RiskLevel",
+    "SignalSensitivity",
+    "SignalStatus",
+    "SignalType",
     "build_action",
     "build_customer_company_brain",
     "build_daily_command",
@@ -82,11 +99,16 @@ __all__ = [
     "build_learning_event",
     "build_outcome_event",
     "build_proof_event",
+    "build_signal",
     "compute_priority_score",
+    "is_signal_stale",
+    "is_valid_signal_transition",
     "is_valid_transition",
     "normalize_approval",
     "normalize_opportunity",
     "normalize_proof_event",
     "transition_action",
+    "transition_signal",
+    "valid_signal_transitions_from",
     "valid_transitions_from",
 ]
