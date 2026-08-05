@@ -15,7 +15,7 @@ Forbidden parallel names: Reachability, ContactPermission.
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from enum import StrEnum
 from hashlib import sha256
 from typing import Annotated, Any

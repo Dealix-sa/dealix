@@ -29,6 +29,13 @@ from dealix.company_intelligence.consent_contracts import (
     valid_consent_transitions_from,
 )
 from dealix.company_intelligence.contracts import CompanyBrainSource, ProvenanceRef
+from dealix.company_intelligence.department_contracts import (
+    CanonicalDepartmentPlan,
+    Department,
+    PlanPriority,
+    PlanStatus,
+    build_department_plan,
+)
 from dealix.company_intelligence.execution_contracts import (
     CanonicalApproval,
     CanonicalDraft,
@@ -48,6 +55,12 @@ from dealix.company_intelligence.graph_contracts import (
     RelationshipStrength,
     build_company,
     build_contact,
+)
+from dealix.company_intelligence.partnership_contracts import (
+    CanonicalPartnershipOpportunity,
+    PartnershipStage,
+    PartnershipType,
+    build_partnership_opportunity,
 )
 from dealix.company_intelligence.proof_adapter import normalize_proof_event
 from dealix.company_intelligence.relationship_contracts import (
@@ -111,10 +124,12 @@ __all__ = [
     "CanonicalConsentBasis",
     "CanonicalContact",
     "CanonicalDailyCommand",
+    "CanonicalDepartmentPlan",
     "CanonicalDraft",
     "CanonicalLearningEvent",
     "CanonicalOpportunity",
     "CanonicalOutcomeEvent",
+    "CanonicalPartnershipOpportunity",
     "CanonicalProofEvent",
     "CanonicalRelationship",
     "CanonicalSignal",
@@ -127,12 +142,17 @@ __all__ = [
     "ConsentStatus",
     "ContactRole",
     "ContactStatus",
+    "Department",
     "DraftChannel",
     "EntityType",
     "EvidenceState",
     "LawfulContactBasis",
     "LearningEventType",
     "OutcomeEventType",
+    "PartnershipStage",
+    "PartnershipType",
+    "PlanPriority",
+    "PlanStatus",
     "ProofType",
     "ProofSourceEventType",
     "ProvenanceRef",
@@ -152,10 +172,12 @@ __all__ = [
     "build_contact",
     "build_customer_company_brain",
     "build_daily_command",
+    "build_department_plan",
     "build_draft",
     "build_internal_company_brain",
     "build_learning_event",
     "build_outcome_event",
+    "build_partnership_opportunity",
     "build_proof_event",
     "build_relationship",
     "build_signal",
