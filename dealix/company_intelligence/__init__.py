@@ -56,11 +56,23 @@ from dealix.company_intelligence.graph_contracts import (
     build_company,
     build_contact,
 )
+from dealix.company_intelligence.offer_contracts import (
+    CanonicalOffer,
+    OfferApprovalPolicy,
+    OfferPriceUnit,
+    OfferStatus,
+    build_offer,
+)
 from dealix.company_intelligence.partnership_contracts import (
     CanonicalPartnershipOpportunity,
     PartnershipStage,
     PartnershipType,
     build_partnership_opportunity,
+)
+from dealix.company_intelligence.persona_contracts import (
+    CanonicalPersona,
+    PersonaStatus,
+    build_persona,
 )
 from dealix.company_intelligence.playbook_contracts import (
     CanonicalPlaybookVersion,
@@ -101,6 +113,12 @@ from dealix.company_intelligence.source_contracts import (
     compute_source_score,
     is_source_stale,
 )
+from dealix.company_intelligence.tenant_contracts import (
+    CanonicalTenant,
+    TenantPlan,
+    TenantStatus,
+    build_tenant,
+)
 
 from . import outcome_contracts as _outcome_contracts
 
@@ -137,15 +155,18 @@ __all__ = [
     "CanonicalDepartmentPlan",
     "CanonicalDraft",
     "CanonicalLearningEvent",
+    "CanonicalOffer",
     "CanonicalOpportunity",
     "CanonicalOutcomeEvent",
     "CanonicalPartnershipOpportunity",
+    "CanonicalPersona",
     "CanonicalPlaybookVersion",
     "CanonicalProofEvent",
     "CanonicalProposal",
     "CanonicalRelationship",
     "CanonicalSignal",
     "CanonicalSource",
+    "CanonicalTenant",
     "CompanyBrainSource",
     "CompanyStatus",
     "ConsentBasisStatus",
@@ -160,15 +181,19 @@ __all__ = [
     "EvidenceState",
     "LawfulContactBasis",
     "LearningEventType",
+    "OfferApprovalPolicy",
+    "OfferPriceUnit",
+    "OfferStatus",
     "OutcomeEventType",
     "PartnershipStage",
     "PartnershipType",
+    "PersonaStatus",
     "PlaybookApprovalStatus",
     "PlanPriority",
     "PlanStatus",
+    "ProofSourceEventType",
     "ProofType",
     "ProposalStatus",
-    "ProofSourceEventType",
     "ProvenanceRef",
     "RelationshipStatus",
     "RelationshipStrength",
@@ -180,6 +205,8 @@ __all__ = [
     "SourcePolicyStatus",
     "SourceStatus",
     "SourceType",
+    "TenantPlan",
+    "TenantStatus",
     "build_action",
     "build_company",
     "build_consent_basis",
@@ -190,14 +217,17 @@ __all__ = [
     "build_draft",
     "build_internal_company_brain",
     "build_learning_event",
+    "build_offer",
     "build_outcome_event",
     "build_partnership_opportunity",
+    "build_persona",
     "build_playbook_version",
     "build_proof_event",
     "build_proposal",
     "build_relationship",
     "build_signal",
     "build_source",
+    "build_tenant",
     "compute_priority_score",
     "compute_source_score",
     "is_consent_expired",
