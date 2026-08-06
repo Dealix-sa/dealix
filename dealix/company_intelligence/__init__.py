@@ -17,6 +17,7 @@ from dealix.company_intelligence.company_brain import (
     build_customer_company_brain,
     build_internal_company_brain,
 )
+from dealix.company_intelligence.consent_adapter import normalize_consent
 from dealix.company_intelligence.consent_contracts import (
     CanonicalConsentBasis,
     ConsentBasisStatus,
@@ -133,6 +134,7 @@ from dealix.company_intelligence.relationship_contracts import (
     transition_relationship,
     valid_relationship_transitions_from,
 )
+from dealix.company_intelligence.signal_adapter import normalize_signal
 from dealix.company_intelligence.signal_contracts import (
     CanonicalSignal,
     ConsentStatus,
@@ -301,10 +303,12 @@ __all__ = [
     "is_valid_transition",
     "normalize_approval",
     "normalize_catalog",
+    "normalize_consent",
     "normalize_draft",
     "normalize_opportunity",
     "normalize_proof_event",
     "normalize_service_offering",
+    "normalize_signal",
     "transition_action",
     "transition_approval",
     "transition_company",

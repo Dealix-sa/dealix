@@ -91,6 +91,8 @@ from dealix.company_intelligence import (
     build_source,
     build_tenant,
     normalize_catalog,
+    normalize_consent,
+    normalize_signal,
     transition_action,
     transition_approval,
     transition_company,
@@ -1003,3 +1005,88 @@ class TestDeterministicIds:
             name="BetaCo", source_id="s1",
         )
         assert a.company_id != b.company_id
+
+
+# ---------------------------------------------------------------------------
+# Adapter integration — operational → canonical bridging
+# ---------------------------------------------------------------------------
+
+
+class TestAdapterIntegration:
+    """Verify adapters bridge operational entities to canonical contracts."""
+
+    def test_normalize_signal_in_spine(self) -> None:
+        """SignalDetection → CanonicalSignal stays within graph contract."""
+        from types import SimpleNamespace
+
+        detection = SimpleNamespace(
+            company_id="co-1",
+            signal_type="hiring_sales_rep",
+            detected_at=datetime(2026, 7, 1, 12, 0, 0),
+            source="linkedin_jobs",
+            confidence=0.9,
+            evidence_url="https://linkedin.com/jobs/1",
+            payload={"title": "Sales Rep"},
+        )
+        signal = normalize_signal(detection, tenant_id=TENANT_ID)
+        assert signal.tenant_id == TENANT_ID
+        assert signal.signal_type == SignalType.MARKET
+        assert signal.status == SignalStatus.RAW
+        # Can transition through the lifecycle
+        signal = transition_signal(signal, to_status=SignalStatus.VALIDATED)
+        assert signal.status == SignalStatus.VALIDATED
+
+    def test_normalize_consent_in_spine(self) -> None:
+        """ConsentRecord → CanonicalConsentBasis stays within privacy contract."""
+        from types import SimpleNamespace
+
+        record = SimpleNamespace(
+            record_id="cons_1",
+            customer_id=TENANT_ID,
+            contact_id="contact-1",
+            record_type="consent_granted",
+            lawful_basis="consent",
+            purpose="outreach",
+            channel="email",
+            source="explicit_email",
+            occurred_at=datetime(2026, 6, 1, 10, 0, 0),
+            expires_at=None,
+            proof_url="https://proof.example.com",
+            metadata={},
+        )
+        consent = normalize_consent(record, tenant_id=TENANT_ID)
+        assert consent.tenant_id == TENANT_ID
+        assert consent.status == ConsentBasisStatus.ACTIVE
+        assert consent.basis == ConsentBasisType.EXPLICIT_OPT_IN
+        # Can transition through the lifecycle
+        consent = transition_consent_basis(
+            consent, to_status=ConsentBasisStatus.WITHDRAWN,
+            withdrawn_reason="user request",
+        )
+        assert consent.status == ConsentBasisStatus.WITHDRAWN
+
+    def test_adapters_produce_frozen_entities(self) -> None:
+        """Adapter output respects frozen=True immutability."""
+        from types import SimpleNamespace
+
+        signal = normalize_signal(
+            SimpleNamespace(
+                company_id="co-1", signal_type="funding_round",
+                detected_at=datetime(2026, 7, 1, tzinfo=UTC),
+                source="rss", confidence=0.95,
+                evidence_url=None, payload={},
+            ),
+            tenant_id=TENANT_ID,
+        )
+        consent = normalize_consent(
+            SimpleNamespace(
+                contact_id="c1", record_type="consent_granted",
+                lawful_basis="consent", channel="email",
+                source="form", occurred_at=datetime(2026, 6, 1, tzinfo=UTC),
+                expires_at=None, proof_url=None, metadata={},
+            ),
+            tenant_id=TENANT_ID,
+        )
+        for entity in [signal, consent]:
+            with pytest.raises(Exception):
+                entity.tenant_id = "tampered"  # type: ignore[misc]
