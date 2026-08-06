@@ -390,6 +390,54 @@ def normalize_approval(request: Any, *, tenant_id: str | None = None) -> Canonic
     )
 
 
+def normalize_draft(
+    draft: Any,
+    *,
+    tenant_id: str,
+    action_id: str,
+    opportunity_id: str,
+    lawful_contact_basis: LawfulContactBasis,
+    source_evidence: list[str],
+) -> CanonicalDraft:
+    """Adapt an operational ``Draft`` into a canonical draft.
+
+    The operational ``Draft`` (from ``distribution_os.draft_factory``) lacks
+    tenant context, action linkage, compliance basis, and provenance evidence.
+    These must be supplied by the caller — typically the orchestration layer
+    that created the draft.
+
+    Channel mapping::
+
+      email → EMAIL, whatsapp → WHATSAPP, linkedin → LINKEDIN,
+      phone → PHONE, proposal → PROPOSAL
+
+    Safety: execution is always disabled; approval is always required.
+    """
+    channel_str = str(getattr(draft, "channel", "email")).lower()
+    try:
+        channel = DraftChannel(channel_str)
+    except ValueError:
+        channel = DraftChannel.EMAIL
+
+    content = getattr(draft, "body", "") or getattr(draft, "content", "")
+    if not content:
+        raise ValueError("draft content (body) is required")
+
+    is_manual = channel is DraftChannel.LINKEDIN
+
+    return build_draft(
+        tenant_id=tenant_id,
+        action_id=action_id,
+        opportunity_id=opportunity_id,
+        channel=channel,
+        content=content,
+        lawful_contact_basis=lawful_contact_basis,
+        source_evidence=source_evidence,
+        risk_level=str(getattr(draft, "risk_level", "medium")),
+        is_manual_task=is_manual,
+    )
+
+
 def build_draft(
     *,
     tenant_id: str,
