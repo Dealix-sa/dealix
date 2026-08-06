@@ -1,0 +1,392 @@
+"""End-to-end scenario test for the full Company Intelligence spine.
+
+Simulates a realistic Saudi B2B customer journey:
+  1. Source passport → CanonicalSource (data provenance)
+  2. Lead → CanonicalCompany + CanonicalContact (graph entities)
+  3. SignalDetection → CanonicalSignal (market intelligence)
+  4. ConsentRecord → CanonicalConsentBasis (privacy)
+  5. Pipeline Lead → CanonicalOpportunity (execution)
+  6. NextBestAction → CanonicalAction (action queue)
+  7. Revenue Graph edge → CanonicalRelationship (graph edges)
+  8. All entities are frozen, tenant-scoped, evidence-graded
+  9. State machine transitions work end-to-end
+ 10. Daily Command can be built from accumulated entities
+
+This test does NOT touch databases, networks, or LLMs — it exercises
+only the persistence-neutral contract and adapter layers.
+"""
+from __future__ import annotations
+
+from datetime import UTC, datetime
+from types import SimpleNamespace
+
+import pytest
+
+from dealix.company_intelligence import (
+    ActionStatus,
+    CanonicalAction,
+    CanonicalCompany,
+    CanonicalConsentBasis,
+    CanonicalContact,
+    CanonicalDailyCommand,
+    CanonicalOpportunity,
+    CanonicalRelationship,
+    CanonicalSignal,
+    CanonicalSource,
+    CompanyStatus,
+    ConsentBasisStatus,
+    ContactStatus,
+    EntityType,
+    OpportunityStage,
+    RelationshipStatus,
+    SignalStatus,
+    SourceStatus,
+    build_daily_command,
+    normalize_consent,
+    normalize_graph_edge,
+    normalize_lead_to_company,
+    normalize_lead_to_contact,
+    normalize_next_best_action,
+    normalize_pipeline_lead,
+    normalize_signal,
+    normalize_source_passport,
+    transition_action,
+    transition_company,
+    transition_contact,
+    transition_opportunity,
+    transition_signal,
+)
+
+TENANT_ID = "tenant-acme-sa"
+
+
+class TestSaudiBtoEndToEnd:
+    """Full customer journey from raw data → Daily Command."""
+
+    def _build_source(self) -> CanonicalSource:
+        """Step 1: Register a data source."""
+        passport = SimpleNamespace(
+            source_id="SRC-CRM-ACME",
+            source_type="crm",
+            owner="acme_sa",
+            allowed_use=["internal_analysis", "draft_only"],
+            contains_pii=True,
+            sensitivity="medium",
+            relationship_status="existing_relationship",
+            retention_policy="1_year",
+            ai_access_allowed=True,
+            external_use_allowed=False,
+        )
+        source = normalize_source_passport(passport, tenant_id=TENANT_ID)
+        assert isinstance(source, CanonicalSource)
+        assert source.status == SourceStatus.ACTIVE
+        return source
+
+    def _build_company_and_contact(
+        self, source: CanonicalSource
+    ) -> tuple[CanonicalCompany, CanonicalContact]:
+        """Step 2: Ingest a lead → Company + Contact."""
+        lead = SimpleNamespace(
+            id="lead-acme-001",
+            source="warm_intro",
+            company_name="شركة أكمي السعودية",
+            contact_name="أحمد الراشد",
+            contact_email="ahmed@acme.sa",
+            contact_phone="+966512345678",
+            contact_channel="whatsapp",
+            sector="B2B SaaS",
+            company_size="80",
+            region="Riyadh",
+            budget=15000.0,
+            message="نبحث عن نظام لإدارة العمليات التجارية",
+            urgency_score=0.8,
+            fit_score=0.85,
+            status="new",
+            pain_points=["no CRM", "manual follow-up"],
+            locale="ar",
+            created_at=datetime(2026, 8, 1, 12, 0, 0),
+            dedup_hash="acme_sa_hash_001",
+        )
+
+        company = normalize_lead_to_company(
+            lead, tenant_id=TENANT_ID, source_id=source.source_id
+        )
+        assert isinstance(company, CanonicalCompany)
+        assert company.name == "شركة أكمي السعودية"
+        assert company.icp_fit_score == 0.85
+        assert company.employee_count_estimate == 80
+        assert company.status == CompanyStatus.DISCOVERED
+
+        contact = normalize_lead_to_contact(
+            lead,
+            tenant_id=TENANT_ID,
+            source_id=source.source_id,
+            company_id=company.company_id,
+        )
+        assert isinstance(contact, CanonicalContact)
+        assert contact.name == "أحمد الراشد"
+        assert contact.company_id == company.company_id
+        assert contact.consent_status == "unknown"
+
+        return company, contact
+
+    def _build_signal(self, company: CanonicalCompany) -> CanonicalSignal:
+        """Step 3: Detect a market signal."""
+        detection = SimpleNamespace(
+            company_id=company.company_id,
+            signal_type="hiring_sales_rep",
+            detected_at=datetime(2026, 8, 2, 9, 0, 0),
+            source="linkedin_jobs",
+            confidence=0.9,
+            evidence_url="https://linkedin.com/jobs/acme-sa-sales-rep",
+            payload={"title": "Senior Sales Rep", "location": "Riyadh"},
+        )
+        signal = normalize_signal(detection, tenant_id=TENANT_ID)
+        assert isinstance(signal, CanonicalSignal)
+        assert signal.status == SignalStatus.RAW
+        return signal
+
+    def _build_consent(self, contact: CanonicalContact) -> CanonicalConsentBasis:
+        """Step 4: Record consent basis."""
+        record = SimpleNamespace(
+            record_id="cons-acme-001",
+            customer_id=TENANT_ID,
+            contact_id=contact.contact_id,
+            record_type="consent_granted",
+            lawful_basis="consent",
+            purpose="outreach",
+            channel="whatsapp",
+            source="explicit_whatsapp",
+            occurred_at=datetime(2026, 8, 2, 10, 0, 0),
+            expires_at=None,
+            proof_url="https://proof.dealix.me/consent/acme-001",
+            metadata={"contact_name": "أحمد الراشد"},
+        )
+        consent = normalize_consent(record, tenant_id=TENANT_ID)
+        assert isinstance(consent, CanonicalConsentBasis)
+        assert consent.status == ConsentBasisStatus.ACTIVE
+        return consent
+
+    def _build_opportunity(
+        self, company: CanonicalCompany
+    ) -> CanonicalOpportunity:
+        """Step 5: Create opportunity from pipeline lead."""
+        pipeline_lead = SimpleNamespace(
+            id="pipe-acme-001",
+            slot_id="slot-acme",
+            sector="B2B SaaS",
+            region="Riyadh",
+            stage="diagnostic_delivered",
+            commitment_evidence="",
+            payment_evidence="",
+            created_at=datetime(2026, 8, 5, 14, 0, 0, tzinfo=UTC),
+        )
+        opp = normalize_pipeline_lead(
+            pipeline_lead,
+            tenant_id=TENANT_ID,
+            company_id=company.company_id,
+            offer_id="offer-revenue-pilot",
+        )
+        assert isinstance(opp, CanonicalOpportunity)
+        assert opp.stage == OpportunityStage.APPROVAL
+        assert opp.external_action_allowed is False
+        return opp
+
+    def _build_action(
+        self, opportunity: CanonicalOpportunity
+    ) -> CanonicalAction:
+        """Step 6: Generate next-best-action."""
+        nba = SimpleNamespace(
+            action="open_whatsapp_with_arabic_personalization",
+            channel="whatsapp",
+            rationale=(
+                "الشركة تستخدم WhatsApp Business — فتح المحادثة برسالة "
+                "عربية مخصصة يرفع معدل الرد بنسبة 3× مقارنة بالإيميل البارد."
+            ),
+            expected_reply_lift=2.4,
+            confidence=0.7,
+            playbook_id=None,
+        )
+        action = normalize_next_best_action(
+            nba,
+            tenant_id=TENANT_ID,
+            opportunity_id=opportunity.opportunity_id,
+            company_id=opportunity.company_id,
+        )
+        assert isinstance(action, CanonicalAction)
+        assert action.external_effect is True
+        assert action.approval_required is True
+        assert action.status == ActionStatus.QUEUED
+        return action
+
+    def _build_relationship(
+        self, company: CanonicalCompany
+    ) -> CanonicalRelationship:
+        """Step 7: Bridge a Revenue Graph edge."""
+        edge = SimpleNamespace(
+            src_id=company.company_id,
+            dst_id="company-dealix-internal",
+            edge_type="decides_at",
+            weight=0.6,
+            properties={"description": "Warm intro via founder network"},
+            last_updated=None,
+        )
+        rel = normalize_graph_edge(
+            edge,
+            tenant_id=TENANT_ID,
+            source_id="revenue_graph",
+            from_type=EntityType.COMPANY,
+            to_type=EntityType.COMPANY,
+        )
+        assert isinstance(rel, CanonicalRelationship)
+        assert rel.status == RelationshipStatus.DISCOVERED
+        assert rel.strength == "warm"
+        return rel
+
+    # ------------------------------------------------------------------
+    # Full end-to-end test
+    # ------------------------------------------------------------------
+
+    def test_full_customer_journey(self) -> None:
+        """Walk through the entire spine from raw data to entity graph."""
+        # Step 1: Source
+        source = self._build_source()
+
+        # Step 2: Company + Contact
+        company, contact = self._build_company_and_contact(source)
+
+        # Step 3: Signal
+        signal = self._build_signal(company)
+
+        # Step 4: Consent
+        consent = self._build_consent(contact)
+
+        # Step 5: Opportunity
+        opportunity = self._build_opportunity(company)
+
+        # Step 6: Action
+        action = self._build_action(opportunity)
+
+        # Step 7: Relationship
+        relationship = self._build_relationship(company)
+
+        # Verify all entities share the same tenant
+        for entity in [
+            source, company, contact, signal, consent,
+            opportunity, action, relationship,
+        ]:
+            assert entity.tenant_id == TENANT_ID
+
+        # Verify all entities are frozen
+        for entity in [
+            source, company, contact, signal, consent,
+            opportunity, action, relationship,
+        ]:
+            with pytest.raises(Exception):
+                entity.tenant_id = "tampered"  # type: ignore[misc]
+
+    def test_state_machine_progression(self) -> None:
+        """Verify state machine transitions work across entities."""
+        source = self._build_source()
+        company, contact = self._build_company_and_contact(source)
+        signal = self._build_signal(company)
+        opportunity = self._build_opportunity(company)
+        action = self._build_action(opportunity)
+
+        # Company: DISCOVERED → RESEARCHED → QUALIFIED
+        company = transition_company(company, to_status=CompanyStatus.RESEARCHED)
+        company = transition_company(company, to_status=CompanyStatus.QUALIFIED)
+        assert company.status == CompanyStatus.QUALIFIED
+
+        # Contact: IDENTIFIED → VERIFIED → ENGAGED
+        contact = transition_contact(contact, to_status=ContactStatus.VERIFIED)
+        contact = transition_contact(contact, to_status=ContactStatus.ENGAGED)
+        assert contact.status == ContactStatus.ENGAGED
+
+        # Signal: RAW → VALIDATED → LINKED
+        signal = transition_signal(signal, to_status=SignalStatus.VALIDATED)
+        signal = transition_signal(signal, to_status=SignalStatus.LINKED)
+        assert signal.status == SignalStatus.LINKED
+
+        # Opportunity: APPROVAL → CONVERSATION → PILOT
+        opportunity = transition_opportunity(
+            opportunity, to_stage=OpportunityStage.CONVERSATION
+        )
+        opportunity = transition_opportunity(
+            opportunity, to_stage=OpportunityStage.PILOT
+        )
+        assert opportunity.stage == OpportunityStage.PILOT
+
+        # Action: QUEUED → IN_PROGRESS → AWAITING_APPROVAL → APPROVED
+        action = transition_action(action, to_status=ActionStatus.IN_PROGRESS)
+        action = transition_action(
+            action, to_status=ActionStatus.AWAITING_APPROVAL
+        )
+        assert action.status == ActionStatus.AWAITING_APPROVAL
+
+    def test_daily_command_from_entities(self) -> None:
+        """Build a Daily Command from accumulated spine entities."""
+        from datetime import date
+
+        source = self._build_source()
+        company, contact = self._build_company_and_contact(source)
+        signal = self._build_signal(company)
+        opportunity = self._build_opportunity(company)
+        action = self._build_action(opportunity)
+
+        # Build a Daily Command incorporating all entities
+        command = build_daily_command(
+            tenant_id=TENANT_ID,
+            command_date=date(2026, 8, 6),
+            priorities=[
+                action.action_id,
+                opportunity.opportunity_id,
+                signal.signal_id,
+            ],
+            approval_items=[],
+            proofs=[],
+            learning_events=[],
+        )
+        assert isinstance(command, CanonicalDailyCommand)
+        assert command.tenant_id == TENANT_ID
+        assert action.action_id in command.priorities
+        assert opportunity.opportunity_id in command.priorities
+
+    def test_invalid_state_transitions_blocked(self) -> None:
+        """Verify invalid transitions are rejected across entities."""
+        source = self._build_source()
+        company, contact = self._build_company_and_contact(source)
+        opportunity = self._build_opportunity(company)
+
+        # Cannot skip from DISCOVERED to ACTIVE
+        with pytest.raises(ValueError, match="invalid"):
+            transition_company(company, to_status=CompanyStatus.ACTIVE)
+
+        # Cannot go from IDENTIFIED to ENGAGED (must verify first)
+        with pytest.raises(ValueError, match="invalid"):
+            transition_contact(contact, to_status=ContactStatus.ENGAGED)
+
+        # Cannot go from APPROVAL to WON directly
+        with pytest.raises(ValueError, match="invalid"):
+            transition_opportunity(
+                opportunity, to_stage=OpportunityStage.WON
+            )
+
+    def test_adapter_cross_referencing(self) -> None:
+        """Verify entities can be cross-referenced via IDs."""
+        source = self._build_source()
+        company, contact = self._build_company_and_contact(source)
+        signal = self._build_signal(company)
+        opportunity = self._build_opportunity(company)
+
+        # Contact → Company linkage
+        assert contact.company_id == company.company_id
+
+        # Signal → Company linkage (via company_id field on signal)
+        assert signal.company_id == company.company_id
+
+        # Opportunity → Company linkage
+        assert opportunity.company_id == company.company_id
+
+        # Source ← Company provenance
+        assert company.source_id == source.source_id
