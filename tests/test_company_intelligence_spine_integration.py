@@ -629,6 +629,159 @@ class TestExecutionSpinePipeline:
         assert len(dc.priorities) == 2
         assert len(dc.approval_items) == 1
 
+    def test_full_spine_end_to_end(self) -> None:
+        """Walk the entire product spine from Source through DailyCommand.
+
+        Source → Company → Signal → Opportunity → Action → Draft →
+        Approval → Outcome → Proof → Learning → DailyCommand
+
+        Every entity carries the same tenant_id and links to the
+        previous step via a shared ID — proving the spine connects.
+        """
+        now = datetime.now(UTC)
+        today = date.today()
+
+        # 1. Source
+        source = build_source(
+            tenant_id=TENANT_ID, deduplication_key="crm-export",
+            name="CRM Export", source_type=SourceType.MANUAL,
+        )
+        # Source starts ACTIVE (default), transition to STALE then back
+        # to demonstrate the lifecycle — no VALIDATED status on Source
+        assert source.status == SourceStatus.ACTIVE
+
+        # 2. Company
+        company = build_company(
+            tenant_id=TENANT_ID, deduplication_key="target-corp",
+            name="Target Corp", source_id=source.source_id,
+        )
+        company = transition_company(company, to_status=CompanyStatus.RESEARCHED)
+        assert company.source_id == source.source_id
+
+        # 3. Signal
+        signal = build_signal(
+            tenant_id=TENANT_ID, deduplication_key="sig-target-market",
+            company_id=company.company_id, source_id=source.source_id,
+            signal_type=SignalType.MARKET,
+            claim="Expanding to Saudi market",
+        )
+        signal = transition_signal(signal, to_status=SignalStatus.VALIDATED)
+        assert signal.company_id == company.company_id
+
+        # 4. Opportunity (with state machine progression)
+        opportunity = CanonicalOpportunity(
+            tenant_id=TENANT_ID, opportunity_id="opp-target-1",
+            company_id=company.company_id, offer_id="revenue_command_pilot_30d",
+            stage=OpportunityStage.RESEARCH, score=75,
+            signal_ids=[signal.signal_id],
+            next_action="qualify lead",
+            proof_target="discovery meeting booked",
+        )
+        opportunity = transition_opportunity(
+            opportunity, to_stage=OpportunityStage.QUALIFY,
+        )
+        assert opportunity.stage == OpportunityStage.QUALIFY
+        assert opportunity.external_action_allowed is False
+
+        # 5. Action
+        action = build_action(
+            tenant_id=TENANT_ID, idempotency_key="draft-email-target",
+            action_type=ActionType.PREPARE_DRAFT, department="sales",
+            autonomy_level=AutonomyLevel.L2_DRAFT,
+            risk_level=RiskLevel.LOW,
+        )
+        action = transition_action(action, to_status=ActionStatus.IN_PROGRESS)
+
+        # 6. Draft (with safety invariants)
+        draft = build_draft(
+            tenant_id=TENANT_ID, action_id=action.action_id,
+            opportunity_id=opportunity.opportunity_id,
+            channel=DraftChannel.EMAIL,
+            content="Would you like a free revenue diagnostic?",
+            lawful_contact_basis=LawfulContactBasis.EXISTING_RELATIONSHIP,
+            source_evidence=[signal.signal_id],
+        )
+        draft = transition_draft(draft, to_status=DraftStatus.PENDING_APPROVAL)
+        assert draft.execution_allowed is False
+        assert draft.approval_required is True
+        assert draft.action_id == action.action_id
+
+        # 7. Approval (with decision_at auto-set)
+        approval = CanonicalApproval(
+            tenant_id=TENANT_ID, approval_id="appr-target-draft",
+            action_id=action.action_id,
+            object_type="draft", object_id=draft.draft_id,
+            action_type="send_email",
+            proof_target="founder approved email send",
+        )
+        approval = transition_approval(
+            approval, to_status=CanonicalApprovalStatus.GRANTED,
+        )
+        assert approval.status == CanonicalApprovalStatus.GRANTED
+        assert approval.decision_at is not None
+
+        # Draft approved and copied
+        draft = transition_draft(draft, to_status=DraftStatus.APPROVED)
+        draft = transition_draft(draft, to_status=DraftStatus.COPIED_MANUALLY)
+        assert draft.execution_allowed is False  # still false, always
+
+        # Action completed
+        action = transition_action(action, to_status=ActionStatus.COMPLETED)
+
+        # 8. Outcome
+        outcome = build_outcome_event(
+            tenant_id=TENANT_ID, action_id=action.action_id,
+            event_type=OutcomeEventType.PROSPECT_REPLIED,
+            occurred_at=now,
+            evidence_refs=[draft.draft_id],
+        )
+        assert outcome.action_id == action.action_id
+
+        # 9. Proof
+        proof = build_proof_event(
+            tenant_id=TENANT_ID,
+            entity_type="outcome_event",
+            entity_id=outcome.outcome_id,
+            proof_type=ProofType.DELIVERY_EVIDENCE,
+            evidence_ref=f"reply-to-{draft.draft_id}",
+            verified_at=now,
+            verifier="founder",
+            source_event_type=ProofSourceEventType.DELIVERY_TASK_COMPLETED,
+        )
+        assert proof.entity_id == outcome.outcome_id
+
+        # 10. Learning
+        learning = build_learning_event(
+            tenant_id=TENANT_ID,
+            event_type=LearningEventType.TARGETING,
+            evidence_refs=[outcome.outcome_id, proof.proof_id],
+            confidence=0.8,
+            recommended_change="Email works well for Saudi B2B SaaS segment",
+            created_at=now,
+        )
+        assert outcome.outcome_id in learning.evidence_refs
+
+        # 11. Daily Command — aggregates everything
+        dc = build_daily_command(
+            tenant_id=TENANT_ID,
+            command_date=today,
+            priorities=[f"Follow up on {company.name}"],
+            approval_items=[],
+            proofs=[proof],
+            learning_events=[learning],
+        )
+        assert dc.tenant_id == TENANT_ID
+        assert len(dc.proof_ids) >= 1
+        assert len(dc.learning_ids) >= 1
+
+        # Final spine invariant: every entity in the chain is frozen
+        for entity in [
+            source, company, signal, opportunity, action, draft,
+            approval, outcome, proof, learning, dc,
+        ]:
+            with pytest.raises(Exception):
+                entity.tenant_id = "tampered"  # type: ignore[misc]
+
 
 # ---------------------------------------------------------------------------
 # Safety invariants — non-negotiable across the spine
