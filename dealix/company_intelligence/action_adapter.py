@@ -116,6 +116,9 @@ def normalize_next_best_action(
     is_external = _is_external_channel(channel)
     risk_level = _resolve_risk_level(channel, confidence)
 
+    # Playbook context enhances the idempotency key — the same action from
+    # different playbooks should produce distinct canonical actions.
+
     # Autonomy level: external channels need L4+, manual is L2
     autonomy_level = (
         AutonomyLevel.L4_CONTROLLED_EXECUTE if is_external
@@ -135,8 +138,10 @@ def normalize_next_best_action(
     # Effort: external actions require more effort (approval chain)
     effort = 0.6 if is_external else 0.3
 
-    # Build idempotency key
-    idempotency_key = f"nba:{action_name}:{channel}:{company_id or opportunity_id}"
+    # Build idempotency key — includes playbook_id when present so the same
+    # action recommended from different playbooks produces distinct entries.
+    base_key = f"nba:{action_name}:{channel}:{company_id or opportunity_id}"
+    idempotency_key = f"{base_key}:{playbook_id}" if playbook_id else base_key
 
     return build_action(
         tenant_id=tenant_id,

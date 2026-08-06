@@ -252,6 +252,33 @@ class TestDeterminism:
         )
         assert a.action_id != b.action_id
 
+    def test_different_playbook_different_id(self) -> None:
+        """Same action from different playbooks should produce distinct entries."""
+        a = normalize_next_best_action(
+            _nba(playbook_id="playbook_a"),
+            tenant_id="t",
+            opportunity_id="o",
+        )
+        b = normalize_next_best_action(
+            _nba(playbook_id="playbook_b"),
+            tenant_id="t",
+            opportunity_id="o",
+        )
+        assert a.action_id != b.action_id
+
+    def test_no_playbook_vs_with_playbook_different_id(self) -> None:
+        a = normalize_next_best_action(
+            _nba(playbook_id=None),
+            tenant_id="t",
+            opportunity_id="o",
+        )
+        b = normalize_next_best_action(
+            _nba(playbook_id="playbook_x"),
+            tenant_id="t",
+            opportunity_id="o",
+        )
+        assert a.action_id != b.action_id
+
 
 # ---------------------------------------------------------------------------
 # Validation

@@ -92,9 +92,13 @@ from dealix.company_intelligence import (
     build_tenant,
     normalize_catalog,
     normalize_consent,
+    normalize_graph_edge,
     normalize_lead_to_company,
     normalize_lead_to_contact,
+    normalize_next_best_action,
     normalize_pipeline_lead,
+    normalize_proposal,
+    normalize_sector_playbook,
     normalize_signal,
     normalize_source_passport,
     transition_action,
@@ -1242,6 +1246,46 @@ class TestAdapterIntegration:
                     commitment_evidence="", payment_evidence="",
                 ),
                 tenant_id=TENANT_ID, company_id="co-1", offer_id="off-1",
+            ),
+            normalize_next_best_action(
+                SimpleNamespace(
+                    action="send_intro", channel="whatsapp",
+                    rationale="Test", expected_reply_lift=1.0,
+                    confidence=0.5, playbook_id=None,
+                ),
+                tenant_id=TENANT_ID, opportunity_id="opp-1",
+            ),
+            normalize_graph_edge(
+                SimpleNamespace(
+                    src_id="co-1", dst_id="co-2",
+                    edge_type="decides_at", weight=0.7,
+                    properties={},
+                ),
+                tenant_id=TENANT_ID, source_id="rev_graph",
+            ),
+            normalize_proposal(
+                SimpleNamespace(
+                    product_id="test_product", prospect_id="p1",
+                    problem="test", proposed_solution="solution",
+                    scope=[], out_of_scope=[], timeline="7d",
+                    price_min_sar=100, price_max_sar=200,
+                    evidence_level=50, approval_status="pending_approval",
+                    quality_issues=[], risks=[], payment_terms="",
+                    next_step="",
+                ),
+                tenant_id=TENANT_ID, opportunity_id="opp-1",
+                approval_id="apr-1",
+            ),
+            normalize_sector_playbook(
+                SimpleNamespace(
+                    sector_id="test_sector", sector_ar="اختبار",
+                    sector_en="Test Sector",
+                    benchmarks={"reply_rate_p50": 0.1},
+                    top_objections=("OBJ_1",),
+                    case_study_template_ar="",
+                    recommended_channel_mix={"email": 1.0},
+                ),
+                tenant_id=TENANT_ID,
             ),
         ]
         for entity in entities:

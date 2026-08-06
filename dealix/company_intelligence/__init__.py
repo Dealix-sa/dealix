@@ -113,6 +113,7 @@ from dealix.company_intelligence.persona_contracts import (
     valid_persona_transitions_from,
 )
 from dealix.company_intelligence.pipeline_adapter import normalize_pipeline_lead
+from dealix.company_intelligence.playbook_adapter import normalize_sector_playbook
 from dealix.company_intelligence.playbook_contracts import (
     CanonicalPlaybookVersion,
     PlaybookApprovalStatus,
@@ -122,6 +123,7 @@ from dealix.company_intelligence.playbook_contracts import (
     valid_playbook_transitions_from,
 )
 from dealix.company_intelligence.proof_adapter import normalize_proof_event
+from dealix.company_intelligence.proposal_adapter import normalize_proposal
 from dealix.company_intelligence.proposal_contracts import (
     CanonicalProposal,
     ProposalStatus,
@@ -324,6 +326,8 @@ __all__ = [
     "normalize_opportunity",
     "normalize_pipeline_lead",
     "normalize_proof_event",
+    "normalize_proposal",
+    "normalize_sector_playbook",
     "normalize_service_offering",
     "normalize_signal",
     "normalize_source_passport",
