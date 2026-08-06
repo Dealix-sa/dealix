@@ -19,6 +19,8 @@ from dealix.company_intelligence import (
     ActionType,
     AutonomyLevel,
     CanonicalAction,
+    CanonicalApproval,
+    CanonicalApprovalStatus,
     CanonicalCompany,
     CanonicalConsentBasis,
     CanonicalContact,
@@ -45,11 +47,13 @@ from dealix.company_intelligence import (
     ContactStatus,
     Department,
     DraftChannel,
+    DraftStatus,
     EntityType,
     LawfulContactBasis,
     LearningEventType,
     OfferApprovalPolicy,
     OfferStatus,
+    OpportunityStage,
     OutcomeEventType,
     PartnershipStage,
     PartnershipType,
@@ -88,9 +92,12 @@ from dealix.company_intelligence import (
     build_tenant,
     normalize_catalog,
     transition_action,
+    transition_approval,
     transition_company,
     transition_consent_basis,
     transition_contact,
+    transition_draft,
+    transition_opportunity,
     transition_partnership,
     transition_persona,
     transition_plan,
@@ -119,9 +126,9 @@ class TestExportCompleteness:
             assert obj is not None, f"{name} exported as None"
 
     def test_all_count(self) -> None:
-        # All 22 entities have contracts; 13 have state machines with 3 helpers each
+        # All 22 entities have contracts; 16 have state machines with 3 helpers each
         # plus builders, adapters, enums, utilities
-        assert len(ci_module.__all__) > 100
+        assert len(ci_module.__all__) > 140
 
 
 # ---------------------------------------------------------------------------
@@ -454,6 +461,37 @@ class TestStateMachineCoverage:
         pv = transition_playbook(pv, to_status=PlaybookApprovalStatus.UNDER_REVIEW)
         assert pv.approval_status == PlaybookApprovalStatus.UNDER_REVIEW
 
+    def test_opportunity_transitions(self) -> None:
+        o = CanonicalOpportunity(
+            tenant_id=TENANT_ID, opportunity_id="opp-1",
+            company_id="co1", offer_id="off1",
+            stage=OpportunityStage.RESEARCH,
+            score=50, next_action="call", proof_target="meeting",
+        )
+        o = transition_opportunity(o, to_stage=OpportunityStage.QUALIFY)
+        assert o.stage == OpportunityStage.QUALIFY
+
+    def test_approval_transitions(self) -> None:
+        a = CanonicalApproval(
+            tenant_id=TENANT_ID, approval_id="appr-1",
+            action_id="a1", object_type="draft", object_id="d1",
+            action_type="send_email", proof_target="outcome",
+        )
+        a = transition_approval(a, to_status=CanonicalApprovalStatus.GRANTED)
+        assert a.status == CanonicalApprovalStatus.GRANTED
+        assert a.decision_at is not None
+
+    def test_draft_transitions(self) -> None:
+        d = build_draft(
+            tenant_id=TENANT_ID, action_id="a1", opportunity_id="o1",
+            channel=DraftChannel.EMAIL, content="Hello",
+            lawful_contact_basis=LawfulContactBasis.EXISTING_RELATIONSHIP,
+            source_evidence=["evidence-1"],
+        )
+        d = transition_draft(d, to_status=DraftStatus.PENDING_APPROVAL)
+        assert d.status == DraftStatus.PENDING_APPROVAL
+        assert d.execution_allowed is False
+
 
 # ---------------------------------------------------------------------------
 # Execution spine pipeline — entities link correctly
@@ -662,6 +700,24 @@ class TestSafetyInvariants:
                 basis=ConsentBasisType.EXPLICIT_OPT_IN,
                 channel=ConsentChannel.EMAIL, source_id="s1",
             ),
+            build_draft(
+                tenant_id=TENANT_ID, action_id="a1",
+                opportunity_id="opp-1", channel=DraftChannel.EMAIL,
+                content="Hello", source_evidence=["ev-1"],
+                lawful_contact_basis=LawfulContactBasis.EXISTING_RELATIONSHIP,
+            ),
+            CanonicalOpportunity(
+                tenant_id=TENANT_ID, opportunity_id="opp-1",
+                company_id="co-1", offer_id="off-1",
+                stage=OpportunityStage.RESEARCH, score=50,
+                next_action="call", proof_target="meeting-booked",
+            ),
+            CanonicalApproval(
+                tenant_id=TENANT_ID, approval_id="appr-1",
+                action_id="action-1", object_type="draft",
+                object_id="draft-1", action_type="send_email",
+                proof_target="outcome",
+            ),
         ]
         for entity in frozen_entities:
             with pytest.raises(Exception):
@@ -675,7 +731,7 @@ class TestSafetyInvariants:
                 opportunity_id="opp-1",
                 company_id="co-1",
                 offer_id="off-1",
-                stage="discovery",
+                stage="research",
                 score=50,
                 next_action="call",
                 proof_target="meeting-booked",

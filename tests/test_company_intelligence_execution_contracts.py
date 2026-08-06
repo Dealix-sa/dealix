@@ -21,7 +21,7 @@ def _opportunity_record(**overrides: object) -> SimpleNamespace:
         "account_id": "company-1",
         "company_name": "Acme Saudi",
         "offer_id": "revenue_command_pilot_30d",
-        "stage": "qualified",
+        "stage": "qualify",
         "score": 82,
         "score_components_json": {"pain": 30, "access": 22, "evidence": 30},
         "source_signal_ids_json": ["sig-1", "sig-2"],
