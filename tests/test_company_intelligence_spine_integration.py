@@ -92,7 +92,11 @@ from dealix.company_intelligence import (
     build_tenant,
     normalize_catalog,
     normalize_consent,
+    normalize_lead_to_company,
+    normalize_lead_to_contact,
+    normalize_pipeline_lead,
     normalize_signal,
+    normalize_source_passport,
     transition_action,
     transition_approval,
     transition_company,
@@ -1088,5 +1092,158 @@ class TestAdapterIntegration:
             tenant_id=TENANT_ID,
         )
         for entity in [signal, consent]:
+            with pytest.raises(Exception):
+                entity.tenant_id = "tampered"  # type: ignore[misc]
+
+    def test_normalize_lead_to_company_in_spine(self) -> None:
+        """Lead → CanonicalCompany stays within graph contract."""
+        from types import SimpleNamespace
+
+        lead = SimpleNamespace(
+            id="lead-001",
+            company_name="Test Corp",
+            contact_name="Ahmad",
+            contact_email="a@test.com",
+            contact_phone="+966500000000",
+            sector="B2B SaaS",
+            company_size="50",
+            region="Riyadh",
+            fit_score=0.8,
+            dedup_hash="hash123",
+        )
+        company = normalize_lead_to_company(
+            lead, tenant_id=TENANT_ID, source_id="website"
+        )
+        assert company.tenant_id == TENANT_ID
+        assert company.name == "Test Corp"
+        assert company.status == CompanyStatus.DISCOVERED
+        # Can transition through the lifecycle
+        company = transition_company(company, to_status=CompanyStatus.RESEARCHED)
+        assert company.status == CompanyStatus.RESEARCHED
+
+    def test_normalize_lead_to_contact_in_spine(self) -> None:
+        """Lead → CanonicalContact stays within graph contract."""
+        from types import SimpleNamespace
+
+        lead = SimpleNamespace(
+            id="lead-002",
+            company_name="Test Corp",
+            contact_name="Sami",
+            contact_email="s@test.com",
+            contact_phone="+966500000001",
+            sector="B2B SaaS",
+            company_size="50",
+            region="Riyadh",
+            fit_score=0.8,
+            dedup_hash="hash456",
+        )
+        contact = normalize_lead_to_contact(
+            lead, tenant_id=TENANT_ID, source_id="website", company_id="co-1"
+        )
+        assert contact.tenant_id == TENANT_ID
+        assert contact.name == "Sami"
+        assert contact.consent_status == "unknown"
+        # Can transition through the lifecycle
+        contact = transition_contact(contact, to_status=ContactStatus.VERIFIED)
+        assert contact.status == ContactStatus.VERIFIED
+
+    def test_normalize_source_passport_in_spine(self) -> None:
+        """SourcePassport → CanonicalSource stays within provenance contract."""
+        from types import SimpleNamespace
+
+        passport = SimpleNamespace(
+            source_id="SRC-INTEG",
+            source_type="crm",
+            owner="client",
+            allowed_use=["internal_analysis"],
+            contains_pii=True,
+            sensitivity="medium",
+            relationship_status="existing_relationship",
+            retention_policy="project_duration",
+            ai_access_allowed=True,
+            external_use_allowed=False,
+        )
+        source = normalize_source_passport(passport, tenant_id=TENANT_ID)
+        assert source.tenant_id == TENANT_ID
+        assert source.source_type == SourceType.CRM
+        assert source.status == SourceStatus.ACTIVE
+        # Can transition through the lifecycle
+        source = transition_source(source, to_status=SourceStatus.STALE)
+        assert source.status == SourceStatus.STALE
+
+    def test_normalize_pipeline_lead_in_spine(self) -> None:
+        """Pipeline Lead → CanonicalOpportunity stays within execution contract."""
+        from types import SimpleNamespace
+
+        lead = SimpleNamespace(
+            id="lead_pipe_1",
+            slot_id="slot-01",
+            stage="diagnostic_delivered",
+            commitment_evidence="",
+            payment_evidence="",
+        )
+        opp = normalize_pipeline_lead(
+            lead, tenant_id=TENANT_ID, company_id="co-1", offer_id="offer-1"
+        )
+        assert opp.tenant_id == TENANT_ID
+        assert opp.stage == OpportunityStage.APPROVAL
+        assert opp.external_action_allowed is False
+        # Can transition through the lifecycle
+        opp = transition_opportunity(opp, to_stage=OpportunityStage.CONVERSATION)
+        assert opp.stage == OpportunityStage.CONVERSATION
+
+    def test_all_adapters_produce_frozen_entities(self) -> None:
+        """All adapter outputs respect frozen=True immutability."""
+        from types import SimpleNamespace
+
+        entities = [
+            normalize_signal(
+                SimpleNamespace(
+                    company_id="co-1", signal_type="funding_round",
+                    detected_at=datetime(2026, 7, 1, tzinfo=UTC),
+                    source="rss", confidence=0.95,
+                    evidence_url=None, payload={},
+                ),
+                tenant_id=TENANT_ID,
+            ),
+            normalize_consent(
+                SimpleNamespace(
+                    contact_id="c1", record_type="consent_granted",
+                    lawful_basis="consent", channel="email",
+                    source="form", occurred_at=datetime(2026, 6, 1, tzinfo=UTC),
+                    expires_at=None, proof_url=None, metadata={},
+                ),
+                tenant_id=TENANT_ID,
+            ),
+            normalize_lead_to_company(
+                SimpleNamespace(
+                    id="l1", company_name="Frozen Corp",
+                    sector="tech", region="Jeddah",
+                    company_size="30", fit_score=0.6,
+                    dedup_hash="fhash",
+                ),
+                tenant_id=TENANT_ID, source_id="s1",
+            ),
+            normalize_source_passport(
+                SimpleNamespace(
+                    source_id="SRC-FROZEN", source_type="manual",
+                    owner="test", allowed_use=["draft_only"],
+                    contains_pii=False, sensitivity="low",
+                    relationship_status="unknown",
+                    retention_policy="1_year",
+                    ai_access_allowed=True,
+                    external_use_allowed=False,
+                ),
+                tenant_id=TENANT_ID,
+            ),
+            normalize_pipeline_lead(
+                SimpleNamespace(
+                    id="lead_frozen_1", stage="warm_intro_selected",
+                    commitment_evidence="", payment_evidence="",
+                ),
+                tenant_id=TENANT_ID, company_id="co-1", offer_id="off-1",
+            ),
+        ]
+        for entity in entities:
             with pytest.raises(Exception):
                 entity.tenant_id = "tampered"  # type: ignore[misc]
