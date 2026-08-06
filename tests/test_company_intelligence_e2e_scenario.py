@@ -30,6 +30,8 @@ from dealix.company_intelligence import (
     CanonicalContact,
     CanonicalDailyCommand,
     CanonicalOpportunity,
+    CanonicalPlaybookVersion,
+    CanonicalProposal,
     CanonicalRelationship,
     CanonicalSignal,
     CanonicalSource,
@@ -38,6 +40,8 @@ from dealix.company_intelligence import (
     ContactStatus,
     EntityType,
     OpportunityStage,
+    PlaybookApprovalStatus,
+    ProposalStatus,
     RelationshipStatus,
     SignalStatus,
     SourceStatus,
@@ -48,12 +52,16 @@ from dealix.company_intelligence import (
     normalize_lead_to_contact,
     normalize_next_best_action,
     normalize_pipeline_lead,
+    normalize_proposal,
+    normalize_sector_playbook,
     normalize_signal,
     normalize_source_passport,
     transition_action,
     transition_company,
     transition_contact,
     transition_opportunity,
+    transition_playbook,
+    transition_proposal,
     transition_signal,
 )
 
@@ -243,6 +251,85 @@ class TestSaudiBtoEndToEnd:
         assert rel.strength == "warm"
         return rel
 
+    def _build_proposal(
+        self, opportunity: CanonicalOpportunity
+    ) -> CanonicalProposal:
+        """Step 8: Generate a proposal from the opportunity."""
+        proposal_data = SimpleNamespace(
+            id="prop_acme_001",
+            prospect_id=opportunity.company_id,
+            product_id="revenue_command_pilot",
+            sector="B2B SaaS",
+            problem="لا يوجد نظام CRM — كل المتابعة يدوية",
+            proposed_solution="Revenue Command Pilot لمدة 30 يوم",
+            scope=["جودة البيانات", "تصنيف الحسابات", "مسودات ثنائية اللغة"],
+            out_of_scope=["no_scraping", "no_cold_whatsapp"],
+            timeline="30 يوم",
+            price_min_sar=0,
+            price_max_sar=0,
+            assumptions=["وصول مباشر للمؤسس", "بيانات متاحة"],
+            evidence_level=65,
+            risks=["جودة البيانات غير معروفة"],
+            payment_terms="quote after discovery",
+            next_step="جدولة مكالمة الاكتشاف",
+            approval_status="pending_approval",
+            quality_issues=[],
+        )
+        proposal = normalize_proposal(
+            proposal_data,
+            tenant_id=TENANT_ID,
+            opportunity_id=opportunity.opportunity_id,
+            approval_id="approval-acme-001",
+        )
+        assert isinstance(proposal, CanonicalProposal)
+        assert proposal.status == ProposalStatus.PENDING_REVIEW
+        assert proposal.offer_id == "revenue_command_pilot"
+        assert proposal.company_id == opportunity.company_id
+        return proposal
+
+    def _build_playbook(self) -> CanonicalPlaybookVersion:
+        """Step 9: Register a sector playbook."""
+        playbook_data = SimpleNamespace(
+            sector_id="b2b_saas",
+            sector_ar="برمجيات B2B",
+            sector_en="B2B SaaS",
+            pain_points_ar=(
+                "صعوبة جلب عملاء بدون فريق مبيعات",
+                "عدم وجود نظام CRM فعّال",
+                "متابعة يدوية للعملاء المحتملين",
+            ),
+            top_objections=("OBJ_TRUST_001", "OBJ_PRICE_001"),
+            opening_lines_ar=(
+                "لاحظنا أنكم تبحثون عن حلول لإدارة العمليات التجارية",
+            ),
+            best_offer_angle_ar="نظام يدير العمليات التجارية بالكامل",
+            buying_committee=("CEO", "VP Sales"),
+            seasonal_peaks_ar=("Q1", "Q3"),
+            benchmarks={
+                "reply_rate_p50": 0.074,
+                "meeting_rate_p50": 0.32,
+                "win_rate_p50": 0.18,
+                "cycle_days_p50": 45,
+            },
+            recommended_channel_mix={
+                "whatsapp": 0.55,
+                "email": 0.25,
+                "linkedin": 0.10,
+                "phone": 0.10,
+            },
+            whatsapp_tone="warm",
+            case_study_template_ar="شركة {brand} استخدمت Dealix لمدة {months} شهر",
+            avg_deal_value_sar=50_000,
+            avg_cycle_days=45,
+        )
+        playbook = normalize_sector_playbook(
+            playbook_data, tenant_id=TENANT_ID
+        )
+        assert isinstance(playbook, CanonicalPlaybookVersion)
+        assert playbook.approval_status == PlaybookApprovalStatus.PROPOSED
+        assert playbook.confidence >= 0.8
+        return playbook
+
     # ------------------------------------------------------------------
     # Full end-to-end test
     # ------------------------------------------------------------------
@@ -270,17 +357,23 @@ class TestSaudiBtoEndToEnd:
         # Step 7: Relationship
         relationship = self._build_relationship(company)
 
+        # Step 8: Proposal
+        proposal = self._build_proposal(opportunity)
+
+        # Step 9: Playbook
+        playbook = self._build_playbook()
+
         # Verify all entities share the same tenant
         for entity in [
             source, company, contact, signal, consent,
-            opportunity, action, relationship,
+            opportunity, action, relationship, proposal, playbook,
         ]:
             assert entity.tenant_id == TENANT_ID
 
         # Verify all entities are frozen
         for entity in [
             source, company, contact, signal, consent,
-            opportunity, action, relationship,
+            opportunity, action, relationship, proposal, playbook,
         ]:
             with pytest.raises(Exception):
                 entity.tenant_id = "tampered"  # type: ignore[misc]
@@ -323,6 +416,23 @@ class TestSaudiBtoEndToEnd:
             action, to_status=ActionStatus.AWAITING_APPROVAL
         )
         assert action.status == ActionStatus.AWAITING_APPROVAL
+
+        # Proposal: PENDING_REVIEW → APPROVED
+        proposal = self._build_proposal(opportunity)
+        proposal = transition_proposal(
+            proposal, to_status=ProposalStatus.APPROVED
+        )
+        assert proposal.status == ProposalStatus.APPROVED
+
+        # Playbook: PROPOSED → UNDER_REVIEW → APPROVED
+        playbook = self._build_playbook()
+        playbook = transition_playbook(
+            playbook, to_status=PlaybookApprovalStatus.UNDER_REVIEW
+        )
+        playbook = transition_playbook(
+            playbook, to_status=PlaybookApprovalStatus.APPROVED
+        )
+        assert playbook.approval_status == PlaybookApprovalStatus.APPROVED
 
     def test_daily_command_from_entities(self) -> None:
         """Build a Daily Command from accumulated spine entities."""
@@ -372,6 +482,20 @@ class TestSaudiBtoEndToEnd:
                 opportunity, to_stage=OpportunityStage.WON
             )
 
+        # Cannot go from PENDING_REVIEW to ACCEPTED (must approve + send)
+        proposal = self._build_proposal(opportunity)
+        with pytest.raises(ValueError, match="invalid"):
+            transition_proposal(
+                proposal, to_status=ProposalStatus.ACCEPTED
+            )
+
+        # Cannot go from PROPOSED to APPROVED directly (must review first)
+        playbook = self._build_playbook()
+        with pytest.raises(ValueError, match="invalid"):
+            transition_playbook(
+                playbook, to_status=PlaybookApprovalStatus.APPROVED
+            )
+
     def test_adapter_cross_referencing(self) -> None:
         """Verify entities can be cross-referenced via IDs."""
         source = self._build_source()
@@ -387,6 +511,11 @@ class TestSaudiBtoEndToEnd:
 
         # Opportunity → Company linkage
         assert opportunity.company_id == company.company_id
+
+        # Proposal → Opportunity + Company linkage
+        proposal = self._build_proposal(opportunity)
+        assert proposal.opportunity_id == opportunity.opportunity_id
+        assert proposal.company_id == opportunity.company_id
 
         # Source ← Company provenance
         assert company.source_id == source.source_id
