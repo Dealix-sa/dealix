@@ -63,6 +63,10 @@ from dealix.company_intelligence.execution_contracts import (
     valid_draft_transitions_from,
     valid_opportunity_transitions_from,
 )
+from dealix.company_intelligence.graph_adapter import (
+    normalize_lead_to_company,
+    normalize_lead_to_contact,
+)
 from dealix.company_intelligence.graph_contracts import (
     CanonicalCompany,
     CanonicalContact,
@@ -305,6 +309,8 @@ __all__ = [
     "normalize_catalog",
     "normalize_consent",
     "normalize_draft",
+    "normalize_lead_to_company",
+    "normalize_lead_to_contact",
     "normalize_opportunity",
     "normalize_proof_event",
     "normalize_service_offering",

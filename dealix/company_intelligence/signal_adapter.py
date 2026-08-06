@@ -20,7 +20,7 @@ Key constraints:
 """
 from __future__ import annotations
 
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from dealix.company_intelligence.signal_contracts import (
