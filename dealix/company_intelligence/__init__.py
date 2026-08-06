@@ -1,5 +1,6 @@
 """Canonical Company Intelligence contracts and compatibility adapters."""
 
+from dealix.company_intelligence.action_adapter import normalize_next_best_action
 from dealix.company_intelligence.action_contracts import (
     ActionStatus,
     ActionType,
@@ -138,6 +139,10 @@ from dealix.company_intelligence.relationship_contracts import (
     is_valid_relationship_transition,
     transition_relationship,
     valid_relationship_transitions_from,
+)
+from dealix.company_intelligence.revenue_graph_adapter import (
+    is_relationship_edge,
+    normalize_graph_edge,
 )
 from dealix.company_intelligence.signal_adapter import normalize_signal
 from dealix.company_intelligence.signal_contracts import (
@@ -307,12 +312,15 @@ __all__ = [
     "is_valid_source_transition",
     "is_valid_tenant_transition",
     "is_valid_transition",
+    "is_relationship_edge",
     "normalize_approval",
     "normalize_catalog",
     "normalize_consent",
     "normalize_draft",
+    "normalize_graph_edge",
     "normalize_lead_to_company",
     "normalize_lead_to_contact",
+    "normalize_next_best_action",
     "normalize_opportunity",
     "normalize_pipeline_lead",
     "normalize_proof_event",
