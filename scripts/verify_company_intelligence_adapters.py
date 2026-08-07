@@ -382,12 +382,12 @@ def validate_adapter(spec: dict) -> list[str]:
         for i, item in enumerate(result):
             if elem_type and not isinstance(item, elem_type):
                 errors.append(f"{name}[{i}]: expected {elem_type.__name__}, got {type(item).__name__}")
-            # Check frozen
+            # Check frozen — exception means mutation was correctly rejected
             try:
                 item.tenant_id = "tampered"
                 errors.append(f"{name}[{i}]: not frozen — mutation allowed")
             except Exception:
-                pass
+                pass  # expected: frozen model rejects mutation
         return errors
 
     # Single entity validation
@@ -399,12 +399,12 @@ def validate_adapter(spec: dict) -> list[str]:
     if hasattr(result, "tenant_id") and result.tenant_id != TENANT_ID:
         errors.append(f"{name}: tenant_id mismatch — expected {TENANT_ID}, got {result.tenant_id}")
 
-    # Frozen
+    # Frozen — exception means mutation was correctly rejected
     try:
         result.tenant_id = "tampered"
         errors.append(f"{name}: not frozen — mutation allowed")
     except Exception:
-        pass
+        pass  # expected: frozen model rejects mutation
 
     # Deterministic ID (call again and compare)
     try:

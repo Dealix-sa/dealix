@@ -13,6 +13,15 @@ from dealix.company_intelligence.action_contracts import (
     transition_action,
     valid_transitions_from,
 )
+from dealix.company_intelligence.adapter_registry import (
+    AdapterEntry,
+    AdapterStatus,
+    get_active_adapters,
+    get_adapter_entry,
+    get_adapter_registry,
+    get_all_normalize_functions,
+    validate_coverage,
+)
 from dealix.company_intelligence.company_brain import (
     CanonicalCompanyBrain,
     build_customer_company_brain,
@@ -208,6 +217,8 @@ build_proof_event = _outcome_contracts.build_proof_event
 _outcome_contracts.normalize_proof_event = normalize_proof_event
 
 __all__ = [
+    "AdapterEntry",
+    "AdapterStatus",
     "ActionStatus",
     "ActionType",
     "AutonomyLevel",
@@ -299,6 +310,10 @@ __all__ = [
     "build_tenant",
     "compute_priority_score",
     "compute_source_score",
+    "get_active_adapters",
+    "get_adapter_entry",
+    "get_adapter_registry",
+    "get_all_normalize_functions",
     "is_consent_expired",
     "is_signal_stale",
     "is_source_stale",
@@ -369,4 +384,5 @@ __all__ = [
     "valid_source_transitions_from",
     "valid_tenant_transitions_from",
     "valid_transitions_from",
+    "validate_coverage",
 ]
