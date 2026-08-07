@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0.0",
+  "doctrine": "approval-first; no external send from this schema; manual outreach only after founder approval",
+  "lead_required_fields": [
+    "lead_id",
+    "company",
+    "vertical",
+    "contact_role",
+    "source",
+    "stage",
+    "priority_score",
+    "consent_basis",
+    "created_at"
+  ],
+  "allowed_stages": [
+    "new",
+    "qualified",
+    "approved_for_outreach",
+    "contacted_manual",
+    "replied",
+    "discovery_booked",
+    "diagnostic_delivered",
+    "pilot_proposed",
+    "retainer",
+    "disqualified",
+    "suppressed"
+  ],
+  "forbidden_fields": [
+    "send_now",
+    "auto_send",
+    "smtp_password",
+    "outbound_token",
+    "api_key",
+    "access_token"
+  ],
+  "reply_classification": [
+    "interested",
+    "not_now",
+    "not_interested",
+    "wrong_contact",
+    "unsubscribe",
+    "spam_complaint"
+  ],
+  "suppression": {
+    "honored_signals": ["unsubscribe", "spam_complaint", "do_not_contact"],
+    "process": "any suppression signal moves lead to 'suppressed' and blocks all future outreach drafts"
+  },
+  "sensitive_data_policy": {
+    "collect_before_agreement": false,
+    "pii_minimization": true,
+    "note": "No national IDs, financial account numbers, or health data collected before a signed agreement (PDPL-aligned)."
+  },
+  "send_policy": {
+    "external_send_allowed": false,
+    "manual_outreach_requires_approval": true
+  }
+}

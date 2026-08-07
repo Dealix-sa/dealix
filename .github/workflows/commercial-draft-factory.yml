@@ -1,0 +1,50 @@
+name: Commercial Draft Factory
+
+# Artifact-only. Generates >=400 review-only drafts and audits them. No send.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Number of drafts (floor 400)"
+        required: false
+        default: "400"
+  schedule:
+    - cron: "15 5 * * *"  # daily 05:15 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  draft-factory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Generate drafts
+        run: python scripts/commercial_generate_400_drafts.py --target ${{ github.event.inputs.target || '400' }}
+
+      - name: Safety audit (gate)
+        run: python scripts/commercial_safety_audit.py
+
+      - name: Tests
+        run: |
+          pytest -q \
+            tests/test_commercial_generate_400_drafts.py \
+            tests/test_commercial_safety_audit.py \
+            tests/test_commercial_no_external_send.py
+
+      - name: Upload drafts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: commercial-draft-queue
+          path: outputs/commercial_launch/
+          retention-days: 14

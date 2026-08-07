@@ -257,6 +257,54 @@ Then review:
 
 ---
 
+## Commercial Launch OS — Final Launch Control
+
+The **Commercial Launch OS** turns the launch from "many files" into a verifiable
+control tower. It generates review-only outreach drafts, runs a safety audit,
+checks the website / media / CRM / API / secrets surfaces, and produces a single
+Go/No-Go report — all **artifact-only, approval-first, and with no external send**.
+
+> Read the verdict in one file: [`docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md`](docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md)
+
+### Run the full control tower locally
+
+```bash
+python scripts/commercial_generate_400_drafts.py --target 400
+python scripts/commercial_safety_audit.py
+python scripts/commercial_launch_readiness.py
+python scripts/media_social_calendar_generate.py
+python scripts/site_launch_static_check.py
+python scripts/media_social_verify.py
+python scripts/commercial_crm_schema_verify.py
+python scripts/api_commercial_static_check.py
+python scripts/final_secret_and_risk_scan.py
+python scripts/final_launch_control_verify.py   # master PASS/FAIL gate
+```
+
+### Where things land
+
+| What | Where |
+|---|---|
+| Verdict report | [`docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md`](docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md) |
+| Control tower docs | [`docs/launch-control/`](docs/launch-control/) |
+| Drafts + review queue | `outputs/commercial_launch/latest/` |
+| Verification evidence | `outputs/final_launch_control/` |
+| Media/social calendar | `outputs/media_social/` |
+| Scorecard / Go-No-Go | [`docs/launch-control/01_LAUNCH_SCORECARD.md`](docs/launch-control/01_LAUNCH_SCORECARD.md) · [`02_GO_NO_GO_MATRIX.md`](docs/launch-control/02_GO_NO_GO_MATRIX.md) |
+
+### GO (authorized)
+Public website launch · commercial positioning · 400 review-only drafts ·
+founder manual review · media/social planning · manual social posting ·
+paid diagnostics · discovery calls · proposal creation · pilot planning.
+
+### NO-GO (blocked by doctrine)
+Automated email sending · cold messaging automation · professional-network
+automation · website form auto-submit · bulk sending · paid ads live launch
+without tracking/compliance · external sending from GitHub Actions · processing
+sensitive data before agreement.
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

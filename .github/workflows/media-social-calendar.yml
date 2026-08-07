@@ -1,0 +1,41 @@
+name: Media Social Calendar
+
+# Artifact-only. Generates a 30-day content plan. No auto-posting, no send.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 5 * * 1"  # weekly Monday 05:30 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Generate calendar
+        run: python scripts/media_social_calendar_generate.py
+
+      - name: Verify (planning-only)
+        run: python scripts/media_social_verify.py
+
+      - name: Tests
+        run: pytest -q tests/test_media_social_os.py tests/test_media_social_verify.py
+
+      - name: Upload calendar
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: media-social-calendar
+          path: outputs/media_social/
+          retention-days: 14

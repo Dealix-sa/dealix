@@ -1,0 +1,54 @@
+name: Site Commercial Verify
+
+# Artifact-only static checks for the website + commercial surfaces. No deploy.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "45 5 * * *"  # daily 05:45 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  site-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Site static check
+        run: python scripts/site_launch_static_check.py
+
+      - name: CRM schema verify
+        run: python scripts/commercial_crm_schema_verify.py
+
+      - name: API commercial static check
+        run: python scripts/api_commercial_static_check.py
+
+      - name: Secret & risk scan
+        run: python scripts/final_secret_and_risk_scan.py
+
+      - name: Tests
+        run: |
+          pytest -q \
+            tests/test_site_launch_static_check.py \
+            tests/test_crm_schema_verify.py \
+            tests/test_api_commercial_static_check.py \
+            tests/test_final_secret_and_risk_scan.py
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-commercial-evidence
+          path: |
+            outputs/final_launch_control/
+            outputs/media_social/
+          retention-days: 14

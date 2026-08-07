@@ -1,0 +1,13 @@
+{
+  "verified_at": "2026-06-04T19:50:02.701140+00:00",
+  "docs": {
+    "docs/media-social-os/00_MEDIA_SOCIAL_OS.md": true,
+    "docs/media-social-os/99_MEDIA_SOCIAL_READY_REPORT.md": true,
+    "docs/media-social-os/15_ADS_READINESS_GATE.md": true
+  },
+  "config_present": true,
+  "auto_post_disabled": true,
+  "calendar_present": true,
+  "auto_post_code_violations": [],
+  "pass": true
+}

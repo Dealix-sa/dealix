@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-06-04T19:50:02.634246+00:00",
+  "web_present": true,
+  "pages_found": [
+    "agents",
+    "approvals",
+    "ar",
+    "control-plane",
+    "globals.css",
+    "go-to-market",
+    "healthz",
+    "layout.tsx",
+    "manifest.ts",
+    "page.tsx",
+    "product-network",
+    "revenue-os",
+    "robots.ts",
+    "safety",
+    "sandbox",
+    "self-evolving",
+    "sitemap.ts",
+    "status",
+    "value-engine"
+  ],
+  "checks": {
+    "homepage": true,
+    "layout": true,
+    "status_page": true,
+    "seo_metadata": true,
+    "robots": true,
+    "sitemap": true,
+    "no_forbidden_claims": true
+  },
+  "claim_violations": [],
+  "pass": true
+}
