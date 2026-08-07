@@ -29,6 +29,7 @@ from dealix.company_intelligence import (
     CanonicalConsentBasis,
     CanonicalContact,
     CanonicalDailyCommand,
+    CanonicalLearningEvent,
     CanonicalOpportunity,
     CanonicalPlaybookVersion,
     CanonicalProposal,
@@ -39,6 +40,7 @@ from dealix.company_intelligence import (
     ConsentBasisStatus,
     ContactStatus,
     EntityType,
+    LearningEventType,
     OpportunityStage,
     PlaybookApprovalStatus,
     ProposalStatus,
@@ -50,12 +52,14 @@ from dealix.company_intelligence import (
     normalize_graph_edge,
     normalize_lead_to_company,
     normalize_lead_to_contact,
+    normalize_learning_event,
     normalize_next_best_action,
     normalize_pipeline_lead,
     normalize_proposal,
     normalize_sector_playbook,
     normalize_signal,
     normalize_source_passport,
+    normalize_win_loss,
     transition_action,
     transition_company,
     transition_contact,
@@ -330,6 +334,49 @@ class TestSaudiBtoEndToEnd:
         assert playbook.confidence >= 0.8
         return playbook
 
+    def _build_learning_from_flywheel(self) -> CanonicalLearningEvent:
+        """Step 10: Normalize a flywheel learning event."""
+        event = SimpleNamespace(
+            kind="reply_received",
+            customer_handle="alpha-tech-sa",
+            timestamp=datetime(2026, 8, 5, 14, 0, tzinfo=UTC),
+            sector="b2b_saas",
+            channel="whatsapp",
+            offer="revenue_command_pilot",
+            succeeded=True,
+            notes_en="Customer replied positively to pilot proposal",
+            notes_ar="العميل رد بإيجابية على عرض الباقة التجريبية",
+        )
+        learning = normalize_learning_event(event, tenant_id=TENANT_ID)
+        assert isinstance(learning, CanonicalLearningEvent)
+        assert learning.event_type == LearningEventType.MESSAGE
+        assert learning.confidence == 0.7  # succeeded=True
+        assert learning.hypothesis_only is True
+        assert learning.applied is False
+        return learning
+
+    def _build_learning_from_win_loss(self) -> CanonicalLearningEvent:
+        """Step 11: Normalize a win/loss retrospective."""
+        record = SimpleNamespace(
+            outcome="won",
+            company="Alpha Tech SA",
+            lesson="العميل اقتنع بسبب التشخيص المجاني",
+            next_change="تقديم تشخيص أسرع في أول يومين",
+            sector="b2b_saas",
+            channel="whatsapp",
+            offer="revenue_command_pilot",
+            reason="value_demonstrated",
+            objection="initial_price_concern",
+            created_at=datetime(2026, 8, 6, 10, 0, tzinfo=UTC),
+        )
+        learning = normalize_win_loss(record, tenant_id=TENANT_ID)
+        assert isinstance(learning, CanonicalLearningEvent)
+        assert learning.event_type == LearningEventType.NEGOTIATION
+        assert learning.confidence == 0.7  # won
+        assert "العميل اقتنع" in learning.recommended_change
+        assert learning.applied is False
+        return learning
+
     # ------------------------------------------------------------------
     # Full end-to-end test
     # ------------------------------------------------------------------
@@ -363,18 +410,23 @@ class TestSaudiBtoEndToEnd:
         # Step 9: Playbook
         playbook = self._build_playbook()
 
+        # Step 10: Flywheel learning event
+        learning_flywheel = self._build_learning_from_flywheel()
+
+        # Step 11: Win/loss learning event
+        learning_win_loss = self._build_learning_from_win_loss()
+
         # Verify all entities share the same tenant
-        for entity in [
+        all_entities = [
             source, company, contact, signal, consent,
             opportunity, action, relationship, proposal, playbook,
-        ]:
+            learning_flywheel, learning_win_loss,
+        ]
+        for entity in all_entities:
             assert entity.tenant_id == TENANT_ID
 
         # Verify all entities are frozen
-        for entity in [
-            source, company, contact, signal, consent,
-            opportunity, action, relationship, proposal, playbook,
-        ]:
+        for entity in all_entities:
             with pytest.raises(Exception):
                 entity.tenant_id = "tampered"  # type: ignore[misc]
 
@@ -443,6 +495,8 @@ class TestSaudiBtoEndToEnd:
         signal = self._build_signal(company)
         opportunity = self._build_opportunity(company)
         action = self._build_action(opportunity)
+        learning_flywheel = self._build_learning_from_flywheel()
+        learning_win_loss = self._build_learning_from_win_loss()
 
         # Build a Daily Command incorporating all entities
         command = build_daily_command(
@@ -455,12 +509,14 @@ class TestSaudiBtoEndToEnd:
             ],
             approval_items=[],
             proofs=[],
-            learning_events=[],
+            learning_events=[learning_flywheel, learning_win_loss],
         )
         assert isinstance(command, CanonicalDailyCommand)
         assert command.tenant_id == TENANT_ID
         assert action.action_id in command.priorities
         assert opportunity.opportunity_id in command.priorities
+        assert learning_flywheel.learning_id in command.learning_ids
+        assert learning_win_loss.learning_id in command.learning_ids
 
     def test_invalid_state_transitions_blocked(self) -> None:
         """Verify invalid transitions are rejected across entities."""

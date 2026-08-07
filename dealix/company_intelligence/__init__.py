@@ -68,6 +68,10 @@ from dealix.company_intelligence.graph_adapter import (
     normalize_lead_to_company,
     normalize_lead_to_contact,
 )
+from dealix.company_intelligence.learning_adapter import (
+    normalize_learning_event,
+    normalize_win_loss,
+)
 from dealix.company_intelligence.graph_contracts import (
     CanonicalCompany,
     CanonicalContact,
@@ -322,6 +326,7 @@ __all__ = [
     "normalize_graph_edge",
     "normalize_lead_to_company",
     "normalize_lead_to_contact",
+    "normalize_learning_event",
     "normalize_next_best_action",
     "normalize_opportunity",
     "normalize_pipeline_lead",
@@ -331,6 +336,7 @@ __all__ = [
     "normalize_service_offering",
     "normalize_signal",
     "normalize_source_passport",
+    "normalize_win_loss",
     "transition_action",
     "transition_approval",
     "transition_company",
