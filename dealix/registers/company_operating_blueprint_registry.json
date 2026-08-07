@@ -1,0 +1,475 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Translate a company's verified priorities into a phased, governed Dealix operating blueprint without claiming unsupported readiness or replacing systems of record.",
+  "principles": {
+    "dealix_is_operating_layer_not_system_of_record": true,
+    "diagnose_before_implement": true,
+    "one_bounded_loop_before_enterprise_expansion": true,
+    "external_effects_require_approval": true,
+    "customer_value_requires_baseline_and_evidence": true,
+    "no_module_is_marked_live_without_execution_proof": true,
+    "no_public_fixed_price": true,
+    "quote_only_after_discovery": true
+  },
+  "maturity_levels": [
+    {
+      "id": 0,
+      "name": "unverified",
+      "definition": "No reliable evidence is available."
+    },
+    {
+      "id": 1,
+      "name": "manual_fragmented",
+      "definition": "Work exists but is manual, person-dependent, or fragmented."
+    },
+    {
+      "id": 2,
+      "name": "defined",
+      "definition": "Owners, stages, and expected outputs are documented."
+    },
+    {
+      "id": 3,
+      "name": "governed",
+      "definition": "Actions, approvals, risks, and evidence boundaries are enforced."
+    },
+    {
+      "id": 4,
+      "name": "measured",
+      "definition": "Baseline, operating metrics, outcomes, and exceptions are reviewed."
+    },
+    {
+      "id": 5,
+      "name": "learning",
+      "definition": "Verified outcomes improve playbooks under approval."
+    }
+  ],
+  "readiness_tiers": [
+    {
+      "id": "diagnostic_ready",
+      "requires": [
+        "named_owner",
+        "named_problem",
+        "source_access_or_interview_access"
+      ]
+    },
+    {
+      "id": "pilot_ready",
+      "requires": [
+        "diagnostic_ready",
+        "baseline",
+        "target_metric",
+        "bounded_scope",
+        "approval_boundary",
+        "stop_rule"
+      ]
+    },
+    {
+      "id": "operating_ready",
+      "requires": [
+        "pilot_ready",
+        "verified_delivery",
+        "owner_adoption",
+        "proof_review_rhythm"
+      ]
+    },
+    {
+      "id": "scale_ready",
+      "requires": [
+        "operating_ready",
+        "repeatable_loop",
+        "security_and_privacy_review",
+        "support_model",
+        "unit_economics_review"
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "id": "executive_strategy",
+      "name": "Executive Strategy and Performance",
+      "primary_loop": "plan_to_performance",
+      "outcomes": [
+        "goal_translation",
+        "priority_alignment",
+        "decision_velocity",
+        "performance_proof"
+      ],
+      "diagnostic_questions": [
+        "Are goals translated into owned actions?",
+        "Are decisions supported by current evidence?",
+        "Are exceptions visible before executive review?"
+      ],
+      "core_outputs": [
+        "strategy_backlog",
+        "department_plans",
+        "daily_command",
+        "executive_scorecard",
+        "decision_log"
+      ],
+      "commercial_module": "executive_command_center"
+    },
+    {
+      "id": "market_intelligence",
+      "name": "Market and Company Intelligence",
+      "primary_loop": "signal_to_opportunity",
+      "outcomes": [
+        "market_visibility",
+        "account_prioritization",
+        "signal_quality",
+        "local_context"
+      ],
+      "diagnostic_questions": [
+        "Which markets and accounts matter now?",
+        "What evidence supports prioritization?",
+        "Which signals require action?"
+      ],
+      "core_outputs": [
+        "company_brain",
+        "market_map",
+        "account_universe",
+        "signal_register",
+        "opportunity_graph"
+      ],
+      "commercial_module": "saudi_opportunity_intelligence"
+    },
+    {
+      "id": "marketing",
+      "name": "Marketing and Demand",
+      "primary_loop": "signal_to_demand",
+      "outcomes": [
+        "message_relevance",
+        "campaign_governance",
+        "content_reuse",
+        "demand_learning"
+      ],
+      "diagnostic_questions": [
+        "Are campaigns tied to a defined ICP and offer?",
+        "Are claims approved and evidenced?",
+        "Can marketing learn from revenue outcomes?"
+      ],
+      "core_outputs": [
+        "message_map",
+        "content_queue",
+        "campaign_briefs",
+        "approval_queue",
+        "performance_learning"
+      ],
+      "commercial_module": "governed_marketing_os"
+    },
+    {
+      "id": "sales",
+      "name": "Sales and Revenue Operations",
+      "primary_loop": "lead_to_cash",
+      "outcomes": [
+        "qualification_quality",
+        "next_action_discipline",
+        "proposal_velocity",
+        "forecast_evidence"
+      ],
+      "diagnostic_questions": [
+        "Are opportunities qualified consistently?",
+        "Does every opportunity have a verified next action?",
+        "Can forecast changes be explained with evidence?"
+      ],
+      "core_outputs": [
+        "qualification",
+        "opportunity_graph",
+        "sales_action_queue",
+        "proposal_pack",
+        "commercial_approvals"
+      ],
+      "commercial_module": "revenue_command"
+    },
+    {
+      "id": "customer_success",
+      "name": "Customer Success and Renewal",
+      "primary_loop": "customer_to_value",
+      "outcomes": [
+        "onboarding_speed",
+        "adoption_health",
+        "value_proof",
+        "renewal_readiness"
+      ],
+      "diagnostic_questions": [
+        "Is value baseline defined before delivery?",
+        "Are risks detected before renewal?",
+        "Is customer value distinct from activity and delivery?"
+      ],
+      "core_outputs": [
+        "onboarding_plan",
+        "health_signals",
+        "risk_actions",
+        "acceptance_pack",
+        "value_proof",
+        "renewal_pack"
+      ],
+      "commercial_module": "customer_value_command"
+    },
+    {
+      "id": "operations",
+      "name": "Operations and Service Delivery",
+      "primary_loop": "commitment_to_delivery",
+      "outcomes": [
+        "handoff_quality",
+        "capacity_visibility",
+        "exception_control",
+        "delivery_proof"
+      ],
+      "diagnostic_questions": [
+        "Are owners and checkpoints explicit?",
+        "Are exceptions escalated with context?",
+        "Can completion be proven independently?"
+      ],
+      "core_outputs": [
+        "delivery_plan",
+        "capacity_view",
+        "checkpoint_queue",
+        "exception_register",
+        "delivery_evidence"
+      ],
+      "commercial_module": "operations_command"
+    },
+    {
+      "id": "support",
+      "name": "Support and Incident Management",
+      "primary_loop": "incident_to_resolution",
+      "outcomes": [
+        "faster_triage",
+        "controlled_remediation",
+        "resolution_proof",
+        "prevention_learning"
+      ],
+      "diagnostic_questions": [
+        "Are incidents classified by business impact?",
+        "Do sensitive changes require approval?",
+        "Are root causes converted into prevention actions?"
+      ],
+      "core_outputs": [
+        "incident_queue",
+        "severity_model",
+        "remediation_plan",
+        "resolution_proof",
+        "prevention_actions"
+      ],
+      "commercial_module": "incident_resolution_command"
+    },
+    {
+      "id": "product",
+      "name": "Product and Service Innovation",
+      "primary_loop": "idea_to_release",
+      "outcomes": [
+        "problem_validation",
+        "priority_clarity",
+        "release_quality",
+        "adoption_learning"
+      ],
+      "diagnostic_questions": [
+        "Are roadmap items tied to verified problems?",
+        "Are releases gated by acceptance evidence?",
+        "Does adoption inform prioritization?"
+      ],
+      "core_outputs": [
+        "problem_backlog",
+        "prioritization",
+        "release_plan",
+        "verification_pack",
+        "adoption_learning"
+      ],
+      "commercial_module": "product_execution_command"
+    },
+    {
+      "id": "engineering_data_ai",
+      "name": "Engineering, Data, and AI Governance",
+      "primary_loop": "requirement_to_verified_change",
+      "outcomes": [
+        "reliable_delivery",
+        "source_authority",
+        "safe_automation",
+        "technical_proof"
+      ],
+      "diagnostic_questions": [
+        "Are source-of-truth boundaries explicit?",
+        "Are automated actions bounded and observable?",
+        "Can changes be traced to verification evidence?"
+      ],
+      "core_outputs": [
+        "architecture_map",
+        "data_authority_map",
+        "change_queue",
+        "verification_evidence",
+        "risk_register"
+      ],
+      "commercial_module": "governed_ai_and_data_os"
+    },
+    {
+      "id": "finance",
+      "name": "Finance and Management Reporting",
+      "primary_loop": "record_to_report",
+      "outcomes": [
+        "financial_visibility",
+        "reconciliation_discipline",
+        "cash_control",
+        "management_reporting"
+      ],
+      "diagnostic_questions": [
+        "Are records reconciled to authoritative sources?",
+        "Are revenue and payment kept distinct?",
+        "Are management decisions linked to reviewed figures?"
+      ],
+      "core_outputs": [
+        "source_map",
+        "reconciliation_queue",
+        "cash_view",
+        "management_report",
+        "finance_approvals"
+      ],
+      "commercial_module": "finance_control_command"
+    },
+    {
+      "id": "procurement",
+      "name": "Procurement and Supplier Management",
+      "primary_loop": "source_to_pay",
+      "outcomes": [
+        "need_control",
+        "supplier_quality",
+        "approval_visibility",
+        "payment_integrity"
+      ],
+      "diagnostic_questions": [
+        "Is demand approved before sourcing?",
+        "Are suppliers evaluated against explicit criteria?",
+        "Is payment tied to delivery evidence?"
+      ],
+      "core_outputs": [
+        "need_register",
+        "supplier_scorecard",
+        "purchase_approvals",
+        "delivery_evidence",
+        "supplier_learning"
+      ],
+      "commercial_module": "procurement_command"
+    },
+    {
+      "id": "people",
+      "name": "People and Workforce Productivity",
+      "primary_loop": "hire_to_productivity",
+      "outcomes": [
+        "capacity_clarity",
+        "role_quality",
+        "onboarding_control",
+        "productivity_proof"
+      ],
+      "diagnostic_questions": [
+        "Is hiring tied to verified capacity gaps?",
+        "Are role outcomes explicit?",
+        "Is productivity measured without invasive surveillance?"
+      ],
+      "core_outputs": [
+        "capacity_plan",
+        "role_scorecard",
+        "onboarding_plan",
+        "productivity_evidence",
+        "workforce_learning"
+      ],
+      "commercial_module": "people_productivity_command"
+    },
+    {
+      "id": "partnerships",
+      "name": "Partnerships and Market Access",
+      "primary_loop": "signal_to_partnership",
+      "outcomes": [
+        "partner_quality",
+        "market_access",
+        "commercial_alignment",
+        "partnership_value"
+      ],
+      "diagnostic_questions": [
+        "Are partners scored against strategy and capability?",
+        "Are economics and responsibilities explicit?",
+        "Can value be proven after activation?"
+      ],
+      "core_outputs": [
+        "partner_universe",
+        "partner_scoring",
+        "commercial_model",
+        "enablement_pack",
+        "partnership_proof"
+      ],
+      "commercial_module": "partner_distributor_desk"
+    },
+    {
+      "id": "risk_compliance_security",
+      "name": "Risk, Compliance, Privacy, and Security",
+      "primary_loop": "risk_to_control",
+      "outcomes": [
+        "risk_visibility",
+        "control_ownership",
+        "privacy_boundaries",
+        "auditability"
+      ],
+      "diagnostic_questions": [
+        "Are risks owned and prioritized?",
+        "Are data purpose, consent, retention, and access boundaries explicit?",
+        "Can controls be evidenced?"
+      ],
+      "core_outputs": [
+        "risk_register",
+        "control_map",
+        "privacy_inventory",
+        "approval_policy",
+        "audit_evidence"
+      ],
+      "commercial_module": "trust_and_governance_os"
+    }
+  ],
+  "commercial_paths": {
+    "diagnostic": [
+      "company_context",
+      "maturity_assessment",
+      "priority_function",
+      "risk_map",
+      "recommended_pilot"
+    ],
+    "pilot": [
+      "one_primary_loop",
+      "baseline",
+      "target_metric",
+      "action_and_approval_queues",
+      "proof_plan",
+      "stop_rule"
+    ],
+    "implementation": [
+      "company_brain",
+      "selected_modules",
+      "roles",
+      "connectors",
+      "governance",
+      "daily_command"
+    ],
+    "managed_service": [
+      "weekly_command",
+      "exception_management",
+      "proof_review",
+      "learning_review",
+      "renewal_readiness"
+    ]
+  },
+  "expansion_rules": {
+    "maximum_initial_functions": 2,
+    "require_one_verified_loop_before_expansion": true,
+    "expansion_requires": [
+      "verified_delivery",
+      "owner_adoption",
+      "measured_outcome_or_clear_no_go",
+      "support_capacity",
+      "security_and_privacy_review",
+      "unit_economics_review"
+    ],
+    "forbidden": [
+      "big_bang_enterprise_rollout",
+      "unbounded_custom_automation",
+      "parallel_sources_of_truth",
+      "unsupported_autonomy_claim"
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "source_issue": 1028,
   "purpose": "Connect canonical Dealix Company Intelligence entities into governed, evidence-backed, cross-department operating loops.",
   "canonical_entity_registry": "dealix/registers/company_intelligence_entity_ownership.json",
@@ -11,6 +11,8 @@
     "public_data_does_not_imply_consent": true,
     "revenue_requires_payment_proof": true,
     "delivery_requires_completion_proof": true,
+    "customer_value_requires_acceptance_and_value_proof": true,
+    "renewal_requires_specific_approval": true,
     "closed_loop_requires_outcome_learning_and_command": true,
     "synthetic_runs_must_be_marked": true
   },
@@ -46,11 +48,29 @@
       "id": "customer_to_value",
       "name": "Customer-to-Value and Renewal",
       "priority": "P0",
-      "status": "contract_planned",
-      "business_goal": "Move a committed customer through onboarding, adoption, measurable value, renewal, and expansion.",
-      "departments": ["operations", "customer_success", "support", "finance", "executive"],
+      "status": "executable_synthetic",
+      "business_goal": "Move a committed customer through onboarding, activation, adoption, measurable value, renewal, and expansion.",
+      "execution_profile": "managed_service_customer_success",
+      "future_variants": ["software_onboarding", "enterprise_rollout", "multi-site_adoption", "renewal_only"],
+      "departments": ["operations", "customer_success", "support", "finance", "security", "executive"],
       "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
-      "stage_outline": ["onboarding_plan", "activation", "adoption_monitoring", "value_proof", "renewal_approval", "expansion_learning"]
+      "stages": [
+        {"id": "customer_commitment_ready", "order": 10, "name": "Approved customer scope and commercial commitment ready", "owner_department": "operations", "inputs": ["Tenant", "CompanyBrain", "Company", "Opportunity", "Proposal", "Approval", "ProofEvent"], "outputs": ["DepartmentPlan", "Action", "ProofEvent"], "event_type": "customer_scope_ready", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["commercial_commitment"], "recognition_effects": []},
+        {"id": "baseline_defined", "order": 20, "name": "Current-state baseline and target outcomes defined", "owner_department": "customer_success", "inputs": ["CompanyBrain", "Opportunity", "DepartmentPlan"], "outputs": ["OutcomeEvent", "ProofEvent", "Action"], "event_type": "baseline_defined", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["baseline_snapshot"], "recognition_effects": []},
+        {"id": "onboarding_plan_prepared", "order": 30, "name": "Onboarding plan, owners, milestones, access needs, and acceptance criteria prepared", "owner_department": "operations", "inputs": ["DepartmentPlan", "OutcomeEvent", "CompanyBrain"], "outputs": ["DepartmentPlan", "Draft", "Action"], "event_type": "onboarding_plan_prepared", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []},
+        {"id": "onboarding_kickoff_approved", "order": 40, "name": "Customer kickoff and access request approved", "owner_department": "executive", "inputs": ["Draft", "Action", "ConsentBasis", "DepartmentPlan"], "outputs": ["Approval", "OutcomeEvent"], "event_type": "onboarding_kickoff_approved", "external_effect": true, "approval_required": true, "autonomy_level": 4, "proof_requirements": [], "recognition_effects": []},
+        {"id": "access_readiness_validated", "order": 50, "name": "Access, data minimization, security, and delivery readiness validated", "owner_department": "security", "inputs": ["Approval", "DepartmentPlan", "Source", "ConsentBasis"], "outputs": ["OutcomeEvent", "ProofEvent", "Action"], "event_type": "access_readiness_validated", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["access_readiness"], "recognition_effects": []},
+        {"id": "activation_checkpoint", "order": 60, "name": "First usable workflow or deliverable activated", "owner_department": "operations", "inputs": ["DepartmentPlan", "OutcomeEvent", "ProofEvent"], "outputs": ["OutcomeEvent", "ProofEvent", "Action"], "event_type": "activation_checkpoint_recorded", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["activation_evidence"], "recognition_effects": []},
+        {"id": "adoption_health_measured", "order": 70, "name": "Adoption, usage, stakeholder engagement, and delivery health measured", "owner_department": "customer_success", "inputs": ["OutcomeEvent", "ProofEvent", "DepartmentPlan"], "outputs": ["OutcomeEvent", "ProofEvent", "Action"], "event_type": "adoption_health_measured", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["adoption_measurement"], "recognition_effects": []},
+        {"id": "risk_exception_triaged", "order": 80, "name": "Delivery, adoption, scope, or stakeholder risks triaged", "owner_department": "support", "inputs": ["OutcomeEvent", "Action", "DepartmentPlan"], "outputs": ["Action", "Approval", "OutcomeEvent"], "event_type": "customer_risk_triaged", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []},
+        {"id": "delivery_acceptance_prepared", "order": 90, "name": "Delivery completion evidence and customer acceptance package prepared", "owner_department": "operations", "inputs": ["DepartmentPlan", "OutcomeEvent", "ProofEvent"], "outputs": ["Draft", "Action", "ProofEvent"], "event_type": "delivery_acceptance_prepared", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["delivery_completion_candidate"], "recognition_effects": []},
+        {"id": "customer_acceptance_approved", "order": 100, "name": "Customer acceptance request approved", "owner_department": "executive", "inputs": ["Draft", "Action", "ProofEvent"], "outputs": ["Approval", "OutcomeEvent"], "event_type": "customer_acceptance_requested", "external_effect": true, "approval_required": true, "autonomy_level": 4, "proof_requirements": [], "recognition_effects": []},
+        {"id": "delivery_completion_proven", "order": 110, "name": "Delivery completion proven from real completion evidence", "owner_department": "operations", "inputs": ["Approval", "OutcomeEvent", "ProofEvent"], "outputs": ["OutcomeEvent", "ProofEvent"], "event_type": "delivery_completed", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["delivery_completed"], "recognition_effects": ["delivery_claim_allowed"]},
+        {"id": "customer_value_proven", "order": 120, "name": "Measured customer value compared with the approved baseline", "owner_department": "customer_success", "inputs": ["OutcomeEvent", "ProofEvent", "DepartmentPlan"], "outputs": ["OutcomeEvent", "ProofEvent", "Action"], "event_type": "customer_value_proven", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["customer_acceptance", "customer_value_evidence"], "recognition_effects": ["customer_value_claim_allowed"]},
+        {"id": "renewal_extension_prepared", "order": 130, "name": "Renewal, extension, or stop recommendation prepared", "owner_department": "customer_success", "inputs": ["Opportunity", "OutcomeEvent", "ProofEvent", "CompanyBrain"], "outputs": ["Proposal", "Draft", "Action"], "event_type": "renewal_recommendation_prepared", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []},
+        {"id": "renewal_extension_approved", "order": 140, "name": "Renewal or extension communication approved", "owner_department": "commercial_approvals", "inputs": ["Proposal", "Draft", "Action", "ProofEvent"], "outputs": ["Approval", "OutcomeEvent"], "event_type": "renewal_extension_approved", "external_effect": true, "approval_required": true, "autonomy_level": 4, "proof_requirements": [], "recognition_effects": []},
+        {"id": "customer_learning_closed", "order": 150, "name": "Customer success, delivery, and offer learning closed", "owner_department": "executive", "inputs": ["Opportunity", "OutcomeEvent", "ProofEvent"], "outputs": ["LearningEvent", "PlaybookVersion", "DailyCommand"], "event_type": "customer_learning_recorded", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []}
+      ]
     },
     {
       "id": "incident_to_resolution",

@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Give every client a complete, evidence-aware view of scope, progress, decisions, risks, approvals, delivery, value, and renewal without exposing secrets or unsupported claims.",
+  "client_promise": {
+    "know_what_is_happening": true,
+    "know_why_it_is_happening": true,
+    "know_who_owns_it": true,
+    "know_what_is_blocked": true,
+    "know_what_requires_approval": true,
+    "know_what_was_delivered": true,
+    "know_what_value_is_proven": true,
+    "know_what_is_not_yet_proven": true,
+    "know_the_next_decision": true
+  },
+  "visibility_principles": {
+    "customer_visible_by_default": [
+      "agreed_scope",
+      "milestones",
+      "owners",
+      "status",
+      "decisions",
+      "risks",
+      "dependencies",
+      "approval_requests",
+      "delivery_evidence",
+      "value_metrics",
+      "assumptions",
+      "next_steps"
+    ],
+    "never_customer_visible": [
+      "secret_values",
+      "credentials",
+      "private_internal_notes",
+      "other_tenant_data",
+      "unredacted_personal_data",
+      "security_exploit_details",
+      "internal_model_chain_of_thought"
+    ],
+    "redaction_required": [
+      "personal_data",
+      "security_sensitive_context",
+      "commercially_confidential_third_party_data"
+    ]
+  },
+  "client_cockpit_sections": [
+    {
+      "id": "executive_summary",
+      "purpose": "One-screen state of value, progress, risk, and decisions.",
+      "required_fields": ["overall_status", "current_phase", "value_status", "top_outcomes", "top_risks", "decisions_needed", "next_checkpoint"]
+    },
+    {
+      "id": "scope_and_success",
+      "purpose": "Keep scope, exclusions, owners, baseline, target, and acceptance explicit.",
+      "required_fields": ["scope_in", "scope_out", "owner_matrix", "baseline", "target_metrics", "acceptance_criteria", "stop_rule"]
+    },
+    {
+      "id": "live_work",
+      "purpose": "Show the work being performed and its state without exposing internal secrets.",
+      "required_fields": ["work_items", "stage", "owner", "status", "due_date", "dependencies", "evidence_refs"]
+    },
+    {
+      "id": "decision_and_approval_center",
+      "purpose": "Make every approval request understandable and reversible.",
+      "required_fields": ["decision", "reason", "options", "recommended_option", "impact", "risk", "deadline", "approver", "rollback"]
+    },
+    {
+      "id": "risk_and_exception_center",
+      "purpose": "Surface blockers, incidents, exceptions, mitigations, and ownership early.",
+      "required_fields": ["risk_id", "severity", "business_impact", "root_cause_status", "owner", "mitigation", "target_resolution", "customer_action"]
+    },
+    {
+      "id": "delivery_and_acceptance",
+      "purpose": "Separate activity, delivery completion, customer acceptance, and value proof.",
+      "required_fields": ["deliverable", "completion_status", "completion_evidence", "acceptance_status", "acceptance_evidence", "exceptions"]
+    },
+    {
+      "id": "value_realization",
+      "purpose": "Show movement from baseline to verified outcome and disclose uncertainty.",
+      "required_fields": ["metric", "baseline", "target", "current", "unit", "measurement_window", "source", "confidence", "value_status", "evidence_refs"]
+    },
+    {
+      "id": "activity_and_evidence_timeline",
+      "purpose": "Provide a chronological, queryable history of material events and proof.",
+      "required_fields": ["event_id", "event_type", "occurred_at", "actor", "object", "summary", "source", "evidence_refs", "visibility"]
+    },
+    {
+      "id": "renewal_and_expansion",
+      "purpose": "Make renewal, extension, stop, and expansion recommendations evidence-backed.",
+      "required_fields": ["recommendation", "evidence", "unresolved_risks", "future_scope", "decision_date", "approval_status"]
+    }
+  ],
+  "value_statuses": [
+    {"id": "baseline_missing", "claim_allowed": false},
+    {"id": "baseline_established", "claim_allowed": false},
+    {"id": "measurement_active", "claim_allowed": false},
+    {"id": "directional_signal", "claim_allowed": false},
+    {"id": "outcome_verified", "claim_allowed": true},
+    {"id": "customer_accepted", "claim_allowed": true},
+    {"id": "not_achieved", "claim_allowed": true},
+    {"id": "inconclusive", "claim_allowed": true}
+  ],
+  "proof_rules": {
+    "activity_is_not_delivery": true,
+    "delivery_is_not_acceptance": true,
+    "acceptance_is_not_value": true,
+    "invoice_is_not_payment": true,
+    "payment_is_not_value": true,
+    "synthetic_evidence_cannot_prove_customer_value": true,
+    "every_value_metric_requires_baseline": true,
+    "every_value_metric_requires_source": true,
+    "every_claim_requires_confidence_and_measurement_window": true,
+    "negative_and_inconclusive_results_must_be_visible": true
+  },
+  "update_cadence": {
+    "event_timeline": "near_real_time_when_sources_support_it",
+    "work_status": "daily_on_business_days",
+    "risk_and_approval": "on_material_change",
+    "executive_summary": "weekly_or_on_material_change",
+    "value_review": "at_agreed_measurement_checkpoint",
+    "renewal_readiness": "before_agreed_decision_window"
+  },
+  "open_standards_alignment": {
+    "cloudevents": {
+      "use": "Normalize material business and operating events across connectors.",
+      "core_fields": ["specversion", "id", "source", "type", "subject", "time", "datacontenttype", "data"],
+      "dependency_required_now": false
+    },
+    "opentelemetry": {
+      "use": "Correlate traces, metrics, logs, events, and resources for operational transparency.",
+      "required_attributes": ["service.name", "deployment.environment.name", "tenant.id", "dealix.loop.id", "dealix.action.id", "dealix.outcome.id"],
+      "dependency_required_now": false
+    },
+    "openlineage": {
+      "use": "Describe how inputs, jobs, runs, and outputs contributed to a client-visible result.",
+      "entities": ["job", "run", "input_dataset", "output_dataset", "facet"],
+      "dependency_required_now": false
+    },
+    "openfeature": {
+      "use": "Control client-specific capability rollout, pilot access, and safe degradation without vendor lock-in.",
+      "evaluation_context": ["tenant_id", "pilot_id", "environment", "region", "risk_tier"],
+      "dependency_required_now": false
+    }
+  },
+  "client_report_contract": {
+    "required_top_level": [
+      "client_context",
+      "executive_summary",
+      "scope_and_success",
+      "work_items",
+      "decisions_and_approvals",
+      "risks_and_exceptions",
+      "delivery_and_acceptance",
+      "value_realization",
+      "timeline",
+      "renewal_and_expansion",
+      "data_freshness",
+      "disclosures"
+    ],
+    "must_show_missing_data": true,
+    "must_show_last_updated_at": true,
+    "must_show_source_for_each_metric": true,
+    "must_show_zero_external_actions_in_draft_mode": true
+  }
+}
