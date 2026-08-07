@@ -432,6 +432,19 @@ def validate_adapter(spec: dict) -> list[str]:
     return errors
 
 
+def validate_registry_coverage() -> list[str]:
+    """Cross-check adapter registry against entity ownership JSON."""
+    import json
+
+    from dealix.company_intelligence.adapter_registry import validate_coverage
+
+    ownership_path = REPO_ROOT / "dealix/registers/company_intelligence_entity_ownership.json"
+    ownership = json.loads(ownership_path.read_text(encoding="utf-8"))
+    entity_names = [e["name"] for e in ownership["entities"]]
+    missing = validate_coverage(entity_names)
+    return [f"registry_coverage: entity '{name}' missing from adapter registry" for name in missing]
+
+
 def main() -> int:
     all_errors: list[str] = []
     passed = 0
@@ -444,6 +457,10 @@ def main() -> int:
             all_errors.extend(errors)
         else:
             passed += 1
+
+    # Cross-check adapter registry coverage
+    registry_errors = validate_registry_coverage()
+    all_errors.extend(registry_errors)
 
     if all_errors:
         print(f"FAIL company_intelligence_adapters {passed}/{len(ADAPTER_SPECS)} passed")
