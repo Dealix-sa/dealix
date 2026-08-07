@@ -212,7 +212,7 @@ Do not:
 - accept green CI without reading the diff;
 - ask the implementer to be its own independent reviewer;
 - let the reviewer edit the implementation;
-- spawn unlimited agents on overlapping work;
+- spawn unlimited agents on overlapping work (no unlimited agent swarm);
 - retry the same failing approach indefinitely;
 - auto-merge on reviewer `ship`;
 - claim the configured reviewer model/effort actually ran unless the host exposes evidence.
