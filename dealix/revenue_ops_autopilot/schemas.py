@@ -70,6 +70,9 @@ class FunnelLeadRecord(BaseModel):
     urgency: str = ""
     consent_marketing: bool = False
     consent_proof_pack: bool = False
+    # First-touch marketing attribution (UTM + click ids); bounded by
+    # dealix.revenue_ops_autopilot.attribution.sanitize_attribution before storage.
+    attribution: dict[str, str] = Field(default_factory=dict)
     lead_score: int = 0
     score_breakdown: dict[str, int] = Field(default_factory=dict)
     stage: LeadStage = "new_lead"

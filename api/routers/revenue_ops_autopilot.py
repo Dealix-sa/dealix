@@ -149,6 +149,9 @@ class PublicLeadPayload(BaseModel):
     consent_marketing: bool = False
     consent_proof_pack: bool = False
     hold_stage: bool = False
+    # First-touch attribution (utm_*, gclid, referrer, landing_path …) captured
+    # client-side; sanitized + bounded in orchestrator.capture_lead before storage.
+    attribution: dict[str, str] | None = None
 
 
 class BookingRequestPayload(BaseModel):

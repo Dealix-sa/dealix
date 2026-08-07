@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import api from "@/lib/api";
+import { getAttribution } from "@/lib/utm";
 
 interface Props {
   locale: string;
@@ -62,6 +63,7 @@ export function DiagnosticFunnelContent({ locale, title }: Props) {
       budget_range: riskPayload.budget_range,
       urgency: riskPayload.urgency,
       source: riskPayload.source,
+      attribution: getAttribution(),
     };
     const res = await api.postPublicLead(body);
     const data = res.data as Record<string, unknown>;

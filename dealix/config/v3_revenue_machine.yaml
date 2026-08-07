@@ -1,0 +1,176 @@
+# Dealix V3 — Revenue Machine integration registry.
+#
+# V3 is NOT a new parallel package. It is the truthful wiring map that proves the
+# "Revenue Machine" (lead in → recorded → scored → next action → offer → KPI →
+# delivery) is already realised by the canonical architecture, plus the few
+# genuine micro-gaps closed in V3 (inbound attribution capture).
+#
+# Each layer lists canonical_artifacts = repo-relative files that MUST exist
+# (checked by scripts/verify_v3_revenue_machine.py). api_endpoints are
+# informational. doctrine lists the non-negotiables each layer must honour.
+version: "v3.0"
+map_doc: docs/commercial/DEALIX_V3_REVENUE_MACHINE_MAP_AR.md
+
+# Files newly added by the V3 integration layer (must all exist).
+new_in_v3:
+  - dealix/revenue_ops_autopilot/attribution.py
+  - frontend/src/lib/utm.ts
+  - frontend/src/components/analytics/AttributionTracker.tsx
+  - dealix/config/v3_revenue_machine.yaml
+  - dealix/commercial_ops/v3_revenue_machine.py
+  - scripts/verify_v3_revenue_machine.py
+  - docs/commercial/DEALIX_V3_REVENUE_MACHINE_MAP_AR.md
+
+layers:
+  - id: lead_capture_attribution
+    title_en: Lead Capture & First-Touch Attribution
+    title_ar: التقاط العملاء وإسناد أول لمسة
+    summary_ar: >-
+      كل زائر يقدر يرسل طلب عبر المسار المحكوم؛ تُلتقط UTM/المصدر وتُرفق بالسجل
+      دون الالتفاف على البوابة (لا كتابة مباشرة لملفات).
+    api_endpoints:
+      - POST /api/v1/leads
+      - POST /api/v1/public/leads
+      - POST /api/v1/public/risk-score
+      - POST /api/v1/public/booking-request
+    canonical_artifacts:
+      - api/routers/leads.py
+      - api/routers/revenue_ops_autopilot.py
+      - dealix/revenue_ops_autopilot/orchestrator.py
+      - dealix/revenue_ops_autopilot/attribution.py
+      - frontend/src/lib/utm.ts
+      - frontend/src/components/analytics/AttributionTracker.tsx
+      - frontend/src/components/revenue-autopilot/DiagnosticFunnelContent.tsx
+      - frontend/src/components/gtm/RiskScoreFunnel.tsx
+    doctrine:
+      - external_action_requires_approval
+      - decision_passport_on_every_intake
+
+  - id: crm_ledger
+    title_en: CRM Ledger (event-sourced)
+    title_ar: سجل العملاء (مبني على الأحداث)
+    summary_ar: >-
+      كل lead سجل، كل تواصل حدث، كل فرصة مرحلة — عبر Revenue OS + ذاكرة الأحداث،
+      بديلاً محكوماً عن ملفات jsonl المسطّحة المقترحة.
+    api_endpoints:
+      - GET /api/v1/revenue-os/catalog
+      - POST /api/v1/revenue-os/signals/normalize
+      - POST /api/v1/revenue-os/anti-waste/check
+    canonical_artifacts:
+      - api/routers/revenue_os.py
+      - auto_client_acquisition/revenue_os/account_model.py
+      - auto_client_acquisition/revenue_os/account_scoring.py
+      - auto_client_acquisition/revenue_os/source_registry.py
+      - auto_client_acquisition/revenue_os/dedupe.py
+      - auto_client_acquisition/revenue_os/followup_plan.py
+      - auto_client_acquisition/revenue_memory/event_store.py
+      - auto_client_acquisition/revenue_memory/projections.py
+      - auto_client_acquisition/revenue_memory/timeline.py
+      - auto_client_acquisition/revenue_memory/replay.py
+      - auto_client_acquisition/revenue_memory/retention.py
+    doctrine:
+      - no_fake_proof
+      - no_scraping
+
+  - id: offer_builder
+    title_en: Offer Builder
+    title_ar: بنّاء العروض
+    summary_ar: >-
+      تحويل العميل المؤهل إلى عرض/نطاق عمل حسب القطاع والألم والميزانية، عبر
+      sales_os + كتالوج العروض الرسمي.
+    api_endpoints:
+      - GET /api/v1/sales-os/*
+    canonical_artifacts:
+      - api/routers/sales_os.py
+      - auto_client_acquisition/sales_os/proposal_generator.py
+      - auto_client_acquisition/sales_os/proposal_renderer.py
+      - auto_client_acquisition/sales_os/scope_renderer.py
+      - auto_client_acquisition/sales_os/decision_tree.py
+      - auto_client_acquisition/sales_os/qualification.py
+      - os/03_OFFERS.yml
+      - os/15_PROPOSAL_TEMPLATE.md
+    doctrine:
+      - no_guaranteed_sales_claims
+      - no_upsell_without_proof
+
+  - id: case_study_engine
+    title_en: Case Study Engine
+    title_ar: محرك دراسات الحالة
+    summary_ar: >-
+      أول نجاح يتحول إلى دراسة حالة مربوطة بقيمة مُتحقَّقة (Proof)، مع تصدير
+      مجهول الهوية عند الحاجة.
+    api_endpoints:
+      - GET /api/v1/case-study-engine/*
+    canonical_artifacts:
+      - api/routers/case_study_engine.py
+      - auto_client_acquisition/case_study_engine/builder.py
+      - auto_client_acquisition/proof_to_market/case_study_exporter.py
+      - dealix/commercial/case_study_generator.py
+    doctrine:
+      - no_fake_proof
+      - proof_law_no_project_without_proof_pack
+
+  - id: analytics_kpis
+    title_en: Analytics & KPIs
+    title_ar: التحليلات ومؤشرات الأداء
+    summary_ar: >-
+      مؤشرات يومية/أسبوعية (Leads → Qualified → Drafts → Replies → Calls →
+      Proposals → Closed Won) من مصادر حقيقية، لا أرقام مُخترعة.
+    api_endpoints:
+      - GET /api/v1/transformation/kpi-snapshot
+    canonical_artifacts:
+      - dealix/analytics/__init__.py
+      - scripts/founder_weekly_metrics_bundle.py
+      - scripts/apply_kpi_founder_commercial.py
+      - scripts/populate_kpi_baselines_platform_signals.py
+      - scripts/export_hubspot_kpi_scaffold.py
+    doctrine:
+      - no_fake_proof
+      - no_invented_crm_numbers
+
+  - id: delivery_os
+    title_en: Client Delivery OS
+    title_ar: نظام تسليم العميل
+    summary_ar: >-
+      بعد البيع: نطاق، بوابات جاهزية، مراجعة جودة، تسليم، وتوصية تجديد — لكل باقة
+      مخرجات واضحة.
+    api_endpoints:
+      - GET /api/v1/delivery-os/*
+    canonical_artifacts:
+      - api/routers/delivery_os.py
+      - auto_client_acquisition/delivery_os/framework.py
+      - auto_client_acquisition/delivery_os/control_tower.py
+      - auto_client_acquisition/delivery_os/qa_review.py
+      - auto_client_acquisition/delivery_os/handoff.py
+      - auto_client_acquisition/delivery_os/readiness_gates.py
+      - auto_client_acquisition/delivery_os/retainer_backlog.py
+      - os/16_CLIENT_ONBOARDING_TEMPLATE.md
+      - os/17_QA_CHECKLIST.md
+      - os/18_HANDOVER_TEMPLATE.md
+    doctrine:
+      - retainer_law_continue_expand_pause
+      - capital_law_reusable_asset
+
+  - id: security_doctrine
+    title_en: Security & Doctrine Compliance
+    title_ar: الأمن وامتثال الدستور
+    summary_ar: >-
+      الثوابت مُنفَّذة في الكود (بوابة الإرسال الآمن) ومحميّة باختبارات، مع فحوص
+      أسرار وCI بصلاحيات محدودة.
+    canonical_artifacts:
+      - auto_client_acquisition/safe_send_gateway/__init__.py
+      - auto_client_acquisition/safe_send_gateway/doctrine.py
+      - tests/test_doctrine_guardrails.py
+      - .gitleaks.toml
+      - .secrets.baseline
+      - .pre-commit-config.yaml
+      - .github/workflows/security.yml
+      - .github/workflows/codeql.yml
+      - .github/workflows/production_api_trust_smoke.yml
+      - docs/00_constitution/NON_NEGOTIABLES.md
+      - docs/00_constitution/DEALIX_LAWS.md
+    doctrine:
+      - no_cold_whatsapp
+      - no_linkedin_automation
+      - no_scraping
+      - no_bulk_outreach
