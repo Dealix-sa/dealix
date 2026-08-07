@@ -1,0 +1,3 @@
+lead_id,company_name,sector,city,source_type,source_url,business_channel,gap_signal,score,segment,consent_status,status,next_step,owner,created_date
+L-0001,Example Trading Co,wholesale,Riyadh,public,https://chamber.org.sa/member/example,published_business_number,unstructured_whatsapp,84,A,not_contacted,new,send_gap_based_message,founder,2026-06-07
+L-0002,Sample Training Center,training,Jeddah,public,https://data.gov.sa/example,published_business_email,weak_followup,67,B,not_contacted,new,add_to_cadence,marketer1,2026-06-07
