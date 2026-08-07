@@ -68,25 +68,38 @@ External systems may be adapters only:
 - Firecrawl/Exa/search providers may supply Source and Signal candidates, but they cannot imply consent or contactability.
 - Docling may parse source documents, but extracted facts remain candidates until reviewed and linked to Source evidence.
 
-## Required canonical facade — next focused PR
+## Canonical facade — COMPLETED (PR #1041)
 
-A future focused PR, separate from #1014, should add a small facade rather than a new subsystem:
+The canonical facade is now implemented in `dealix/company_intelligence/`:
 
 ```text
 dealix/company_intelligence/
-  contracts.py        # canonical entity IDs and read/write DTOs
-  company_brain.py    # facade over existing internal + V6 adapters
-  provenance.py       # Source/evidence references
-  compatibility.py    # explicit adapters for existing callers
+  __init__.py              # 170+ exports, single canonical import surface
+  adapter_registry.py      # maps all 22 entities to their normalize functions
+  company_brain.py         # CanonicalCompanyBrain facade (internal + customer)
+  action_adapter.py        # normalize_next_best_action
+  consent_adapter.py       # normalize_consent
+  graph_adapter.py         # normalize_lead_to_company, normalize_lead_to_contact
+  learning_adapter.py      # normalize_learning_event, normalize_win_loss
+  offer_adapter.py         # normalize_service_offering, normalize_catalog
+  pipeline_adapter.py      # normalize_pipeline_lead
+  playbook_adapter.py      # normalize_sector_playbook
+  proof_adapter.py         # normalize_proof_event
+  proposal_adapter.py      # normalize_proposal
+  revenue_graph_adapter.py # normalize_graph_edge
+  signal_adapter.py        # normalize_signal
+  source_adapter.py        # normalize_source_passport
+  execution_contracts.py   # normalize_opportunity, normalize_approval, normalize_draft
+  outcome_contracts.py     # build_outcome_event, build_proof_event, build_learning_event
+  *_contracts.py           # 15 frozen Pydantic contract modules with state machines
 ```
 
-Before that PR is opened, verify all imports and callers of:
-
-- `build_company_brain`
-- `CompanyBrain`
-- `build_company_brain_v6`
-- `CompanyBrainV6`
-- both Company Brain API routers
+CI gates (all required):
+- `scripts/verify_company_intelligence_entity_ownership.py` — 22 entities
+- `scripts/verify_company_intelligence_adapters.py` — 18 normalize functions
+- `tests/test_company_intelligence_adapter_registry.py` — 20 tests
+- `tests/test_company_intelligence_spine_integration.py` — frozen-entity validation
+- `tests/test_company_intelligence_e2e_scenario.py` — 12-entity customer journey
 
 ## No-delete gate
 
@@ -100,15 +113,16 @@ No file listed here may be deleted until all conditions pass:
 6. rollback path is documented;
 7. explicit deletion approval is provided.
 
-## First runtime consolidation order
+## Runtime consolidation order (progress)
 
-1. Finish and green PR #1014 entity ownership guard.
-2. Inventory CompanyBrain callers and create compatibility tests.
-3. Add the canonical CompanyBrain facade without persistence or migration changes.
-4. Route both API adapters and Hermes consumer through the facade.
-5. Map Opportunity/Action/Approval/Proof/Learning surfaces using the same evidence standard.
-6. Consolidate Langfuse behind one redacted adapter in a separate PR.
-7. Only then consider Docling or LiteLLM pilots.
+1. ✅ Finish and green PR #1014 entity ownership guard — 22 entities registered.
+2. ✅ Canonical CompanyBrain facade added (PR #1041) — internal + customer builders.
+3. ✅ 12 adapter modules mapping all operational sources to canonical contracts.
+4. ✅ Adapter registry with entity-ownership cross-check (22/22 covered).
+5. ✅ CI gates: entity ownership, adapter verification, adapter registry tests.
+6. Route both API adapters and Hermes consumer through the facade.
+7. Consolidate Langfuse behind one redacted adapter in a separate PR.
+8. Only then consider Docling or LiteLLM pilots.
 
 ## Current blockers
 
