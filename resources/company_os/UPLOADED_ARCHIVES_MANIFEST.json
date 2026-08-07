@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "description": "Declared uploaded Dealix OS / PR / roadmap resource archives. This manifest is the source of truth for what each archive is and how it may be promoted. Checksums are filled in once the archive file is placed in uploaded_archives/ (run scripts/compare_uploaded_resources.sh to compute).",
+  "policy_doc": "docs/ops/UPLOADED_RESOURCE_INTEGRATION_DECISION.md",
+  "hard_rule": "Uploaded ZIPs are never copied over runtime code. Extract -> Diff -> Select -> Branch -> PR -> CI -> Merge.",
+  "archives": [
+    {
+      "name": "dealix_resources_p0_p50.zip",
+      "classification": "resource_vault",
+      "merge_policy": "add_as_resources_only",
+      "sha256": null,
+      "present": false,
+      "notes": "Resource vault + P0-P50 roadmap + manifest. Reference only."
+    },
+    {
+      "name": "OKComputer_Dealix_OS.zip",
+      "classification": "source_candidate",
+      "merge_policy": "selective_merge",
+      "sha256": null,
+      "present": false,
+      "notes": "Primary source candidate for Founder OS pages and os/ tests."
+    },
+    {
+      "name": "OKComputer_تنفيذ_كامل_ومتوافق1.zip",
+      "classification": "source_candidate",
+      "merge_policy": "compare_against_dealix_os",
+      "sha256": null,
+      "present": false,
+      "notes": "Near-duplicate of Dealix OS. Treat as comparison copy."
+    },
+    {
+      "name": "OKComputer_تسليم_PR_559.zip",
+      "classification": "historical_source_candidate",
+      "merge_policy": "selective_merge_only",
+      "sha256": null,
+      "present": false,
+      "notes": "Historical PR/UI source. Review, never blind-merge."
+    },
+    {
+      "name": "OKComputer_تسليم_PR_559_v1.zip",
+      "classification": "build_artifact",
+      "merge_policy": "do_not_merge_as_source",
+      "sha256": null,
+      "present": false,
+      "notes": "Build artifact only (index.html/assets). Do not use as code source."
+    }
+  ]
+}

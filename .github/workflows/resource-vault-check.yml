@@ -1,0 +1,49 @@
+name: Resource Vault Check
+
+on:
+  pull_request:
+    paths:
+      - "resources/**"
+      - "scripts/compare_uploaded_resources.sh"
+      - "scripts/dealix_integration_wave.sh"
+      - "docs/ops/UPLOADED_RESOURCE_INTEGRATION_DECISION.md"
+      - ".github/workflows/resource-vault-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  resource-vault-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check resource vault scaffolding exists
+        run: |
+          test -d resources/company_os
+          test -f resources/company_os/README.md
+          test -f resources/company_os/UPLOADED_ARCHIVES_MANIFEST.json
+          test -f scripts/compare_uploaded_resources.sh
+          test -f docs/ops/UPLOADED_RESOURCE_INTEGRATION_DECISION.md
+
+      - name: Validate manifest is valid JSON
+        run: python -c "import json; json.load(open('resources/company_os/UPLOADED_ARCHIVES_MANIFEST.json'))"
+
+      - name: Lint vault shell scripts
+        run: |
+          bash -n scripts/compare_uploaded_resources.sh
+          bash -n scripts/dealix_integration_wave.sh
+
+      - name: Guard — no archive contents leaked into runtime paths
+        run: |
+          # The vault is reference-only. Archives must live under uploaded_archives/.
+          leaked=$(git ls-files 'resources/company_os/**' \
+            | grep -vE '^resources/company_os/(README\.md|UPLOADED_ARCHIVES_MANIFEST\.json|uploaded_archives/)' \
+            || true)
+          if [ -n "$leaked" ]; then
+            echo "::error::Unexpected files under resources/company_os/ (vault is reference-only):"
+            echo "$leaked"
+            exit 1
+          fi
+          echo "OK: resource vault layout is clean."
