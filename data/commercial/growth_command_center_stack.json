@@ -1,0 +1,102 @@
+{
+  "mode": "draft_first_controlled_commercial_os",
+  "north_star": {
+    "metric": "qualified_discovery_calls_booked",
+    "daily_target": 2,
+    "weekly_target": 8
+  },
+  "service_stack": [
+    {
+      "name": "Revenue Command Room OS",
+      "buyer": "Founder, CEO, Sales Manager",
+      "pain": "Lost opportunities, unclear follow-up, no daily pipeline owner",
+      "entry_offer": "7-Day Revenue Command Room Sprint",
+      "price_range_sar": "5000-12000",
+      "retainer_path": "Monthly revenue operations partner"
+    },
+    {
+      "name": "Company Brain OS",
+      "buyer": "Founder, CEO, General Manager",
+      "pain": "Management does not have one daily decision view",
+      "entry_offer": "14-Day Company Brain Sprint",
+      "price_range_sar": "15000-35000",
+      "retainer_path": "Weekly executive decision desk"
+    },
+    {
+      "name": "AI Sales Agent OS",
+      "buyer": "Sales Manager, Founder, Commercial Director",
+      "pain": "Replies, objections, and negotiation are inconsistent",
+      "entry_offer": "Sales Agent Setup",
+      "price_range_sar": "15000-25000",
+      "retainer_path": "Monthly sales agent operations"
+    },
+    {
+      "name": "Offer Intelligence OS",
+      "buyer": "Founder, Marketing Manager, Sales Lead",
+      "pain": "Offers are unclear and proposals do not convert",
+      "entry_offer": "Offer Intelligence Sprint",
+      "price_range_sar": "7000-18000",
+      "retainer_path": "Monthly offer optimization"
+    },
+    {
+      "name": "Customer Pain Radar",
+      "buyer": "Operations Manager, Customer Success, Founder",
+      "pain": "Customer complaints and questions are not turned into decisions",
+      "entry_offer": "Pain Radar Diagnostic",
+      "price_range_sar": "5000-15000",
+      "retainer_path": "Monthly customer intelligence report"
+    },
+    {
+      "name": "Client Delivery OS",
+      "buyer": "Agency Owner, Services Company, Delivery Manager",
+      "pain": "Client delivery proof, acceptance criteria, and renewals are scattered",
+      "entry_offer": "Client Success Sprint",
+      "price_range_sar": "18000-30000",
+      "retainer_path": "Managed delivery operations"
+    },
+    {
+      "name": "AI Trust and Governance OS",
+      "buyer": "CEO, Operations, Compliance, IT",
+      "pain": "AI is used without policy, review, or data controls",
+      "entry_offer": "AI Trust Setup",
+      "price_range_sar": "15000-30000",
+      "retainer_path": "Quarterly AI governance review"
+    }
+  ],
+  "sales_agent_policy": {
+    "allowed_identities": [
+      "Dealix Sales Assistant",
+      "Dealix team",
+      "authorized sales assistant for client company",
+      "approved named representative only with explicit owner authorization"
+    ],
+    "blocked_behaviors": [
+      "named executive impersonation without approval",
+      "fake reply framing",
+      "guaranteed revenue claims",
+      "fake case studies",
+      "sending after opt-out",
+      "WhatsApp live sending without opt-in and approved template"
+    ]
+  },
+  "daily_targets": {
+    "research_accounts": 100,
+    "verified_accounts": 40,
+    "drafts_generated": 25,
+    "founder_approved_contacts_min": 10,
+    "founder_approved_contacts_max": 15,
+    "call_attempts_min": 3,
+    "call_attempts_max": 5,
+    "discovery_calls_min": 1,
+    "discovery_calls_max": 2,
+    "proposals": 1
+  },
+  "safety_defaults": {
+    "EXTERNAL_SEND_ENABLED": false,
+    "EMAIL_SEND_ENABLED": false,
+    "WHATSAPP_SEND_ENABLED": false,
+    "WHATSAPP_ALLOW_LIVE_SEND": false,
+    "SMS_SEND_ENABLED": false,
+    "OUTBOUND_MODE": "draft_only"
+  }
+}

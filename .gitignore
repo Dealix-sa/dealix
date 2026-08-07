@@ -1,6 +1,7 @@
 # ─────────────────────────────────────────────────────────────
 # 🔒 SECRETS — NEVER COMMIT
 # ─────────────────────────────────────────────────────────────
+.mcp.json
 .env
 .env.*
 dealix/transformation/kpi_founder_commercial_import.yaml
@@ -8,6 +9,7 @@ dealix/config/founder_closure_intake.yaml
 !.env.example
 !.env.staging.example
 !.env.railway.example
+!frontend/.env.local.example
 *.pem
 *.key
 *.p12
@@ -21,6 +23,8 @@ credentials/
 !tests/test_wave8_customer_credentials_check.py
 !docs/WAVE8_CUSTOMER_CREDENTIAL_READINESS.md
 !docs/wave8/customer_credentials.example.env
+# The secret scanner itself — code, not a secret (CI: "V3 — No secrets check")
+!scripts/check_no_secrets.py
 service-account*.json
 google-credentials*.json
 
@@ -40,6 +44,12 @@ eggs/
 .eggs/
 lib/
 lib64/
+!apps/web/lib/
+!apps/web/lib/**
+!scripts/lib/
+!scripts/lib/**
+!frontend/src/lib/
+!frontend/src/lib/**
 parts/
 sdist/
 var/
@@ -107,6 +117,21 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Commercial product data — pain→offer map, catalog, ICP, pricing rules
+# (canonical product config, no customer PII)
+!data/commercial/
+!data/commercial/*
+# Governed Commercial Intelligence seeds — policy/config only, never tenant data
+!data/commercial_intelligence/
+!data/commercial_intelligence/*
+# Outreach kit — sector pitches + intake template (NOT the real filled list)
+!data/outreach/
+!data/outreach/*
+# Sector targets — synthetic/public company names, no customer PII
+!data/targets/
+# Daily draft output — DRAFT_ONLY, no customer PII, founder review
+!data/daily_drafts/
+!data/leads/.gitkeep
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -171,7 +196,15 @@ traces/
 # ─────────────────────────────────────────────────────────────
 # 🤖 Claude Code agent worktrees + runtime ledger artifacts
 # ─────────────────────────────────────────────────────────────
-.claude/
+.claude/*
+# Project rules and agent definitions are part of the codebase
+!.claude/rules/
+!.claude/rules/**
+!.claude/agents/
+!.claude/agents/**
+# Agent skills are part of the codebase (SKILL.md + references, no runtime output)
+!.claude/skills/
+!.claude/skills/**
 
 # Proof ledger runtime artifacts (template + schema + readme stay tracked)
 docs/proof-events/*.jsonl
@@ -275,6 +308,7 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+!frontend/.env.local.example
 
 # Editors / OS
 .vscode/*
@@ -324,3 +358,107 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Dealix generated daily operating outputs
+company/runtime/
+company/outbox/*_master_stable_approval_queue.csv
+company/outbox/*_micro_master_approval_queue.csv
+company/reports/*_MASTER_STABLE_CEO_REPORT.md
+company/reports/*_MICRO_MASTER_CEO_REPORT.md
+
+# Dealix intake generated outputs
+company/runtime/intake/
+
+# Dealix outreach — real target list stays local (never committed)
+data/outreach/saudi_target_intake.csv
+# Real outreach log stays local; the .template.csv is tracked (allowlisted above).
+data/outreach/outreach_log.csv
+reports/outreach/
+reports/command_room/
+
+# Researched raw target lists stay local (not a committed scraped list)
+data/outreach/research/
+reports/content/
+
+# GTM generated docs — founder reviews before sharing; never committed
+reports/contracts/*
+reports/pilot_reports/*
+reports/customer_reports/*
+reports/meetings/*
+!reports/contracts/.gitkeep
+!reports/pilot_reports/.gitkeep
+!reports/customer_reports/.gitkeep
+!reports/meetings/.gitkeep
+
+# Contract log is tracked business data (like proposals/)
+# data/contracts/contract_log.csv is NOT ignored
+
+# Dealix real leads generated outputs
+company/runtime/places/
+dealix_local_test.db
+reports/runtime/
+reports/daily_intelligence/
+reports/github-context/
+ledgers/private/
+.env.production
+
+# Startup release gate + commercial OS runtime reports (generated; never commit)
+reports/startup_release_gate/
+reports/startup_command_center/
+reports/startup_proof_pack/
+reports/founder_daily_brief/
+reports/founder_growth_os/
+reports/growth_command_center/
+reports/commercial_launch_control/
+reports/agentic_commercial_os/
+reports/agents/
+reports/ai/
+reports/commercial/
+reports/operator/
+reports/command_center/
+
+# Daily business exports (founder reviews before sharing; never committed)
+business/closing/exports/
+business/crm/exports/dealix-pipeline-report-*.md
+business/demo/exports/
+business/persuasion/exports/
+business/proposals/generated/
+business/reports/exports/
+
+# Generated server env / surface reports (daily; not committed)
+reports/server/env_contract.md
+reports/server/public_surfaces.json
+
+# Generated outreach batch files (CSV leads)
+data/outreach/ready_batch_*.csv
+
+# Company directory targeting artifacts stay local. The source terms for the
+# provided directory are unverified and this repository is public. Commit the
+# importer, schemas, tests, and runbooks — never the derived company dataset.
+outputs/company_targeting/
+reports/company_targeting/
+reports/company_launch/
+reports/revenue/*/daily_ceo_report.json
+reports/revenue/*/daily_ceo_report.md
+reports/revenue/*/score_summary.json
+
+# ─────────────────────────────────────────────────────────────
+# 💼 Commercial Package Archives — never commit bundles
+# ─────────────────────────────────────────────────────────────
+*.zip
+*.tar.xz
+*.tar.gz
+*.rar
+*.7z
+*_BUNDLE*
+*_EXPORT*
+*_PATCH*
+*_PACK*
+
+# ─────────────────────────────────────────────────────────────
+# 📝 Session export artifacts
+# ─────────────────────────────────────────────────────────────
+SESSION_COMMIT_HISTORY.txt
+SESSION_COMPLETION_SUMMARY.md
+PR_DESCRIPTION_*.md
+

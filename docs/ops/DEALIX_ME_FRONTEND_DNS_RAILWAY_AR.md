@@ -47,7 +47,7 @@ py -3 scripts/validate_railway_generated_env.py --from-railway-env
 
 1. **أزل** سجلات GitHub Pages:
    - A records → `185.199.108.153` / `185.199.109.153` / …
-   - CNAME `@` → `VoXc2.github.io` أو مشابه
+   - CNAME `@` → `Dealix-sa.github.io` أو مشابه
 2. **أضف** ما يعرضه Railway في Custom Domains:
    - عادة CNAME `@` أو `www` → `<project>.up.railway.app`
 3. انتظر propagation (5–30 دقيقة)

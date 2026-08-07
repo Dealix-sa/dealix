@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/ledgers/risks.schema.json",
+  "title": "Dealix Risk Ledger",
+  "description": "Founder-facing risk register: commercial, product, security, compliance, and operational risks with an owner and a mitigation. Pairs with SECURITY.md and docs/SECURITY_RUNBOOK.md.",
+  "type": "object",
+  "required": ["ledger", "version", "records"],
+  "additionalProperties": false,
+  "properties": {
+    "ledger": { "const": "risks" },
+    "version": { "type": "integer", "minimum": 1 },
+    "updated": { "type": "string" },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/risk" }
+    }
+  },
+  "$defs": {
+    "risk": {
+      "type": "object",
+      "required": ["id", "title", "category", "severity", "status", "created"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "pattern": "^RISK-[0-9]{4,}$" },
+        "title": { "type": "string", "minLength": 1 },
+        "category": {
+          "type": "string",
+          "enum": ["commercial", "product", "security", "compliance", "operational", "financial"]
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "likelihood": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        },
+        "mitigation": { "type": "string" },
+        "owner": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["open", "mitigating", "closed", "accepted"]
+        },
+        "created": { "type": "string" },
+        "review_date": { "type": "string" }
+      }
+    }
+  }
+}

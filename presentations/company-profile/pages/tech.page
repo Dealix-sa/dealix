@@ -1,0 +1,172 @@
+pageType: content
+background:
+  type: solid
+  color: "$dark"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 400, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>TECHNICAL ARCHITECTURE  //  البنية التقنية</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 800, 50]
+    content:
+      fontSize: 36
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>بنية تقنية متكاملة وقابلة للتوسع</p>
+      wrap: false
+  - elementId: arch-label
+    elementType: text
+    bounds: [60, 170, 400, 24]
+    content:
+      fontSize: 14
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 2
+      wrap: false
+      text: |
+        <p>TECH STACK OVERVIEW</p>
+  - elementId: stack-bg
+    elementType: shape
+    bounds: [60, 200, 540, 460]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: layer1
+    elementType: shape
+    bounds: [80, 220, 500, 60]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: layer1-text
+    elementType: text
+    bounds: [100, 232, 460, 36]
+    content:
+      fontSize: 18
+      color: "$white"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>Next.js 15  +  React 19  +  Tailwind CSS</p>
+  - elementId: layer2
+    elementType: shape
+    bounds: [80, 290, 500, 60]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#2A7A4F"
+  - elementId: layer2-text
+    elementType: text
+    bounds: [100, 302, 460, 36]
+    content:
+      fontSize: 18
+      color: "$white"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>FastAPI  +  Pydantic  +  172 Routers</p>
+  - elementId: layer3
+    elementType: shape
+    bounds: [80, 360, 500, 60]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#3A8A5F"
+  - elementId: layer3-text
+    elementType: text
+    bounds: [100, 372, 460, 36]
+    content:
+      fontSize: 18
+      color: "$white"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>PostgreSQL  +  Redis  +  Alembic Migrations</p>
+  - elementId: layer4
+    elementType: shape
+    bounds: [80, 430, 500, 60]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#4A9A6F"
+  - elementId: layer4-text
+    elementType: text
+    bounds: [100, 442, 460, 36]
+    content:
+      fontSize: 18
+      color: "$white"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>Docker  +  CI/CD 60 Pipelines</p>
+  - elementId: layer5
+    elementType: shape
+    bounds: [80, 500, 500, 60]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#5AAA7F"
+  - elementId: layer5-text
+    elementType: text
+    bounds: [100, 512, 460, 36]
+    content:
+      fontSize: 18
+      color: "$white"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>Moyasar Payments  +  PDPL  +  ZATCA</p>
+  - elementId: layer6
+    elementType: shape
+    bounds: [80, 570, 500, 60]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: layer6-text
+    elementType: text
+    bounds: [100, 582, 460, 36]
+    content:
+      fontSize: 18
+      color: "$dark"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>AI Gateway: OpenAI, Claude, DeepSeek, Groq</p>
+  - elementId: stats-col
+    elementType: text
+    bounds: [660, 200, 560, 460]
+    content:
+      fontSize: 18
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.8
+      text: |
+        <p><span style="color:#C9A94C;font-size:28px;"><b>2,587</b></span>  ملف Python</p>
+        <p><span style="color:#C9A94C;font-size:28px;"><b>172</b></span>  نقطة API</p>
+        <p><span style="color:#C9A94C;font-size:28px;"><b>563</b></span>  اختبار تلقائي</p>
+        <p><span style="color:#C9A94C;font-size:28px;"><b>60</b></span>  خط CI/CD</p>
+        <p><span style="color:#C9A94C;font-size:28px;"><b>7</b></span>  Dockerfiles</p>
+        <p><span style="color:#C9A94C;font-size:28px;"><b>6,816</b></span>  ملف إجمالي</p>

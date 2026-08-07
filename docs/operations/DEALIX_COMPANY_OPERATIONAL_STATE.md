@@ -3,7 +3,7 @@
 **Status:** LAUNCHED (backend + landing live). Blocked on Moyasar account activation for REVENUE VERIFIED.
 **Last verified:** 2026-04-24
 **Base URL:** https://api.dealix.me
-**Landing:** https://voxc2.github.io/dealix/
+**Landing:** https://dealix-sa.github.io/dealix/
 
 ---
 
@@ -171,9 +171,9 @@ Required touches for 3 paid/day:
 ## 📞 Contact Points
 
 - **Backend:** https://api.dealix.me
-- **Landing:** https://voxc2.github.io/dealix/
+- **Landing:** https://dealix-sa.github.io/dealix/
 - **Demo booking:** https://calendly.com/sami-assiri11/dealix-demo
-- **GitHub:** https://github.com/VoXc2/dealix
+- **GitHub:** https://github.com/Dealix-sa/dealix
 - **Pipeline tracker:** `docs/ops/pipeline_tracker.csv`
 - **Content queue:** `docs/ops/launch_content_queue.md`
 

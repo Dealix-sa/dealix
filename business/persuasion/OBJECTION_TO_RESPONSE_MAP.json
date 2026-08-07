@@ -1,0 +1,24 @@
+{
+  "objections": {
+    "too_expensive": {
+      "ar": "نعتمد على نموذج قياس القيمة أولاً. التكلفة الحقيقية هي تسرب الإيرادات اليومي الذي لا تراه.",
+      "en": "We use a value-measurement-first model. The real cost is the daily revenue leakage you don't see."
+    },
+    "not_now": {
+      "ar": "نفهم ذلك. هل يمكننا إرسال تقرير سريع عن ثلاثة تسريبات تشغيلية شائعة في قطاعك؟",
+      "en": "We understand. Can we send a quick report on three common operational leaks in your sector?"
+    },
+    "using_competitor": {
+      "ar": "ممتاز — هذا يعنيك تهتم بالتحسين. نقدم مراجعة تشخيصية مجانية لنقارن النتائج.",
+      "en": "Great — that means you care about improvement. We offer a free diagnostic review to compare results."
+    },
+    "need_approval": {
+      "ar": "بالطبع. نجهز ملفاً تنفيذياً جاهزاً للعرض على صانع القرار.",
+      "en": "Of course. We'll prepare an executive-ready pack for your decision maker."
+    },
+    "no_time": {
+      "ar": "نحتاج ١٥ دقيقة فقط. الهدف هو إعطاؤك خريطة واضحة، لا بيع.",
+      "en": "We only need 15 minutes. The goal is to give you a clear map, not to sell."
+    }
+  }
+}

@@ -21,7 +21,10 @@ from auto_client_acquisition.agents.intake import IntakeAgent, Lead, LeadSource,
 from auto_client_acquisition.agents.pain_extractor import ExtractionResult, PainExtractorAgent
 from auto_client_acquisition.agents.proposal import Proposal, ProposalAgent
 from auto_client_acquisition.agents.qualification import QualificationAgent, QualificationResult
-from autonomous_growth.distribution_engine import AutonomousDistributionEngine, DistributionEngineResult
+from autonomous_growth.distribution_engine import (
+    AutonomousDistributionEngine,
+    DistributionEngineResult,
+)
 from core.logging import get_logger
 
 logger = get_logger(__name__)

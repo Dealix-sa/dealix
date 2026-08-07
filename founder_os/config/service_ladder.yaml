@@ -1,0 +1,67 @@
+version: 1.0
+
+offers:
+  diagnostic_sprint:
+    name: "Transformation Diagnostic Sprint"
+    price_sar: "7,500 - 25,000"
+    monthly_sar: "0"
+    timeline: "3-7 days"
+    purpose: "يدخل العميل بدون مخاطرة كبيرة ويطلع له blueprint واضح"
+    deliverables:
+      - Workflow map
+      - Leakage map
+      - KPI model
+      - First system recommendation
+      - Implementation quote
+
+  starter_system:
+    name: "Starter Operating System"
+    price_sar: "12,000 - 25,000"
+    monthly_sar: "3,000 - 8,000"
+    timeline: "7-14 days"
+    purpose: "أول نظام قابل للبيع بسرعة"
+    deliverables:
+      - Lead intake
+      - Follow-up board
+      - Basic dashboard
+      - Message templates
+      - Weekly report
+
+  growth_system:
+    name: "Growth Operating System"
+    price_sar: "25,000 - 75,000"
+    monthly_sar: "8,000 - 25,000"
+    timeline: "14-30 days"
+    purpose: "أفضل عرض متوسط وقابل للتكرار"
+    deliverables:
+      - Pipeline
+      - Automations
+      - Review intelligence
+      - Executive reporting
+      - Team training
+
+  command_center:
+    name: "AI Business Command Center"
+    price_sar: "75,000 - 180,000"
+    monthly_sar: "20,000 - 60,000"
+    timeline: "30-60 days"
+    purpose: "عرض عالي القيمة للشركات الجادة"
+    deliverables:
+      - Executive dashboard
+      - Multi-workflow visibility
+      - AI report summaries
+      - Governance gates
+      - Monthly executive review
+
+  enterprise_custom:
+    name: "Custom Enterprise Transformation System"
+    price_sar: "180,000 - 500,000+"
+    monthly_sar: "50,000 - 150,000+"
+    timeline: "45-120 days"
+    purpose: "للعملاء الكبار فقط بعد paid discovery"
+    deliverables:
+      - Custom architecture
+      - Integrations
+      - AI agent workforce
+      - Trust/governance
+      - SLA

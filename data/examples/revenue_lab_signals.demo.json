@@ -1,0 +1,41 @@
+{
+  "signals": [
+    {
+      "tenant_id": "dealix-internal",
+      "account_id": "demo-operations-company",
+      "company_name": "Demo Saudi Operations Company",
+      "sector": "operations_services",
+      "company_size": "unknown",
+      "department": "sales",
+      "relationship": "prospect",
+      "permission": "research_only",
+      "decision_maker_role": "Operations or Revenue leader (hypothesis)",
+      "offer_match": "Revenue Proof Sprint",
+      "why_now": "Demo-only scenario used to verify the governed workflow.",
+      "value_exchange": "A bounded diagnostic and proof plan; no outcome promise.",
+      "pain_hypotheses": [
+        "Manual follow-up and reporting may create avoidable operating friction."
+      ],
+      "unknowns": [
+        "Current systems",
+        "Baseline cycle time",
+        "Decision owner",
+        "Permission to contact"
+      ],
+      "evidence": [
+        {
+          "source_ref": "demo://revenue-lab/governance-check",
+          "source_type": "synthetic_fixture",
+          "observed_at": "2026-07-15T00:00:00Z",
+          "title": "Synthetic Revenue Lab fixture",
+          "quality": "demo"
+        }
+      ],
+      "strategic_fit": 75,
+      "urgency": 50,
+      "known_metrics": {},
+      "demo": true
+    }
+  ],
+  "outcomes": []
+}

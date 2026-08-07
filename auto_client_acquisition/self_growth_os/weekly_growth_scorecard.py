@@ -147,6 +147,21 @@ def build_scorecard() -> dict:
             "anchor": "service_activation_matrix.candidates_for_promotion",
         })
 
+    # All-clear fallback: when every measured gap (SEO, linking, tooling,
+    # promotion queue) is closed, the founder still gets one concrete next
+    # action so the weekly cadence never stalls. Honest — it only fires when
+    # nothing else needs fixing, and is anchored to that measured state.
+    if not recommendations:
+        recommendations.append({
+            "priority": "P2",
+            "action": (
+                "all measured SEO / internal-linking / tooling / promotion-queue "
+                "gaps are closed — hold the weekly cadence and advance the next "
+                "service-to-Live decision (S5)"
+            ),
+            "anchor": "weekly_growth_scorecard.all_measured_gaps_closed",
+        })
+
     return {
         "schema_version": 1,
         "generated_at": datetime.now(UTC).isoformat(),

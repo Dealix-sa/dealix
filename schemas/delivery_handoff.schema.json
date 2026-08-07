@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/delivery_handoff.schema.json",
+  "title": "DeliveryHandoff",
+  "description": "Turns a closed sale into a structured delivery start (scope, metric, first workflow, owner).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "customer_id", "product_sold", "success_metric", "status"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^deliv_[a-f0-9]+$" },
+    "customer_id": { "type": "string" },
+    "product_sold": { "type": "string", "minLength": 1, "description": "A valid catalog product id" },
+    "scope": { "type": "array", "items": { "type": "string" } },
+    "timeline": { "type": "string" },
+    "success_metric": { "type": "string", "minLength": 1 },
+    "first_workflow": { "type": "string" },
+    "required_access": { "type": "array", "items": { "type": "string" } },
+    "owner": { "type": "string" },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "next_meeting": { "type": "string" },
+    "status": { "type": "string", "enum": ["queued", "in_onboarding", "active", "blocked", "completed"] },
+    "created_at": { "type": "string" }
+  }
+}

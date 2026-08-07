@@ -1,0 +1,9 @@
+- PR #760 | draft=false | Add controlled live outbound automation foundation | https://github.com/Dealix-sa/dealix/pull/760
+- PR #757 | draft=false | Save public website brand OS work | https://github.com/Dealix-sa/dealix/pull/757
+- PR #739 | draft=false | feat(outreach): daily Arabic email targeting system — 30 Saudi ICPs +… | https://github.com/Dealix-sa/dealix/pull/739
+- PR #738 | draft=false | Resolve pr 713 | https://github.com/Dealix-sa/dealix/pull/738
+- PR #732 | draft=false | Resolve pr 727 | https://github.com/Dealix-sa/dealix/pull/732
+- PR #726 | draft=true | feat(outreach): daily Arabic email targeting system — 30 Saudi ICPs + Gmail runner | https://github.com/Dealix-sa/dealix/pull/726
+- PR #713 | draft=false | feat: add Dealix V1-V5 commercial operating system | https://github.com/Dealix-sa/dealix/pull/713
+- PR #711 | draft=true | feat(wave-2): Revenue Engine v2 — daily commercial pack generation | https://github.com/Dealix-sa/dealix/pull/711
+- PR #698 | draft=true | fix: resolve CI failures — standalone Dockerfile + Article 13 allowlist | https://github.com/Dealix-sa/dealix/pull/698

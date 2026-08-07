@@ -1,0 +1,2 @@
+id,date_queued,target_company,channel,draft_ref,action_level,founder_decision,decided_date,notes
+1,2026-06-06,dry-run-client,warm_intro,reports/founder/daily_command.md,A2,pending,,Dry-run sample row — no real send. Founder review required before any A3 send.

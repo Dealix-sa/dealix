@@ -69,6 +69,7 @@ bash scripts/run_founder_commercial_day.sh
 | مسار | الغرض |
 |------|--------|
 | `/ar/ops/founder` | لوحة يوم واحدة + sovereign GTM |
+| `/ar/ops/command-room` | غرفة القيادة الموحدة — قرار اليوم + War Room + drafts + موافقات |
 | `/ar/ops/war-room` | جدول 7 أعمدة + تحديث حالة |
 | `/ar/ops/marketing` | مسودة LinkedIn اليوم |
 | `/ar/ops/approvals` | مركز الموافقات |

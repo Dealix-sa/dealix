@@ -58,7 +58,7 @@ def _http_json(
         method=method,
     )
     try:
-        with urlopen(req, timeout=45) as resp:  # noqa: S310
+        with urlopen(req, timeout=45) as resp:
             raw = resp.read().decode("utf-8")
             return json.loads(raw) if raw.strip() else {}
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:

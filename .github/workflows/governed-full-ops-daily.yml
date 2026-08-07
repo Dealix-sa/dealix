@@ -1,6 +1,6 @@
 name: Governed Full Ops Daily
 
-# Unified governed autopilot: expand (wave2) + founder day + value plan.
+# Unified governed autopilot: expand (wave2) + founder day + value plan + snapshot.
 # ~08:00 KSA (05:00 UTC Sun-Thu). No external send — draft/approval only.
 
 on:
@@ -24,14 +24,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Install minimal deps
-        run: pip install pyyaml
+        run: python3 -m pip install pyyaml
 
       - name: Run governed autopilot
         env:
@@ -42,22 +42,30 @@ jobs:
         run: |
           MODE="${{ github.event.inputs.mode || 'morning' }}"
           if [ "$MODE" = "full" ]; then
-            python scripts/run_dealix_complete_autonomous_day.py --weekly
+            python3 scripts/run_dealix_complete_autonomous_day.py --weekly
           elif [ "$MODE" = "commercial" ]; then
-            python scripts/run_dealix_complete_autonomous_day.py
+            python3 scripts/run_dealix_complete_autonomous_day.py
           elif [ "$MODE" = "evening" ]; then
-            python scripts/run_dealix_complete_autonomous_day.py --evening --skip-commercial-day
+            python3 scripts/run_dealix_complete_autonomous_day.py --evening --skip-commercial-day
           else
-            python scripts/run_dealix_complete_autonomous_day.py --skip-commercial-day
+            python3 scripts/run_dealix_complete_autonomous_day.py --skip-commercial-day
           fi
+
+      - name: Build daily audit snapshot
+        run: |
+          set -e
+          python3 scripts/dealix_snapshot.py
+          SNAPSHOT="docs/snapshots/$(date -u +%Y-%m-%d).json"
+          test -s "$SNAPSHOT"
 
       - name: Upload artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: governed-full-ops-${{ github.run_id }}
           path: |
             data/founder_briefs/
             data/war_room_today.json
+            docs/snapshots/*.json
           retention-days: 14
           if-no-files-found: ignore

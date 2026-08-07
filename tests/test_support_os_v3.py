@@ -11,7 +11,7 @@ All hardening fields are optional with safe defaults — back-compat preserved.
 """
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from pydantic import ValidationError

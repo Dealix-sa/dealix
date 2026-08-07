@@ -89,7 +89,7 @@ def test_brief_no_revenue_claim(tmp_path) -> None:
     ])
     b = json.loads(out_json.read_text(encoding="utf-8"))
     assert b["no_revenue_claim"] is True
-    assert b["no_guaranteed_claim"] is True
+    assert b["no_outcome_promise"] is True
 
 
 def test_brief_kpi_is_commitment_not_guarantee(tmp_path) -> None:
@@ -101,7 +101,7 @@ def test_brief_kpi_is_commitment_not_guarantee(tmp_path) -> None:
         "--out-json", str(out_json),
     ])
     b = json.loads(out_json.read_text(encoding="utf-8"))
-    assert b["kpi_commitment"]["type"] == "commitment_not_guarantee"
+    assert b["kpi_commitment"]["type"] == "evidence_based_commitment"
 
 
 def test_brief_refund_policy(tmp_path) -> None:

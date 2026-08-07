@@ -25,6 +25,11 @@ import {
   FileText,
   Megaphone,
   Cpu,
+  BrainCircuit,
+  ShieldCheck,
+  CreditCard,
+  UserCog,
+  Contact2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -35,31 +40,70 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-const navItems: NavItem[] = [
-  { key: "dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { key: "demo", href: "/demo", icon: Zap },
-  { key: "dealixDiagnostic", href: "/dealix-diagnostic", icon: Sparkles },
-  { key: "zatcaReadiness", href: "/zatca-readiness", icon: Shield },
-  { key: "businessNow", href: "/business-now", icon: Briefcase },
-  { key: "cloud", href: "/cloud", icon: Cloud },
-  { key: "opsHub", href: "/ops", icon: Layers },
-  { key: "opsFounder", href: "/ops/founder", icon: ClipboardList },
-  { key: "opsWarRoom", href: "/ops/war-room", icon: Briefcase },
-  { key: "opsTargeting", href: "/ops/targeting", icon: GitBranch },
-  { key: "opsSales", href: "/ops/sales", icon: Layers },
-  { key: "opsMarketing", href: "/ops/marketing", icon: Megaphone },
-  { key: "opsPartners", href: "/ops/partners", icon: Users },
-  { key: "opsEvidence", href: "/ops/evidence", icon: FileText },
-  { key: "opsSupport", href: "/ops/support", icon: Shield },
-  { key: "pipeline", href: "/pipeline", icon: GitBranch },
-  { key: "agents", href: "/agents", icon: Bot },
-  { key: "approvals", href: "/approvals", icon: CheckSquare },
-  { key: "trustCheck", href: "/trust-check", icon: Shield },
-  { key: "customerPortal", href: "/customer-portal", icon: Building2 },
-  { key: "clients", href: "/clients", icon: Users },
-  { key: "autoDistribution", href: "/auto-distribution", icon: Cpu },
-  { key: "analytics", href: "/analytics", icon: BarChart3 },
-  { key: "settings", href: "/settings", icon: Settings },
+interface NavGroup {
+  groupKey: string;
+  groupLabelAr: string;
+  groupLabelEn: string;
+  items: NavItem[];
+}
+
+const navGroups: NavGroup[] = [
+  {
+    groupKey: "main",
+    groupLabelAr: "الرئيسية",
+    groupLabelEn: "Main",
+    items: [
+      { key: "dashboard", href: "/dashboard", icon: LayoutDashboard },
+      { key: "aiEngine", href: "/ai-engine", icon: BrainCircuit },
+      { key: "analytics", href: "/analytics", icon: BarChart3 },
+    ],
+  },
+  {
+    groupKey: "commercial",
+    groupLabelAr: "التجاري",
+    groupLabelEn: "Commercial",
+    items: [
+      { key: "crm", href: "/crm", icon: Contact2 },
+      { key: "pipeline", href: "/pipeline", icon: GitBranch },
+      { key: "clients", href: "/clients", icon: Users },
+      { key: "customerPortal", href: "/customer-portal", icon: Building2 },
+      { key: "pricing", href: "/pricing", icon: CreditCard },
+    ],
+  },
+  {
+    groupKey: "operations",
+    groupLabelAr: "العمليات",
+    groupLabelEn: "Operations",
+    items: [
+      { key: "businessNow", href: "/business-now", icon: Briefcase },
+      { key: "opsHub", href: "/ops", icon: Layers },
+      { key: "opsWarRoom", href: "/ops/war-room", icon: Briefcase },
+      { key: "opsSales", href: "/ops/sales", icon: Layers },
+      { key: "opsMarketing", href: "/ops/marketing", icon: Megaphone },
+      { key: "approvals", href: "/approvals", icon: CheckSquare },
+      { key: "agents", href: "/agents", icon: Bot },
+    ],
+  },
+  {
+    groupKey: "compliance",
+    groupLabelAr: "الامتثال والأمان",
+    groupLabelEn: "Compliance",
+    items: [
+      { key: "trustCenter", href: "/trust-center", icon: ShieldCheck },
+      { key: "zatcaReadiness", href: "/zatca-readiness", icon: Shield },
+      { key: "trustCheck", href: "/trust-check", icon: Shield },
+      { key: "dealixDiagnostic", href: "/dealix-diagnostic", icon: Sparkles },
+    ],
+  },
+  {
+    groupKey: "admin",
+    groupLabelAr: "الإدارة",
+    groupLabelEn: "Admin",
+    items: [
+      { key: "adminConsole", href: "/admin", icon: UserCog },
+      { key: "settings", href: "/settings", icon: Settings },
+    ],
+  },
 ];
 
 interface SidebarProps {
@@ -124,76 +168,70 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto overflow-x-hidden">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const href = `/${locale}${item.href}`;
-          const isActive = pathname.includes(item.href);
+      <nav className="flex-1 px-3 py-4 overflow-y-auto overflow-x-hidden space-y-4">
+        {navGroups.map((group) => (
+          <div key={group.groupKey}>
+            <AnimatePresence>
+              {!collapsed && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.4 }}
+                  exit={{ opacity: 0 }}
+                  className="text-sidebar-foreground text-[10px] font-semibold uppercase tracking-widest px-3 mb-1"
+                >
+                  {isRTL ? group.groupLabelAr : group.groupLabelEn}
+                </motion.p>
+              )}
+            </AnimatePresence>
+            <div className="space-y-0.5">
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                const href = `/${locale}${item.href}`;
+                const isActive = pathname === href || pathname.startsWith(`${href}/`);
 
-          return (
-            <Link key={item.key} href={href}>
-              <motion.div
-                whileHover={{ x: isRTL ? -2 : 2 }}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 group relative",
-                  isActive
-                    ? "bg-sidebar-primary/15 text-gold-400"
-                    : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-                )}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    className={cn(
-                      "absolute top-1/2 -translate-y-1/2 w-0.5 h-6 rounded-full bg-gold-400",
-                      isRTL ? "right-0" : "left-0"
-                    )}
-                  />
-                )}
-                <Icon className={cn("flex-shrink-0 w-5 h-5", isActive && "text-gold-400")} />
-                <AnimatePresence>
-                  {!collapsed && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
+                return (
+                  <Link key={item.key} href={href}>
+                    <motion.div
+                      whileHover={{ x: isRTL ? -2 : 2 }}
                       className={cn(
-                        "text-sm font-medium whitespace-nowrap",
-                        isActive ? "text-gold-400" : ""
+                        "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 group relative",
+                        isActive
+                          ? "bg-sidebar-primary/15 text-gold-400"
+                          : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
                       )}
                     >
-                      {t(
-                        item.key as
-                          | "dashboard"
-                          | "dealixDiagnostic"
-                          | "opsHub"
-                          | "opsFounder"
-                          | "opsWarRoom"
-                          | "opsTargeting"
-                          | "opsMarketing"
-                          | "opsPartners"
-                          | "opsSales"
-                          | "opsEvidence"
-                          | "opsSupport"
-                          | "businessNow"
-                          | "cloud"
-                          | "pipeline"
-                          | "agents"
-                          | "approvals"
-                          | "trustCheck"
-                          | "customerPortal"
-                          | "clients"
-                          | "analytics"
-                          | "settings"
-                          | "autoDistribution",
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeIndicator"
+                          className={cn(
+                            "absolute top-1/2 -translate-y-1/2 w-0.5 h-6 rounded-full bg-gold-400",
+                            isRTL ? "right-0" : "left-0"
+                          )}
+                        />
                       )}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            </Link>
-          );
-        })}
+                      <Icon className={cn("flex-shrink-0 w-4 h-4", isActive && "text-gold-400")} />
+                      <AnimatePresence>
+                        {!collapsed && (
+                          <motion.span
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className={cn(
+                              "text-sm font-medium whitespace-nowrap",
+                              isActive ? "text-gold-400" : ""
+                            )}
+                          >
+                            {t(item.key as Parameters<typeof t>[0])}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* Bottom section - version */}

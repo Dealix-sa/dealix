@@ -1,0 +1,133 @@
+{
+  "additionalProperties": false,
+  "description": "A governed client session. Tenant-scoped by ``client_handle``.",
+  "properties": {
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "client_handle": {
+      "title": "Client Handle",
+      "type": "string"
+    },
+    "company_name": {
+      "default": "",
+      "title": "Company Name",
+      "type": "string"
+    },
+    "locale": {
+      "default": "ar",
+      "enum": [
+        "ar",
+        "en"
+      ],
+      "title": "Locale",
+      "type": "string"
+    },
+    "stage": {
+      "default": "new",
+      "enum": [
+        "new",
+        "menu",
+        "assessment_in_progress",
+        "assessment_complete",
+        "recommendation",
+        "permission_request",
+        "awaiting_secure_input",
+        "draft_review",
+        "proposal",
+        "payment_handoff",
+        "onboarding",
+        "support",
+        "human_handoff",
+        "closed"
+      ],
+      "title": "Stage",
+      "type": "string"
+    },
+    "permission_level": {
+      "default": "L0",
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5"
+      ],
+      "title": "Permission Level",
+      "type": "string"
+    },
+    "last_intent": {
+      "default": "welcome",
+      "enum": [
+        "welcome",
+        "diagnose",
+        "campaign_followup",
+        "connect_tools",
+        "review_report",
+        "support",
+        "not_sure",
+        "send_file_link",
+        "assessment_start",
+        "assessment_answer",
+        "approve",
+        "reject",
+        "edit",
+        "simplify",
+        "permission_grant",
+        "permission_deny",
+        "request_proposal",
+        "book_call",
+        "human_handoff",
+        "blocked_unsafe",
+        "unknown"
+      ],
+      "title": "Last Intent",
+      "type": "string"
+    },
+    "assessment_id": {
+      "default": "",
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "message_count": {
+      "default": 0,
+      "title": "Message Count",
+      "type": "integer"
+    },
+    "handoff_requested": {
+      "default": false,
+      "title": "Handoff Requested",
+      "type": "boolean"
+    },
+    "consent_record_exists": {
+      "default": false,
+      "title": "Consent Record Exists",
+      "type": "boolean"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "meta": {
+      "additionalProperties": true,
+      "title": "Meta",
+      "type": "object"
+    }
+  },
+  "required": [
+    "session_id",
+    "client_handle"
+  ],
+  "title": "WhatsAppSession",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/WhatsAppSession.schema.json"
+}

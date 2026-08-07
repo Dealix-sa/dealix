@@ -3,7 +3,7 @@
 Aggregates the complete Dealix commercial chain:
   Diagnostic → Warm Intro → Pilot → Proof → Payment → Upsell
 
-All endpoints are admin-gated (X-API-Key). All write operations return
+All endpoints are admin-gated (X-Admin-API-Key). All write operations return
 approval_status: "approval_required" — nothing auto-sends or auto-charges.
 
 Prefix: /api/v1/commercial
@@ -16,18 +16,25 @@ import os
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import PlainTextResponse
 
-from dealix.commercial.diagnostic_engine import DiagnosticEngine, DiagnosticRequest
-from dealix.commercial.warm_intro_generator import WarmIntroGenerator, WarmIntroRequest
-from dealix.commercial.pilot_delivery import PilotDeliveryKit, PilotStartRequest
-from dealix.commercial.proof_builder import ProofBuildRequest, ProofBuilder
-from dealix.commercial.upsell_engine import UpsellEngine
+from api.security.api_key import require_founder_admin_key
 from dealix.commercial.case_study_generator import CaseStudyGenerator, CaseStudyRequest
+from dealix.commercial.diagnostic_engine import DiagnosticEngine, DiagnosticRequest
+from dealix.commercial.pilot_delivery import PilotDeliveryKit, PilotStartRequest
+from dealix.commercial.proof_builder import ProofBuilder, ProofBuildRequest
+from dealix.commercial.roi_calculator import ROIInput, estimate_roi
+from dealix.commercial.transformation_proposal import (
+    TransformationProposalError,
+    TransformationProposalGenerator,
+    TransformationProposalRequest,
+)
+from dealix.commercial.upsell_engine import UpsellEngine
+from dealix.commercial.warm_intro_generator import WarmIntroGenerator, WarmIntroRequest
 from dealix.payments.payment_link import (
-    PaymentLinkRequest,
     SERVICE_TIERS,
+    PaymentLinkRequest,
     create_payment_link,
 )
 
@@ -35,14 +42,13 @@ log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/commercial", tags=["commercial"])
 
-_ADMIN_KEY = os.getenv("DEALIX_ADMIN_API_KEY", "")
-
-
-def _require_admin(x_api_key: str = Header(default="")) -> None:
-    if not _ADMIN_KEY:
-        return  # dev mode — no key configured
-    if x_api_key != _ADMIN_KEY:
-        raise HTTPException(status_code=401, detail="Invalid API key")
+# Shared gate — see api/security/api_key.py. Two fixes over the local guard
+# this replaces: it fails closed in production, and it reads the admin header.
+# The old parameter was declared `x_api_key: str = Header(default="")` with no
+# alias, so FastAPI derived the header name `x-api-key` and compared the
+# *service* credential against the *admin* key — a comparison that cannot
+# succeed now that the two key sets are required to be disjoint.
+_require_admin = require_founder_admin_key
 
 
 # ---------------------------------------------------------------------------
@@ -106,7 +112,7 @@ async def pilot_start(
     req: PilotStartRequest,
     _: None = Depends(_require_admin),
 ) -> dict[str, Any]:
-    """Start a 7-day 499 SAR pilot — returns day-by-day delivery plan."""
+    """Legacy delivery-kit endpoint; not a pricing or checkout source."""
     kit = PilotDeliveryKit()
     plan = kit.create_pilot_plan(req)
     log.info(
@@ -181,7 +187,7 @@ async def payment_link(
 
     Sandbox mode by default — set MOYASAR_LIVE_MODE=1 in Railway for live charges.
     """
-    from dealix.payments.payment_link import PaymentLinkError  # noqa: PLC0415
+    from dealix.payments.payment_link import PaymentLinkError
 
     try:
         result = await create_payment_link(req)
@@ -252,6 +258,56 @@ async def case_study_markdown(
     gen = CaseStudyGenerator()
     doc = gen.generate(req)
     return doc.markdown_ar_en
+
+
+# ---------------------------------------------------------------------------
+# Transformation OS endpoints (enterprise) — governed, approval-gated
+# ---------------------------------------------------------------------------
+
+
+@router.post("/transformation-proposal/generate")
+async def transformation_proposal_generate(
+    req: TransformationProposalRequest,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Generate an enterprise transformation proposal from the catalog.
+
+    Prices are read from the canonical registry (Article 11) and stamped as
+    estimates. Output is approval_required — never auto-sent. Guaranteed-outcome
+    language in the request is rejected (doctrine).
+    """
+    gen = TransformationProposalGenerator()
+    try:
+        proposal = gen.generate(req)
+    except TransformationProposalError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return proposal.to_dict()
+
+
+@router.post("/transformation-proposal/generate/markdown", response_class=PlainTextResponse)
+async def transformation_proposal_markdown(
+    req: TransformationProposalRequest,
+    _: None = Depends(_require_admin),
+) -> str:
+    """Generate a transformation proposal and return bilingual Markdown."""
+    gen = TransformationProposalGenerator()
+    try:
+        proposal = gen.generate(req)
+    except TransformationProposalError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return proposal.markdown_ar_en
+
+
+@router.post("/roi/estimate")
+async def roi_estimate(
+    req: ROIInput,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Conservative ROI estimate (range) for a transformation engagement.
+
+    Estimate-only — never a guarantee. All figures carry is_estimate=True.
+    """
+    return estimate_roi(req).to_dict()
 
 
 # ---------------------------------------------------------------------------

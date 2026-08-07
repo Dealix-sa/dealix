@@ -1,55 +1,81 @@
-# RFC — إرسال تلقائي منخفض المخاطرة (استكشاعي)
+# قرار المنتج — إيقاف الإرسال التلقائي منخفض المخاطرة
 
-**الحالة:** مسودة — غير مفعّل في الإنتاج افتراضياً  
-**المالك:** المؤسس + امتثال  
-**الكود:** `api/routers/drafts.py` · `DEALIX_ENABLE_AUTO_SEND_LOW_RISK`
+**الحالة:** مرفوض ومتقاعد — غير قابل للتفعيل بالمتغيرات البيئية  
+**تاريخ القرار:** 2026-07-31  
+**المالك:** المؤسس + الحوكمة + Product Doctrine  
+**المسار السابق:** `api/routers/drafts.py` · `DEALIX_ENABLE_AUTO_SEND_LOW_RISK`
 
-## القرار المطلوب قبل التفعيل
+## القرار
 
-| القناة | افتراضي Dealix | مسموح تلقائياً بعد الموافقة؟ |
-|--------|----------------|------------------------------|
-| واتساب بارد | ممنوع دائماً | لا |
-| LinkedIn DM جماعي | ممنوع (ToS) | لا — يدوي فقط |
-| Gmail business | مسودات فقط | **استكشاع:** فقط إذا `warm_outreach_eligible=true` على الحساب |
-| تقويم خارجي | موافقة صريحة | لا |
+لا يملك `Revenue Machine` أو أي Draft أو Opportunity صلاحية إرسال بريد خارجي تلقائياً.
+المتغير البيئي القديم `DEALIX_ENABLE_AUTO_SEND_LOW_RISK` لا يمنح أي صلاحية، حتى عندما تكون قيمته `1` أو `true`.
 
-## شروط PDPL (إلزامية)
+المسار الوحيد المسموح للبريد الخارجي هو:
 
-1. `allowed_use` و`consent_status` موثّقان في `AccountRecord.extra`
-2. لا قوائم مشتراة بدون عقد استخدام
-3. سقف معدل: `DAILY_EMAIL_LIMIT` / `EMAIL_BATCH_SIZE` (انظر `compliance.py`)
-4. سجل تدقيق في `EmailSendLog` لكل محاولة
+```text
+Draft
+→ Compliance Check
+→ Explicit Human Approval
+→ POST /api/v1/email/send-approved
+→ Send Log / Evidence
+```
 
-## تفعيل تقني (لا يُستخدم في prod بدون قرار)
+## سبب الإيقاف
+
+المسار الاستكشافي السابق كان يسمح نظرياً بالانتقال من تصنيف داخلي مثل
+`warm_outreach_eligible=true` ومتغير بيئي إلى إرسال فعلي. هذا يتعارض مع قواعد
+Dealix الحالية:
+
+- draft-only وapproval-first افتراضياً؛
+- Opportunity وDraft لا يملكان execution authority؛
+- لا إرسال خارجي لمجرد انخفاض درجة المخاطر؛
+- الموافقة يجب أن تكون مرتبطة بالفعل المحدد، لا بإعداد بيئي عام؛
+- كل إرسال فعلي يحتاج سجل امتثال ودليل تنفيذ.
+
+## سياسة القنوات
+
+| القناة | السياسة الحالية |
+|---|---|
+| WhatsApp بارد | ممنوع دائماً |
+| LinkedIn | بحث يدوي ومسودة شخصية فقط؛ لا scraping أو auto-send |
+| Gmail outreach | مسودة ثم موافقة بشرية صريحة عبر `send-approved` |
+| Gmail transactional | يظل في مساره المخصص، بقائمة أنواع مسموحة واحترام revoke/opt-out |
+| تقويم أو دعوات خارجية | موافقة صريحة قبل الإنشاء أو الإرسال |
+
+## الضوابط البرمجية
+
+عند تسجيل Admin domain:
+
+1. بوابة `_auto_send_low_risk_enabled` مرتبطة بسياسة تعيد `False` دائماً.
+2. adapter الإرسال القديم داخل `drafts` يستبدل بـfail-closed adapter.
+3. محاولة استدعائه مباشرة تفشل قبل أي اتصال بشبكة Gmail.
+4. `/api/v1/email/send-approved` يبقى مسار الإرسال الخارجي المعتمد.
+
+## إعدادات قديمة يجب عدم استخدامها
+
+هذه الأمثلة تاريخية وممنوعة، وليست تعليمات تشغيل:
 
 ```bash
-# محلي/تجريبي فقط
 export DEALIX_ENABLE_AUTO_SEND_LOW_RISK=1
 ```
 
 ```json
-POST /api/v1/automation/revenue-machine/run
 {
-  "approval_mode": "auto_send_low_risk",
-  "gmail_drafts": 5
+  "approval_mode": "auto_send_low_risk"
 }
 ```
 
-الفرع يرسل فقط عندما:
+وجودها في request أو environment لا يجب أن يؤدي إلى إرسال.
 
-- المتغير البيئي مفعّل
-- `approval_mode=auto_send_low_risk`
-- `check_outreach.allowed` وبدون `requires_human_review`
-- `risk_level=low` على الحساب
-- `extra.warm_outreach_eligible=true` (يدوي من CRM/المؤسس)
-- Gmail OAuth مُعدّ
+## شروط إعادة النظر مستقبلًا
 
-## LinkedIn
+لا يعاد فتح auto-send إلا عبر RFC جديد وPR مستقل يثبت جميع ما يلي:
 
-لا يُضاف auto-send لـ LinkedIn في هذا RFC — التزاماً بتعليق الراوتر والـ ToS.
+- نموذج Approval قابل للتحقق مرتبط بـtenant وaction وdraft؛
+- consent/lawful basis موثقان لكل مستلم؛
+- idempotency وstop conditions وrate limits؛
+- independent security/privacy review؛
+- اختبارات production-like دون أسرار حقيقية؛
+- موافقة مؤسس صريحة على التغيير وعلى تفعيل الإنتاج.
 
-## الخطوة التالية
-
-- [ ] مراجعة قانونية PDPL للبريد business-only
-- [ ] تحديد معيار `warm_outreach_eligible` في CRM
-- [ ] تجربة على ≤5 حسابات owned قبل أي توسع
+حتى استيفاء هذه الشروط يبقى الحكم النهائي: **لا auto-send**.

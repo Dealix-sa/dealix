@@ -1,0 +1,125 @@
+===============================================
+DEALIX FOUNDER QUICK REFERENCE CARD
+Print this and keep it on your desk
+===============================================
+
+YOUR SINGLE METRIC THAT MATTERS:
+  1 warm WhatsApp per day × 5 days/week = 3 pilots by Day 30
+
+YOUR DAILY RITUAL (45 min):
+  8:15 AM  → Send 1 warm WhatsApp (20 min)
+  8:35 AM  → Approve AI drafts from /decisions.html (10 min)
+  8:45 AM  → Check calendar (5 min)
+  As booked→ Diagnostics (30 min each, max 2/day)
+  5:00 PM  → Update tracking (10 min)
+  5:15 PM  → Prep tomorrow (5 min)
+
+YOUR DEMO SCRIPT OPENING (memorize this):
+  السلام عليكم 👋
+  أنا سامي، مؤسس ديليكس
+  شكراً إنك وجدت وقت لنا اليوم
+
+  [Then listen 8 min about their pain]
+  [Then pitch 5 min: outcome, not features]
+  [Then close 7 min: ask directly "ودك تجرب؟"]
+
+YOUR WEEKLY TARGET:
+  Week 1: 5 WhatsApps sent
+  Week 2: 10 WhatsApps, 1 pilot signed
+  Week 3: 15 WhatsApps, 2 pilots signed
+  Week 4: 20 WhatsApps, 3 pilots signed
+
+YOUR MONTH 1 SUCCESS CRITERIA:
+  ✅ 20 warm intros contacted
+  ✅ 8 diagnostics completed
+  ✅ 3 pilots signed
+  ✅ 1 pilot delivered
+  ✅ 30-35h/week founder time (sustainable)
+
+YOUR GUARDRAILS:
+  ✅ Personal messages (not templates)
+  ✅ Khaliji Arabic (not English, not MSA)
+  ✅ Direct ask ("ودك تجرب؟")
+  ✅ Listen 60% (founder talks 40%, asks 60%)
+  ❌ No cold blasts (founder approval required)
+  ❌ No templates (sounds foreign)
+  ❌ No overselling (demo outcome, not features)
+  ❌ No promises (delivery is 40h, be real)
+
+YOUR DAILY COMMANDS:
+  Morning: bash scripts/dealix_founder_daily_complete.sh
+  Check: python scripts/check_system_health.py
+
+YOUR CRITICAL FILES:
+  /founder_dashboard.html → Metrics (open in browser)
+  /decisions.html → Approval queue (open in browser)
+  /warm-intro-targets.csv → Your pipeline (update daily)
+
+YOUR READING ORDER:
+  1. FOUNDER_DAILY_EXECUTION_PLAYBOOK.md (20 min)
+  2. FOUNDER_SYSTEM_OVERVIEW.md (20 min)
+  3. FOUNDER_REVENUE_MANUAL.md (30 min)
+  4. PILOT_DAY1_ONBOARDING.md (when pilot signed)
+
+YOUR OBJECTION RESPONSES (Khaliji Arabic):
+  "Too expensive?" → Focus on ROI (lost deal = 10K+ SAR)
+  "No time?" → 40h/week freed up by automation
+  "Using competitor?" → We do what they can't (WhatsApp native)
+  "Need boss approval?" → Founder meeting (faster decision)
+  "Let me think?" → Video demo + 24h response SLA
+
+YOUR PILOT DELIVERY TIMELINE:
+  Days 1-3: Onboarding (3h founder)
+  Days 4-7: Daily support (2h)
+  Days 8-11: Proof accumulation (3h)
+  Days 12-14: Final push + case study (4h)
+  Total per pilot: ~12 hours founder time
+
+YOUR RENEWAL TARGET:
+  50% of pilots renew at 3,999 SAR/month
+  3 pilots → 1.5 renewals by Day 45
+  6 pilots → 3 renewals by Day 60
+
+YOUR 90-DAY FORECAST:
+  Month 1: 3 pilots, 1,500 SAR
+  Month 2: 6 pilots, 5,000 SAR MRR
+  Month 3: 12 pilots, 20,000 SAR MRR
+
+YOUR CELEBRATION MILESTONES:
+  Day 1: First WhatsApp sent
+  Day 7: First diagnostic booked
+  Day 14: First pilot signed
+  Day 21: First pilot delivered
+  Day 30: 3 pilots signed, clear proof of model
+  Day 45: First renewal signed
+  Day 60: MRR 5K+ SAR
+  Day 90: MRR 20K+ SAR, 12 customers, real company
+
+WHEN YOU'RE TIRED / DOUBTING:
+  Remember: 1 WhatsApp/day × 5 days = 3 pilots = proof
+  The system works. You just have to do the work.
+  Founder sales > everything else.
+
+EMERGENCY HELP:
+  Issue with daily ritual? → FOUNDER_DAILY_EXECUTION_PLAYBOOK.md
+  System not working? → scripts/check_system_health.py
+  Strategic question? → FOUNDER_REVENUE_MANUAL.md
+  How does system work? → FOUNDER_SYSTEM_OVERVIEW.md
+  Customer setup? → PILOT_DAY1_ONBOARDING.md
+
+TOMORROW AT 8:00 AM:
+  [ ] Run: bash scripts/dealix_founder_daily_complete.sh
+  [ ] Open: /founder_dashboard.html
+  [ ] Open: /decisions.html
+  [ ] Send: 1 personal WhatsApp to first prospect
+  [ ] Log: Update /warm-intro-targets.csv
+
+Then repeat every day for 90 days.
+
+===============================================
+You have everything you need.
+The market is waiting.
+Go build.
+===============================================
+
+Version 1.0 | 2026-06-17 | Ready for execution

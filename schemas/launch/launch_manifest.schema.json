@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/launch_manifest.schema.json",
+  "title": "Dealix Launch Bundle Manifest (launch bundle)",
+  "type": "object",
+  "required": ["bundle_name", "version", "created_at", "purpose", "non_overwrite_policy", "network_free", "external_send_free", "files"],
+  "additionalProperties": false,
+  "properties": {
+    "bundle_name": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "created_at": { "type": "string", "format": "date" },
+    "purpose": { "type": "string" },
+    "non_overwrite_policy": { "type": "boolean" },
+    "network_free": { "type": "boolean" },
+    "external_send_free": { "type": "boolean" },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "type", "purpose", "risk_level", "requires_approval"],
+        "properties": {
+          "path": { "type": "string" },
+          "type": { "enum": ["doc", "schema", "template", "script", "test", "eval", "task", "report", "patch"] },
+          "purpose": { "type": "string" },
+          "integration_mode": { "enum": ["create", "skip", "optional_patch", "reference_only"] },
+          "risk_level": { "enum": ["low", "medium", "high"] },
+          "requires_approval": { "type": "boolean" },
+          "owner": { "type": "string" }
+        }
+      }
+    },
+    "integration_steps": { "type": "array", "items": { "type": "string" } },
+    "rollback_steps": { "type": "array", "items": { "type": "string" } },
+    "known_limitations": { "type": "array", "items": { "type": "string" } }
+  }
+}

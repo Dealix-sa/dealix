@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import pytest
 
-
 # ===========================================================================
 # AI Lead Scorer tests
 # ===========================================================================
@@ -762,7 +761,10 @@ class TestWeeklyReportGenerator:
         return base
 
     def test_generate_returns_weekly_report(self):
-        from dealix.commercial_ops.weekly_report_generator import WeeklyReport, WeeklyReportGenerator
+        from dealix.commercial_ops.weekly_report_generator import (
+            WeeklyReport,
+            WeeklyReportGenerator,
+        )
 
         gen = WeeklyReportGenerator()
         report = gen.generate(self._week_data())

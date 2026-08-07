@@ -85,16 +85,15 @@ def test_full_v5_customer_journey_end_to_end():
     # ── 3. diagnostic_sent → pilot_offered ──────────────────────
     _advance_or_fail(JourneyState.DIAGNOSTIC_SENT, JourneyState.PILOT_OFFERED)
 
-    # ── 4. finance_os: draft a 499 SAR pilot invoice ────────────
-    invoice = draft_invoice(
-        tier_id="growth_starter_pilot",
-        customer_email="ops@acme-pilot-test.example.sa",
-        customer_handle=CUSTOMER_HANDLE,
-    )
-    assert invoice.amount_sar == 499.0
-    assert invoice.tier_id == "growth_starter_pilot"
-    assert invoice.approval_status == "approval_required"
-    # Hard rule: even with a draft invoice in hand, live charge stays off.
+    # ── 4. finance_os: quote-only pilot refuses an invoice ───────
+    with pytest.raises(ValueError, match="quote-only"):
+        draft_invoice(
+            tier_id="revenue_command_pilot_30d",
+            customer_email="ops@acme-pilot-test.example.sa",
+            customer_handle=CUSTOMER_HANDLE,
+        )
+    # Hard rule: discovery and an approved documented quote must precede
+    # any invoice; live charge stays off throughout this composed smoke.
     live = is_live_charge_allowed()
     assert live["allowed"] is False, (
         f"is_live_charge_allowed must remain False; got {live!r}"

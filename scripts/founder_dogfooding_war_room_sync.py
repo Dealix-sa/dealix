@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.dogfooding_war_room import build_dogfooding_payload  # noqa: E402
-from dealix.commercial_ops.paths import DEALIX_DOGFOODING_WAR_ROOM_JSON  # noqa: E402
+from dealix.commercial_ops.dogfooding_war_room import build_dogfooding_payload
+from dealix.commercial_ops.paths import DEALIX_DOGFOODING_WAR_ROOM_JSON
 
 
 def main() -> int:

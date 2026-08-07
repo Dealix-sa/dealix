@@ -1,0 +1,137 @@
+pageType: content
+background:
+  type: solid
+  color: "$background"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 200, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>ABOUT US  //  من نحن</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 600, 50]
+    content:
+      style: "$title"
+      text: |
+        <p>من نحن</p>
+      wrap: false
+  - elementId: body-text
+    elementType: text
+    bounds: [60, 160, 560, 140]
+    content:
+      style: "$body"
+      text: |
+        <p>Dealix هي شركة سعودية متخصصة في بناء أنظمة تشغيل الإيرادات المدعومة بالذكاء الاصطناعي. نساعد الشركات السعودية على تنمية إيراداتها وبناء ثقة عملائها والامتثال للأنظمة المحلية.</p>
+  - elementId: mission-label
+    elementType: text
+    bounds: [60, 320, 120, 24]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 2
+      wrap: false
+      text: |
+        <p>MISSION</p>
+  - elementId: mission-card
+    elementType: shape
+    bounds: [60, 350, 540, 80]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: mission-text
+    elementType: text
+    bounds: [80, 362, 500, 56]
+    content:
+      fontSize: 18
+      color: "$primary"
+      fontFamily: "alimamashuheiti"
+      lineHeight: 1.4
+      text: |
+        <p>تمكين الشركات السعودية من تحقيق نمو مستدام بالذكاء الاصطناعي</p>
+  - elementId: vision-label
+    elementType: text
+    bounds: [60, 450, 120, 24]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 2
+      wrap: false
+      text: |
+        <p>VISION</p>
+  - elementId: vision-card
+    elementType: shape
+    bounds: [60, 480, 540, 80]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: vision-text
+    elementType: text
+    bounds: [80, 492, 500, 56]
+    content:
+      fontSize: 18
+      color: "$primary"
+      fontFamily: "alimamashuheiti"
+      lineHeight: 1.4
+      text: |
+        <p>أن نكون المنصة السعودية الأولى لإدارة الإيرادات والنمو</p>
+  - elementId: side-image
+    elementType: image
+    bounds: [660, 90, 560, 580]
+    src: "/mnt/agents/output/dealix-marketing/brand/executive-saudi.jpg"
+    borderRadius: 4
+  - elementId: side-overlay
+    elementType: shape
+    bounds: [660, 90, 560, 580]
+    shapeName: rectangle
+    fill:
+      type: gradient
+      colors: ["#1B5E3B00", "#1B5E3B88"]
+      angle: 180
+    borderRadius: 4
+  - elementId: side-stat-label
+    elementType: text
+    bounds: [700, 580, 200, 20]
+    content:
+      fontSize: 12
+      color: "#FFFFFF99"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>FOUNDED IN</p>
+  - elementId: side-stat-value
+    elementType: text
+    bounds: [700, 604, 200, 40]
+    content:
+      fontSize: 36
+      color: "$white"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>2024</p>

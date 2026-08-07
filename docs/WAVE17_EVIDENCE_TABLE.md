@@ -136,7 +136,7 @@ Founder executes these 4 actions in any order:
    Verify via: `python3 scripts/dealix_dns_verify.py --domain dealix.me`
 
 4. **Merge PR #222** (~2 min)
-   https://github.com/voxc2/dealix/pull/222
+   https://github.com/Dealix-sa/dealix/pull/222
 
 After all 4 → re-run `bash scripts/dealix_market_launch_ready_verify.sh`
 → verdict should be `MARKET_LAUNCH_READY=PASS`.

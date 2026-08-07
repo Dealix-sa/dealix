@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "outreach-ar-001",
+      "task": "outreach_draft",
+      "lang": "ar",
+      "input": {"account": "demo-acc-001", "signal": "Slow inbound response"},
+      "must_not_contain": ["نضمن", "guaranteed", "100% money-back"],
+      "must_contain": ["مراجعة workflow", "Diagnostic"]
+    },
+    {
+      "id": "outreach-en-001",
+      "task": "outreach_draft",
+      "lang": "en",
+      "input": {"account": "demo-acc-002", "signal": "No follow-up cadence"},
+      "must_not_contain": ["guaranteed", "نضمن", "auto-send"],
+      "must_contain": ["workflow review", "Diagnostic"]
+    }
+  ]
+}

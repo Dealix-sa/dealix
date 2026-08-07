@@ -39,6 +39,7 @@ This directory is the execution spine for the comprehensive transformation from 
 - `10_delivery_control_tower.md`
 - `11_org_operating_system.md`
 - `12_category_dominance.md`
+- `13_revenue_ai_ops_factory_ar.md`
 
 ## Control artifacts
 
@@ -52,6 +53,7 @@ This directory is the execution spine for the comprehensive transformation from 
 - `dealix/transformation/ceo_signal_os.yaml`
 - `dealix/transformation/engineering_cutover_policy.yaml`
 - `dealix/transformation/kpi_baselines.yaml`
+- `dealix/transformation/revenue_ai_ops_factory.yaml`
 
 ## CEO Signal OS (market proof loop)
 

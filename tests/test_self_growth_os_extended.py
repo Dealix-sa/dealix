@@ -75,6 +75,7 @@ def test_internal_linking_returns_summary_issues_graph():
 # authoring the pages, and marketers.html is no longer orphan after
 # the index.html nav + footer link wiring. Any NEW finding fails
 # the test.
+# (dpo.html → dpa.html was resolved by authoring landing/dpa.html.)
 KNOWN_BROKEN_LINKS: set[tuple[str, str]] = set()
 KNOWN_ORPHAN_CORE: set[str] = set()
 

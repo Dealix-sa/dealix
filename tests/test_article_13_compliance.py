@@ -66,6 +66,11 @@ ALLOWLIST_PATHS: list[str] = [
     # demo→delivery pipelines, NOT the bare receiving endpoint.
     "api/routers/webhooks.py",
     "api/security/webhook_signatures.py",
+    # Read-only launch-status reporter: it only reports whether the
+    # CALENDLY_WEBHOOK_SECRET env var is configured (bool), it does NOT
+    # implement an automated Calendly webhook handler/pipeline. Same
+    # receive-only rationale as webhooks.py above.
+    "api/routers/founder_launch_status.py",
 ]
 
 
@@ -132,7 +137,14 @@ def test_30day_plan_file_exists():
     """The plan file documents the Article 13 boundary; if it disappears,
     we lose the audit trail."""
     plan = Path("/root/.claude/plans/vivid-baking-quokka.md")
-    if not plan.exists():
+    # Path.exists() raises PermissionError (not False) when a parent directory
+    # denies traversal — e.g. CI runs as an unprivileged user that cannot enter
+    # /root. Treat any access error as "not present" and skip.
+    try:
+        present = plan.exists()
+    except OSError:
+        present = False
+    if not present:
         pytest.skip("Plan file not present in this environment")
     text = plan.read_text(encoding="utf-8")
     assert "Article 13" in text, "Plan file must reference Article 13"

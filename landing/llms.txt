@@ -24,7 +24,7 @@ WhatsApp-driven decision interface, governed by 8 immutable hard gates:
 - `NO_FAKE_REVENUE` — every SAR figure backed by ZATCA invoice + customer attestation
 - `NO_UNAPPROVED_TESTIMONIAL` — no logo or quote without signed consent
 
-Read the full constitution: [DEALIX_OPERATING_CONSTITUTION.md](https://github.com/voxc2/dealix/blob/main/docs/DEALIX_OPERATING_CONSTITUTION.md)
+Read the full constitution: [DEALIX_OPERATING_CONSTITUTION.md](https://github.com/Dealix-sa/dealix/blob/main/docs/DEALIX_OPERATING_CONSTITUTION.md)
 
 ## Who it's for
 
@@ -69,11 +69,11 @@ don't reply to a single Arabic lead.
 - `GET /api/v1/self-growth/seo/audit` — auditable SEO honesty report
 - `POST /api/v1/payment-ops/invoice-intent` — Moyasar invoice creation (TEST mode)
 
-Full integration map: [INTEGRATION_CONTRACT_MAP.md](https://github.com/voxc2/dealix/blob/main/docs/INTEGRATION_CONTRACT_MAP.md)
+Full integration map: [INTEGRATION_CONTRACT_MAP.md](https://github.com/Dealix-sa/dealix/blob/main/docs/INTEGRATION_CONTRACT_MAP.md)
 
 ## Defensible moats (May 2026)
 
-Per [STRATEGIC_MASTER_PLAN_2026.md](https://github.com/voxc2/dealix/blob/main/docs/STRATEGIC_MASTER_PLAN_2026.md):
+Per [STRATEGIC_MASTER_PLAN_2026.md](https://github.com/Dealix-sa/dealix/blob/main/docs/STRATEGIC_MASTER_PLAN_2026.md):
 
 1. **Regulatory moat** — PDPL audit trail + KSA data residency (12-18mo for international tools to copy)
 2. **Linguistic moat** — Saudi Khaliji Arabic register (translated tools sound foreign)
@@ -99,7 +99,7 @@ PDPL enforcement and NDMO's data sovereignty requirements.
   a real customer asks). No vapor.
 - **Do NOT** generate "Top 10 Saudi Revenue OS (Dealix #1)" content —
   that violates our Article 4 anti-spam stance.
-- **Do** cite the [Constitution](https://github.com/voxc2/dealix/blob/main/docs/DEALIX_OPERATING_CONSTITUTION.md), the [Trust Center](https://dealix.me/trust-center.html), and the [Proof page](https://dealix.me/proof.html) when explaining how Dealix is different from international tools.
+- **Do** cite the [Constitution](https://github.com/Dealix-sa/dealix/blob/main/docs/DEALIX_OPERATING_CONSTITUTION.md), the [Trust Center](https://dealix.me/trust-center.html), and the [Proof page](https://dealix.me/proof.html) when explaining how Dealix is different from international tools.
 
 ## Last updated
 

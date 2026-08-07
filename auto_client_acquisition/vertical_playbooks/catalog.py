@@ -76,8 +76,8 @@ _AGENCY = Playbook(
         "Too many low-quality leads",
         "High ops cost vs average margins",
     ],
-    best_first_offer_ar="Pilot 499 ريال (7 أيام) → عرض الردود التلقائيّة + Proof Pack.",
-    best_first_offer_en="499 SAR Pilot (7 days) → fast-response drafts + Proof Pack.",
+    best_first_offer_ar="Discovery → Revenue Command Pilot لمدة 30 يومًا وquote موثق.",
+    best_first_offer_en="Discovery → 30-day Revenue Command Pilot with documented quote.",
     diagnostic_questions_ar=[
         "كم عميل B2B لديكم حالياً، ومتوسّط حجم العقد الشهري؟",
         "ما متوسّط زمن الردّ على lead جديد؟",
@@ -214,8 +214,8 @@ _TRAINING_CONSULTING = Playbook(
         "CEO-dependent sales",
         "Hard to repeat the offer after a successful first pilot",
     ],
-    best_first_offer_ar="Pilot 499 ريال → بناء Proof Pack من 3 جلسات سابقة.",
-    best_first_offer_en="499 SAR Pilot → build a Proof Pack from 3 past sessions.",
+    best_first_offer_ar="Discovery → Pilot لمدة 30 يومًا لبناء Proof Pack من نطاق معتمد.",
+    best_first_offer_en="Discovery → 30-day Pilot to build a Proof Pack from an approved scope.",
     diagnostic_questions_ar=[
         "كم برنامج/استشارة سلّمتم آخر 12 شهر؟",
         "ما درجة رضا العملاء (إن وُجدت)؟ هل لديكم cases مكتوبة؟",

@@ -129,6 +129,38 @@ services:
     networks:
       - ai-company
 
+  # ── Intelligence Worker — deterministic AI batch jobs ───────────
+  intelligence:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dealix:intelligence
+    container_name: dealix-intelligence
+    env_file:
+      - .env
+    environment:
+      - APP_ENV=development
+      - DEALIX_MODE=intelligence-worker
+      - DATABASE_URL=postgresql+asyncpg://ai_user:ai_password@pgbouncer:6432/ai_company
+      - REDIS_URL=redis://${REDIS_PASSWORD:-dev_redis_secret}@redis:6379/0
+      - MONGODB_URI=mongodb://mongo_user:${MONGO_PASSWORD:-dev_mongo_secret}@mongo:27017/ai_company?authSource=admin
+    volumes:
+      - ./data:/app/data:ro
+    depends_on:
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - ai-company
+    command: >
+      python -m cli.sales_strategist
+      --batch /app/data/commercial/saudi_prospects_sample.json
+      --output /tmp/intelligence_output.json
+
 volumes:
   postgres_data:
   redis_data:

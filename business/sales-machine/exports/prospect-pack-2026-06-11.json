@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-06-11T02:44:57.915037Z",
+  "mode": "demo",
+  "accounts": [
+    {
+      "id": "demo-001",
+      "name": "Acme Saudi",
+      "score": 87,
+      "segment": "B2B Services",
+      "next_action": "Send diagnostic offer draft"
+    },
+    {
+      "id": "demo-002",
+      "name": "Beta Clinic",
+      "score": 72,
+      "segment": "Healthcare",
+      "next_action": "Send reputation OS draft"
+    }
+  ],
+  "review_status": "pending_review",
+  "disclaimer": "Demo data. Not real accounts."
+}

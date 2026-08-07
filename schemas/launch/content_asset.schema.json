@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/content_asset.schema.json",
+  "title": "Dealix Content Asset (launch bundle)",
+  "type": "object",
+  "required": ["asset_id", "pillar", "format", "language", "hook", "target_persona", "sales_stage", "evidence_level", "approval_required"],
+  "additionalProperties": false,
+  "properties": {
+    "asset_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "pillar": { "type": "string" },
+    "format": { "enum": ["short_post", "long_post", "short_video_15s", "short_video_30s", "short_video_60s", "short_video_90s", "newsletter", "landing_page", "one_pager"] },
+    "language": { "enum": ["ar", "en"] },
+    "hook": { "type": "string", "maxLength": 200 },
+    "body": { "type": "string", "maxLength": 4000 },
+    "cta": { "type": "string", "maxLength": 200 },
+    "target_persona": { "enum": ["owner_operator", "head_of_sales", "general_manager", "spouse_partner", "skeptic", "all"] },
+    "sales_stage": { "enum": ["top_of_funnel", "mid_funnel", "bottom_of_funnel", "all"] },
+    "evidence_level": { "enum": ["L0", "L1", "L2", "L3", "L4", "L5"] },
+    "approval_required": { "type": "boolean" },
+    "claim_risk": { "enum": ["low", "medium", "high"] },
+    "publish_date_iso": { "type": "string", "format": "date" }
+  }
+}

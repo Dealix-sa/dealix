@@ -52,6 +52,16 @@ type DailyPackPayload = {
     social?: { posts?: number; cycle_weeks?: number; queue_ready_24w?: boolean };
     next_actions_ar?: string[];
   };
+  intelligence?: IntelligencePayload;
+};
+
+type IntelligencePayload = {
+  pipeline_health: number;
+  total_pipeline_sar: number;
+  weighted_pipeline_sar: number;
+  revenue_at_risk_sar: number;
+  recommended_actions: string[];
+  top_sector_signals: { sector: string; momentum: string }[];
 };
 
 export function OpsFounderCommandCenter() {
@@ -105,6 +115,14 @@ export function OpsFounderCommandCenter() {
         );
         const cockpitData = cockpitRes.data as CockpitPayload;
         setCockpit(cockpitData);
+
+        // Fetch intelligence snapshot
+        api.getIntelligenceSnapshot(adminKey).then((intelRes) => {
+          const intel = intelRes.data as IntelligencePayload;
+          setDailyPack((prev) => (prev ? { ...prev, intelligence: intel } : { intelligence: intel }));
+        }).catch(() => {
+          // Intelligence endpoint is optional; don't block the rest of the UI
+        });
         setFullOps({
           automation_readiness: cockpitData.automation_readiness,
           research_alignment: cockpitData.research_alignment,
@@ -156,6 +174,50 @@ export function OpsFounderCommandCenter() {
             {isAr ? "جاهز" : "Ready"}: {dailyPack.kpi_commercial.ready_count ?? 0} ·{" "}
             {isAr ? "معلق" : "Pending"}: {dailyPack.kpi_commercial.pending_count ?? 0}
           </p>
+        </Card>
+      )}
+
+      {dailyPack?.intelligence && (
+        <Card className="p-4 border-emerald-500/30">
+          <h2 className="font-semibold mb-2">
+            {isAr ? "ذكاء الأداء التجاري" : "Commercial Intelligence"}
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mb-3">
+            <div>
+              <p className="text-xs text-muted-foreground">{isAr ? "صحة الأنابيب" : "Pipeline health"}</p>
+              <p className="text-xl font-semibold">{dailyPack.intelligence.pipeline_health.toFixed(0)}/100</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">{isAr ? "إجمالي الأنابيب" : "Total pipeline"}</p>
+              <p className="text-xl font-semibold">SAR {dailyPack.intelligence.total_pipeline_sar.toLocaleString()}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">{isAr ? "القيمة المرجحة" : "Weighted pipeline"}</p>
+              <p className="text-xl font-semibold">SAR {dailyPack.intelligence.weighted_pipeline_sar.toLocaleString()}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">{isAr ? "إيراد معرض للخطر" : "Revenue at risk"}</p>
+              <p className="text-xl font-semibold text-red-500">SAR {dailyPack.intelligence.revenue_at_risk_sar.toLocaleString()}</p>
+            </div>
+          </div>
+          <div className="mb-3">
+            <p className="text-sm font-medium mb-1">{isAr ? "إجراءات موصى بها" : "Recommended actions"}</p>
+            <ul className="text-sm space-y-1 list-disc mr-5">
+              {dailyPack.intelligence.recommended_actions.map((action) => (
+                <li key={action}>{action}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="text-sm font-medium mb-1">{isAr ? "إشارات القطاعات" : "Sector signals"}</p>
+            <div className="flex flex-wrap gap-2 text-xs">
+              {dailyPack.intelligence.top_sector_signals.map((s) => (
+                <span key={s.sector} className="px-2 py-1 rounded-full bg-muted">
+                  {s.sector}: {s.momentum}
+                </span>
+              ))}
+            </div>
+          </div>
         </Card>
       )}
 

@@ -9,6 +9,7 @@ from fastapi import APIRouter
 
 from api.routers import (
     agent_governance,
+    agentic_enterprise,
     agents,
     ai_workforce,
     automation,
@@ -29,6 +30,7 @@ from api.routers import (
 )
 
 _ROUTERS = [
+    agentic_enterprise.router,
     agents.router,
     ai_workforce.router,
     llm_gateway_v10.router,

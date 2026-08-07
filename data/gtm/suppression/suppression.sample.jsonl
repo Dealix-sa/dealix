@@ -1,0 +1,3 @@
+{"recipient_ref": "rcpt_supp_001", "reason": "unsubscribe", "added_at": "2026-06-02T21:24:57.377177+00:00", "source": "reply", "permanent": true}
+{"recipient_ref": "rcpt_supp_002", "reason": "bounce", "added_at": "2026-06-02T21:24:57.377272+00:00", "source": "mailbox", "permanent": true}
+{"recipient_ref": "rcpt_supp_003", "reason": "complaint", "added_at": "2026-06-02T21:24:57.377283+00:00", "source": "reply", "permanent": true}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "proposal-001",
+      "task": "proposal_section",
+      "lang": "en",
+      "input": {"section": "executive_summary", "offer": "Revenue OS"},
+      "must_not_contain": ["guaranteed", "نضمن", "100%"]
+    }
+  ]
+}

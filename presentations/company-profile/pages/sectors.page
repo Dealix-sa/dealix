@@ -1,0 +1,247 @@
+pageType: content
+background:
+  type: solid
+  color: "$background"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 400, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>TARGET SECTORS  //  القطاعات المستهدفة</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      style: "$title"
+      text: |
+        <p>حلول لكل قطاع في السوق السعودي</p>
+      wrap: false
+  - elementId: s1-bg
+    elementType: shape
+    bounds: [60, 170, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: s1-icon
+    elementType: icon
+    bounds: [85, 195, 32, 32]
+    iconName: building-2
+    color: "$primary"
+  - elementId: s1-title
+    elementType: text
+    bounds: [85, 240, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>العقارات والمقاولات</p>
+  - elementId: s1-desc
+    elementType: text
+    bounds: [85, 280, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>إدارة المشاريع، مبيعات الوحدات، تحليل السوق العقاري</p>
+  - elementId: s2-bg
+    elementType: shape
+    bounds: [455, 170, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: s2-icon
+    elementType: icon
+    bounds: [480, 195, 32, 32]
+    iconName: heart-pulse
+    color: "$primary"
+  - elementId: s2-title
+    elementType: text
+    bounds: [480, 240, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>الرعاية الصحية</p>
+  - elementId: s2-desc
+    elementType: text
+    bounds: [480, 280, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>إدارة المرضى، المواعيد، التأمين، والامتثال الصحي</p>
+  - elementId: s3-bg
+    elementType: shape
+    bounds: [850, 170, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: s3-icon
+    elementType: icon
+    bounds: [875, 195, 32, 32]
+    iconName: shopping-cart
+    color: "$primary"
+  - elementId: s3-title
+    elementType: text
+    bounds: [875, 240, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>التجارة والتجزئة</p>
+  - elementId: s3-desc
+    elementType: text
+    bounds: [875, 280, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>إدارة المخزون، تجربة العملاء، التحليلات التنبؤية</p>
+  - elementId: s4-bg
+    elementType: shape
+    bounds: [60, 435, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: s4-icon
+    elementType: icon
+    bounds: [85, 460, 32, 32]
+    iconName: cpu
+    color: "$primary"
+  - elementId: s4-title
+    elementType: text
+    bounds: [85, 505, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>التقنية والبرمجيات</p>
+  - elementId: s4-desc
+    elementType: text
+    bounds: [85, 545, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>إدارة المشاريع التقنية، اشتراكات SaaS، دعم العملاء</p>
+  - elementId: s5-bg
+    elementType: shape
+    bounds: [455, 435, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: s5-icon
+    elementType: icon
+    bounds: [480, 460, 32, 32]
+    iconName: factory
+    color: "$primary"
+  - elementId: s5-title
+    elementType: text
+    bounds: [480, 505, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>الصناعة والتصنيع</p>
+  - elementId: s5-desc
+    elementType: text
+    bounds: [480, 545, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>سلاسل الإمداد، الجودة، التخطيط الإنتاجي</p>
+  - elementId: s6-bg
+    elementType: shape
+    bounds: [850, 435, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: s6-icon
+    elementType: icon
+    bounds: [875, 460, 32, 32]
+    iconName: plane
+    color: "$primary"
+  - elementId: s6-title
+    elementType: text
+    bounds: [875, 505, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>السياحة والضيافة</p>
+  - elementId: s6-desc
+    elementType: text
+    bounds: [875, 545, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>إدارة الحجوزات، تجربة الزوار، التسويق الذكي</p>

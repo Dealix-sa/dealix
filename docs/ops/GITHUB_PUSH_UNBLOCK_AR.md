@@ -1,6 +1,6 @@
 # إلغاء حظر git push (403)
 
-إذا ظهر `Permission denied to VoXc2 (403)`:
+إذا ظهر `Permission denied to Dealix-sa (403)`:
 
 ```powershell
 gh auth login -h github.com -p https -s repo

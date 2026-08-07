@@ -10,6 +10,12 @@ This file is the primary repo-specific guide for AI coding agents working in `de
 ### Token Optimization
 See `token-optimizer/` for 12 guides covering: `.claudeignore` (40-90% savings), CLAUDE.md hygiene, session management, model routing (Haiku/Sonnet/Opus), MCP discipline, subagents, hooks, prompt templates, file handling, monitoring, git hygiene, and env config. Run `bash token-optimizer/12-environment-config/apply-all.sh` to apply all settings.
 
+### Agent governance
+The canonical control room for the agent fleet is [`docs/agents/`](docs/agents/). Start with [`docs/agents/README.md`](docs/agents/README.md):
+- [`AGENT_TEAM_REGISTRY.md`](docs/agents/AGENT_TEAM_REGISTRY.md) — the 5 real sub-agents (`dealix-pm/sales/delivery/engineer/content`), the 6 agent surfaces, and the 11 non-negotiables (with their guard tests).
+- [`AGENT_PERMISSION_MATRIX.md`](docs/agents/AGENT_PERMISSION_MATRIX.md) (L0–L6) · [`AGENT_OUTPUT_CONTRACT.md`](docs/agents/AGENT_OUTPUT_CONTRACT.md) · [`AGENT_DAILY_RUNBOOK.md`](docs/agents/AGENT_DAILY_RUNBOOK.md) · [`AGENT_SECURITY_POLICY.md`](docs/agents/AGENT_SECURITY_POLICY.md) · [`TOKEN_BUDGET_POLICY.md`](docs/agents/TOKEN_BUDGET_POLICY.md) · [`PR_TRIAGE_POLICY.md`](docs/agents/PR_TRIAGE_POLICY.md).
+- Verify the fleet is governed: `make agents-audit` (CI runs `.github/workflows/agent-team-audit.yml` on every PR). Triage open PRs: `make pr-triage`.
+
 ### Repo anatomy
 - `api/` — FastAPI app entry, dependencies, middleware, 120+ routers, and schema definitions.
 - `api/routers/commercial.py` — 13 commercial chain endpoints (diagnostic→pilot→proof→payment→upsell). Skill: `@token-optimizer/02-claude-md/skills/commercial.md`
@@ -80,7 +86,7 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **Ops client pack (AR):** [docs/commercial/ops_client_pack/](docs/commercial/ops_client_pack/) — runbook + executive deck pptx
 - **Founder go-live (sell + verify + agents):** `bash scripts/founder_go_live_verify.sh` (Windows: `scripts/founder_go_live_verify.ps1`) — [FOUNDER_GO_LIVE_DAY0_AR.md](docs/ops/FOUNDER_GO_LIVE_DAY0_AR.md) · [FOUNDER_INTEGRATION_TRUTH_MATRIX_AR.md](docs/ops/FOUNDER_INTEGRATION_TRUTH_MATRIX_AR.md) · [FOUNDER_AGENT_PLAYBOOK_AR.md](docs/ops/FOUNDER_AGENT_PLAYBOOK_AR.md)
 - **Founder Operating System:** [FOUNDER_OPERATING_SYSTEM_AR.md](docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md) · **Comprehensive plan execution:** [FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md](docs/ops/FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md) · daily anchor [FOUNDER_DAILY_ANCHOR_AR.md](docs/ops/FOUNDER_DAILY_ANCHOR_AR.md) · **`python scripts/founder_comprehensive_plan_status.py`** · **CEO Master Plan:** [CEO_90_DAY_OKR_AR.md](docs/commercial/operations/CEO_90_DAY_OKR_AR.md) · **`python scripts/run_ceo_master_plan_status.py`** · **`python scripts/founder_daily_five_metrics.py`** · **`GET /api/v1/ops-autopilot/founder/ceo-master-plan`** · close tools: `phase_0_1_close_helper.py` · `gtm_conversation_log.py` · `render_diagnostic_proposal.py` · weekly retro: `founder_weekly_ceo_retro.py` · **أقوى خطة (138 مهمة):** · **`bash scripts/founder_one_command.sh`** (أمر واحد — أقصى أتمتة) · **`python scripts/verify_full_autonomous_ops_stack.py`** · **`python scripts/run_dealix_complete_autonomous_day.py`** · **`POST /api/v1/ops-autopilot/founder/complete-autonomous-day/run`** [FOUNDER_STRONGEST_PLAN_AR.md](docs/commercial/FOUNDER_STRONGEST_PLAN_AR.md) · **`python scripts/founder_strongest_plan_status.py`** · **`bash scripts/founder_weekly_loop.sh`** (Sunday gates; Windows: `.ps1`) · **`bash scripts/founder_cadence.sh`** (morning/evening/weekly) · **`bash scripts/run_founder_commercial_day.sh`** (canonical morning; Windows: `.ps1`; `--full` syncs evidence both ways) · **`bash scripts/verify_founder_ops_launch.sh`** (launch gate) · **`bash scripts/run_founder_revenue_day.sh`** (wrapper: commercial + `--with-business-now`)
-- **Founder ops UI:** `/[locale]/ops/founder` (90-min cockpit) · war-room · marketing (today + factory) · sales · partners · evidence · support — prod: `NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1` + server `DEALIX_ADMIN_API_KEY` (see `frontend/src/app/api/dealix-proxy/`)
+- **Founder ops UI:** `/[locale]/ops/founder` (90-min cockpit) · `/[locale]/ops/command-room` (unified command room) · war-room · marketing (today + factory) · sales · partners · evidence · support — prod: `NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1` + server `DEALIX_ADMIN_API_KEY` (see `frontend/src/app/api/dealix-proxy/`)
 - **Integrations:** HubSpot sync on lead capture/war-room patch (`HUBSPOT_ACCESS_TOKEN`) · Calendly webhooks → `POST /api/v1/webhooks/calendly` · `CALENDLY_URL` in booking + outreach
 - **Company ready (founder — start here):** [DEALIX_COMPANY_READY_MASTER_AR.md](docs/company/DEALIX_COMPANY_READY_MASTER_AR.md) · `bash scripts/company_ready_verify.sh`
 - **Official Railway launch:** `bash scripts/railway_prod_bootstrap.sh` (Alembic + War Room seed once) · `bash scripts/official_launch_verify.sh` → `OFFICIAL_LAUNCH_VERDICT=PASS` · env matrix: `python3 scripts/railway_launch_env_check.py` · full A–D: `bash scripts/launch_execution_railway.sh`
@@ -88,9 +94,21 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **Official commercial launch gate:** **`bash scripts/verify_dealix_commercial_go_live.sh`** (Windows: `powershell -File scripts/verify_dealix_commercial_go_live.ps1`) — prints `DEALIX_OFFICIAL_LAUNCH_VERDICT=PASS|FAIL`; optional `DEALIX_VERIFY_WITH_API=1` / `DEALIX_VERIFY_WITH_FRONTEND_BUILD=1` for live API + `npm run build`
 - **Commercial soft launch:** [COMMERCIAL_LAUNCH_CHECKLIST_AR.md](docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md) · `python3 scripts/verify_commercial_launch_ready.py` (`--with-api`, `--with-frontend-build`) · public home **`/[locale]`** (CommercialLaunchHome)
 - **GTM public funnel:** `/[locale]` (launch home) · `/dealix-diagnostic` · `/risk-score` · `/proof-pack` · `/learn/[slug]` · `/partners`
-- **GTM ops (admin key):** `/[locale]/ops` (hub) · `/ops/founder` · `/ops/war-room` · `/ops/marketing` · `/ops/sales` · `/ops/partners` · `/ops/evidence` · `/ops/approvals` — APIs: `GET /api/v1/ops-autopilot/war-room/today-pack` · `POST .../marketing/queue-approval` · `GET .../marketing/social-today` (no live LinkedIn/WhatsApp send)
+- **GTM ops (admin key):** `/[locale]/ops` (hub) · `/ops/founder` · `/ops/command-room` · `/ops/war-room` · `/ops/marketing` · `/ops/sales` · `/ops/partners` · `/ops/evidence` · `/ops/approvals` — APIs: `GET /api/v1/ops-autopilot/war-room/today-pack` · `POST .../marketing/queue-approval` · `GET .../marketing/social-today` (no live LinkedIn/WhatsApp send)
 - **UI:** `/[locale]/business-now` (8 pillars + commercial strategy — complements `/cloud` for founder decisions)
 - **Optional UI env:** `NEXT_PUBLIC_DEALIX_ADMIN_API_KEY` for operator-signals block locally
+
+### WhatsApp Client OS (client-facing, governed)
+
+A menu-driven **business workflow assistant** for clients over WhatsApp — NOT a general-purpose chatbot, and distinct from the internal founder-only `auto_client_acquisition/whatsapp_decision_bot`.
+
+- **Module:** [`auto_client_acquisition/whatsapp_client_os/`](auto_client_acquisition/whatsapp_client_os/) — `engine` (orchestrator) · `intent_router` (deterministic) · `conversation_state` (FSM) · `assessment` (10-axis readiness scan → catalog-tied recommendation) · `permission_levels`/`permission_guard` (L0–L5) · `whatsapp_policy_guard` (secrets-in-chat + unsafe-request block, wraps `channel_policy_gateway` + `safe_send_gateway.doctrine`) · `action_card_builder` · `handoff_router` · `client_profile_store` (JSONL ledgers) · `metrics` · `templates`.
+- **API (`/api/v1/whatsapp-client-os`):** `POST /message` · `POST /assessment/start` · `POST /assessment/answer` · `GET /assessment/{id}/report` · `GET /assessments` · `GET /sessions` · `GET /action-cards` · `POST /handoff/human` · `GET /metrics` · `GET /permissions/levels` · `GET /templates`.
+- **Data:** `data/whatsapp/templates.yaml` (14 keys) · `data/whatsapp/assessment_questions.yaml` (10 axes). Runtime ledgers `data/whatsapp/*.jsonl` are gitignored (client data).
+- **Schemas:** `dealix/contracts/schemas/whatsapp_*.schema.json` + `client_*.schema.json` — regenerate with `python3 scripts/export_whatsapp_client_os_schemas.py`.
+- **UI:** `/[locale]/ops/whatsapp` (+ `/sessions` · `/action-cards` · `/assessments`).
+- **Verify:** `python3 scripts/whatsapp_client_os_verify.py` → prints `DEALIX_WHATSAPP_CLIENT_OS_VERDICT=PASS|FAIL`. Reports: `python3 scripts/whatsapp_client_os_report.py` → `reports/whatsapp/`.
+- **Hard rules (tested):** no secrets in chat (secure portal links) · no cold WhatsApp/blasts/scraping/LinkedIn-automation · human approval for external sends · human handoff for ambiguity/sensitive-data/pricing/contracts/complaints · every recommendation tied to `service_catalog` + evidence level. Docs: [docs/whatsapp/](docs/whatsapp/).
 
 ### Global AI transformation (CEO / operating spine)
 
@@ -184,6 +202,17 @@ bash scripts/dealix_local_stack_verify.sh --skip-docker --skip-frontend   # ال
 
 استراتيجية التشغيل الكاملة: `docs/strategic/DEALIX_MASTER_OPERATING_MODEL_AR.md`
 
+### Revenue Execution OS (distribution — approval-first)
+
+طبقة تنفيذ الإيراد تحوّل المؤهَّل إلى سلسلة متتبَّعة: qualify → draft (quality-gated) → follow-up → proposal → proof → payment handoff → delivery handoff → renewal → win/loss → metrics. **لا توجد قدرة إرسال خارجي ولا شحن في v1.**
+
+- الوحدة: [`auto_client_acquisition/distribution_os/`](auto_client_acquisition/distribution_os/) — تعيد استخدام `governance_os`/`proof_os`/`sales_os`/`payment_ops` والكتالوج القائم (`autonomous_growth/product_catalog.py`) — **بدون اختراع أسعار**.
+- API: `/api/v1/distribution/*` ([`api/routers/distribution.py`](api/routers/distribution.py)) — كل استجابة فيها `governance_decision`؛ لا مسار send/charge.
+- يومي: `make distribution-day` · `make draft-quality` · `make distribution-metrics` → `reports/distribution/*.md`.
+- مخططات: [`schemas/`](schemas/) · بوابة أمن الوكلاء: `python scripts/agent_security_gate.py`.
+- فهرس البناء + الخارطة + فريق الوكلاء: [`docs/distribution/REVENUE_EXECUTION_OS_BUILD_AR.md`](docs/distribution/REVENUE_EXECUTION_OS_BUILD_AR.md) · واجهة المؤسس (Spec): [`docs/distribution/FOUNDER_REVENUE_CONTROL_ROOM_AR.md`](docs/distribution/FOUNDER_REVENUE_CONTROL_ROOM_AR.md).
+- عقيدة الطبقة مفروضة باختبارات: `tests/test_distribution_os_doctrine.py` + `tests/test_distribution_os_*.py`.
+
 ### Hello world test
 
 Submit a lead to the governed pipeline:
@@ -195,3 +224,7 @@ curl -X POST http://localhost:8000/api/v1/leads \
 ```
 
 This exercises intake, ICP matching, pain extraction, BANT qualification, CRM sync (skipped without HubSpot), and booking.
+
+## Future File System
+For canonical folder structure, naming conventions, and where to put new files, see:
+[docs/architecture/DEALIX_FUTURE_FILE_SYSTEM_AR.md](docs/architecture/DEALIX_FUTURE_FILE_SYSTEM_AR.md)

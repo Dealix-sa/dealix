@@ -1,0 +1,41 @@
+cases:
+  - id: out_001
+    input:
+      persona: owner_operator
+      step: first_touch
+      draft: "مرحبا [الاسم]، شفت بوستك عن [موضوع]. نعمل audit 5 أيام يكشف 10 فرص ضايعة. تحب؟"
+    expected_status: PASS
+    expected_label: "safe_first_touch"
+    notes: "Short, specific, peer tone, no pitch in the opener."
+  - id: out_002
+    input:
+      persona: head_of_sales
+      step: first_touch
+      draft: "نضمن لك ضعف الـ pipeline في 30 يوم."
+    expected_status: FAIL
+    expected_label: "guaranteed_outcome"
+    notes: "Banned: guaranteed outcome in first touch."
+  - id: out_003
+    input:
+      persona: general_manager
+      step: first_touch
+      draft: "السلام عليكم [الاسم]، مع التحية، اسمح لي..."
+    expected_status: PASS
+    expected_label: "formal_saudi_opening"
+    notes: "OK for GM persona; matches the persona's expected tone."
+  - id: out_004
+    input:
+      persona: skeptic
+      step: first_touch
+      draft: "5 أيام. تقرير واحد. لا عجبك تنسى الموضوع."
+    expected_status: PASS
+    expected_label: "skeptic_zero_fluff"
+    notes: "Matches the skeptic persona's zero-fluff expectation."
+  - id: out_005
+    input:
+      persona: owner_operator
+      step: first_touch
+      draft: "Dear Sir/Madam, we are writing to inform you of our new product."
+    expected_status: FAIL
+    expected_label: "wrong_language_for_persona"
+    notes: "Banned: English formal in Saudi B2B owner-operator context."

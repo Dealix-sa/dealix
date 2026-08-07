@@ -44,9 +44,9 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from auto_client_acquisition.bottleneck_radar.computer import compute_founder_view  # noqa: E402
-from auto_client_acquisition.service_catalog.registry import list_offerings  # noqa: E402
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from auto_client_acquisition.bottleneck_radar.computer import compute_founder_view
+from auto_client_acquisition.service_catalog.registry import list_offerings
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 # Article 4: the 8 hard gates that must always be present.
 _HARD_GATES = (

@@ -1,0 +1,26 @@
+cases:
+  - id: obj_001
+    objection: "السعر غالي."
+    expected_response_contains: ["cost of inaction", "10 فرص"]
+    expected_walk_away_signal: "wants price cut without engaging value"
+    notes: "Anchor in cost of inaction; pivot to proof metric."
+  - id: obj_002
+    objection: "عندنا CRM."
+    expected_response_contains: ["layer فوق", "لا نطلب"]
+    expected_walk_away_signal: "CRM is the answer to everything"
+    notes: "Reframe to OS layer, not replacement."
+  - id: obj_003
+    objection: "هل تضمن نتائج؟"
+    expected_response_contains: ["ما نضمن", "مقياس نجاح"]
+    expected_walk_away_signal: "money-back guarantee tied to number"
+    notes: "No guarantees; proof metric instead."
+  - id: obj_004
+    objection: "ارجع بعد شهر."
+    expected_response_contains: ["متى بالضبط"]
+    expected_walk_away_signal: "cannot name a date"
+    notes: "Specific date or walk."
+  - id: obj_005
+    objection: "ارسل عرض."
+    expected_response_contains: ["30 دقيقة discovery"]
+    expected_walk_away_signal: "insists on proposal without discovery"
+    notes: "Discovery before proposal."

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import logging
 import uuid
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Body, HTTPException
@@ -71,20 +71,20 @@ async def score_lead_body(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
 # ── Negotiation respond ───────────────────────────────────────────
 NEGOTIATION_TEMPLATES_AR = {
     "price_objection": (
-        "أفهم القلق على السعر — Pilot 7 أيام بـ 499 ريال هو أرخص طريقة "
-        "تشوف نتيجة قبل أي التزام. لو ما اقتنعتم نرجع المبلغ كامل."
+        "السعر يحدد بعد جلسة الاكتشاف وفهم الحالة والمتطلبات. بعدها نجهّز "
+        "نطاق Revenue Command Pilot لمدة 30 يومًا وquote موثقًا للمراجعة."
     ),
     "feature_missing": (
         "هذي ميزة في طريقها ضمن خطة Q3. الآن نقدر نعمل workaround يدوي خلال "
         "الـ pilot — تناسبكم نسلمه كذا ونضيف الميزة لاحقاً؟"
     ),
     "timing_objection": (
-        "متفهم. الـ pilot 7 أيام فقط، نشغله بدون تدخل من فريقكم. "
-        "تبدؤون متى يناسبكم — هذا الأسبوع أو الأسبوع القادم؟"
+        "متفهم. نبدأ بجلسة اكتشاف محدودة، ثم نحدد توقيت Pilot لمدة 30 يومًا "
+        "بما يناسب فريقكم وبعد اعتماد النطاق."
     ),
     "trust_objection": (
-        "صحيح، Dealix شركة جديدة. عشان كذا الـ pilot 499 ريال + استرجاع كامل. "
-        "أنتم تجربون قبل أي التزام. تناسبكم نبدأ الاثنين؟"
+        "صحيح، لذلك نبدأ بنطاق واحد وbaseline واضح وأقل بيانات وصلاحيات ممكنة. "
+        "لا نعد بنتيجة إيراد؛ نوثق العمل والأدلة ثم نقرر الخطوة التالية."
     ),
     "competitor_comparison": (
         "Dealix الوحيد بالعربي الخليجي + متوافق PDPL + Mada. "

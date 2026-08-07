@@ -11,7 +11,7 @@ _REPO = Path(__file__).resolve().parents[1]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from dealix.commercial_ops.founder_strongest_plan import strongest_plan_status  # noqa: E402
+from dealix.commercial_ops.founder_strongest_plan import strongest_plan_status
 
 
 def main() -> int:

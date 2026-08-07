@@ -5,15 +5,28 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from api.schemas import HealthResponse
+from core.config.deployment_identity import resolve_deployment_git_sha
 from core.config.settings import get_settings
 from core.llm import get_router as get_model_router
 
 router = APIRouter(tags=["health"])
 
 
-@router.get("/health", response_model=HealthResponse)
+def _deployment_git_sha() -> str:
+    settings = get_settings()
+    return resolve_deployment_git_sha(settings.git_sha)
+
+
+@router.get("/health", response_model=HealthResponse, include_in_schema=False)
 async def health() -> HealthResponse:
-    """Liveness + config summary."""
+    """Liveness + config summary.
+
+    Shadowed at runtime: api.main registers platform_meta.router's lighter
+    /health first, so this handler never actually serves requests through the
+    full app. `include_in_schema=False` stops /openapi.json from documenting
+    a HealthResponse (with `providers`) shape that isn't what's actually
+    live. Kept for standalone-router test mounts (see test_gtm_public_surfaces.py).
+    """
     settings = get_settings()
     providers = [p.value for p in get_model_router().available_providers()]
     return HealthResponse(
@@ -21,19 +34,19 @@ async def health() -> HealthResponse:
         version=settings.app_version,
         env=settings.app_env,
         providers=providers,
-        git_sha=settings.git_sha,
+        git_sha=_deployment_git_sha(),
     )
 
 
-@router.get("/ready")
+@router.get("/ready", include_in_schema=False)
 async def ready() -> dict[str, str]:
-    """Readiness probe."""
+    """Readiness probe. Shadowed at runtime by platform_meta.router — see /health above."""
     return {"status": "ready"}
 
 
-@router.get("/live")
+@router.get("/live", include_in_schema=False)
 async def live() -> dict[str, str]:
-    """Liveness probe."""
+    """Liveness probe. Shadowed at runtime by platform_meta.router — see /health above."""
     return {"status": "alive"}
 
 
@@ -158,8 +171,20 @@ async def healthz(deep: bool = False) -> dict[str, object]:
         "service": "dealix",
         "version": settings.app_version,
         "env": settings.app_env,
-        "git_sha": settings.git_sha,
+        "git_sha": _deployment_git_sha(),
     }
+
+
+@router.get("/readyz", include_in_schema=False)
+async def readyz() -> dict[str, str]:
+    """Readiness probe for K8s/Railway."""
+    return {"status": "ready"}
+
+
+@router.get("/livez", include_in_schema=False)
+async def livez() -> dict[str, str]:
+    """Liveness probe for K8s/Railway."""
+    return {"status": "alive"}
 
 
 @router.get("/_test_sentry", include_in_schema=False)

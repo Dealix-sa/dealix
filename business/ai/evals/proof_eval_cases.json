@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "proof-001",
+      "task": "proof_report_summary",
+      "lang": "en",
+      "input": {"client": "demo-acc-001"},
+      "must_not_contain": ["guaranteed", "نضمن"]
+    }
+  ]
+}

@@ -1,0 +1,244 @@
+pageType: content
+background:
+  type: solid
+  color: "$dark"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 400, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>REVENUE MODEL  //  نموذج الإيرادات</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      fontSize: 36
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>نموذج إيرادات واضح ومربح</p>
+      wrap: false
+  - elementId: funnel-label
+    elementType: text
+    bounds: [60, 170, 300, 24]
+    content:
+      fontSize: 14
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 2
+      wrap: false
+      text: |
+        <p>CONVERSION FUNNEL</p>
+  - elementId: funnel1
+    elementType: shape
+    bounds: [60, 210, 540, 70]
+    shapeName: trapezoid
+    fill:
+      type: solid
+      color: "#2A5A3F"
+  - elementId: funnel1-text
+    elementType: text
+    bounds: [80, 224, 300, 36]
+    content:
+      fontSize: 18
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>تشخيص مجاني</p>
+  - elementId: funnel1-price
+    elementType: text
+    bounds: [400, 224, 180, 36]
+    content:
+      fontSize: 18
+      color: "$accent"
+      fontFamily: "Liter"
+      align: right
+      wrap: false
+      text: |
+        <p>0 ريال</p>
+  - elementId: funnel2
+    elementType: shape
+    bounds: [80, 290, 500, 70]
+    shapeName: trapezoid
+    fill:
+      type: solid
+      color: "#3A7A4F"
+  - elementId: funnel2-text
+    elementType: text
+    bounds: [100, 304, 300, 36]
+    content:
+      fontSize: 18
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>بايلوت مدفوع</p>
+  - elementId: funnel2-price
+    elementType: text
+    bounds: [400, 304, 160, 36]
+    content:
+      fontSize: 18
+      color: "$accent"
+      fontFamily: "Liter"
+      align: right
+      wrap: false
+      text: |
+        <p>2,500 ريال</p>
+  - elementId: funnel3
+    elementType: shape
+    bounds: [100, 370, 460, 70]
+    shapeName: trapezoid
+    fill:
+      type: solid
+      color: "#4A9A5F"
+  - elementId: funnel3-text
+    elementType: text
+    bounds: [120, 384, 300, 36]
+    content:
+      fontSize: 18
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>غرفة القيادة</p>
+  - elementId: funnel3-price
+    elementType: text
+    bounds: [380, 384, 160, 36]
+    content:
+      fontSize: 18
+      color: "$accent"
+      fontFamily: "Liter"
+      align: right
+      wrap: false
+      text: |
+        <p>4,900/شهر</p>
+  - elementId: funnel4
+    elementType: shape
+    bounds: [120, 450, 420, 70]
+    shapeName: trapezoid
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: funnel4-text
+    elementType: text
+    bounds: [140, 464, 300, 36]
+    content:
+      fontSize: 18
+      color: "$dark"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>مؤسسي</p>
+  - elementId: funnel4-price
+    elementType: text
+    bounds: [380, 464, 140, 36]
+    content:
+      fontSize: 18
+      color: "$dark"
+      fontFamily: "Liter"
+      align: right
+      wrap: false
+      text: |
+        <p>مخصص</p>
+  - elementId: metrics-label
+    elementType: text
+    bounds: [660, 170, 300, 24]
+    content:
+      fontSize: 14
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 2
+      wrap: false
+      text: |
+        <p>KEY METRICS</p>
+  - elementId: metric1-num
+    elementType: text
+    bounds: [660, 210, 260, 60]
+    content:
+      fontSize: 44
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>58,800</p>
+  - elementId: metric1-label
+    elementType: text
+    bounds: [660, 270, 260, 24]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      wrap: false
+      text: |
+        <p>LTV (ريال سنوي)</p>
+  - elementId: metric2-num
+    elementType: text
+    bounds: [660, 320, 260, 60]
+    content:
+      fontSize: 44
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>2,500</p>
+  - elementId: metric2-label
+    elementType: text
+    bounds: [660, 380, 260, 24]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      wrap: false
+      text: |
+        <p>CAC (ريال)</p>
+  - elementId: metric3-num
+    elementType: text
+    bounds: [660, 430, 260, 60]
+    content:
+      fontSize: 44
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>23.5x</p>
+  - elementId: metric3-label
+    elementType: text
+    bounds: [660, 490, 260, 24]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      wrap: false
+      text: |
+        <p>LTV / CAC Ratio</p>
+  - elementId: metric-divider
+    elementType: shape
+    bounds: [660, 540, 540, 1]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF22"
+  - elementId: metric-note
+    elementType: text
+    bounds: [660, 560, 540, 60]
+    content:
+      fontSize: 16
+      color: "#FFFFFF77"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>نموذج إيرادات قائم على قيمة العميل مدى الحياة مع تكلفة استحواذ منخفضة</p>

@@ -51,15 +51,14 @@ async def test_journey_sector_pricing_menu_visible(async_client):
 
 
 @pytest.mark.asyncio
-async def test_journey_pricing_plans_visible(async_client):
+async def test_journey_pricing_waits_for_founder_approval(async_client):
     res = await async_client.get("/api/v1/pricing/plans")
     assert res.status_code == 200
-    plans = res.json()["plans"]
-    # Invariant: 5 public plans (starter, growth, scale, pilot_managed,
-    # laas_per_reply, laas_per_demo — but pilot_1sar is hidden)
-    assert "pilot_1sar" not in plans
-    assert "starter" in plans
-    assert "growth" in plans
+    body = res.json()
+    # Invariant: no amount is public before #917 is approved.
+    assert body["plans"] == {}
+    assert body["public_pricing_enabled"] is False
+    assert body["status"] == "founder_approval_required"
 
 
 # ── Step 3-4: Prospect submits requests ──────────────────────────
@@ -241,8 +240,8 @@ async def test_journey_health_simple(async_client):
 
 @pytest.mark.asyncio
 async def test_journey_health_deep_runs(async_client):
-    """/healthz?deep=1 returns the deep payload (used in deploy runbook smoke)."""
-    res = await async_client.get("/healthz?deep=1")
+    """/health/deep returns the deep payload (used in deploy runbook smoke)."""
+    res = await async_client.get("/health/deep")
     assert res.status_code == 200
     body = res.json()
     # Must include the 4 mandatory checks

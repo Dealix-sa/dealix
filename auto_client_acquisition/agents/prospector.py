@@ -171,6 +171,10 @@ class ProspectResult:
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "status": "research_hypotheses",
+            "demo": False,
+            "requires_source_validation": True,
+            "external_action_allowed": False,
             "use_case": self.use_case,
             "icp": self.icp,
             "count_requested": self.count_requested,

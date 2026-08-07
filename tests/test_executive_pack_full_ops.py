@@ -71,7 +71,7 @@ async def test_pack_reflects_leadops_records() -> None:
 @pytest.mark.asyncio
 async def test_pack_reflects_support_breaches() -> None:
     """Backdate a ticket and confirm SLA breach surfaces in support kpis."""
-    from datetime import datetime, timedelta, timezone
+    from datetime import datetime, timedelta
 
     from auto_client_acquisition.support_inbox.state_store import _INDEX
     from auto_client_acquisition.support_os.ticket import create_ticket

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/win_loss.schema.json",
+  "title": "WinLoss",
+  "description": "An outcome record feeding the weekly learning loop.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "company", "outcome"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^wl_[a-f0-9]+$" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "offer": { "type": "string", "description": "Catalog product id or name" },
+    "channel": { "type": "string" },
+    "outcome": { "type": "string", "enum": ["won", "lost", "no_decision"] },
+    "reason": { "type": "string" },
+    "objection": { "type": "string" },
+    "lesson": { "type": "string" },
+    "next_change": { "type": "string" },
+    "created_at": { "type": "string" }
+  }
+}

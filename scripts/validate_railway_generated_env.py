@@ -20,7 +20,15 @@ REQUIRED_API = (
     "APP_SECRET_KEY",
     "ENVIRONMENT",
     "CORS_ORIGINS",
+    "API_KEYS",
+    "DEALIX_API_KEY",
     "ADMIN_API_KEYS",
+    # The single-key alias the founder scripts and the ops proxy export to
+    # *call* the admin surface (scripts/run_founder_commercial_day.sh,
+    # verify_commercial_launch_ready.py). The server-side gate accepts it as
+    # well as ADMIN_API_KEYS, so requiring it here keeps the two in step —
+    # an environment that omits it leaves those tools with no credential.
+    "DEALIX_ADMIN_API_KEY",
     "MOYASAR_SECRET_KEY",
     "MOYASAR_WEBHOOK_SECRET",
     "POSTHOG_API_KEY",
@@ -30,8 +38,8 @@ REQUIRED_FE = (
     "NEXT_PUBLIC_API_URL",
     "NEXT_PUBLIC_SITE_URL",
     "NEXT_PUBLIC_USE_DEALIX_OPS_PROXY",
-    "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY",
     "DEALIX_ADMIN_API_KEY",
+    "DEALIX_API_KEY",
 )
 
 
@@ -106,6 +114,58 @@ def _check_file(path: Path, required: tuple[str, ...]) -> list[str]:
     return issues
 
 
+def _credential_overlap(api_env: dict[str, str]) -> set[str]:
+    service = {
+        item.strip()
+        for item in api_env.get("API_KEYS", "").split(",")
+        if item.strip()
+    }
+    admin = {
+        item.strip()
+        for item in api_env.get("ADMIN_API_KEYS", "").split(",")
+        if item.strip()
+    }
+    if api_env.get("DEALIX_API_KEY"):
+        service.add(api_env["DEALIX_API_KEY"].strip())
+    if api_env.get("DEALIX_ADMIN_API_KEY"):
+        admin.add(api_env["DEALIX_ADMIN_API_KEY"].strip())
+    return service & admin
+
+
+def _alias_membership_issues(
+    api_env: dict[str, str],
+    frontend_env: dict[str, str],
+) -> list[str]:
+    issues: list[str] = []
+    service = {
+        item.strip()
+        for item in api_env.get("API_KEYS", "").split(",")
+        if item.strip()
+    }
+    admin = {
+        item.strip()
+        for item in api_env.get("ADMIN_API_KEYS", "").split(",")
+        if item.strip()
+    }
+    for label, env in (("api", api_env), ("frontend", frontend_env)):
+        service_alias = env.get("DEALIX_API_KEY", "").strip()
+        admin_alias = env.get("DEALIX_ADMIN_API_KEY", "").strip()
+        # An absent alias must be an issue, not a skipped check: backend
+        # admin guards fail open on an empty value, so silence here would
+        # report OK for an environment that has no admin boundary at all.
+        if not service_alias:
+            issues.append(f"{label}: DEALIX_API_KEY is missing")
+        elif service_alias not in service:
+            issues.append(f"{label}: DEALIX_API_KEY is not in API_KEYS")
+        if not admin_alias:
+            issues.append(f"{label}: DEALIX_ADMIN_API_KEY is missing")
+        elif admin_alias not in admin:
+            issues.append(
+                f"{label}: DEALIX_ADMIN_API_KEY is not in ADMIN_API_KEYS"
+            )
+    return issues
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument(
@@ -118,15 +178,19 @@ def main() -> int:
     api = ROOT / ".env.railway.generated"
     fe = ROOT / ".env.railway.frontend.generated"
 
-    if args.from_railway_env:
-        n = _load_dotenv(api) + _load_dotenv(fe)
-        if n:
-            print(f"  loaded {n} keys from railway generated files (not printed)")
-        issues = _check_env(REQUIRED_API, label="api")
-        issues.extend(_check_env(REQUIRED_FE, label="frontend"))
-    else:
-        issues = _check_file(api, REQUIRED_API)
-        issues.extend(_check_file(fe, REQUIRED_FE))
+    # Generated deployment files are separate trust boundaries. Validate each
+    # file directly even in compatibility mode so backend values cannot satisfy
+    # missing frontend requirements through the process environment.
+    issues = _check_file(api, REQUIRED_API)
+    issues.extend(_check_file(fe, REQUIRED_FE))
+    api_env = _parse(api)
+    frontend_env = _parse(fe)
+    overlap = _credential_overlap(api_env)
+    if overlap:
+        issues.append(
+            f"{api.name}: service and admin credential sets overlap"
+        )
+    issues.extend(_alias_membership_issues(api_env, frontend_env))
 
     print("== validate_railway_generated_env ==")
     if issues:

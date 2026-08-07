@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import uuid
 from dataclasses import asdict
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Body, Depends, HTTPException
@@ -41,6 +41,7 @@ from auto_client_acquisition.providers.maps import (
 from auto_client_acquisition.providers.search import (
     get_search_chain as _get_search_chain,
 )
+from auto_client_acquisition.providers.search import search_with_chain
 from auto_client_acquisition.revenue_os.dedupe import suggest_dedupe_fingerprint
 from auto_client_acquisition.revenue_os.saudi_targeting_profile import (
     anti_waste_violations_for_tier1_intake,
@@ -330,7 +331,7 @@ async def discover_web_endpoint(body: dict[str, Any] = Body(...)) -> dict[str, A
     if num < 1 or num > 10:
         raise HTTPException(400, "num_out_of_range: 1..10")
 
-    chain_result = await _search_with_chain(
+    chain_result = await search_with_chain(
         query, num=num,
         site=str(site) if site else None,
         lang=str(lang) if lang else None,

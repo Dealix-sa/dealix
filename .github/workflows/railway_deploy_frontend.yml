@@ -1,14 +1,14 @@
 name: Deploy Frontend to Railway
 
 # Deploys Dealix Next.js frontend when RAILWAY_TOKEN is configured.
-# Setup: gh secret set RAILWAY_TOKEN --repo VoXc2/dealix
-# Optional: gh variable set RAILWAY_FRONTEND_SERVICE --repo VoXc2/dealix (default: web)
+# Setup: gh secret set RAILWAY_TOKEN --repo Dealix-sa/dealix
+# Optional: gh variable set RAILWAY_FRONTEND_SERVICE --repo Dealix-sa/dealix (default: web)
 
 on:
   push:
     branches: [main]
     paths:
-      - "frontend/**"
+      - "apps/web/**"
       - ".github/workflows/railway_deploy_frontend.yml"
   workflow_dispatch:
     inputs:
@@ -21,12 +21,18 @@ on:
 permissions:
   contents: read
 
+# Serialize deployments per frontend service so concurrent runs cannot
+# accept one another's deployment evidence.
+concurrency:
+  group: railway-frontend-${{ inputs.service || vars.RAILWAY_FRONTEND_SERVICE || 'web' }}
+  cancel-in-progress: false
+
 jobs:
   deploy-frontend:
     name: Deploy Frontend
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check for RAILWAY_TOKEN
         id: check_token
@@ -43,31 +49,130 @@ jobs:
       - name: Install Railway CLI
         if: steps.check_token.outputs.token_present == 'true'
         run: |
-          curl -fsSL https://railway.com/install.sh | sh
-          echo "$HOME/.railway/bin" >> $GITHUB_PATH
+          npm install -g @railway/cli
+          railway --version
 
       - name: Deploy frontend
+        id: railway_deploy
         if: steps.check_token.outputs.token_present == 'true'
-        working-directory: frontend
+        working-directory: apps/web
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
+          set -euo pipefail
           SERVICE="${{ inputs.service || vars.RAILWAY_FRONTEND_SERVICE || 'web' }}"
           echo "Deploying frontend service: $SERVICE"
-          railway up --service "$SERVICE" --detach
+          railway up --service "$SERVICE" --detach --json > /tmp/railway-frontend-up.json
+          deployment_id=$(
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
 
-      - name: Smoke /ar on dealix.me
-        if: steps.check_token.outputs.token_present == 'true'
+          payload = json.loads(Path("/tmp/railway-frontend-up.json").read_text())
+          deployment_id = payload.get("deploymentId")
+          if not deployment_id:
+              raise SystemExit("railway up did not return deploymentId")
+          print(deployment_id)
+          PY
+          )
+          echo "deployment_id=$deployment_id" >> "$GITHUB_OUTPUT"
+          echo "Captured the frontend deployment identity returned by railway up."
+
+      - name: Wait for frontend deployment
+        if: steps.railway_deploy.outcome == 'success'
+        working-directory: apps/web
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          INPUT_SERVICE: ${{ inputs.service }}
+          CONFIG_SERVICE: ${{ vars.RAILWAY_FRONTEND_SERVICE }}
+          TARGET_DEPLOYMENT_ID: ${{ steps.railway_deploy.outputs.deployment_id }}
+          EXPECTED_GIT_SHA: ${{ github.sha }}
         run: |
+          set -euo pipefail
+          SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-web}}"
+
+          for i in {1..80}; do
+            railway deployment list --service "$SERVICE" --limit 100 --json \
+              > /tmp/railway-frontend-deployments.json
+            read -r deployment_id deployment_status deployment_sha < <(
+              python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          deployments = json.loads(
+              Path("/tmp/railway-frontend-deployments.json").read_text()
+          )
+          deployment = next(
+              (
+                  item
+                  for item in deployments
+                  if item.get("id") == __import__("os").environ["TARGET_DEPLOYMENT_ID"]
+              ),
+              None,
+          )
+          if deployment is None:
+              print("MISSING MISSING MISSING")
+          else:
+              metadata = deployment.get("meta") or {}
+              commit_sha = next(
+                  (
+                      str(metadata[key]).strip().lower()
+                      for key in ("commitHash", "commitSha", "sourceCommitHash")
+                      if metadata.get(key)
+                  ),
+                  "MISSING",
+              )
+              print(
+                  deployment.get("id", "MISSING"),
+                  deployment.get("status", "MISSING"),
+                  commit_sha,
+              )
+          PY
+            )
+            if [ "$deployment_id" != "$TARGET_DEPLOYMENT_ID" ]; then
+              echo "Attempt $i: Railway has not listed this run's frontend deployment yet."
+              sleep 15
+              continue
+            fi
+            if [ "$deployment_sha" != "${EXPECTED_GIT_SHA,,}" ]; then
+              echo "Attempt $i: latest frontend deployment is not the requested commit."
+              sleep 15
+              continue
+            fi
+            echo "Attempt $i: requested frontend deployment status=$deployment_status"
+
+            case "$deployment_status" in
+              SUCCESS)
+                echo "✅ Railway reports the frontend deployment as successful."
+                exit 0
+                ;;
+              FAILED|CRASHED|REMOVED|SKIPPED)
+                echo "::error::Frontend deployment reached terminal status: $deployment_status"
+                exit 1
+                ;;
+              *)
+                sleep 15
+                ;;
+            esac
+          done
+
+          echo "::error::Frontend deployment did not become successful within 20 minutes."
+          exit 1
+
+      - name: Smoke /healthz and /ar on dealix.me
+        if: steps.railway_deploy.outcome == 'success'
+        run: |
+          set -euo pipefail
           FE="${{ vars.DEALIX_FRONTEND_BASE || 'https://dealix.me' }}"
           for i in {1..8}; do
-            code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 "$FE/ar" || echo "000")
-            echo "Attempt $i: $FE/ar -> $code"
-            if [ "$code" = "200" ]; then
-              echo "frontend /ar live"
+            health_code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 "$FE/healthz" || echo "000")
+            ar_code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 "$FE/ar" || echo "000")
+            echo "Attempt $i: $FE/healthz -> $health_code; $FE/ar -> $ar_code"
+            if [ "$health_code" = "200" ] && [ "$ar_code" = "200" ]; then
+              echo "frontend health and Arabic home are live"
               exit 0
             fi
             sleep 20
           done
-          echo "::warning::$FE/ar not 200 - update DNS from GitHub Pages to Railway Frontend"
-          exit 0
+          echo "::error::Frontend smoke failed; do not treat the deployment as live."
+          exit 1

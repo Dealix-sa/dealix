@@ -1,5 +1,13 @@
 # Dealix Frontend
 
+> ⚠️ **Not the deployed app (2026-07-06).** This directory is frozen (no
+> commits in 30+ days) and is not what CI builds or what serves
+> `dealix.me`. The live, deployed frontend is `apps/web/` — see
+> `docs/ops/TASTE_SKILL_DESIGN_AUTOMATION_PLAN.md` for the brand/pricing
+> consolidation this superseded (Finding 0, resolved in favor of the
+> system `apps/web` already serves). Kept for reference only; do not
+> deploy this directory without first confirming with the founder.
+
 Production-grade Next.js 15 dashboard for the Dealix AI RevOps platform, built for Saudi enterprise clients.
 
 ## Stack

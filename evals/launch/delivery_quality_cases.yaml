@@ -1,0 +1,106 @@
+name: delivery_quality_eval
+version: "1.0"
+description: |
+  Evaluates client delivery quality: onboarding completeness,
+  value reporting accuracy, and renewal readiness.
+
+cases:
+  - id: delivery_001
+    description: "Onboarding checklist has all required items for Revenue Leak Audit"
+    input:
+      offer_id: "revenue_leak_audit"
+    expected:
+      checklist_items_min: 5
+      required_items: ["discovery_call_notes", "access_granted", "baseline_metrics", "kickoff_confirmed"]
+
+  - id: delivery_002
+    description: "First 14 days delivery plan has weekly milestones"
+    input:
+      offer_id: "whatsapp_followup_os"
+    expected:
+      week_1_milestone_nonempty: true
+      week_2_milestone_nonempty: true
+      delivery_day_14_has_review: true
+
+  - id: delivery_003
+    description: "Value report shows before/after metrics"
+    input:
+      report_date: "2026-06-12"
+      offer_id: "whatsapp_followup_os"
+      baseline_metrics:
+        followup_rate_percent: 20
+        meetings_booked_weekly: 2
+      current_metrics:
+        followup_rate_percent: 55
+        meetings_booked_weekly: 6
+    expected:
+      shows_improvement: true
+      delta_followup_rate: 35
+      delta_meetings_weekly: 4
+
+  - id: delivery_004
+    description: "Renewal trigger fires when client in month 2 with positive metrics"
+    input:
+      delivery_month: 2
+      client_satisfaction_signal: "positive"
+      metrics_improved: true
+    expected:
+      renewal_trigger: true
+      upsell_offer_suggested: true
+
+  - id: delivery_005
+    description: "Client at risk of churn identified when no engagement for 7 days"
+    input:
+      last_client_response_days: 7
+      delivery_month: 1
+    expected:
+      churn_risk: true
+      alert_level: "HIGH"
+      recommended_action_contains: "escalation_call"
+
+  - id: delivery_006
+    description: "Value report for Managed Ops shows monthly summary"
+    input:
+      offer_id: "ai_os_smb"
+      report_frequency: "monthly"
+    expected:
+      has_monthly_summary: true
+      metrics_count_min: 5
+
+  - id: delivery_007
+    description: "Upsell from Revenue Leak Audit to WhatsApp OS is valid path"
+    input:
+      current_offer: "revenue_leak_audit"
+      client_result: "positive"
+    expected:
+      valid_upsell: true
+      suggested_next_offer: "whatsapp_followup_os"
+      suggested_price_sar: 2999
+
+  - id: delivery_008
+    description: "Renewal playbook triggers 4 weeks before contract end"
+    input:
+      contract_end_date: "2026-07-12"
+      today: "2026-06-12"
+    expected:
+      renewal_action_triggered: true
+      days_until_end: 30
+
+  - id: delivery_009
+    description: "Client onboarding completes within 3 business days"
+    input:
+      offer_id: "revenue_leak_audit"
+      onboarding_start: "2026-06-12"
+    expected:
+      expected_completion_date: "2026-06-15"
+      max_business_days: 3
+
+  - id: delivery_010
+    description: "Proof pack is assembled at deal close for case study creation"
+    input:
+      deal_status: "WON"
+      offer_id: "whatsapp_followup_os"
+      results_available: true
+    expected:
+      proof_pack_triggered: true
+      case_study_template_provided: true

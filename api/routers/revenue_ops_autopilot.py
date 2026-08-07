@@ -247,7 +247,10 @@ class WarRoomImportPayload(BaseModel):
 class SocialMarkPayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    week: int = Field(..., ge=1, le=4)
+    # Upper bound tracks social_content_queue.yaml `cycle_weeks` (currently 24);
+    # get_post_for_date can emit any week in 1..cycle_weeks, and mark must accept
+    # the same range it surfaces.
+    week: int = Field(..., ge=1, le=24)
     day: int = Field(..., ge=0, le=6)
     status: str = Field(..., pattern="^(approved|published)$")
 
@@ -1185,12 +1188,12 @@ async def ops_founder_strongest_ops(
     run_checks: bool = False,
 ) -> dict[str, Any]:
     """Autonomous strongest-plan ops snapshot — tasks today, verdict, comprehensive hooks."""
+    from typing import cast
+
     from dealix.commercial_ops.founder_strongest_ops import (
         CadenceMode,
         build_strongest_ops_snapshot,
     )
-
-    from typing import cast
     allowed: tuple[CadenceMode, ...] = ("morning", "evening", "weekly", "full")
     m: CadenceMode = cast(CadenceMode, mode) if mode in allowed else "morning"
     return build_strongest_ops_snapshot(mode=m, run_checks=run_checks)
@@ -1209,9 +1212,9 @@ async def ops_founder_strongest_ops_run(
     body: FounderStrongestOpsRunBody | None = None,
 ) -> dict[str, Any]:
     """Run strongest-plan autonomous brief + checks (no external send)."""
-    from dealix.commercial_ops.founder_strongest_ops import CadenceMode, run_strongest_ops
-
     from typing import cast
+
+    from dealix.commercial_ops.founder_strongest_ops import CadenceMode, run_strongest_ops
     req = body or FounderStrongestOpsRunBody()
     allowed: tuple[CadenceMode, ...] = ("morning", "evening", "weekly", "full")
     m: CadenceMode = cast(CadenceMode, req.mode) if req.mode in allowed else "morning"

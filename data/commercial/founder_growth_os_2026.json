@@ -1,0 +1,54 @@
+{
+  "name": "Dealix Founder Growth OS 2026",
+  "mode": "controlled_commercial_automation",
+  "north_star": {
+    "metric": "qualified discovery calls booked",
+    "daily_target": 2,
+    "weekly_target": 8
+  },
+  "created_hubspot_products": [
+    { "name": "Revenue Command Room Sprint", "hubspot_object_id": "421262249166", "price_sar": 12000 },
+    { "name": "Company Brain Sprint", "hubspot_object_id": "421258623219", "price_sar": 25000 },
+    { "name": "Follow-up Recovery Sprint", "hubspot_object_id": "421244210409", "price_sar": 9000 },
+    { "name": "AI Sales Agent Setup", "hubspot_object_id": "421304602854", "price_sar": 15000 },
+    { "name": "AI Trust and Governance OS", "hubspot_object_id": "421292028095", "price_sar": 15000 },
+    { "name": "Client Success Sprint", "hubspot_object_id": "421220773081", "price_sar": 18000 }
+  ],
+  "created_hubspot_tasks": [
+    { "subject": "Verify Clinics and Healthcare Operations Targets", "hubspot_task_id": "499864690934", "company_id": "434134859001" },
+    { "subject": "Verify Saudi Real Estate Automation Targets", "hubspot_task_id": "499861358825", "company_id": "434009642192" },
+    { "subject": "Generate first 10 Dealix sales packs", "hubspot_task_id": "499861535954", "company_id": "434074065137" },
+    { "subject": "Review HubSpot OS weekly revenue dashboard", "hubspot_task_id": "499876304118", "company_id": "434074065137" }
+  ],
+  "daily_targets": {
+    "research_accounts": 100,
+    "verified_targets": 40,
+    "sales_packs": 25,
+    "founder_approved_contacts_min": 10,
+    "founder_approved_contacts_max": 15,
+    "call_attempts_min": 3,
+    "call_attempts_max": 5,
+    "discovery_calls_min": 1,
+    "discovery_calls_max": 2,
+    "proposals": 1
+  },
+  "financial_metrics": [
+    "cash_collected",
+    "open_pipeline",
+    "weighted_pipeline",
+    "proposal_win_rate",
+    "retainer_conversion_rate",
+    "mrr",
+    "churn_risk",
+    "stalled_deals",
+    "founder_hours_per_closed_deal"
+  ],
+  "safe_automation_ladder": [
+    "read_hubspot_generate_reports",
+    "generate_sales_packs_and_drafts",
+    "create_owner_approved_products_and_tasks",
+    "create_owner_approved_notes_and_deals",
+    "queue_owner_approved_messages",
+    "send_only_after_delivery_and_consent_gates"
+  ]
+}

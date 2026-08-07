@@ -14,7 +14,7 @@ Do **not** open a public issue for security vulnerabilities.
 
 Use GitHub Security Advisories:
 
-- Repository security advisory: `https://github.com/VoXc2/dealix/security/advisories/new`
+- Repository security advisory: `https://github.com/Dealix-sa/dealix/security/advisories/new`
 
 Include:
 

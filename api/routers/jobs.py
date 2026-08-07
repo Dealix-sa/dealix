@@ -26,6 +26,8 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.security.auth_deps import get_current_user
+from api.security.tenant_scope import TenantScopeDenied, resolve_tenant_for_user
 from core.logging import get_logger
 from core.utils import generate_id, utcnow
 from db.models import BackgroundJobRecord
@@ -99,6 +101,24 @@ class OutreachBatchRequest(BaseModel):
 
 # ── Helpers ────────────────────────────────────────────────────────
 
+def _tenant_scope(user: Any, declared_tenant_id: str | None) -> str:
+    """Resolve the tenant for a jobs request, or raise 403.
+
+    Job payloads carry the business content the job operates on — lead
+    records, proposal drafts, outreach batches — so both the job's owner
+    and the right to read it come from the authenticated user, never from
+    a tenant named in the body or query string.
+    """
+    try:
+        tenant_id, _source = resolve_tenant_for_user(user, declared_tenant_id)
+    except TenantScopeDenied as denied:
+        raise HTTPException(
+            status_code=403,
+            detail={"error": denied.reason, "message": denied.detail},
+        ) from denied
+    return tenant_id
+
+
 async def _create_job_record(
     session: AsyncSession,
     job_type: str,
@@ -157,6 +177,7 @@ async def enqueue_job(
     body: EnqueueJobRequest,
     request: Request,
     session: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> JobStatusResponse:
     """
     Enqueue any supported agent job via ARQ (Redis).
@@ -164,17 +185,18 @@ async def enqueue_job(
 
     Returns job_id with 202 Accepted. Poll GET /jobs/{job_id} or stream via SSE.
     """
+    tenant_id = _tenant_scope(user, body.tenant_id)
     try:
         redis = await _get_redis_pool()
         job = await _create_job_record(
-            session, body.job_type, body.tenant_id or "default", body.payload
+            session, body.job_type, tenant_id, body.payload
         )
         await redis.enqueue_job(
             "run_agent_job",
             job_id=job.id,
             job_type=body.job_type,
             payload=body.payload,
-            tenant_id=body.tenant_id,
+            tenant_id=tenant_id,
             _job_id=job.id,
             _queue_name="dealix:arq:default",
         )
@@ -202,18 +224,20 @@ async def enqueue_lead_score(
     body: LeadScoreRequest,
     request: Request,
     session: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> JobStatusResponse:
     """Enqueue async lead scoring. Returns job record immediately (202)."""
+    tenant_id = _tenant_scope(user, body.tenant_id)
     try:
         redis = await _get_redis_pool()
-        payload = {"lead_id": body.lead_id, "tenant_id": body.tenant_id}
-        job = await _create_job_record(session, "lead_score", body.tenant_id, payload)
+        payload = {"lead_id": body.lead_id, "tenant_id": tenant_id}
+        job = await _create_job_record(session, "lead_score", tenant_id, payload)
         await redis.enqueue_job(
             "run_agent_job",
             job_id=job.id,
             job_type="lead_score",
             payload=payload,
-            tenant_id=body.tenant_id,
+            tenant_id=tenant_id,
             _job_id=job.id,
             _queue_name="dealix:arq:default",
         )
@@ -235,18 +259,20 @@ async def enqueue_proposal_draft(
     body: ProposalDraftRequest,
     request: Request,
     session: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> JobStatusResponse:
     """Enqueue LLM proposal drafting for a deal."""
+    tenant_id = _tenant_scope(user, body.tenant_id)
     try:
         redis = await _get_redis_pool()
-        payload = {"deal_id": body.deal_id, "tenant_id": body.tenant_id, "lang": body.lang}
-        job = await _create_job_record(session, "proposal_draft", body.tenant_id, payload)
+        payload = {"deal_id": body.deal_id, "tenant_id": tenant_id, "lang": body.lang}
+        job = await _create_job_record(session, "proposal_draft", tenant_id, payload)
         await redis.enqueue_job(
             "run_agent_job",
             job_id=job.id,
             job_type="proposal_draft",
             payload=payload,
-            tenant_id=body.tenant_id,
+            tenant_id=tenant_id,
             _job_id=job.id,
             _queue_name="dealix:arq:default",
         )
@@ -267,18 +293,20 @@ async def enqueue_outreach_batch(
     body: OutreachBatchRequest,
     request: Request,
     session: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> JobStatusResponse:
     """Enqueue a personalised outreach batch execution."""
+    tenant_id = _tenant_scope(user, body.tenant_id)
     try:
         redis = await _get_redis_pool()
-        payload = {"batch_id": body.batch_id, "tenant_id": body.tenant_id}
-        job = await _create_job_record(session, "outreach_batch", body.tenant_id, payload)
+        payload = {"batch_id": body.batch_id, "tenant_id": tenant_id}
+        job = await _create_job_record(session, "outreach_batch", tenant_id, payload)
         await redis.enqueue_job(
             "run_agent_job",
             job_id=job.id,
             job_type="outreach_batch",
             payload=payload,
-            tenant_id=body.tenant_id,
+            tenant_id=tenant_id,
             _job_id=job.id,
             _queue_name="dealix:arq:default",
         )
@@ -300,6 +328,7 @@ async def get_job_status(
     job_id: str,
     request: Request,
     session: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> JobStatusResponse:
     """
     Poll the status of a background job.
@@ -307,8 +336,12 @@ async def get_job_status(
 
     Lifecycle: pending → running → succeeded | failed | retrying
     """
+    tenant_id = _tenant_scope(user, None)
     result = await session.execute(
-        select(BackgroundJobRecord).where(BackgroundJobRecord.id == job_id)
+        select(BackgroundJobRecord).where(
+            BackgroundJobRecord.id == job_id,
+            BackgroundJobRecord.tenant_id == tenant_id,
+        )
     )
     job = result.scalar_one_or_none()
     if not job:
@@ -327,6 +360,7 @@ async def stream_job_status(
     session: AsyncSession = Depends(get_db),
     poll_interval_ms: int = Query(default=1000, ge=200, le=10000),
     timeout_s: int = Query(default=300, ge=10, le=600),
+    user: Any = Depends(get_current_user),
 ) -> StreamingResponse:
     """
     Server-Sent Events stream for real-time job status updates.
@@ -338,6 +372,8 @@ async def stream_job_status(
         const es = new EventSource('/api/v1/jobs/{job_id}/stream');
         es.addEventListener('succeeded', e => console.log(JSON.parse(e.data)));
     """
+    stream_tenant_id = _tenant_scope(user, None)
+
     async def event_generator() -> AsyncGenerator[str, None]:
         elapsed = 0.0
         interval = poll_interval_ms / 1000.0
@@ -357,7 +393,10 @@ async def stream_job_status(
                 # Expire cached state so next query fetches fresh data from DB
                 session.expire_all()
                 result = await session.execute(
-                    select(BackgroundJobRecord).where(BackgroundJobRecord.id == job_id)
+                    select(BackgroundJobRecord).where(
+                        BackgroundJobRecord.id == job_id,
+                        BackgroundJobRecord.tenant_id == stream_tenant_id,
+                    )
                 )
                 job: BackgroundJobRecord | None = result.scalar_one_or_none()
 
@@ -430,14 +469,18 @@ async def stream_job_status(
 )
 async def list_jobs(
     request: Request,
-    tenant_id: Annotated[str, Query(description="Tenant ID to filter by")],
+    tenant_id: Annotated[
+        str | None, Query(description="Tenant ID (super admin only)")
+    ] = None,
     limit: int = Query(default=20, le=100),
     session: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> list[JobStatusResponse]:
     """
     List the most recent background jobs for a tenant.
     عرض أحدث المهام الخلفية لمستأجر محدد.
     """
+    tenant_id = _tenant_scope(user, tenant_id)
     result = await session.execute(
         select(BackgroundJobRecord)
         .where(BackgroundJobRecord.tenant_id == tenant_id)

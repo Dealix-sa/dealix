@@ -1,0 +1,40 @@
+title: "Dealix — Real Estate Sector Solution"
+size: [1280, 720]
+theme:
+  colors:
+    primary: "#1B5E3B"
+    secondary: "#0D2818"
+    accent: "#C9A94C"
+    background: "#F5F3EF"
+    dark: "#1A1A1A"
+    text: "#1A1A1A"
+    muted: "#6B7280"
+    light: "#FAF8F5"
+    white: "#FFFFFF"
+  textStyles:
+    title:
+      fontSize: 36
+      color: "$primary"
+      fontFamily: "Liter, alimamashuheiti"
+    body:
+      fontSize: 18
+      color: "$text"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.6
+    bigNumber:
+      fontSize: 48
+      color: "$accent"
+      fontFamily: "Liter"
+    caption:
+      fontSize: 14
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+pages:
+  - pages/re-cover.page
+  - pages/re-problem.page
+  - pages/re-solution.page
+  - pages/re-features.page
+  - pages/re-roi.page
+  - pages/re-process.page
+  - pages/re-proof.page
+  - pages/re-cta.page

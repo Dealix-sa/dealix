@@ -18,7 +18,8 @@ from fastapi.testclient import TestClient
 # Build a minimal app that mounts only the sprint router — avoids the broken
 # jose/cryptography import chain in api.main that fails in this environment.
 _app = FastAPI()
-from api.routers.sprint_runner import router as _sprint_router  # noqa: E402
+from api.routers.sprint_runner import router as _sprint_router
+
 _app.include_router(_sprint_router)
 
 client = TestClient(_app)

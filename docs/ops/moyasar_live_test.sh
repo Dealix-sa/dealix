@@ -38,11 +38,11 @@ echo "   Key:      ${MOYASAR_SECRET_KEY:0:8}...  (${#MOYASAR_SECRET_KEY} chars)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 RESPONSE=$(curl -sS -X POST https://api.moyasar.com/v1/invoices \
-  -u "${MOYASAR_SECRET_KEY}:" \
+  -u "${MOYASAR_SECRET_KEY}:" `# gitleaks:allow` \
   -d "amount=${AMOUNT_HALALAS}" \
   -d "currency=SAR" \
   -d "description=${DESC}" \
-  -d "callback_url=https://voxc2.github.io/dealix/thank-you.html" \
+  -d "callback_url=https://dealix-sa.github.io/dealix/thank-you.html" \
   -d "metadata[plan]=${PLAN}" \
   -d "metadata[customer_email]=${CUSTOMER_EMAIL}" \
   -d "metadata[source]=manual_sop")

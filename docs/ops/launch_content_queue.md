@@ -1,6 +1,6 @@
 # Dealix — Launch Content Queue
 
-**Status:** Backend live at https://web-dealix.up.railway.app. Landing live at https://voxc2.github.io/dealix/
+**Status:** Backend live at https://web-dealix.up.railway.app. Landing live at https://dealix-sa.github.io/dealix/
 
 All content below is in final Arabic form, ready to paste.
 
@@ -24,7 +24,7 @@ Dealix = مندوب مبيعات AI بالعربي:
 أبحث عن 3 شركات B2B نجرب معها pilot هذا الأسبوع.
 اللي عنده leads كثيرة ويريد رد أسرع — تواصل معي.
 
-🌐 voxc2.github.io/dealix
+🌐 dealix-sa.github.io/dealix
 📅 calendly.com/sami-assiri11/dealix-demo
 
 #BuildInPublic #SaudiSaaS #AI
@@ -46,7 +46,7 @@ Commission model جاهز (10-20% من اشتراك العميل).
 خلنا نجربها على عميل واحد هذا الأسبوع.
 
 👇
-voxc2.github.io/dealix/partners.html
+dealix-sa.github.io/dealix/partners.html
 ```
 
 ---
@@ -65,7 +65,7 @@ voxc2.github.io/dealix/partners.html
 Dealix يحاول يحل هذه النقطة تحديداً بالعربي الخليجي.
 مو chatbot — مندوب مبيعات AI كامل.
 
-Demo: voxc2.github.io/dealix
+Demo: dealix-sa.github.io/dealix
 ```
 
 ---
@@ -196,7 +196,7 @@ Dealix (AI sales rep عربي) ممكن يصير طبقة تنفيذ لكم:
 
 demo 20 دقيقة ونشوف إذا يناسب شراكة تنفيذ؟
 📅 calendly.com/sami-assiri11/dealix-demo
-🤝 voxc2.github.io/dealix/partners.html
+🤝 dealix-sa.github.io/dealix/partners.html
 
 سامي
 ```
@@ -231,7 +231,7 @@ Target agencies:
 إحصائية Gartner 2025: 42% من B2B leads في السعودية تُفقد بسبب تأخر الرد.
 في شركة بحجم [الشركة]، كل lead ضائع = عشرات الآلاف سنوياً.
 Dealix يحل هذا تحديداً.
-voxc2.github.io/dealix
+dealix-sa.github.io/dealix
 سامي
 ```
 

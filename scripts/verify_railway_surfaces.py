@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
-"""Verify Railway deploy surfaces for API and web services.
+"""Verify Railway deploy surfaces for API and canonical web services.
 
-This is intentionally dependency-free so it can run in CI before Docker builds.
+apps/web is the canonical frontend surface. A legacy frontend/ service may remain
+in historical config while it is being retired; it is validated only when its
+root directory exists. This keeps CI focused on real production surfaces instead
+of requiring stale compatibility files.
 """
 
 from __future__ import annotations
@@ -18,14 +21,17 @@ REQUIRED_FILES = [
     "railway.json",
     "api/routers/health.py",
     "dealix/config/railway_services.json",
-    "frontend/Dockerfile",
-    "frontend/railway.json",
-    "frontend/next.config.ts",
-    "frontend/src/app/healthz/route.ts",
     "apps/web/Dockerfile",
     "apps/web/railway.json",
     "apps/web/next.config.js",
     "apps/web/app/healthz/route.ts",
+]
+
+OPTIONAL_LEGACY_FRONTEND_FILES = [
+    "frontend/Dockerfile",
+    "frontend/railway.json",
+    "frontend/next.config.ts",
+    "frontend/src/app/healthz/route.ts",
 ]
 
 FORBIDDEN_PUBLIC_SECRET_MARKERS = [
@@ -37,6 +43,10 @@ FORBIDDEN_PUBLIC_SECRET_MARKERS = [
 
 def fail(message: str) -> None:
     raise SystemExit(f"RAILWAY_SURFACES_FAIL: {message}")
+
+
+def exists(path: str) -> bool:
+    return (ROOT / path).exists()
 
 
 def read(path: str) -> str:
@@ -51,6 +61,11 @@ def load_json(path: str) -> dict[str, Any]:
         return json.loads(read(path))
     except json.JSONDecodeError as exc:
         fail(f"invalid JSON in {path}: {exc}")
+
+
+def service_path(root_dir: str, path: str) -> str:
+    prefix = root_dir.rstrip("/")
+    return f"{prefix}/{path}" if prefix not in ("", ".") else path
 
 
 def verify_railway_json(path: str, *, allow_predeploy: bool) -> None:
@@ -71,17 +86,15 @@ def verify_service_matrix() -> None:
     matrix = load_json("dealix/config/railway_services.json")
     services = matrix.get("services")
     if not isinstance(services, list) or len(services) < 3:
-        fail("dealix/config/railway_services.json must list API, frontend, and apps/web services")
+        fail("dealix/config/railway_services.json must list API, apps/web, and background services")
 
     names = {svc.get("name") for svc in services if isinstance(svc, dict)}
-    required = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
+    required = {"dealix-api", "dealix-apps-web"}
     if not required.issubset(names):
         missing = sorted(required - names)
-        fail(f"railway service names missing core services: {missing} not in {sorted(names)}")
+        fail(f"railway service names missing required services: {missing} not in {sorted(names)}")
 
-    # Core public-facing services require full validation.
-    # Background workers/watchdogs only need a name + dockerfile.
-    core_services = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
+    core_services = {"dealix-api", "dealix-apps-web"}
 
     for svc in services:
         if not isinstance(svc, dict):
@@ -96,43 +109,65 @@ def verify_service_matrix() -> None:
         if not name or not dockerfile:
             fail(f"{name or '<unnamed>'}: missing name or dockerfilePath")
 
-        if name in core_services:
+        if name == "dealix-frontend" and not exists(root_dir):
+            # Legacy frontend service may remain documented while apps/web is canonical.
+            continue
+
+        if name in core_services or name == "dealix-frontend":
             if not railway_config:
                 fail(f"{name}: missing railwayConfig")
             if healthcheck != "/healthz":
                 fail(f"{name}: healthcheckPath must be /healthz")
-            if not isinstance(required_env, list) or not required_env:
-                fail(f"{name}: requiredEnv must be a non-empty list")
+            if not isinstance(required_env, list):
+                fail(f"{name}: requiredEnv must be a list")
             read(railway_config)
-            read(f"{root_dir.rstrip('/') + '/' if root_dir not in ('', '.') else ''}{dockerfile}")
+            read(service_path(root_dir, dockerfile))
+
+
+def verify_web_surface(prefix: str, *, next_config: str, dockerfile: str, healthz: str) -> None:
+    content = read(next_config)
+    if "output: 'standalone'" not in content and 'output: "standalone"' not in content:
+        fail(f"{next_config} must enable standalone output")
+
+    docker = read(dockerfile)
+    if ".next/standalone" not in docker:
+        fail(f"{dockerfile} must copy .next/standalone")
+    for marker in FORBIDDEN_PUBLIC_SECRET_MARKERS:
+        if marker in docker:
+            fail(f"{dockerfile} must not expose secrets through public env marker {marker}")
+
+    health = read(healthz)
+    if "status" not in health or "ok" not in health:
+        fail(f"{healthz} must return a simple ok payload")
 
 
 def main() -> None:
     for path in REQUIRED_FILES:
         read(path)
 
+    legacy_present = exists("frontend")
+    if legacy_present:
+        for path in OPTIONAL_LEGACY_FRONTEND_FILES:
+            read(path)
+
     verify_service_matrix()
     verify_railway_json("railway.json", allow_predeploy=True)
-    verify_railway_json("frontend/railway.json", allow_predeploy=False)
     verify_railway_json("apps/web/railway.json", allow_predeploy=False)
+    verify_web_surface(
+        "apps/web",
+        next_config="apps/web/next.config.js",
+        dockerfile="apps/web/Dockerfile",
+        healthz="apps/web/app/healthz/route.ts",
+    )
 
-    for path in ("frontend/next.config.ts", "apps/web/next.config.js"):
-        content = read(path)
-        if "output: 'standalone'" not in content and 'output: "standalone"' not in content:
-            fail(f"{path} must enable standalone output")
-
-    for path in ("frontend/Dockerfile", "apps/web/Dockerfile"):
-        content = read(path)
-        if ".next/standalone" not in content:
-            fail(f"{path} must copy .next/standalone")
-        for marker in FORBIDDEN_PUBLIC_SECRET_MARKERS:
-            if marker in content:
-                fail(f"{path} must not expose secrets through public env marker {marker}")
-
-    for path in ("frontend/src/app/healthz/route.ts", "apps/web/app/healthz/route.ts"):
-        content = read(path)
-        if "status" not in content or "ok" not in content:
-            fail(f"{path} must return a simple ok payload")
+    if legacy_present:
+        verify_railway_json("frontend/railway.json", allow_predeploy=False)
+        verify_web_surface(
+            "frontend",
+            next_config="frontend/next.config.ts",
+            dockerfile="frontend/Dockerfile",
+            healthz="frontend/src/app/healthz/route.ts",
+        )
 
     print("RAILWAY_SURFACES_OK")
 

@@ -52,10 +52,12 @@ list_offerings = _REGISTRY_NS["list_offerings"]
 
 
 # ── Test 1 ────────────────────────────────────────────────────────────
-def test_registry_has_exactly_7_offerings():
-    """Article 11: catalog is the canonical 7 offerings."""
-    assert len(OFFERINGS) == 7, f"expected 7, got {len(OFFERINGS)}"
-    assert len(SERVICE_IDS) == 7, "duplicate service_id in registry"
+def test_registry_has_exactly_17_offerings():
+    """Article 11: catalog is 7 core-funnel + 10 Enterprise Transformation OS."""
+    assert len(OFFERINGS) == 17, f"expected 17, got {len(OFFERINGS)}"
+    assert len(SERVICE_IDS) == 17, "duplicate service_id in registry"
+    tx = [o for o in OFFERINGS if o.customer_journey_stage == "transformation"]
+    assert len(tx) == 10, f"expected 10 transformation offerings, got {len(tx)}"
 
 
 # ── Test 2 ────────────────────────────────────────────────────────────
@@ -87,7 +89,7 @@ def test_bilingual_names_present():
 
 # ── Test 4 ────────────────────────────────────────────────────────────
 def test_no_guaranteed_language_anywhere():
-    """Article 8: forbidden tokens 'guaranteed', 'نضمن', 'ROI guaranteed'."""
+    """Article 8: block outcome guarantees in truth and public snapshots."""
     forbidden = [
         re.compile(r"\bguaranteed?\b", re.IGNORECASE),
         re.compile(r"\bguarantee\b", re.IGNORECASE),
@@ -103,20 +105,31 @@ def test_no_guaranteed_language_anywhere():
             m = pat.search(text_to_scan)
             assert m is None, f"{o.id}: forbidden token '{m.group(0)}' present"
 
+    repo_root = Path(__file__).resolve().parent.parent
+    public_snapshots = (
+        "apps/web/lib/service-catalog-snapshot.ts",
+        "landing/assets/data/services-catalog.json",
+        "scripts/dealix_pilot_brief.py",
+    )
+    for relative_path in public_snapshots:
+        snapshot = (repo_root / relative_path).read_text(encoding="utf-8")
+        for pat in forbidden:
+            m = pat.search(snapshot)
+            assert m is None, (
+                f"{relative_path}: forbidden token '{m.group(0)}' present"
+            )
+
 
 # ── Test 5 ────────────────────────────────────────────────────────────
-def test_price_ladder_ascending_for_paid_one_time_services():
-    """Free → 499 (Sprint) → 1500 (Data-to-Revenue) one-time pricing ladder."""
-    one_time_paid = [
-        o for o in OFFERINGS if o.price_unit == "one_time" and o.price_sar > 0
-    ]
-    prices = [o.price_sar for o in one_time_paid]
-    assert prices == sorted(prices), f"one-time prices not ascending: {prices}"
-    # Specifically: Sprint must be cheaper than Data-to-Revenue
-    sprint = get_offering("revenue_proof_sprint_499")
-    d2r = get_offering("data_to_revenue_pack_1500")
-    assert sprint is not None and d2r is not None
-    assert sprint.price_sar < d2r.price_sar
+def test_first_paid_motion_is_30_day_quote_only_pilot():
+    pilot = get_offering("revenue_command_pilot_30d")
+    assert pilot is not None
+    assert pilot.name_en == "Revenue Command Pilot — 30 days"
+    assert pilot.duration_days == 30
+    assert pilot.price_sar == 0
+    assert pilot.price_unit == "custom"
+    assert pilot.commercial_status == "quote_only"
+    assert get_offering("revenue_proof_sprint_499") is None
 
 
 # ── Test 6 ────────────────────────────────────────────────────────────
@@ -146,7 +159,7 @@ def test_every_offering_lists_relevant_hard_gates():
 # ── Test 8 ────────────────────────────────────────────────────────────
 def test_get_offering_lookup_works():
     """Helper function returns correct offering by id, None for unknown."""
-    assert get_offering("revenue_proof_sprint_499") is not None
+    assert get_offering("revenue_command_pilot_30d") is not None
     assert get_offering("free_mini_diagnostic") is not None
     assert get_offering("agency_partner_os") is not None
     assert get_offering("nonexistent_id") is None
@@ -154,3 +167,44 @@ def test_get_offering_lookup_works():
     # SERVICE_IDS frozenset must match
     for o in OFFERINGS:
         assert o.id in SERVICE_IDS
+
+
+# ── Commercial trust regression ──────────────────────────────────────
+def test_no_open_ended_outcome_or_free_work_promises():
+    """#917: catalog language must not guarantee customer outcomes or endless credits."""
+    forbidden = [
+        re.compile(r"work for free", re.IGNORECASE),
+        re.compile(r"work until we do", re.IGNORECASE),
+        re.compile(r"free months?", re.IGNORECASE),
+        re.compile(r"نشتغل بدون مقابل"),
+        re.compile(r"نواصل العمل حتى"),
+        re.compile(r"اشتراكان مجانيان"),
+        re.compile(r"شهر مجاني"),
+        re.compile(r"\+20% reply-rate", re.IGNORECASE),
+        re.compile(r"40%\+ of decision time", re.IGNORECASE),
+        re.compile(r"\+٢٠٪"),
+        re.compile(r"٤٠٪\+"),
+    ]
+    catalog_text = "\n".join(
+        " ".join(
+            (
+                offering.kpi_commitment_ar,
+                offering.kpi_commitment_en,
+                offering.refund_policy_ar,
+                offering.refund_policy_en,
+            )
+        )
+        for offering in OFFERINGS
+    )
+    repo_root = Path(__file__).resolve().parent.parent
+    public_snapshots = "\n".join(
+        (repo_root / path).read_text(encoding="utf-8")
+        for path in (
+            "apps/web/lib/service-catalog-snapshot.ts",
+            "landing/assets/data/services-catalog.json",
+            "scripts/dealix_pilot_brief.py",
+        )
+    )
+    for pattern in forbidden:
+        assert pattern.search(catalog_text) is None, pattern.pattern
+        assert pattern.search(public_snapshots) is None, pattern.pattern

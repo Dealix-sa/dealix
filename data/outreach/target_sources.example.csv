@@ -1,0 +1,8 @@
+source_name,source_type,source_url,trust_level,notes
+Saudi Chamber of Commerce,directory,https://www.csc.org.sa,high,Public B2B directory
+MCIT Licensed Companies,registry,https://www.mcit.gov.sa,high,Government registry
+Saudi Open Data,open_data,https://data.gov.sa,high,Public datasets
+LinkedIn Company Pages,social,https://www.linkedin.com,medium,Manual research only
+Google Maps Business Listings,directory,https://maps.google.com,medium,Public business info
+Industry Event Attendees,event,https://example-event.sa,medium,Public attendee lists
+Referral Partner,referral,,high,Warm introduction

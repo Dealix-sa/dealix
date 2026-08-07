@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/renewal.schema.json",
+  "title": "RenewalSchedule",
+  "description": "A recurring-billing renewal record. Owned by payment_ops.renewal_scheduler; reused (not duplicated) by distribution_os.renewal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schedule_id", "customer_id", "status"],
+  "properties": {
+    "schedule_id": { "type": "string", "pattern": "^rnw_[a-f0-9]+$" },
+    "customer_id": { "type": "string" },
+    "plan": { "type": "string" },
+    "amount_sar": { "type": "integer", "minimum": 0 },
+    "cadence_days": { "type": "integer", "minimum": 1 },
+    "next_attempt_at": { "type": "string" },
+    "last_paid_at": { "type": "string" },
+    "cycle_count": { "type": "integer", "minimum": 0 },
+    "status": { "type": "string", "enum": ["scheduled", "awaiting_founder", "confirmed", "skipped", "failed", "auto_charged"] },
+    "auto_charge_eligible": { "type": "boolean" },
+    "notes": { "type": "string" },
+    "created_at": { "type": "string" }
+  }
+}

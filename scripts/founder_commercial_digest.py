@@ -11,13 +11,13 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from dealix.commercial_ops.daily_pack import write_daily_pack_index  # noqa: E402
-from dealix.commercial_ops.digest import (  # noqa: E402
+from dealix.commercial_ops.daily_pack import write_daily_pack_index
+from dealix.commercial_ops.digest import (
     build_commercial_digest,
     render_digest_markdown,
     write_digest_file,
 )
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 
 def main() -> int:

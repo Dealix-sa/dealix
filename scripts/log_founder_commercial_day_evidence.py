@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.evidence_append import log_founder_commercial_day_if_needed  # noqa: E402
+from dealix.commercial_ops.evidence_append import log_founder_commercial_day_if_needed
 
 
 def main() -> int:

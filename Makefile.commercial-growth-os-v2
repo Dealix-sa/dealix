@@ -1,0 +1,10 @@
+.PHONY: commercial-growth-os commercial-growth-verify commercial-growth-test
+
+commercial-growth-os:
+	python scripts/commercial/run_commercial_growth_os.py
+
+commercial-growth-verify:
+	python scripts/commercial/verify_commercial_growth_os.py
+
+commercial-growth-test:
+	python -m pytest -q tests/test_commercial_growth_os_v2.py
