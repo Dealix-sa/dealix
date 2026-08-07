@@ -1,4 +1,5 @@
 from pathlib import Path
+
 required = [
  'deployment/PRODUCTION_DEPLOYMENT_RUNBOOK_AR.md','deployment/ENVIRONMENT_CONTRACT.md','db/schema.sql',
  'api/openapi/dealix-leads.openapi.json','partners/PARTNER_PROGRAM_AR.md','finance/UNIT_ECONOMICS_MODEL_AR.md',

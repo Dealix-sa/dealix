@@ -1,5 +1,5 @@
-import { loadAccounts, loadOutreachQueue, pendingReviewCount } from "@/lib/crm/crm";
 import { PipelineSummary } from "@/components/crm/PipelineSummary";
+import { loadAccounts, loadOutreachQueue, pendingReviewCount } from "@/lib/crm/crm";
 
 export const metadata = { title: "Operator — Dealix" };
 export const dynamic = "force-static";
@@ -29,35 +29,38 @@ export default function OperatorPage() {
   const top5 = [...accounts].sort((a, b) => b.score - a.score).slice(0, 5);
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-12">
-      <header className="mb-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Operator console</h1>
-        <p className="mt-2 text-neutral-600">Founder's daily cockpit. No autosend. Everything queues for review.</p>
-      </header>
-
-      <PipelineSummary accounts={accounts} />
-
-      <section className="mt-8 grid gap-5 md:grid-cols-3">
-        <Stat label="Drafts pending review" value={pending} link="/review-queue" />
-        <Stat label="Follow-ups due / overdue" value={dueToday} link="/followups" />
-        <Stat label="Accounts in CRM" value={accounts.length} link="/crm" />
+    <main>
+      <section>
+        <p className="eyebrow">Operator console</p>
+        <h1>لوحة المشغّل · Operator console</h1>
+        <p className="stat-label">كوكبيت المؤسس اليومي — لا إرسال تلقائي، كل شيء ينتظر المراجعة. · No autosend; everything queues for review.</p>
       </section>
 
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold">Top 5 accounts</h2>
-        <ul className="mt-3 space-y-2 text-sm">
+      <section className="card">
+        <PipelineSummary accounts={accounts} />
+      </section>
+
+      <section className="grid-3">
+        <Stat label="مسودات بانتظار المراجعة · Drafts pending" value={pending} link="/crm/review" />
+        <Stat label="متابعات مستحقة · Follow-ups due" value={dueToday} link="/crm/followups" />
+        <Stat label="حسابات في الـCRM · Accounts" value={accounts.length} link="/crm" />
+      </section>
+
+      <section className="card">
+        <h3>أعلى 5 حسابات · Top 5 accounts</h3>
+        <ul style={{ listStyle: "none", padding: 0, marginTop: "var(--sp-4)" }}>
           {top5.map((a) => (
-            <li key={a.id} className="flex items-center justify-between rounded-xl border border-neutral-200 p-3">
-              <a href={`/crm/accounts/${a.id}`} className="font-medium hover:underline">{a.name}</a>
-              <span className="text-neutral-600">score {a.score} · {a.stage}</span>
+            <li key={a.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
+              <a href={`/crm/accounts/${a.id}`}>{a.name}</a>
+              <span className="stat-label">score {a.score} · {a.stage}</span>
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="mt-10 grid gap-6 md:grid-cols-2">
-        <CommandBlock title="Daily commands" commands={DAILY_COMMANDS} />
-        <CommandBlock title="Weekly commands" commands={WEEKLY_COMMANDS} />
+      <section className="grid-2">
+        <CommandBlock title="أوامر يومية · Daily commands" commands={DAILY_COMMANDS} />
+        <CommandBlock title="أوامر أسبوعية · Weekly commands" commands={WEEKLY_COMMANDS} />
       </section>
     </main>
   );
@@ -65,25 +68,25 @@ export default function OperatorPage() {
 
 function Stat({ label, value, link }: { label: string; value: number; link: string }) {
   return (
-    <a href={link} className="block rounded-2xl border border-neutral-200 bg-white p-5 hover:border-neutral-300">
-      <p className="text-xs uppercase tracking-wide text-neutral-500">{label}</p>
-      <p className="mt-1 text-3xl font-semibold">{value}</p>
+    <a href={link} className="card" style={{ display: "block", textAlign: "center" }}>
+      <div className="stat-value">{value}</div>
+      <p className="stat-label">{label}</p>
     </a>
   );
 }
 
 function CommandBlock({ title, commands }: { title: string; commands: { label: string; cmd: string }[] }) {
   return (
-    <div className="rounded-2xl border border-neutral-200 p-5">
-      <h3 className="text-lg font-semibold">{title}</h3>
-      <ul className="mt-3 space-y-3 text-sm">
+    <article className="card">
+      <h3>{title}</h3>
+      <ul style={{ listStyle: "none", padding: 0, marginTop: "var(--sp-3)" }}>
         {commands.map((c) => (
-          <li key={c.cmd}>
-            <p className="text-neutral-700">{c.label}</p>
-            <pre className="mt-1 overflow-x-auto rounded-lg bg-neutral-900 p-2 text-xs text-neutral-100">{c.cmd}</pre>
+          <li key={c.cmd} style={{ marginBottom: "var(--sp-3)" }}>
+            <p className="stat-label">{c.label}</p>
+            <pre style={{ marginTop: 4, overflowX: "auto", borderRadius: 8, background: "rgba(0,0,0,.35)", padding: "8px 10px", fontSize: ".78rem" }}>{c.cmd}</pre>
           </li>
         ))}
       </ul>
-    </div>
+    </article>
   );
 }

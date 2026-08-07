@@ -1,0 +1,101 @@
+{
+  "generated_by": "Dealix Strategic Command Center OS",
+  "mode": "draft_only",
+  "executive_verdict": "Ready for founder-led commercial execution after manual review.",
+  "north_star": {
+    "metric": "qualified discovery calls booked",
+    "daily_target": 2,
+    "weekly_target": 8
+  },
+  "lanes": [
+    {
+      "id": "revenue_war_room",
+      "title": "Revenue War Room",
+      "status": "active",
+      "primary_question": "What revenue action must move today?",
+      "daily_actions": [
+        "Review hot opportunities",
+        "Review overdue follow-ups",
+        "Prepare one scoped proposal",
+        "Protect price by reducing scope instead of discounting"
+      ]
+    },
+    {
+      "id": "targeting_engine",
+      "title": "Targeting Engine",
+      "status": "active",
+      "primary_question": "Which sector wedge gives the best chance today?",
+      "daily_actions": [
+        "Research 100 companies",
+        "Verify 40 targets",
+        "Draft 25 personalized messages",
+        "Manually approve 10 to 15 contacts"
+      ]
+    },
+    {
+      "id": "sales_agent_os",
+      "title": "AI Sales Agent OS",
+      "status": "guarded",
+      "primary_question": "What should the authorized sales assistant say next?",
+      "daily_actions": [
+        "Generate company-specific sales pack",
+        "Prepare objections",
+        "Prepare negotiation guardrails",
+        "Require approval before external use"
+      ]
+    },
+    {
+      "id": "company_brain",
+      "title": "Company Brain",
+      "status": "active",
+      "primary_question": "What does the CEO need to decide today?",
+      "daily_actions": [
+        "Review daily CEO decision",
+        "Review commercial memory",
+        "Review client risk",
+        "Update future radar"
+      ]
+    },
+    {
+      "id": "client_delivery_os",
+      "title": "Client Delivery OS",
+      "status": "ready",
+      "primary_question": "What proof must be delivered for clients?",
+      "daily_actions": [
+        "Review scope cards",
+        "Review acceptance criteria",
+        "Update proof pack",
+        "Identify renewal opportunity"
+      ]
+    },
+    {
+      "id": "safety_trust_gates",
+      "title": "Safety and Trust Gates",
+      "status": "locked",
+      "primary_question": "What must remain blocked until approved?",
+      "daily_actions": [
+        "Keep live outbound disabled",
+        "Check opt-out and suppression state",
+        "Check forbidden claims",
+        "Check identity transparency"
+      ]
+    }
+  ],
+  "daily_numbers": {
+    "research_companies": 100,
+    "verify_targets": 40,
+    "draft_messages": 25,
+    "manual_contacts": "10-15",
+    "call_attempts": "3-5",
+    "discovery_calls": "1-2",
+    "proposals": 1
+  },
+  "service_stack": [
+    "Revenue Command Room OS",
+    "Company Brain OS",
+    "AI Sales Agent OS",
+    "Follow-up Recovery OS",
+    "AI Trust and Governance OS",
+    "Client Delivery OS"
+  ]
+}

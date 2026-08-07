@@ -1,4 +1,5 @@
 import argparse
+
 p=argparse.ArgumentParser()
 p.add_argument('--pilots',type=int,default=5)
 p.add_argument('--pilot-price',type=float,default=499)

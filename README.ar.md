@@ -5,7 +5,7 @@
 ### Dealix نظام تشغيل أعمال بالذكاء الاصطناعي للشركات السعودية. أول مدخل تجاري له هو الإيرادات + الإثبات + القيادة، لكن بنيته بعيدة المدى تغطي قلب تشغيل الشركة: النمو، العملاء، التسليم، الدعم، المالية، الحوكمة، المعرفة، والقيادة التنفيذية.
 ### راجع [مصدر الحقيقة للمنصة](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md). Revenue OS هو أول مدخل تجاري داخل منصة Dealix Business OS الأوسع.
 
-[![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
+[![CI](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml)
 [![الرخصة: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 

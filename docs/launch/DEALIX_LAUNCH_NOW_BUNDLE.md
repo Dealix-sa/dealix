@@ -89,7 +89,7 @@ POSTHOG_API_KEY=phc_<الـ key الجديد>
 POSTHOG_HOST=https://us.i.posthog.com
 
 # ── CORS (لـ GitHub Pages + future domain) ────────────
-CORS_ORIGINS=https://voxc2.github.io,https://dealix.sa,https://www.dealix.sa,http://localhost:3000
+CORS_ORIGINS=https://dealix-sa.github.io,https://dealix.sa,https://www.dealix.sa,http://localhost:3000
 
 # ── Calendly ──────────────────────────────────────────
 CALENDLY_URL=https://calendly.com/sami-assiri11/dealix-demo
@@ -280,7 +280,7 @@ Lead | Company | Segment | Source | LinkedIn | Email | Phone | Status | Last Tou
 يرد على leads خلال 45 ثانية، يؤهّل BANT، يحجز demos.
 Lucidya رائدة CXM — فريقك يستحق هذا الدعم.
 عرض: pilot بـ 1 ريال × 7 أيام.
-voxc2.github.io/dealix
+dealix-sa.github.io/dealix
 تستحق 20 دقيقة demo؟
 ```
 
@@ -302,7 +302,7 @@ Lucidya تقود سوق CXM في المنطقة، وفريق BDR عندكم يس
 الثلاثاء 10 ص أو الخميس 2 ظ؟
 
 📅 https://calendly.com/sami-assiri11/dealix-demo
-🌐 https://voxc2.github.io/dealix/
+🌐 https://dealix-sa.github.io/dealix/
 
 شاكر وقتك،
 سامي
@@ -344,7 +344,7 @@ Lucidya تقود سوق CXM في المنطقة، وفريق BDR عندكم يس
 إحصائية Gartner 2025: 42% من B2B leads في السعودية تُفقد بسبب تأخر الرد.
 في شركة بحجم Lucidya، كل lead ضائع = عشرات الآلاف سنوياً.
 Dealix يحل هذا تحديداً — 45 ثانية، 24/7.
-رابط الباقات: voxc2.github.io/dealix/pricing.html
+رابط الباقات: dealix-sa.github.io/dealix/pricing.html
 سامي
 ```
 

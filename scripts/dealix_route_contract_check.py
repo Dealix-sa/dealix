@@ -1,4 +1,5 @@
 from pathlib import Path
+
 routes=list(Path('frontend/src/app/api').glob('**/route.ts')) if Path('frontend/src/app/api').exists() else []
 print('# API Route Contract')
 for r in routes:

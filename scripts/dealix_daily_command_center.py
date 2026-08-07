@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-from pathlib import Path
+import csv
+import json
 from datetime import date
-import csv, json
+from pathlib import Path
 
 prospects = Path('data/prospects/scored_prospects.csv')
 report_dir = Path('reports/daily')

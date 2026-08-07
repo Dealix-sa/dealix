@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Verify the founder operating system files that keep Dealix production-ready.
 
-The check is dependency-free and focuses on repo governance, deploy safety,
-incident response, and evidence discipline.
+apps/web is the canonical frontend. Legacy frontend/ files are optional and are
+checked only if the directory exists.
 """
 
 from __future__ import annotations
@@ -14,7 +14,6 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = {
     "deployment": [
         "railway.json",
-        "frontend/railway.json",
         "apps/web/railway.json",
         "dealix/config/railway_services.json",
         "scripts/verify_railway_surfaces.py",
@@ -42,6 +41,11 @@ REQUIRED_FILES = {
     ],
 }
 
+OPTIONAL_LEGACY_FRONTEND_FILES = [
+    "frontend/railway.json",
+    "frontend/Dockerfile",
+]
+
 FORBIDDEN_MARKERS = [
     "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY",
     "NEXT_PUBLIC_ADMIN_API_KEY",
@@ -52,6 +56,10 @@ FORBIDDEN_MARKERS = [
 
 def fail(message: str) -> None:
     raise SystemExit(f"FOUNDER_OS_FAIL: {message}")
+
+
+def exists(path: str) -> bool:
+    return (ROOT / path).exists()
 
 
 def read(path: str) -> str:
@@ -67,12 +75,18 @@ def main() -> None:
             read(path)
         print(f"FOUNDER_OS_GROUP_OK {group} files={len(paths)}")
 
+    if exists("frontend"):
+        for path in OPTIONAL_LEGACY_FRONTEND_FILES:
+            read(path)
+
     checked_paths = [
-        "frontend/Dockerfile",
         "apps/web/Dockerfile",
         ".env.example",
         "docs/ops/RAILWAY_SERVICE_ENV_MATRIX_AR.md",
     ]
+    if exists("frontend/Dockerfile"):
+        checked_paths.append("frontend/Dockerfile")
+
     for path in checked_paths:
         content = read(path)
         for marker in FORBIDDEN_MARKERS:

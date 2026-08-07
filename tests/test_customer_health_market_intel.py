@@ -5,18 +5,17 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta
 
 from dealix.commercial.customer_health import (
-    CustomerHealthEngine,
-    HealthInput,
     HEALTH_TIERS,
     SECTOR_BENCHMARKS,
+    CustomerHealthEngine,
+    HealthInput,
 )
 from dealix.commercial.market_intelligence import (
-    MarketIntelligenceEngine,
     SAUDI_MARKET_SIGNALS,
     SECTOR_INTELLIGENCE,
+    MarketIntelligenceEngine,
 )
 from dealix.commercial.onboarding import OnboardingOrchestrator
-
 
 # ── Customer Health Scoring ──────────────────────────────────────────
 

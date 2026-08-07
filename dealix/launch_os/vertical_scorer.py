@@ -241,7 +241,7 @@ if __name__ == "__main__":
     print(f"Vertical scorer doctests: {results.attempted} run, {results.failed} failed")
 
     ranked = rank_verticals()
-    print(f"\nTop 5 verticals:")
+    print("\nTop 5 verticals:")
     for v in ranked[:5]:
         print(f"  {v.sector:<25} score={v.total_score}")
     print(f"\nRecommended entry wedge: {top_wedge().sector}")

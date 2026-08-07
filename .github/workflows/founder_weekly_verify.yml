@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyyaml pytest
+      - run: pip install pyyaml pytest pytest-timeout
       - name: Founder weekly loop (OS + launch + strongest plan + comprehensive + dogfood)
         run: bash scripts/founder_weekly_loop.sh
       - name: Strongest plan pytest

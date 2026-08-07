@@ -210,11 +210,11 @@ def generate_agenda(
 
     questions_ar_lines = [
         f"**{i+1}.** {q}"
-        for i, (key, q) in enumerate((kv for kv in questions if kv[0].endswith("_ar")))
+        for i, (key, q) in enumerate(kv for kv in questions if kv[0].endswith("_ar"))
     ]
     questions_en_lines = [
         f"**{i+1}.** {q}"
-        for i, (key, q) in enumerate((kv for kv in questions if kv[0].endswith("_en")))
+        for i, (key, q) in enumerate(kv for kv in questions if kv[0].endswith("_en"))
     ]
 
     agenda = AGENDA_TEMPLATE.format(

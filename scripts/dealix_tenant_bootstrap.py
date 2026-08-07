@@ -1,5 +1,8 @@
-import argparse, json, time
+import argparse
+import json
+import time
 from pathlib import Path
+
 p=argparse.ArgumentParser(); p.add_argument('--tenant',required=True); p.add_argument('--plan',default='starter_managed')
 a=p.parse_args()
 base=Path('data/tenants'); base.mkdir(parents=True, exist_ok=True)

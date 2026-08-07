@@ -72,7 +72,7 @@ class DiagnosticReport(BaseModel):
     generated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     sections: list[DiagnosticSection]
     markdown_ar_en: str
-    recommended_service: str = "sprint_499_sar"
+    recommended_service: str = "revenue_command_pilot_30d"
     payment_url_placeholder: str = ""
     approval_status: str = "approval_required"
     governance_decision: str = "pending"  # pending | approved | rejected
@@ -265,14 +265,12 @@ class DiagnosticEngine:
             DiagnosticSection(
                 title_ar="الخطوة التالية",
                 title_en="Next Step",
-                body_ar=f"نوصي ببدء برنامج الأسبوع المكثف (499 ر.س) مع {name}. "
-                        f"يشمل: جلسة استلام، خريطة ألم مفصلة، 3 مسودات تواصل موافق عليها، "
-                        f"وتقرير إثبات مرقّم. "
-                        f"سيرسل الرابط بعد موافقة المؤسس على هذا التشخيص.",
-                body_en=f"We recommend starting the Intensive Week Program (499 SAR) with {name}. "
-                        f"Includes: intake session, detailed pain map, 3 approved outreach drafts, "
-                        f"and a numbered proof report. "
-                        f"Payment link will be sent after the founder approves this diagnostic.",
+                body_ar=f"نوصي بجلسة discovery محدودة مع {name}. بعد فهم الحالة نجهّز "
+                        f"نطاق Revenue Command Pilot لمدة 30 يومًا وquote موثقًا للمراجعة. "
+                        f"لا فاتورة أو رابط دفع قبل اكتمال الاعتمادات.",
+                body_en=f"We recommend a bounded discovery session with {name}. After understanding "
+                        f"the case, we prepare a 30-day Revenue Command Pilot scope and documented quote. "
+                        f"No invoice or payment link is issued before approvals are complete.",
             ),
             DiagnosticSection(
                 title_ar="إشعار PDPL",
@@ -294,10 +292,10 @@ class DiagnosticEngine:
         lines = [
             f"# تشخيص Dealix — {req.company_name}",
             f"**Dealix Diagnostic — {req.company_name}**",
-            f"",
+            "",
             f"المعرف: `{report_id}` | التاريخ: {now} | الحالة: **يتطلب موافقة المؤسس**",
             f"ID: `{report_id}` | Date: {now} | Status: **approval_required**",
-            f"",
+            "",
             "---",
             "",
         ]

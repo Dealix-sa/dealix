@@ -149,18 +149,18 @@ class UpsellAutomaton:
                 f"to {opportunity.target_plan.title()} and maximize your Dealix platform value"
             ),
             benefits_ar=[
-                f"ضعف عدد العملاء المحتملين المسموح به",
-                f"قنوات تسويق غير محدودة",
-                f"دعم ذو أولوية مع استجابة أسرع",
-                f"تقارير وتحليلات متقدمة",
-                f"إمكانية الوصول إلى API للتكامل",
+                "ضعف عدد العملاء المحتملين المسموح به",
+                "قنوات تسويق غير محدودة",
+                "دعم ذو أولوية مع استجابة أسرع",
+                "تقارير وتحليلات متقدمة",
+                "إمكانية الوصول إلى API للتكامل",
             ],
             benefits_en=[
-                f"Double the lead limit",
-                f"Unlimited marketing channels",
-                f"Priority support with faster response",
-                f"Advanced reports and analytics",
-                f"API access for integration",
+                "Double the lead limit",
+                "Unlimited marketing channels",
+                "Priority support with faster response",
+                "Advanced reports and analytics",
+                "API access for integration",
             ],
             pricing_ar=(
                 f"الفرق في السعر: {opportunity.price_difference_sar:,.0f} ريال/شهر\n"

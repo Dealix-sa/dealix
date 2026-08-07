@@ -5,7 +5,7 @@ adds coverage for the new features.
 """
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from httpx import ASGITransport, AsyncClient

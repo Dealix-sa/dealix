@@ -1,5 +1,7 @@
-import argparse, json
+import argparse
+import json
 from pathlib import Path
+
 parser=argparse.ArgumentParser(); parser.add_argument('--account', default='Target Account')
 a=parser.parse_args()
 proof=json.loads(Path('data/proof/proof_items.json').read_text(encoding='utf-8'))

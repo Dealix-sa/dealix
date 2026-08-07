@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 items_path=Path('data/proof/proof_items.json')
 items=json.loads(items_path.read_text(encoding='utf-8')) if items_path.exists() else []
 print('Proof Vault Index')

@@ -15,8 +15,12 @@ import os as _os
 import traceback as _traceback
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from typing import TYPE_CHECKING
 
 from fastapi import FastAPI, Request
+
+if TYPE_CHECKING:  # annotation only — avoids importing settings at module load
+    from core.config.settings import Settings
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -71,17 +75,19 @@ from api.routers import deliverables as deliverables_router
 
 # Wave 12.7 — Intelligence Layer + Expansion Engine routers
 from api.routers import expansion_engine as expansion_engine_router
+from api.routers import founder_command_room as founder_command_room_router
 from api.routers import founder_dashboard as founder_dashboard_router
 
 # Wave 14 — Canonical Trust MVP + Retainer Engine (Phase 2)
 from api.routers import friction_log as friction_log_router
 from api.routers import integration_capability as integration_capability_router
 from api.routers import intelligence_layer as intelligence_layer_router
+from api.routers import public_intake as public_intake_router  # Wave 4 — public intake
 from api.routers import service_catalog as service_catalog_router
-from api.routers import target_intelligence as target_intelligence_router
 
 # 90-day commercial activation — Wave 14B
 from api.routers import sprint_runner as sprint_runner_router
+from api.routers import target_intelligence as target_intelligence_router
 from api.routers import (
     transformation_os as transformation_os_router,
 )
@@ -109,6 +115,7 @@ def _import_optional_router(name: str, module_path: str):
         return None
 
 
+ops_domain = _import_optional_router("ops", "api.routers.domains.ops")
 value_os_router = _import_optional_router("value_os", "api.routers.value_os")
 data_os_router = _import_optional_router("data_os", "api.routers.data_os")
 # Wave 14F — Agent OS
@@ -118,30 +125,32 @@ whatsapp_client_os_router = _import_optional_router(
     "whatsapp_client_os", "api.routers.whatsapp_client_os"
 )
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
-from api.routers import commercial_map as commercial_map_router
+# Autonomous product distribution engine
+from api.routers import autonomous_distribution as autonomous_distribution_router
+
 # Wave 15B — Commercial chain (diagnostic → warm-intro → pilot → proof → payment → upsell)
 from api.routers import commercial as commercial_chain_router
+from api.routers import commercial_map as commercial_map_router
+
+# Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
+from api.routers import customer_health_scoring as customer_health_scoring_router
+
+# Revenue Execution OS — approval-first distribution (no external send / no charge)
+from api.routers import distribution as distribution_router
 
 # Wave 15 — Founder launch-status (single-pane production readiness)
 from api.routers import founder_launch_status as founder_launch_status_router
 
-# Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
-from api.routers import platform_foundation as platform_foundation_router
-# Autonomous product distribution engine
-from api.routers import autonomous_distribution as autonomous_distribution_router
-
-# Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
-from api.routers import customer_health_scoring as customer_health_scoring_router
+# 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
+from api.routers import kpi_dashboard as kpi_dashboard_router
 from api.routers import market_intelligence as market_intelligence_router
 from api.routers import onboarding as onboarding_router
 
-# 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
-from api.routers import kpi_dashboard as kpi_dashboard_router
+# Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
+from api.routers import platform_foundation as platform_foundation_router
+
 # Weekly business reports (admin-gated, approval-required)
 from api.routers import weekly_reports as weekly_reports_router
-# Revenue Execution OS — approval-first distribution (no external send / no charge)
-from api.routers import distribution as distribution_router
-
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -307,6 +316,8 @@ def create_app() -> FastAPI:
         webhooks_domain,
         deprecated_domain,
     ]
+    if ops_domain:
+        _DOMAIN_GROUPS.append(ops_domain)
     for domain in _DOMAIN_GROUPS:
         for router in domain.get_routers():
             app.include_router(router)
@@ -343,6 +354,8 @@ def create_app() -> FastAPI:
         app.include_router(_autopilot_router)
     # Wave 7 W7.5 — Tenant theming: GET tenant theme.css + POST admin theme update
     app.include_router(tenant_theming.router)
+    # Wave 4 — Public intake: POST /api/v1/public/custom-ai-request (no auth, founder-reviewed)
+    app.include_router(public_intake_router.router)
     # Wave 7 W7.2 — Sector Intelligence (R4 productization)
     app.include_router(sector_intel.router)
     # Wave 7 W7.3 — Admin tenants: CRUD for tenant management (R6 enabler)
@@ -382,6 +395,8 @@ def create_app() -> FastAPI:
         app.include_router(data_os_router.router)
     app.include_router(sprint_runner_router.router)
     app.include_router(founder_dashboard_router.router)
+    # Founder Command Room — one aggregated, read-only snapshot (admin-gated)
+    app.include_router(founder_command_room_router.router)
     app.include_router(audit_export_router.router)
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
@@ -426,10 +441,19 @@ def create_app() -> FastAPI:
     # Autonomous product distribution — /api/v1/autonomous-distribution/*
     app.include_router(autonomous_distribution_router.router)
 
-    # Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
+    # Wave 16 — Customer Intelligence + Market Intelligence + Onboarding + CEO Brief + Lead Ingestion
+    from api.routers import ceo_brief as ceo_brief_router
+    from api.routers import customer_onboarding as customer_onboarding_router
+    from api.routers import intelligence_health as intelligence_health_router
+    from api.routers import lead_ingestion as lead_ingestion_router
+
     app.include_router(customer_health_scoring_router.router)
     app.include_router(market_intelligence_router.router)
     app.include_router(onboarding_router.router)
+    app.include_router(ceo_brief_router.router)
+    app.include_router(customer_onboarding_router.router)
+    app.include_router(intelligence_health_router.router)
+    app.include_router(lead_ingestion_router.router)
 
     # 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
     app.include_router(kpi_dashboard_router.router)
@@ -442,10 +466,6 @@ def create_app() -> FastAPI:
     from api.routers.proposals_export import router as proposals_export_router
     app.include_router(proposals_export_router)
 
-    # 90-day commercial plan — proposals export + website lead capture
-    from api.routers.proposals_export import router as proposals_export_router
-    app.include_router(proposals_export_router)
-
     # Hermes Agents — /hermes/*
     try:
         from dealix.hermes.api.router import hermes_router
@@ -453,6 +473,24 @@ def create_app() -> FastAPI:
     except Exception as _hermes_exc:  # pragma: no cover
         import logging as _logging
         _logging.getLogger(__name__).warning("hermes_router_skipped: %s", _hermes_exc)
+
+    # Outbound safety — /api/outbound/* (all blocked by default)
+    from api.routers.outbound_safety import router as outbound_safety_router
+    app.include_router(outbound_safety_router)
+
+    @app.get("/api/status", tags=["status"])
+    async def api_status() -> dict[str, object]:
+        """API status — safe, no secrets."""
+        import os as _os
+        return {
+            "status": "operational",
+            "service": settings.app_name,
+            "version": settings.app_version,
+            "env": settings.app_env,
+            "external_send_enabled": _os.getenv("EXTERNAL_SEND_ENABLED", "false").lower()
+            in ("true", "1", "yes"),
+            "outbound_mode": _os.getenv("OUTBOUND_MODE", "draft_only"),
+        }
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

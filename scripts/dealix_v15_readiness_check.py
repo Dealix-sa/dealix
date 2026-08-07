@@ -1,4 +1,5 @@
 from pathlib import Path
+
 required = [
  'founder-autopilot/FOUNDER_DAILY_AUTOPILOT_AR.md',
  'founder-autopilot/DAILY_COMMAND_BRIEF_SYSTEM_AR.md',

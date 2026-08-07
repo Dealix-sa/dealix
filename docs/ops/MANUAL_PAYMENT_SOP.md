@@ -78,7 +78,7 @@ Dealix — [الباقة]                          1        [999/2999/7999] ري
 
 شكراً لثقتكم،
 سامي العسيري — Founder, Dealix
-https://voxc2.github.io/dealix/
+https://dealix-sa.github.io/dealix/
 ```
 
 ---

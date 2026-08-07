@@ -171,8 +171,6 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "daily scorecard names the prefix in safety row",
     "docs/ops/moyasar_live_test.sh":
         "Moyasar test shell script names the prefix in placeholder env",
-    "docs/sales-kit/MOYASAR_HOSTED_CHECKOUT.md":
-        "sales-kit hosted-checkout doc names the prefix in policy copy",
     "docs/sales-kit/dealix_1_riyal_test.sh":
         "sales-kit 1-riyal test shell script names the prefix in env",
     # ── core safety / observability code (regex patterns = the policy) ──
@@ -259,6 +257,21 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "tool-use security policy names the secret prefixes in scan copy",
     "docs/security/UNTRUSTED_INPUT_POLICY.md":
         "untrusted-input policy names the secret prefixes in redaction copy",
+    # ── trivy / container scanner config ──
+    ".trivyignore.yaml":
+        "trivy ignore file explicitly notes sk_live_xxxxx as placeholder token (not a real secret)",
+    # ── CI / docs referencing the quarantine entry ──
+    "docs/CI_QUARANTINE.md":
+        "CI quarantine doc quotes the sk_live_/ghp_/AIza prefix in the quarantine reason text",
+    # ── secret scanner scripts (patterns are the policy) ──
+    "scripts/check_no_secrets.py":
+        "secret-scan script defines AIza/sk_live_ regex patterns as the detection policy",
+    "scripts/ops/security_smoke_ci.py":
+        "CI security smoke test defines sk_live_/ghp_ regex patterns to detect real secrets",
+    "scripts/verify_secret_patterns.py":
+        "secret-pattern verifier defines sk_live_/ghp_/AIza regex patterns as detection policy",
+    "scripts/dealix_startup_release_gate.py":
+        "startup release gate checks Moyasar key startswith('sk_live_') to detect live keys — policy guard, not a real secret",
 }
 
 

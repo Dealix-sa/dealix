@@ -1,5 +1,6 @@
-from pathlib import Path
 import csv
+from pathlib import Path
+
 leads=high=0
 for p in Path('data/prospects').glob('*.csv'):
  with p.open(encoding='utf-8') as f:

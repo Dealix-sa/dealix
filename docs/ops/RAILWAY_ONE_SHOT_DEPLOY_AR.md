@@ -18,7 +18,7 @@
 
 | # | الإعداد | القيمة |
 |---|---------|--------|
-| 1 | **Source** | branch `main` · repo `VoXc2/dealix` |
+| 1 | **Source** | branch `main` · repo `Dealix-sa/dealix` |
 | 2 | **Start Command** | **فارغ** (Dockerfile `CMD /app/start.sh`) |
 | 3 | **Pre-deploy** | `sh /app/scripts/railway_predeploy.sh` |
 | 4 | **Variables** | Raw Editor ← الصق `.env.railway.generated` → Save |

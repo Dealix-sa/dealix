@@ -381,8 +381,8 @@ class PipelineTracker:
             True
             >>> os.unlink(tmp)
         """
-        by_stage: dict[str, int] = {s: 0 for s in PipelineStage.ALL}
-        arr_by_stage: dict[str, int] = {s: 0 for s in PipelineStage.ALL}
+        by_stage: dict[str, int] = dict.fromkeys(PipelineStage.ALL, 0)
+        arr_by_stage: dict[str, int] = dict.fromkeys(PipelineStage.ALL, 0)
         total_arr = 0
 
         for item in self._items.values():

@@ -15,8 +15,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from dealix.launch_os.pipeline_tracker import PipelineTracker, PipelineStage
-from dealix.launch_os.vertical_scorer import top_wedge, rank_verticals
+from dealix.launch_os.pipeline_tracker import PipelineStage, PipelineTracker
+from dealix.launch_os.vertical_scorer import rank_verticals, top_wedge
 
 
 def week_range() -> tuple[date, date]:
@@ -28,8 +28,9 @@ def week_range() -> tuple[date, date]:
 
 def render_weekly_review(tracker: PipelineTracker) -> str:
     week_start, week_end = week_range()
-    # pipeline_summary() returns {stage: count}
-    by_stage = tracker.pipeline_summary()
+    summary = tracker.pipeline_summary()
+    by_stage = summary["by_stage"]
+    arr_by_stage = summary["arr_by_stage"]
     all_items = tracker.list_all()
     total_deals = len(all_items)
     total_arr = sum(i.value_sar for i in all_items)
@@ -52,7 +53,7 @@ def render_weekly_review(tracker: PipelineTracker) -> str:
 
     for stage, count in by_stage.items():
         if count > 0:
-            stage_arr = sum(i.value_sar for i in all_items if i.stage == stage)
+            stage_arr = arr_by_stage[stage]
             lines.append(f"    {stage:<15} {count} deals   {stage_arr:>10,} SAR")
 
     lines += [
@@ -77,7 +78,7 @@ def render_weekly_review(tracker: PipelineTracker) -> str:
             lines.append(f"\n  [{stage}]")
             for item in stage_items:
                 lines.append(
-                    f"    - {item.company_name:<30} {item.value_sar:>8,} SAR"
+                    f"    - {item.account_name:<30} {item.value_sar:>8,} SAR"
                     f"  ICP:{item.icp_score}  -> {item.next_action}"
                 )
 
@@ -107,22 +108,26 @@ def main() -> None:
     try:
         tracker = PipelineTracker(path=tmp_path)
 
-        # Seed sample data using current API (account_id, company_name, ...)
-        tracker.add("riyadh_realty_01", "شركة الرياض للعقارات",
-                    offer_id="WHATSAPP_FOLLOWUP_OS", value_sar=2999, icp_score=84)
-        tracker.advance("riyadh_realty_01", to_stage=PipelineStage.PROPOSAL)
+        # Seed sample data using current API (account_name, offer_id, ...)
+        # NOTE: value_sar below are illustrative internal pipeline deal-size
+        # estimates only — deliberately not equal to any published/retired
+        # offer price point. Actual pricing is discovery-first, quote-only
+        # per #996; never hardcode a public price here.
+        riyadh_realty = tracker.add("شركة الرياض للعقارات",
+                    offer_id="WHATSAPP_FOLLOWUP_OS", value_sar=8400, icp_score=84)
+        tracker.update_stage(riyadh_realty.id, PipelineStage.PROPOSAL)
 
-        tracker.add("faris_auto_01", "مجموعة الفارس للسيارات",
-                    offer_id="REVENUE_LEAK_AUDIT", value_sar=499, icp_score=72)
-        tracker.advance("faris_auto_01", to_stage=PipelineStage.OUTREACH)
+        faris_auto = tracker.add("مجموعة الفارس للسيارات",
+                    offer_id="REVENUE_LEAK_AUDIT", value_sar=6100, icp_score=72)
+        tracker.update_stage(faris_auto.id, PipelineStage.OUTREACH)
 
-        tracker.add("modern_build_01", "مقاولات الإنشاء الحديث",
-                    offer_id="PROPOSAL_PROOF_PACK_OS", value_sar=1500, icp_score=78)
-        tracker.advance("modern_build_01", to_stage=PipelineStage.DISCOVERY)
+        modern_build = tracker.add("مقاولات الإنشاء الحديث",
+                    offer_id="PROPOSAL_PROOF_PACK_OS", value_sar=11200, icp_score=78)
+        tracker.update_stage(modern_build.id, PipelineStage.DISCOVERY)
 
-        tracker.add("dining_chain_01", "سلسلة مطاعم الذوق",
-                    offer_id="AI_OPERATING_SYSTEM_FOR_SMB", value_sar=3999, icp_score=75)
-        tracker.advance("dining_chain_01", to_stage=PipelineStage.NEGOTIATION)
+        dining_chain = tracker.add("سلسلة مطاعم الذوق",
+                    offer_id="AI_OPERATING_SYSTEM_FOR_SMB", value_sar=9700, icp_score=75)
+        tracker.update_stage(dining_chain.id, PipelineStage.NEGOTIATION)
 
         print(render_weekly_review(tracker))
 

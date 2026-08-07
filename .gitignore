@@ -121,6 +121,9 @@ dumps/
 # (canonical product config, no customer PII)
 !data/commercial/
 !data/commercial/*
+# Governed Commercial Intelligence seeds — policy/config only, never tenant data
+!data/commercial_intelligence/
+!data/commercial_intelligence/*
 # Outreach kit — sector pitches + intake template (NOT the real filled list)
 !data/outreach/
 !data/outreach/*
@@ -193,7 +196,15 @@ traces/
 # ─────────────────────────────────────────────────────────────
 # 🤖 Claude Code agent worktrees + runtime ledger artifacts
 # ─────────────────────────────────────────────────────────────
-.claude/
+.claude/*
+# Project rules and agent definitions are part of the codebase
+!.claude/rules/
+!.claude/rules/**
+!.claude/agents/
+!.claude/agents/**
+# Agent skills are part of the codebase (SKILL.md + references, no runtime output)
+!.claude/skills/
+!.claude/skills/**
 
 # Proof ledger runtime artifacts (template + schema + readme stay tracked)
 docs/proof-events/*.jsonl
@@ -386,5 +397,68 @@ reports/meetings/*
 company/runtime/places/
 dealix_local_test.db
 reports/runtime/
+reports/daily_intelligence/
+reports/github-context/
 ledgers/private/
 .env.production
+
+# Startup release gate + commercial OS runtime reports (generated; never commit)
+reports/startup_release_gate/
+reports/startup_command_center/
+reports/startup_proof_pack/
+reports/founder_daily_brief/
+reports/founder_growth_os/
+reports/growth_command_center/
+reports/commercial_launch_control/
+reports/agentic_commercial_os/
+reports/agents/
+reports/ai/
+reports/commercial/
+reports/operator/
+reports/command_center/
+
+# Daily business exports (founder reviews before sharing; never committed)
+business/closing/exports/
+business/crm/exports/dealix-pipeline-report-*.md
+business/demo/exports/
+business/persuasion/exports/
+business/proposals/generated/
+business/reports/exports/
+
+# Generated server env / surface reports (daily; not committed)
+reports/server/env_contract.md
+reports/server/public_surfaces.json
+
+# Generated outreach batch files (CSV leads)
+data/outreach/ready_batch_*.csv
+
+# Company directory targeting artifacts stay local. The source terms for the
+# provided directory are unverified and this repository is public. Commit the
+# importer, schemas, tests, and runbooks — never the derived company dataset.
+outputs/company_targeting/
+reports/company_targeting/
+reports/company_launch/
+reports/revenue/*/daily_ceo_report.json
+reports/revenue/*/daily_ceo_report.md
+reports/revenue/*/score_summary.json
+
+# ─────────────────────────────────────────────────────────────
+# 💼 Commercial Package Archives — never commit bundles
+# ─────────────────────────────────────────────────────────────
+*.zip
+*.tar.xz
+*.tar.gz
+*.rar
+*.7z
+*_BUNDLE*
+*_EXPORT*
+*_PATCH*
+*_PACK*
+
+# ─────────────────────────────────────────────────────────────
+# 📝 Session export artifacts
+# ─────────────────────────────────────────────────────────────
+SESSION_COMMIT_HISTORY.txt
+SESSION_COMPLETION_SUMMARY.md
+PR_DESCRIPTION_*.md
+

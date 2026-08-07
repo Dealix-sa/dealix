@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import time
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from fastapi import FastAPI, Request, Response
-from prometheus_client import Counter, Gauge, Histogram, generate_latest, REGISTRY
+from prometheus_client import REGISTRY, Counter, Gauge, Histogram, generate_latest
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.types import ASGIApp
 

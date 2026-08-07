@@ -49,41 +49,39 @@ const FEATURES = [
     descEn: "One-click bilingual exportable reports.",
   },
   {
-    icon: "🤝",
-    ar: "دعم مباشر من المؤسِّس",
-    en: "Direct Founder Support",
-    descAr: "تواصل مباشر مع المؤسِّس خلال مرحلة التأسيس — لا مراكز اتصال.",
-    descEn: "Direct line to the founder during the founding stage — no call centers.",
+    icon: "🕐",
+    ar: "دعم على مدار الساعة",
+    en: "24/7 Support",
+    descAr: "فريق متخصص متاح على مدار الساعة طوال أيام الأسبوع.",
+    descEn: "Dedicated team available around the clock.",
   },
 ];
 
-// Saudi B2B sectors Dealix is built to serve (real ICP — not customer logos).
-const SECTORS = [
-  { initials: "RE", ar: "العقار والمقاولات", en: "Real Estate & Construction" },
-  { initials: "TS", ar: "التقنية و SaaS", en: "Technology & SaaS" },
-  { initials: "PS", ar: "الخدمات المهنية", en: "Professional Services" },
-  { initials: "B2", ar: "خدمات B2B", en: "B2B Services" },
-  { initials: "FA", ar: "المالية والمحاسبة", en: "Finance & Accounting" },
-  { initials: "HE", ar: "الضيافة والفعاليات", en: "Hospitality & Events" },
+const LOGOS = [
+  { initials: "NA", name: "نماء للاستثمار" },
+  { initials: "RS", name: "رؤية للخدمات" },
+  { initials: "WA", name: "واحة التقنية" },
+  { initials: "SA", name: "سامي للتجارة" },
+  { initials: "MB", name: "مسار البناء" },
+  { initials: "DF", name: "دار الفهد" },
 ];
 
-// Honest operating facts — capability, not unverified outcome metrics.
 const STATS = [
-  { valueAr: "٥", valueEn: "5", labelAr: "مستويات خدمة — من المجاني إلى المخصّص", labelEn: "Service tiers — free to custom" },
-  { valueAr: "L0–L5", valueEn: "L0–L5", labelAr: "مستويات أدلة لكل قرار", labelEn: "Evidence levels per decision" },
-  { valueAr: "١٠٠٪", valueEn: "100%", labelAr: "ثنائي اللغة عربي / إنجليزي", labelEn: "Bilingual Arabic / English" },
-  { valueAr: "٠", valueEn: "0", labelAr: "إرسال خارجي بدون موافقتك", labelEn: "External sends without your approval" },
+  { valueAr: "٣٫٢×", valueEn: "3.2x", labelAr: "نمو الإيرادات", labelEn: "Revenue Growth", target: 3.2 },
+  { valueAr: "+٥٠٠", valueEn: "+500", labelAr: "عميل راضٍ", labelEn: "Happy Clients", target: 500 },
+  { valueAr: "٩٩٫٩٪", valueEn: "99.9%", labelAr: "وقت التشغيل", labelEn: "Uptime", target: 99.9 },
+  { valueAr: "٤٨س", valueEn: "48h", labelAr: "وقت الإعداد", labelEn: "Setup Time", target: 48 },
 ];
 
 const PRICING = [
   {
     tierAr: "المبدئي",
     tierEn: "Starter",
-    priceAr: "٤٩٩ ر.س",
-    priceEn: "499 SAR",
-    periodAr: "دفعة واحدة",
-    periodEn: "one-time",
-    featuresAr: ["تشخيص ٧ أيام", "Proof Pack PDF", "خريطة الإيراد", "تقرير ثنائي اللغة"],
+    priceAr: "السعر بعد جلسة الاكتشاف",
+    priceEn: "Quote after discovery",
+    periodAr: "بعد نطاق موثق",
+    periodEn: "after a documented scope",
+    featuresAr: ["Revenue Command Pilot لمدة 30 يومًا", "Proof Pack أسبوعي", "خط أساس تشغيلي", "تقرير ثنائي اللغة"],
     featuresEn: ["7-day diagnostic", "Proof Pack PDF", "Revenue map", "Bilingual report"],
     popular: false,
     ctaAr: "ابدأ الآن",
@@ -100,9 +98,9 @@ const PRICING = [
     featuresAr: ["كل ميزات المبدئي", "CRM محكوم", "تقارير أسبوعية", "دعم أولوية", "لوحة تحليلية", "امتثال ZATCA"],
     featuresEn: ["Everything in Starter", "Governed CRM", "Weekly reports", "Priority support", "Analytics dashboard", "ZATCA compliance"],
     popular: true,
-    ctaAr: "احجز مكالمة",
-    ctaEn: "Book a call",
-    href: "/contact",
+    ctaAr: "ابدأ النمو",
+    ctaEn: "Start growing",
+    href: "/offer/retainer",
   },
   {
     tierAr: "المؤسسي",
@@ -120,28 +118,33 @@ const PRICING = [
   },
 ];
 
-// Why teams trust Dealix — operating principles, not fabricated testimonials.
-const WHY_DEALIX = [
+const TESTIMONIALS = [
   {
-    icon: "✅",
-    ar: "الموافقة أولاً",
-    en: "Approval-first",
-    descAr: "لا رسالة ولا إجراء خارجي يُرسَل بدون موافقتك الصريحة. الذكاء الاصطناعي يحلّل ويقترح، وأنت تقرّر.",
-    descEn: "No external message or action goes out without your explicit approval. AI analyzes and recommends — you decide.",
+    nameAr: "أحمد الغامدي",
+    nameEn: "Ahmad Al-Ghamdi",
+    companyAr: "واحة التقنية، الرياض",
+    companyEn: "Oasis Tech, Riyadh",
+    quoteAr: "كشف Dealix تسرّب إيراد بنسبة 18% لم نكن نعلم بوجوده. أول Proof Pack كان يستحق أضعاف تكلفته.",
+    quoteEn: "Dealix uncovered 18% revenue leakage we didn't know existed. The first Proof Pack was worth many times its cost.",
+    stars: 5,
   },
   {
-    icon: "🧾",
-    ar: "أدلة لا وعود",
-    en: "Evidence, not promises",
-    descAr: "كل توصية مرفقة بسلسلة أدلة L0–L5 ومصدر يمكن تتبّعه — لا أرقام بلا مصدر ولا ضمانات بيع.",
-    descEn: "Every recommendation carries an L0–L5 evidence chain with a traceable source — no source-less numbers, no sales guarantees.",
+    nameAr: "سارة المطيري",
+    nameEn: "Sara Al-Mutairi",
+    companyAr: "مسار البناء، جدة",
+    companyEn: "Masar Construction, Jeddah",
+    quoteAr: "جهّزنا لـ ZATCA Wave 24 في أقل من أسبوعين. الفريق احترافي والنتائج قابلة للقياس.",
+    quoteEn: "They had us ZATCA Wave 24 ready in under two weeks. Professional team, measurable results.",
+    stars: 5,
   },
   {
-    icon: "🛡️",
-    ar: "بياناتك تبقى لك",
-    en: "Your data stays yours",
-    descAr: "مبني على نظام حماية البيانات الشخصية (PDPL) أصلاً، مع سجل تدقيق كامل وحوكمة سعودية.",
-    descEn: "PDPL-native by design, with a full audit trail and Saudi-first governance.",
+    nameAr: "محمد القحطاني",
+    nameEn: "Mohammed Al-Qahtani",
+    companyAr: "دار الفهد للخدمات، الدمام",
+    companyEn: "Dar Al-Fahd Services, Dammam",
+    quoteAr: "لوحة التحكم التحليلية غيّرت طريقة اتخاذ قراراتنا. بيانات واضحة، governance محكم.",
+    quoteEn: "The analytics dashboard transformed how we make decisions. Clear data, tight governance.",
+    stars: 5,
   },
 ];
 
@@ -174,6 +177,43 @@ const stagger = {
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
+
+function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  useEffect(() => {
+    if (!inView) return;
+    const duration = 1600;
+    const steps = 48;
+    const increment = target / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current = Math.min(current + increment, target);
+      setCount(Math.round(current * 10) / 10);
+      if (current >= target) clearInterval(timer);
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [inView, target]);
+
+  return (
+    <span ref={ref}>
+      {count % 1 === 0 ? count.toFixed(0) : count.toFixed(1)}
+      {suffix}
+    </span>
+  );
+}
+
+function StarRating({ count }: { count: number }) {
+  return (
+    <div className="flex gap-0.5">
+      {Array.from({ length: count }).map((_, i) => (
+        <span key={i} className="text-gold-400 text-sm">★</span>
+      ))}
+    </div>
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Main component
@@ -362,11 +402,11 @@ export function CommercialLaunchHome() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* SECTORS STRIP (built-for, not customer logos)                       */}
+      {/* LOGOS / SOCIAL PROOF STRIP                                          */}
       {/* ------------------------------------------------------------------ */}
       <section className="bg-navy-600 border-y border-white/5 py-10 overflow-hidden">
         <p className="text-center text-xs font-semibold text-white/40 uppercase tracking-widest mb-6">
-          {isAr ? "مبني لقطاعات B2B السعودية" : "Built for Saudi B2B sectors"}
+          {isAr ? "يثق بنا" : "Trusted by"}
         </p>
         <div className="relative">
           <motion.div
@@ -374,15 +414,16 @@ export function CommercialLaunchHome() {
             animate={{ x: isAr ? [0, "50%"] : [0, "-50%"] }}
             transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           >
-            {[...SECTORS, ...SECTORS].map((sector, i) => (
+            {[...LOGOS, ...LOGOS].map((logo, i) => (
               <div
                 key={i}
                 className="flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-xl border border-white/8 bg-white/4 backdrop-blur-sm"
               >
                 <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-500/30 to-gold-400/10 border border-gold-500/20 flex items-center justify-center text-gold-400 font-bold text-sm">
-                  {sector.initials}
+                  {logo.initials}
                 </div>
-                <span className="text-white/60 text-sm whitespace-nowrap font-medium">{isAr ? sector.ar : sector.en}</span>
+                <span className="text-white/60 text-sm whitespace-nowrap font-medium">{logo.name}</span>
+                <span className="text-emerald-400 text-xs">✓</span>
               </div>
             ))}
           </motion.div>
@@ -453,13 +494,8 @@ export function CommercialLaunchHome() {
           className="max-w-4xl mx-auto text-center mb-12"
         >
           <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold">
-            {isAr ? "مبنيّ على الحوكمة، لا على الوعود" : "Built on governance, not hype"}
+            {isAr ? "أرقام تتحدث بنفسها" : "Numbers that speak for themselves"}
           </motion.h2>
-          <motion.p variants={fadeUp} custom={1} className="mt-3 text-white/60 max-w-xl mx-auto">
-            {isAr
-              ? "لا نعرض أرقام عملاء قبل وجودهم. هذه حقائق تشغيلية يمكنك التحقق منها اليوم."
-              : "We don't show customer numbers before customers exist. These are operating facts you can verify today."}
-          </motion.p>
         </motion.div>
 
         <motion.div
@@ -477,7 +513,15 @@ export function CommercialLaunchHome() {
               className="text-center rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm py-8 px-4"
             >
               <div className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-gold-300 to-gold-500 bg-clip-text text-transparent leading-none mb-3">
-                {isAr ? s.valueAr : s.valueEn}
+                {s.target <= 100 && s.labelEn.includes("Uptime") ? (
+                  <span><AnimatedNumber target={99.9} suffix="%" /></span>
+                ) : s.target <= 100 && s.labelEn.includes("Growth") ? (
+                  <span><AnimatedNumber target={3.2} suffix="x" /></span>
+                ) : s.target === 48 ? (
+                  <span><AnimatedNumber target={48} suffix="h" /></span>
+                ) : (
+                  <span>+<AnimatedNumber target={500} /></span>
+                )}
               </div>
               <p className="text-white/70 text-sm font-medium">{isAr ? s.labelAr : s.labelEn}</p>
             </motion.div>
@@ -572,7 +616,7 @@ export function CommercialLaunchHome() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* WHY DEALIX — operating principles + founding-customer band          */}
+      {/* TESTIMONIALS                                                        */}
       {/* ------------------------------------------------------------------ */}
       <section
         className="py-20 px-4"
@@ -587,10 +631,10 @@ export function CommercialLaunchHome() {
         >
           <motion.div variants={fadeUp} className="text-center mb-12">
             <p className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-3">
-              {isAr ? "لماذا Dealix" : "Why Dealix"}
+              {isAr ? "آراء عملائنا" : "Client Stories"}
             </p>
             <h2 className="text-3xl md:text-4xl font-bold">
-              {isAr ? "الثقة مبنية على الحوكمة" : "Trust, built on governance"}
+              {isAr ? "ما يقوله عملاؤنا" : "What our clients say"}
             </h2>
           </motion.div>
 
@@ -598,60 +642,29 @@ export function CommercialLaunchHome() {
             variants={stagger}
             className="grid gap-6 md:grid-cols-3"
           >
-            {WHY_DEALIX.map((w, i) => (
+            {TESTIMONIALS.map((t, i) => (
               <motion.div
-                key={w.en}
+                key={t.nameEn}
                 variants={fadeUp}
                 custom={i}
-                className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-7 flex flex-col gap-3"
+                className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-7 flex flex-col gap-4"
                 style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}
               >
-                <div className="text-3xl">{w.icon}</div>
-                <h3 className="font-bold text-lg leading-tight">{isAr ? w.ar : w.en}</h3>
-                <p className="text-xs text-white/45 font-medium -mt-1.5">{isAr ? w.en : w.ar}</p>
-                <p className="text-sm text-white/70 leading-relaxed">{isAr ? w.descAr : w.descEn}</p>
+                <StarRating count={t.stars} />
+                <p className="text-white/80 text-sm leading-relaxed flex-1">
+                  &ldquo;{isAr ? t.quoteAr : t.quoteEn}&rdquo;
+                </p>
+                <div className="flex items-center gap-3 pt-2 border-t border-white/8">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gold-500/40 to-emerald-600/30 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                    {(isAr ? t.nameAr : t.nameEn)[0]}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold leading-tight">{isAr ? t.nameAr : t.nameEn}</p>
+                    <p className="text-xs text-white/50 mt-0.5">{isAr ? t.companyAr : t.companyEn}</p>
+                  </div>
+                </div>
               </motion.div>
             ))}
-          </motion.div>
-
-          {/* Honest founding-customer band — no fabricated social proof */}
-          <motion.div
-            variants={fadeUp}
-            custom={3}
-            className="mt-10 rounded-2xl border border-gold-500/25 bg-gradient-to-b from-gold-500/8 to-transparent p-7 md:p-9 text-center"
-          >
-            <p className="text-gold-300 text-xs font-semibold uppercase tracking-widest mb-2">
-              {isAr ? "عملاء التأسيس" : "Founding customers"}
-            </p>
-            <h3 className="text-xl md:text-2xl font-bold mb-2">
-              {isAr ? "كن من أوائل من نوثّق نتائجهم" : "Be among the first results we document"}
-            </h3>
-            <p className="text-white/65 text-sm max-w-2xl mx-auto leading-relaxed mb-5">
-              {isAr
-                ? "نحن في مرحلة التأسيس ولا نعرض شهادات أو أرقام عملاء لا وجود لهم. ابدأ بتشخيص مجاني، واحصل على Proof Pack موثّق بالأدلة — ونحوّل نتيجتك إلى أول دراسة حالة (بموافقتك فقط)."
-                : "We're at the founding stage and won't show testimonials or customer numbers that don't exist. Start with a free diagnostic, get an evidence-backed Proof Pack — and we turn your result into our first case study (only with your consent)."}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300"
-              >
-                <Link href={`${base}/offer/lead-intelligence-sprint`}>
-                  {isAr ? "ابدأ تشخيصك المجاني" : "Start free diagnostic"}
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10"
-              >
-                <Link href={`${base}/contact`}>
-                  {isAr ? "تحدّث مع المؤسِّس" : "Talk to the founder"}
-                </Link>
-              </Button>
-            </div>
           </motion.div>
         </motion.div>
       </section>

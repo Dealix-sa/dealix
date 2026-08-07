@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 m=json.loads(Path('data/scale/weekly_operating_metrics.json').read_text(encoding='utf-8'))
 clients=json.loads(Path('data/portfolio/client_health.json').read_text(encoding='utf-8'))
 auto=json.loads(Path('data/automation/automation_backlog.json').read_text(encoding='utf-8'))

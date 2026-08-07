@@ -62,14 +62,14 @@ const STEPS_AR = [
   { n: "١", title: "أدخل بيانات شركتك", desc: "اسم الشركة والقطاع والمشكلة الرئيسية" },
   { n: "٢", title: "تحليل فوري بالذكاء الاصطناعي", desc: "نكشف فجوات الإيراد وCRM وAI خلال ٧ أيام" },
   { n: "٣", title: "Proof Pack مُتحقَّق منه", desc: "أول ٣ قرارات قابلة للتنفيذ بدليل مُوثَّق" },
-  { n: "٤", title: "قرار بيدك", desc: "تختار: Sprint 499 SAR أو Retainer شهري" },
+  { n: "٤", title: "قرار بيدك", desc: "تراجع نطاق Revenue Command Pilot لمدة 30 يومًا وسعره بعد discovery" },
 ];
 
 const STEPS_EN = [
   { n: "1", title: "Enter company details", desc: "Name, sector, main challenge" },
   { n: "2", title: "AI analysis in 7 days", desc: "Revenue, CRM, and AI governance gaps mapped" },
   { n: "3", title: "Verified Proof Pack", desc: "Top 3 executable decisions with documented evidence" },
-  { n: "4", title: "Your decision", desc: "Choose: 499 SAR Sprint or monthly Retainer" },
+  { n: "4", title: "Your decision", desc: "Review a 30-day Revenue Command Pilot scope and post-discovery quote" },
 ];
 
 const SOCIAL_PROOF_AR = [
@@ -228,7 +228,7 @@ export function DealixDiagnosticLanding() {
           <div className="flex flex-wrap gap-3 pt-2">
             <Button asChild size="lg" className="font-semibold">
               <Link href={ctaHref}>
-                {isAr ? "ابدأ Sprint 499 SAR ←" : "Start Sprint 499 SAR →"}
+                {isAr ? "احجز جلسة الاكتشاف ←" : "Book discovery →"}
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">

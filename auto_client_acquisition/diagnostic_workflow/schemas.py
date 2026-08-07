@@ -68,13 +68,15 @@ class DiagnosticBundle(BaseModel):
 
 
 class PilotOffer(BaseModel):
-    """Bilingual pilot offer — fixed at 499 SAR (Literal)."""
+    """Bilingual 30-day pilot scope — quote-only after discovery."""
 
     model_config = ConfigDict(extra="forbid")
 
     company: str
     recommended_bundle: str
-    amount_sar: Literal[499] = 499
+    amount_sar: None = None
+    duration_days: Literal[30] = 30
+    commercial_status: Literal["quote_only"] = "quote_only"
     description_ar: str
     description_en: str
     terms_ar: str

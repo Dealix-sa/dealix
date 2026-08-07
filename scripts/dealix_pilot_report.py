@@ -311,7 +311,7 @@ def generate_report(
     print(f"  File       : {out_file}")
     print()
     print("  NEXT STEPS:")
-    print(f"  [ ] Review metrics — enter actual numbers before sharing")
+    print("  [ ] Review metrics — enter actual numbers before sharing")
     print(f"  [ ] Present to {company} in 30-min debrief call")
     print(f"  [ ] Recommended next step: {rec_en}")
     print(f"  [ ] If yes: make contract COMPANY='{company}' SECTOR={sector} TIER={rec_key}")

@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 clients=json.loads(Path('data/revenue/first_5_clients.json').read_text(encoding='utf-8')) if Path('data/revenue/first_5_clients.json').exists() else []
 inv=[]
 p=Path('data/revenue/invoices.jsonl')

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+
 required=[
  'frontend/src/app/api/leads/route.ts',
  'frontend/src/app/[locale]/diagnostic/page.tsx',

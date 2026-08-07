@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.workspace_store import load, save, find, next_id  # noqa: E402
+from lib.workspace_store import find, load, next_id, save
 
 
 def main() -> int:

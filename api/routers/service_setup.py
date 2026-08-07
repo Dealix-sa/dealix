@@ -39,7 +39,7 @@ import hashlib
 import logging
 import re
 import uuid
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Path
@@ -265,15 +265,16 @@ class _ProposalBody(BaseModel):
     sector: str = "b2b_services"
     city: str = "Riyadh"
     engagement_id: str
-    price_sar: int = 499
-    delivery_days: int = 7
+    quote_id: str | None = None
+    price_sar: int | None = None
+    delivery_days: int = 30
 
 
 @router.post("/api/v1/service-setup/proposal/{customer_id}")
 async def render_proposal_endpoint(
     customer_id: str, body: _ProposalBody
 ) -> dict[str, Any]:
-    """Render a bilingual proposal for the Revenue Intelligence Sprint.
+    """Render a bilingual proposal only after a documented quote exists.
 
     Returns the markdown body inline so the founder can email it (manual)
     or pipe it into a future transactional_send call. Tenant-scoped via
@@ -283,6 +284,11 @@ async def render_proposal_endpoint(
         raise HTTPException(
             status_code=400,
             detail="customer_id in path must match body.customer_handle",
+        )
+    if not body.quote_id or body.price_sar is None:
+        raise HTTPException(
+            status_code=409,
+            detail="documented_quote_required_after_discovery",
         )
     from auto_client_acquisition.sales_os.proposal_renderer import (
         ProposalContext,
@@ -301,6 +307,7 @@ async def render_proposal_endpoint(
     return {
         "customer_id": customer_id,
         "engagement_id": body.engagement_id,
+        "quote_id": body.quote_id,
         "price_sar": body.price_sar,
         "proposal_markdown": md,
         "governance_decision": "allow_with_review",

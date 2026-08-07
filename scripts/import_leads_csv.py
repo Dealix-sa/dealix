@@ -10,7 +10,6 @@ import csv
 import json
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LEADS_PATH = REPO_ROOT / "business" / "_data" / "leads.json"
 

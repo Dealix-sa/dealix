@@ -28,7 +28,6 @@ import pytest
 
 from dealix.launch_os.trust_preflight import TrustViolation, run_preflight
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------

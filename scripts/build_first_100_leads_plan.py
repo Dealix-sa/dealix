@@ -9,7 +9,6 @@ import argparse
 import datetime as dt
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPORT_DIR = REPO_ROOT / "business" / "lead-lists" / "exports"
 EXPORT_DIR.mkdir(parents=True, exist_ok=True)

@@ -9,7 +9,6 @@ import argparse
 import csv
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 CSV_HEADERS = [

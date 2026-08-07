@@ -1,58 +1,160 @@
-import { KPI_METRICS } from "@/lib/company-os/company-os";
+import Link from "next/link";
 
 export const metadata = {
-  title: "Command Center — Dealix",
-  description: "Founder command center: 5 KPIs, 1 owner per metric, daily standup template.",
+  title: "Strategic Command Center — Dealix",
+  description:
+    "A full strategic command room for Dealix: revenue, targeting, sales agents, company brain, delivery, and safety gates.",
 };
 
-function statusClasses(s: "on_track" | "watch" | "off_track") {
-  if (s === "on_track") return "bg-emerald-500/10 text-emerald-200 border-emerald-400/30";
-  if (s === "watch") return "bg-amber-500/10 text-amber-200 border-amber-400/30";
-  return "bg-rose-500/10 text-rose-200 border-rose-400/30";
+const lanes = [
+  {
+    title: "Revenue War Room",
+    status: "Active",
+    question: "What revenue action must move today?",
+    metrics: ["Hot accounts", "Open proposals", "Overdue follow-ups", "Negotiation risks"],
+    action: "Prepare one scoped proposal and push three qualified follow-ups.",
+  },
+  {
+    title: "Targeting Engine",
+    status: "Active",
+    question: "Which sector wedge gives the best chance today?",
+    metrics: ["100 researched", "40 verified", "25 drafts", "10-15 manual contacts"],
+    action: "Pick one sector and generate company-specific sales packs.",
+  },
+  {
+    title: "AI Sales Agent OS",
+    status: "Guarded",
+    question: "What should the authorized sales assistant say next?",
+    metrics: ["Voice mode", "Objections", "Negotiation levers", "Approval queue"],
+    action: "Generate drafts and negotiation guidance, then require founder approval.",
+  },
+  {
+    title: "Company Brain",
+    status: "Active",
+    question: "What does the CEO need to decide today?",
+    metrics: ["CEO decision", "Future radar", "Risks", "Knowledge gaps"],
+    action: "Turn scattered context into one daily decision and weekly board memo.",
+  },
+  {
+    title: "Client Delivery OS",
+    status: "Ready",
+    question: "What proof must be delivered for clients?",
+    metrics: ["Scope cards", "Acceptance criteria", "Proof pack", "Renewal chances"],
+    action: "Update proof pack and identify one renewal opportunity.",
+  },
+  {
+    title: "Safety & Trust Gates",
+    status: "Locked",
+    question: "What must remain blocked until approved?",
+    metrics: ["draft_only", "Opt-out", "Identity clarity", "No fake claims"],
+    action: "Keep external sends blocked until DNS, consent, rate limits, and audit are ready.",
+  },
+];
+
+const dailyNumbers = [
+  ["Research companies", "100"],
+  ["Verify targets", "40"],
+  ["Draft messages", "25"],
+  ["Manual contacts", "10-15"],
+  ["Call attempts", "3-5"],
+  ["Discovery calls", "1-2"],
+  ["Proposals", "1"],
+];
+
+const services = [
+  "Revenue Command Room OS",
+  "Company Brain OS",
+  "AI Sales Agent OS",
+  "Follow-up Recovery OS",
+  "AI Trust & Governance OS",
+  "Client Delivery OS",
+];
+
+function statusClass(status: string) {
+  if (status === "Active") return "badge badge-emerald";
+  if (status === "Guarded") return "badge badge-amber";
+  if (status === "Locked") return "badge badge-coral";
+  return "badge badge-gold";
 }
 
 export default function CommandCenterPage() {
   return (
-    <main className="min-h-screen bg-[#070A12] text-white">
-      <div className="mx-auto max-w-6xl px-6 py-16">
-        <header>
-          <p className="text-xs uppercase tracking-[0.3em] text-amber-300/80">Command Center</p>
-          <h1 className="mt-3 text-4xl font-semibold">غرفة القيادة — صفحة واحدة، خمسة مؤشرات فقط</h1>
-          <p className="mt-3 max-w-2xl text-sm text-white/70">
-            الفكرة بسيطة: ما في داشبورد فيه 30 مؤشر. هنا خمسة مؤشرات، مالك لكل واحد، وstandup يومي
-            ومراجعة أسبوعية.
-          </p>
-        </header>
+    <main>
+      <section className="card dot-pattern" style={{ textAlign: "center" }}>
+        <p className="eyebrow">Strategic Command Center</p>
+        <h1>غرفة قيادة Dealix الاستراتيجية</h1>
+        <p style={{ maxWidth: 820, margin: "0 auto" }}>
+          شاشة واحدة تجمع الإيراد، الاستهداف، Sales Agent، Company Brain، تسليم العملاء، والحوكمة.
+          الهدف ليس عرض أرقام فقط؛ الهدف تحديد ما الذي يجب فعله اليوم لإغلاق فرص حقيقية بأمان.
+        </p>
+        <div className="actions" style={{ justifyContent: "center" }}>
+          <Link href="/book">احجز مراجعة تشغيلية</Link>
+          <Link href="/services">افتح الخدمات</Link>
+          <Link href="/sales-agent">Sales Agent OS</Link>
+        </div>
+      </section>
 
-        <section className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {KPI_METRICS.slice(0, 5).map((k) => (
-            <article key={k.id} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-              <div className="flex items-center justify-between">
-                <p className="text-xs uppercase tracking-widest text-white/50">{k.cadence}</p>
-                <span className={`rounded-full border px-2 py-1 text-[10px] ${statusClasses(k.status)}`}>
-                  {k.status.replace("_", " ")}
-                </span>
+      <section className="grid-3" aria-label="Daily operating targets">
+        {dailyNumbers.map(([label, value]) => (
+          <article className="card" key={label} style={{ textAlign: "center" }}>
+            <div className="stat-value">{value}</div>
+            <p className="stat-label">{label}</p>
+          </article>
+        ))}
+      </section>
+
+      <section aria-labelledby="lanes-title">
+        <p className="eyebrow">Operating lanes</p>
+        <h2 id="lanes-title">كل مسار له سؤال استراتيجي وفعل يومي واضح.</h2>
+        <div className="cards">
+          {lanes.map((lane) => (
+            <article className="card" key={lane.title}>
+              <span className={statusClass(lane.status)}>{lane.status}</span>
+              <h3 style={{ marginTop: "var(--sp-4)" }}>{lane.title}</h3>
+              <p><strong>Question:</strong> {lane.question}</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--sp-2)", marginBottom: "var(--sp-4)" }}>
+                {lane.metrics.map((metric) => (
+                  <span className="badge badge-gold" key={metric}>{metric}</span>
+                ))}
               </div>
-              <h2 className="mt-2 text-lg font-semibold">{k.label}</h2>
-              <p className="text-xs text-white/60">{k.labelAr}</p>
-              <div className="mt-3 flex items-baseline gap-2">
-                <span className="text-2xl font-semibold text-amber-200">{k.current.toLocaleString()}</span>
-                <span className="text-xs text-white/60">/ {k.target.toLocaleString()} {k.unit}</span>
-              </div>
-              <p className="mt-2 text-xs text-white/60">Owner: {k.owner}</p>
+              <p><strong>Today:</strong> {lane.action}</p>
             </article>
           ))}
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-lg font-semibold text-amber-300">Daily standup (5 minutes)</h2>
-          <ol className="mt-3 space-y-2 text-sm text-white/80 list-decimal list-inside">
-            <li>ما الذي تغيّر أمس في الأرقام الخمسة؟</li>
-            <li>أين أكبر bottleneck اليوم؟</li>
-            <li>ما الـ single thing اللي لازم يتحرك اليوم؟</li>
-          </ol>
-        </section>
-      </div>
+      <section className="grid-2">
+        <article className="card card-gold">
+          <p className="eyebrow">Founder decision</p>
+          <h2>قرار اليوم</h2>
+          <p>
+            اختر قطاعًا واحدًا، ولّد 10 sales packs مخصصة، راجع أفضل 3، ثم ابدأ بمراجعة تشغيلية بدل بيع نظام كامل من أول رسالة.
+          </p>
+        </article>
+        <article className="card">
+          <p className="eyebrow">Service stack</p>
+          <h2>الخدمات التي تُباع من الغرفة</h2>
+          <ul>
+            {services.map((service) => <li key={service}>{service}</li>)}
+          </ul>
+        </article>
+      </section>
+
+      <section className="card" aria-labelledby="safety-title">
+        <p className="eyebrow">Controlled intelligence</p>
+        <h2 id="safety-title">ذكاء تجاري قوي بدون حرق السمعة أو انتحال الهوية.</h2>
+        <p>
+          Sales Agent يعمل كـauthorized assistant: يكتب، يؤهل، يفاوض ضمن حدود، ويقترح next action.
+          أي تواصل خارجي حي يحتاج هوية واضحة، موافقة، opt-out، وسجل تدقيق. baseline يبقى draft_only.
+        </p>
+      </section>
+
+      <section className="card" style={{ textAlign: "center" }}>
+        <p className="eyebrow">Run locally</p>
+        <h2>شغّل غرفة القيادة من الريبو</h2>
+        <pre style={{ textAlign: "left" }}>make -f Makefile.launch day</pre>
+        <p>ثم راجع reports/command_center/latest.md وباقي تقارير commercial قبل أي إجراء خارجي.</p>
+      </section>
     </main>
   );
 }

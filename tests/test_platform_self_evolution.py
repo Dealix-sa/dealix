@@ -14,7 +14,10 @@ from auto_client_acquisition.platform.process_optimization import build_process_
 from auto_client_acquisition.platform.risk_forecasting import RiskSignal
 from auto_client_acquisition.platform.scale_control_plane import run_platform_readiness_snapshot
 from auto_client_acquisition.platform.self_evolving_core import run_self_evolving_core
-from auto_client_acquisition.platform.workflow_learning import WorkflowRunStat, learn_workflow_patterns
+from auto_client_acquisition.platform.workflow_learning import (
+    WorkflowRunStat,
+    learn_workflow_patterns,
+)
 from auto_client_acquisition.platform.workflow_registry import (
     WorkflowRegistration,
     clear_workflow_registry_for_tests,

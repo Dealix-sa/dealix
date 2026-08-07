@@ -19,7 +19,7 @@ _REPO = Path(__file__).resolve().parents[1]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from api.main import app  # noqa: E402
+from api.main import app
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / "docs" / "architecture" / "openapi.json"

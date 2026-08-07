@@ -1,4 +1,5 @@
 from pathlib import Path
+
 bad=[]
 for p in Path('.github/workflows').glob('*.yml'):
     txt=p.read_text(encoding='utf-8')

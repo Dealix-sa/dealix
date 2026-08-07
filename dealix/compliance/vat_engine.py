@@ -293,9 +293,9 @@ class VATEngine:
 __all__ = [
     "COUNTRY_CURRENCIES",
     "COUNTRY_NAMES",
+    "VAT_RATES",
     "Invoice",
     "InvoiceLine",
-    "VATResult",
     "VATEngine",
-    "VAT_RATES",
+    "VATResult",
 ]

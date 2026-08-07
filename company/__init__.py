@@ -2,25 +2,30 @@
 
 This module provides the core operating engines for Dealix business automation:
 
-- **micro_master**: Quick-win opportunity identification and CEO daily pack generation
-- **revenue_engine_v2**: Full commercial pipeline, lead scoring, and approval queues
-- **intake_engine**: Client intake processing and diagnostic session preparation
+- **micro**: Quick-win opportunity identification and CEO daily pack generation
+- **revenue_engine**: Full commercial pipeline, lead scoring, and approval queues
+- **intake**: Client intake processing and diagnostic session preparation
 - **crm**: Customer relationship management and follow-up automation
-- **proof_os**: Proof pack assembly and customer trust metric generation
+- **master_stable**: Stable daily operating layer (lead queue + CEO report)
+- **leads**: Real lead sourcing (Google Places) into runtime CSVs
+- **sales**: Lead qualification and BANT scoring helpers
+- **delivery**: 14-day pilot delivery orchestrator and proof logging
+- **automation**: Approval-gated WhatsApp + Moyasar payment helpers
 
 Wave Assignment:
 - Waves 1-2: Core revenue and intake engines (production-ready)
-- Waves 3-5: CRM, follow-up, and delivery OS (in development)
-- Waves 6+: Trust, governance, and enterprise systems
+- Waves 3-5: CRM, follow-up, and delivery OS
+- Waves 6-7: Trust pack and launch readiness
 
-Usage:
-    from company.micro.micro_master import run_micro_daily_pack
-    from company.revenue_engine.revenue_engine_v2 import process_revenue_pipeline
-    from company.intake.intake_engine import process_intake_forms
+Each engine exposes a ``main()`` entry point and runs standalone:
 
-    await run_micro_daily_pack()
-    await process_revenue_pipeline()
-    await process_intake_forms()
+    python company/micro/micro_master.py
+    python company/revenue_engine/revenue_engine_v2.py
+    python company/intake/intake_engine.py
+
+Or run the whole safe daily sequence + Command Room with one command:
+
+    bash scripts/dealix_command_day.sh
 
 Configuration:
     All engines respect .env variables for API keys, database URLs, and operational modes.
@@ -47,11 +52,15 @@ __version__ = "2.0.0"
 __author__ = "Dealix Team"
 __email__ = "team@dealix.ai"
 
-# Public API
+# Public API — names of the engine sub-packages that ship in this distribution.
 __all__ = [
-    "micro_master",
-    "revenue_engine_v2",
-    "intake_engine",
+    "micro",
+    "revenue_engine",
+    "intake",
     "crm",
-    "proof_os",
+    "master_stable",
+    "leads",
+    "sales",
+    "delivery",
+    "automation",
 ]

@@ -14,9 +14,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.evidence_append import append_evidence_row  # noqa: E402
-from dealix.commercial_ops.first_paid_tracker import analyze_first_paid_diagnostic  # noqa: E402
-from dealix.commercial_ops.paths import REPO_ROOT  # noqa: E402
+from dealix.commercial_ops.evidence_append import append_evidence_row
+from dealix.commercial_ops.first_paid_tracker import analyze_first_paid_diagnostic
+from dealix.commercial_ops.paths import REPO_ROOT
 
 PHASE_DEAL = REPO_ROOT / "dealix/config/phase_0_1_active_deal.yaml"
 EVIDENCE = REPO_ROOT / "docs/commercial/operations/evidence_events_tracker.csv"

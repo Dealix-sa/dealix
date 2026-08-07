@@ -39,7 +39,6 @@ import httpx
 
 from auto_client_acquisition.email.gmail_send import is_configured as gmail_is_configured
 
-
 API_TIMEOUT = 120.0
 
 

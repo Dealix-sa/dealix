@@ -369,6 +369,11 @@ export const api = {
       params: { top_n: topN, mode },
     }),
 
+  getIntelligenceSnapshot: (adminApiKey: string) =>
+    apiClient.get("/api/v1/market-intelligence/intelligence-snapshot", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
   postFounderCockpitRunMorning: (
     adminApiKey: string,
     body: { top_n?: number; run_optional_scripts?: boolean } = {},

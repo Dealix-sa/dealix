@@ -374,15 +374,15 @@ def resolve_focus(
         }
     if all_pilots_template_ready:
         return {
-            "primary_offer_id": "revenue_proof_sprint_499",
+            "primary_offer_id": "revenue_command_pilot_30d",
             "stage": "pilot_execution",
-            "rationale_ar": "بايلوتات جاهزة للقالب — ركّز على Sprint 499 + PILOT_EXECUTION_RUNBOOK",
+            "rationale_ar": "بايلوتات جاهزة للقالب — ركّز على Revenue Command Pilot لمدة 30 يوماً + PILOT_EXECUTION_RUNBOOK",
         }
     return {
         "primary_offer_id": "free_mini_diagnostic",
-        "secondary_offer_id": "revenue_proof_sprint_499",
+        "secondary_offer_id": "revenue_command_pilot_30d",
         "stage": "founder_led_entry",
-        "rationale_ar": "سلم الدخول: تشخيص مجاني ثم Sprint 499 — قائمة دافئة فقط",
+        "rationale_ar": "سلم الدخول: تشخيص مجاني ثم عرض موثق لتجربة Revenue Command Pilot — قائمة دافئة فقط",
     }
 
 

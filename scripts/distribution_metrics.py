@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from auto_client_acquisition.distribution_os import metrics  # noqa: E402
+from auto_client_acquisition.distribution_os import metrics
 
 _REPORT = ROOT / "reports" / "distribution" / "DISTRIBUTION_METRICS.md"
 

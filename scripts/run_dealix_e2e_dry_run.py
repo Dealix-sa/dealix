@@ -45,7 +45,7 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from scripts.create_customer_workspace import (  # noqa: E402
+from scripts.create_customer_workspace import (
     COMMAND_SPRINT_FILES,
     create_workspace,
 )
@@ -282,7 +282,7 @@ def main() -> int:
     # Build the dry-run workspace (idempotent via --force semantics).
     try:
         ws, _ = create_workspace(DRY_RUN_CLIENT, force=True)
-    except Exception as exc:  # noqa: BLE001 - dry run must surface, not crash CI
+    except Exception as exc:
         print(f"FATAL: could not create dry-run workspace: {exc}", file=sys.stderr)
         return 1
 

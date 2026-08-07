@@ -71,14 +71,14 @@ def _build_meta_payload(message: str, from_number: str) -> dict:
 
 def _post_webhook(base_url: str, payload: dict, timeout: int) -> tuple[int, dict | str]:
     body = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(  # noqa: S310 — operator-controlled URL
+    req = urllib.request.Request(
         f"{base_url}/api/v1/webhooks/whatsapp",
         data=body,
         method="POST",
         headers={"Content-Type": "application/json"},
     )
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
             return resp.status, json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         return exc.code, exc.read().decode("utf-8") if exc.fp else ""

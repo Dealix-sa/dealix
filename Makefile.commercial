@@ -1,0 +1,11 @@
+.PHONY: commercial-check commercial-pack commercial-day
+PYTHON ?= python3
+
+commercial-check:
+	$(PYTHON) scripts/commercial/commercial_readiness_check.py
+
+commercial-pack:
+	$(PYTHON) scripts/commercial/generate_commercial_go_live_pack.py
+
+commercial-day: commercial-check commercial-pack
+	@echo "Commercial day completed. Review reports/commercial/latest.md."

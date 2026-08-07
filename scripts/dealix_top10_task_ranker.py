@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 rules=json.loads(Path('data/founder/daily_decision_rules.json').read_text(encoding='utf-8'))
 tasks=json.loads(Path('data/founder/founder_tasks.json').read_text(encoding='utf-8'))
 weights=rules['priority_weights']

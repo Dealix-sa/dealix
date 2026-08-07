@@ -20,7 +20,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from auto_client_acquisition.revenue_os.daily_targeting_brief import (  # noqa: E402
+from auto_client_acquisition.revenue_os.daily_targeting_brief import (
     build_daily_targeting_brief,
     load_target_companies,
     render_brief_markdown,

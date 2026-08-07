@@ -158,5 +158,4 @@ class TestPaymentEvent:
             amount_sar=499,
             amount_halalas=49900,
         )
-        from datetime import timezone
         assert e.occurred_at.tzinfo is not None

@@ -1,6 +1,6 @@
-"""Revenue Intelligence Sprint Orchestrator — 7-day commercial engagement.
+"""Legacy seven-step delivery workstream for the 30-day Revenue Command Pilot.
 
-Orchestrates the 499 SAR Revenue Intelligence Sprint. Each day calls the
+This module is not a commercial offer or pricing source. Each step calls the
 appropriate canonical module and returns a structured :class:`SprintDayResult`
 with bilingual (ar/en) output.
 
@@ -258,8 +258,6 @@ def _run_day_4(ctx: SprintContext) -> SprintDayResult:
         audit_draft_text,
         policy_check_draft,
     )
-    from auto_client_acquisition.sales_os.proposal_renderer import ProposalContext, render_proposal
-
     customer = ctx.customer_name or "العميل"
     customer_ar = ctx.customer_name_ar or customer
     pain = ctx.pain_summary or "revenue growth challenges"
@@ -272,7 +270,7 @@ def _run_day_4(ctx: SprintContext) -> SprintDayResult:
             "lang": "ar",
             "body": (
                 f"مرحباً {customer_ar}، هل تواجهون {pain_ar}؟ "
-                f"لدينا Sprint تشخيصي يساعدكم خلال 7 أيام."
+                f"نبدأ بتشخيص محدود قبل تحديد أي نطاق أو سعر."
             ),
             "channel": "whatsapp",
             "status": "draft_only",
@@ -281,8 +279,8 @@ def _run_day_4(ctx: SprintContext) -> SprintDayResult:
             "draft_id": f"wa_draft_2_{ctx.engagement_id}",
             "lang": "ar",
             "body": (
-                f"فريق {customer_ar}، نخصص Sprint تشخيصي لقطاع {sector} يُنتج "
-                f"Proof Pack كاملاً في 7 أيام بـ 499 ريال."
+                f"فريق {customer_ar}، نبدأ بتشخيص محدود لقطاع {sector}. بعد discovery "
+                f"يمكن إعداد نطاق Revenue Command Pilot لمدة 30 يومًا وquote موثق."
             ),
             "channel": "whatsapp",
             "status": "draft_only",
@@ -291,8 +289,8 @@ def _run_day_4(ctx: SprintContext) -> SprintDayResult:
             "draft_id": f"wa_draft_3_{ctx.engagement_id}",
             "lang": "en",
             "body": (
-                f"Hi {customer}, we run a 7-day Revenue Intelligence Sprint for {sector} "
-                f"businesses — complete with a Proof Pack at 499 SAR."
+                f"Hi {customer}, we start with a bounded diagnostic for {sector} businesses. "
+                f"After discovery, we can prepare a 30-day Revenue Command Pilot scope and documented quote."
             ),
             "channel": "whatsapp",
             "status": "draft_only",
@@ -304,31 +302,27 @@ def _run_day_4(ctx: SprintContext) -> SprintDayResult:
         "emails": [
             {
                 "step": 1,
-                "subject_en": f"Revenue Intelligence Sprint for {customer}",
-                "subject_ar": f"Sprint ذكاء الإيراد لـ {customer_ar}",
+                "subject_en": f"Revenue workflow discovery for {customer}",
+                "subject_ar": f"جلسة اكتشاف لمسار الإيراد لدى {customer_ar}",
                 "body_en": (
                     f"We've identified {pain}. "
-                    f"Our 7-day sprint delivers measurable results with full Proof Pack."
+                    f"After discovery, we can prepare a 30-day Pilot scope and documented quote."
                 ),
                 "body_ar": (
                     f"رصدنا {pain_ar}. "
-                    f"Sprint الـ7 أيام يُنتج نتائج قابلة للقياس مع Proof Pack كامل."
+                    f"بعد discovery يمكن إعداد نطاق Pilot لمدة 30 يومًا وquote موثق."
                 ),
             },
         ],
         "status": "draft_only",
     }
 
-    proposal_ctx = ProposalContext(
-        customer_name=customer,
-        customer_handle=ctx.customer_id,
-        sector=sector,
-        city=ctx.city or "Riyadh",
-        engagement_id=ctx.engagement_id,
-        price_sar=499,
-        delivery_days=7,
+    proposal_md = (
+        f"# Revenue Command Pilot — {customer}\n\n"
+        "Draft scope only. A 30-day operating scope and documented quote may be "
+        "prepared after discovery. No payment link or external send is allowed "
+        "before explicit approval."
     )
-    proposal_md = render_proposal(proposal_ctx)
 
     # Governance gate on draft content.
     all_texts = [d["body"] for d in whatsapp_drafts] + [proposal_md]
@@ -523,7 +517,7 @@ _DAY_RUNNERS = {
 
 
 class SprintOrchestrator:
-    """Orchestrates the 7-day Revenue Intelligence Sprint (499 SAR offer).
+    """Orchestrates a legacy seven-step workstream inside an approved pilot.
 
     Usage::
 
@@ -550,7 +544,7 @@ class SprintOrchestrator:
         runner = _DAY_RUNNERS[day]
         try:
             return runner(context)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return SprintDayResult(
                 day=day,
                 title_en=f"Day {day}",

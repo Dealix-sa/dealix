@@ -113,7 +113,7 @@ def due_followups(*, on_date: str | None = None) -> list[Followup]:
             try:
                 if _parse(fu.due_date) <= target:
                     out.append(fu)
-            except Exception:  # noqa: S112 — skip an unparseable due_date, keep scanning
+            except Exception:
                 continue
     out.sort(key=lambda f: f.due_date)
     return out

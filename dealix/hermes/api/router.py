@@ -440,4 +440,4 @@ async def run_daily_outreach(
     )
 
 
-__all__ = ["hermes_router", "HermesResponse"]
+__all__ = ["HermesResponse", "hermes_router"]

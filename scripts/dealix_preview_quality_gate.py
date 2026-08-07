@@ -1,5 +1,7 @@
-import json, datetime
+import datetime
+import json
 from pathlib import Path
+
 checks={
  'scope_written': True,
  'invoice_or_approval': True,

@@ -39,7 +39,7 @@ def main() -> int:
     OUT.write_text(
         json.dumps({
             "version": 1,
-            "builtAt": _dt.datetime.now(tz=_dt.timezone.utc).isoformat(timespec="seconds"),
+            "builtAt": _dt.datetime.now(tz=_dt.UTC).isoformat(timespec="seconds"),
             "demo": bool(args.demo),
             "entries": entries,
         }, indent=2, ensure_ascii=False),

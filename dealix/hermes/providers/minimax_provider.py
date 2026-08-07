@@ -1,7 +1,10 @@
 """MiniMax LLM provider — OpenAI-compatible, used for high-volume daily tasks."""
 from __future__ import annotations
-import json, os
+
+import json
+import os
 from typing import Any
+
 import structlog
 
 logger = structlog.get_logger(__name__)
@@ -14,7 +17,11 @@ class MiniMaxProvider:
     """Async OpenAI-compatible client pointing at MiniMax's API."""
 
     def __init__(self, api_key: str = "", model: str = _DEFAULT_MODEL, base_url: str = _MINIMAX_BASE_URL) -> None:
-        self._api_key = api_key or os.environ.get("MINIMAX_API_KEY", "")
+        self._api_key = (
+            api_key
+            or os.environ.get("MINIMAX_API_KEY", "")
+            or os.environ.get("OPENROUTER_API_KEY", "")
+        )
         self._model = model
         self._base_url = base_url
         self._client: Any = None

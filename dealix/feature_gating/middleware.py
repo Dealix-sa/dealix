@@ -1,21 +1,30 @@
 """
 Feature Gating Middleware.
-يربط كل طلب بالـ tenant ويتحقق من صلاحية الوصول للميزة.
+يربط كل طلب بالـ tenant المُتحقق منه من التوكن فقط.
+
+This middleware publishes an **advisory** tenant hint derived strictly
+from a verified access token. It is not the authority for entitlement
+decisions — ``dealix.feature_gating.service.FeatureGate`` resolves the
+tenant from the authenticated user on every gated route.
+
+Client-supplied headers (``X-Tenant-ID``) are deliberately ignored here:
+a browser-controlled value must never become request tenant context.
 """
 
 from __future__ import annotations
 
-from typing import Awaitable, Callable
+from collections.abc import Awaitable, Callable
 
 from fastapi import Request, Response
+from jose import JWTError
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from dealix.feature_gating.service import FeatureGatingService
+from api.security.jwt import decode_access_token
 
 
 class FeatureGatingMiddleware(BaseHTTPMiddleware):
     """
-    Injects feature flags into request.state for downstream use.
+    Injects a verified tenant hint into request.state for downstream use.
     Skips paths that don't need tenant context.
     """
 
@@ -38,39 +47,29 @@ class FeatureGatingMiddleware(BaseHTTPMiddleware):
         if any(path.startswith(skip) for skip in self.SKIP_PATHS):
             return await call_next(request)
 
-        # Try to extract tenant_id from JWT or headers
         tenant_id = self._extract_tenant_id(request)
 
-        if tenant_id:
-            request.state.tenant_id = tenant_id
-            # Lazy-load features when needed; don't block request here
-            request.state.features_loaded = False
-        else:
-            request.state.tenant_id = None
-            request.state.features_loaded = False
+        request.state.tenant_id = tenant_id
+        request.state.tenant_id_source = "verified_jwt" if tenant_id else None
+        # Lazy-load features when needed; don't block request here
+        request.state.features_loaded = False
 
         return await call_next(request)
 
     def _extract_tenant_id(self, request: Request) -> str | None:
-        # Priority: x-tenant-id header → JWT payload → path param
-        tenant_id = request.headers.get("x-tenant-id")
-        if tenant_id:
-            return tenant_id
+        """Return the tenant claim of a verified access token, else None.
 
-        # Try JWT
+        Only the signed ``tid`` claim is trusted. Headers are never read:
+        honouring ``X-Tenant-ID`` here would let any caller pick the tenant
+        whose entitlements are evaluated.
+        """
         auth = request.headers.get("authorization", "")
-        if auth.startswith("Bearer "):
-            token = auth.replace("Bearer ", "")
-            try:
-                import jwt
-                from core.config.settings import get_settings
-                payload = jwt.decode(
-                    token,
-                    get_settings().app_secret_key,
-                    algorithms=["HS256"],
-                )
-                return payload.get("tenant_id")
-            except Exception:
-                pass
-
-        return None
+        scheme, _, token = auth.partition(" ")
+        if scheme.lower() != "bearer" or not token.strip():
+            return None
+        try:
+            payload = decode_access_token(token.strip())
+        except JWTError:
+            return None
+        tenant_id = payload.get("tid")
+        return tenant_id if isinstance(tenant_id, str) and tenant_id else None

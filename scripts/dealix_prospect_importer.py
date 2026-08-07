@@ -1,5 +1,7 @@
-import argparse,csv
+import argparse
+import csv
 from pathlib import Path
+
 p=argparse.ArgumentParser(); p.add_argument('--input',required=True); p.add_argument('--output',required=True); a=p.parse_args(); Path(a.output).parent.mkdir(parents=True,exist_ok=True)
 def score(r):
  s=0; pain=(r.get('suspected_pain') or '').lower()

@@ -48,7 +48,7 @@
 
 ### Option A — GitHub UI (one-by-one, slowest but visual)
 
-Visit https://github.com/voxc2/dealix/branches → click trash icon next to
+Visit https://github.com/Dealix-sa/dealix/branches → click trash icon next to
 each branch above.
 
 ### Option B — Local terminal (founder's machine, with push permissions)
@@ -102,7 +102,7 @@ for branch in claude/{ci-fix-playwright-v2,ci-fix-post-201,ci-fix-v3} \
               claude/wave12-{6-tenant-isolation-bopla,7-api-wiring,8-router-registration,9-daily-prep-usable,saudi-ai-revenue-command-center} \
               claude/{wave13-full-ops-productization,wave14-saudi-engines-completion,wave15-customer-ops-polish} \
               claude/{wave7-5-service-truth,wave7-6-legal-execution,wave7-7-pre-approved-rules,wave7-founder-docs}; do
-  gh api -X DELETE "repos/voxc2/dealix/git/refs/heads/$branch" && echo "✓ $branch"
+  gh api -X DELETE "repos/Dealix-sa/dealix/git/refs/heads/$branch" && echo "✓ $branch"
 done
 ```
 

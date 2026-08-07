@@ -12,7 +12,6 @@ import json
 import sys
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -22,28 +21,48 @@ def run_step(label: str, fn) -> bool:
         fn()
         print("  OK")
         return True
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         print(f"  FAIL: {exc}")
         return False
 
 
-def cmd_score():
-    sys.path.insert(0, str(REPO_ROOT))
+def cmd_provider_radar():
     import subprocess
+    import sys as _s
+
+    radar = REPO_ROOT / "scripts" / "ops" / "free_llm_provider_radar.py"
+    if not radar.exists():
+        print("  provider radar not installed; skipping")
+        return
+    for task in ("coding", "arabic", "batch", "sensitive"):
+        subprocess.check_call([_s.executable, str(radar), "--task", task, "--limit", "3"])
+
+
+def cmd_score():
+    import subprocess
+
+    sys.path.insert(0, str(REPO_ROOT))
     subprocess.check_call([sys.executable, str(REPO_ROOT / "scripts" / "score_leads.py")])
 
 
-def cmd_drafts():
+def cmd_drafts(operator_mode: str = "demo"):
     import subprocess
     import sys as _s
+
     _s.path.insert(0, str(REPO_ROOT))
+    generator_mode = "live" if operator_mode == "production" else "demo"
     subprocess.check_call(
         [
             _s.executable,
             str(REPO_ROOT / "scripts" / "generate_outreach_drafts.py"),
-            "--top", "10",
-            "--language", "both",
-            "--channel", "whatsapp",
+            "--top",
+            "10",
+            "--language",
+            "both",
+            "--channel",
+            "whatsapp",
+            "--mode",
+            generator_mode,
         ]
     )
 
@@ -51,6 +70,7 @@ def cmd_drafts():
 def cmd_followups():
     import subprocess
     import sys as _s
+
     _s.path.insert(0, str(REPO_ROOT))
     subprocess.check_call([_s.executable, str(REPO_ROOT / "scripts" / "generate_followup_queue.py")])
 
@@ -58,6 +78,7 @@ def cmd_followups():
 def cmd_prospect_pack():
     import subprocess
     import sys as _s
+
     _s.path.insert(0, str(REPO_ROOT))
     subprocess.check_call([_s.executable, str(REPO_ROOT / "scripts" / "generate_prospect_pack.py")])
 
@@ -65,15 +86,20 @@ def cmd_prospect_pack():
 def cmd_proposal():
     import subprocess
     import sys as _s
+
     _s.path.insert(0, str(REPO_ROOT))
     subprocess.check_call(
         [
             _s.executable,
             str(REPO_ROOT / "scripts" / "generate_proposal.py"),
-            "--account-id", "demo-acc-003",
-            "--offer", "Command Center",
-            "--lang", "both",
-            "--timeline", "21 days",
+            "--account-id",
+            "demo-acc-003",
+            "--offer",
+            "Command Center",
+            "--lang",
+            "both",
+            "--timeline",
+            "21 days",
         ]
     )
 
@@ -81,6 +107,7 @@ def cmd_proposal():
 def cmd_ceo_brief():
     import subprocess
     import sys as _s
+
     _s.path.insert(0, str(REPO_ROOT))
     subprocess.check_call([_s.executable, str(REPO_ROOT / "scripts" / "generate_daily_ceo_brief.py")])
 
@@ -96,7 +123,6 @@ def cmd_pipeline_report():
         except json.JSONDecodeError:
             accounts = []
     if not accounts:
-        # Use seed if exists
         seed = REPO_ROOT / "business" / "crm" / "prospects.seed.json"
         if seed.exists():
             accounts = json.loads(seed.read_text(encoding="utf-8")).get("accounts", [])
@@ -106,12 +132,13 @@ def cmd_pipeline_report():
     lines.append("")
     lines.append(f"Total accounts: {len(accounts)}")
     by_stage: dict[str, int] = {}
-    for a in accounts:
-        by_stage[a.get("stage", "unknown")] = by_stage.get(a.get("stage", "unknown"), 0) + 1
+    for account in accounts:
+        stage = account.get("stage", "unknown")
+        by_stage[stage] = by_stage.get(stage, 0) + 1
     lines.append("")
     lines.append("## By stage")
-    for k, v in by_stage.items():
-        lines.append(f"- {k}: {v}")
+    for stage, count in by_stage.items():
+        lines.append(f"- {stage}: {count}")
     lines.append("")
     lines.append("---")
     lines.append("Demo mode: no auto-send, no claims of traction.")
@@ -141,12 +168,13 @@ def main() -> int:
     print(f"Dealix Daily Operator — mode={args.mode}")
     bootstrap_leads()
     steps = [
+        ("0. Select AI provider radar", cmd_provider_radar),
         ("1. Score leads", cmd_score),
-        ("2. Generate drafts", cmd_drafts),
+        ("2. Generate governed drafts", lambda: cmd_drafts(args.mode)),
         ("3. Generate follow-ups", cmd_followups),
         ("4. Generate prospect pack", cmd_prospect_pack),
         ("5. Generate proposal (demo account)", cmd_proposal),
-        ("6. Generate daily CEO brief", cmd_ceo_brief),
+        ("6. Generate data-backed daily CEO brief", cmd_ceo_brief),
         ("7. Generate pipeline report", cmd_pipeline_report),
     ]
     ok = 0
@@ -163,7 +191,7 @@ def main() -> int:
 **Mode:** {args.mode}
 **Steps passed:** {ok}/{len(steps)}
 
-## Files generated
+## Canonical files generated
 - `business/_data/scored_leads.json`
 - `business/_data/outreach_review_queue.json`
 - `business/crm/exports/dealix-followup-queue.md`
@@ -172,10 +200,19 @@ def main() -> int:
 - `business/proposals/generated/...`
 - `business/reports/exports/dealix-daily-ceo-brief-{dt.date.today().isoformat()}.txt`
 
+## Compatibility output
+- `business/persuasion/exports/outreach-drafts-{dt.date.today().isoformat()}.json`
+
+## AI provider radar
+- The daily operator runs the provider radar before commercial generation.
+- Free providers are used for non-confidential acceleration only.
+- Sensitive/customer/legal/production work must stay on approved paid, private, or local providers.
+- Daily value playbook: `docs/ops/FREE_LLM_DAILY_VALUE_LOOP.md`
+
 ## Safety reminder
 - No draft was sent.
-- All drafts have `reviewStatus = "draft_pending_human_review"`.
-- Founder must run `approve_outreach_draft.py` before any send.
+- Canonical drafts use `reviewStatus = \"draft_pending_human_review\"`.
+- Founder approval is required before any external send.
 """,
         encoding="utf-8",
     )

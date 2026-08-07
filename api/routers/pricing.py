@@ -17,9 +17,10 @@ import logging
 import os
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
 
+from api.security.api_key import require_founder_admin_key
 from dealix.payments import MoyasarClient, verify_webhook
 from dealix.reliability.dlq import DLQ, WEBHOOKS_DLQ
 from dealix.reliability.idempotency import IdempotencyStore
@@ -33,6 +34,45 @@ def _fingerprint(value: str) -> str:
     if not value:
         return ""
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:12]
+
+
+def _dedupe_key(body: dict[str, Any]) -> str:
+    """Stable idempotency key for a Moyasar webhook event.
+
+    The dedupe used to be conditional on a top-level ``id``:
+
+        if event_id and not idem.claim(event_id, ...):
+
+    so an event without one skipped the check entirely and every provider
+    retry re-ran the side effects — a second receipt email to the customer, a
+    second founder alert, and a **second ZATCA e-invoice** for one payment.
+    Moyasar retries whenever it does not get a 2xx, so a slow response was
+    enough to trigger it. A dedupe that only protects the well-formed case
+    protects nothing.
+
+    Falls back through progressively weaker identifiers, and always returns
+    one:
+
+    1. the event ``id``;
+    2. the payment ID plus its status — successive status transitions on the
+       same payment are genuinely distinct events, so the status has to be
+       part of the key or a later ``paid`` would be swallowed as a duplicate
+       of an earlier ``initiated``;
+    3. a hash of the whole body, which two genuinely different events cannot
+       share.
+    """
+    event_id = str(body.get("id") or "").strip()
+    if event_id:
+        return event_id
+
+    data = body.get("data")
+    if isinstance(data, dict):
+        payment_id = str(data.get("id") or "").strip()
+        if payment_id:
+            status = str(data.get("status") or body.get("type") or "").strip()
+            return f"payment:{payment_id}:{status}"
+
+    return f"body:{IdempotencyStore.hash_payload(body)}"
 
 
 async def _persist_payment_event(
@@ -134,10 +174,10 @@ def _build_plans() -> dict[str, dict[str, Any]]:
                 "deliverables": list(offering.deliverables),
                 "kpi_commitment_en": offering.kpi_commitment_en,
                 "kpi_commitment_ar": offering.kpi_commitment_ar,
+                "commercial_status": offering.commercial_status,
             }
         # Backwards-compat aliases so existing checkout links still work
         aliases = {
-            "pilot_managed": "revenue_proof_sprint_499",
             "growth": "growth_ops_monthly_2999",
             "scale": "executive_command_center_7500",
             "starter": "growth_ops_monthly_2999",
@@ -172,20 +212,80 @@ def _build_plans() -> dict[str, dict[str, Any]]:
         }
         return plans
     except Exception:
-        # Fallback to hardcoded if registry unavailable
-        return {
-            "revenue_proof_sprint_499": {"name": "499 SAR Revenue Proof Sprint", "name_ar": "سبرنت إثبات الإيرادات", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
-            "data_to_revenue_1500": {"name": "Data-to-Revenue Pack", "name_ar": "حزمة البيانات والإيرادات", "amount_halalas": 150000, "monthly": False, "kind": "one_off"},
-            "growth_ops_monthly_2999": {"name": "Growth Ops Monthly", "name_ar": "Managed Ops النمو", "amount_halalas": 299900, "monthly": True, "kind": "subscription"},
-            "pilot_managed": {"name": "Managed Pilot (7 days)", "name_ar": "برنامج الأسبوع المكثف", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
-            "pilot_1sar": {"name": "Pilot (1 SAR)", "name_ar": "اختبار", "amount_halalas": 100, "monthly": False, "kind": "one_off"},
-            "laas_per_reply": {"name": "LaaS Per Reply", "name_ar": "قيادة كخدمة", "amount_halalas": 2500, "monthly": False, "kind": "metered", "unit": "arabic_replied_lead"},
-            "laas_per_demo": {"name": "LaaS Per Demo", "name_ar": "قيادة كخدمة", "amount_halalas": 15000, "monthly": False, "kind": "metered", "unit": "booked_demo"},
-        }
+        # The registry is the single source of truth for what a customer is
+        # charged. This used to fall back to a hardcoded copy of the ladder,
+        # silently and without a log line — so an import failure swapped the
+        # catalogue for a stale one and checkout carried on selling. The copy
+        # had already drifted: its Data-to-Revenue key was
+        # `data_to_revenue_1500` against the registry's
+        # `data_to_revenue_pack_1500`, the 7,500 SAR Executive Command Center
+        # and every transformation offering were missing, and so were the
+        # `starter` / `growth` / `scale` aliases. Keeping a second copy in step
+        # by hand is the failure mode, not the fix.
+        #
+        # An empty catalogue makes the outage visible: reads report
+        # `catalog_status: "unavailable"` and checkout returns 503 instead of
+        # charging a price nobody approved. Quoting the wrong number is worse
+        # than quoting none.
+        global _PLANS_SOURCE
+        _PLANS_SOURCE = "unavailable"
+        log.exception("pricing_catalog_unavailable — service_catalog.registry did not import")
+        return {}
 
+
+# Set by _build_plans(); "registry" when the canonical catalogue loaded.
+_PLANS_SOURCE = "registry"
 
 PLANS: dict[str, dict[str, Any]] = _build_plans()
-ALLOWED_PLANS = frozenset(PLANS)
+
+# Commercial trust gate (#917): test-only plans can never become normal
+# checkout plans merely because they exist in the in-memory catalogue.
+TEST_ONLY_PLANS = frozenset({"pilot_1sar"})
+ALLOWED_PLANS = frozenset(
+    plan_id
+    for plan_id, plan in PLANS.items()
+    if plan_id not in TEST_ONLY_PLANS
+    and plan.get("commercial_status") == "public_approved"
+)
+_TRUE_VALUES = frozenset({"1", "true", "yes", "on"})
+
+
+def _flag_enabled(name: str) -> bool:
+    return os.getenv(name, "").strip().lower() in _TRUE_VALUES
+
+
+def catalog_available() -> bool:
+    """True when prices came from the canonical registry.
+
+    False means the catalogue could not be loaded, so no price on this service
+    is authoritative and nothing may be sold from it.
+    """
+    return _PLANS_SOURCE == "registry" and bool(PLANS)
+
+
+def _checkout_enabled() -> bool:
+    """Checkout is fail-closed until the founder approves the launch offer."""
+    return _flag_enabled("DEALIX_CHECKOUT_ENABLED")
+
+
+def _test_checkout_enabled() -> bool:
+    """Allow the 1 SAR smoke plan only through an explicit non-production gate."""
+    return (
+        os.getenv("APP_ENV", "").strip().lower() != "production"
+        and _flag_enabled("DEALIX_ENABLE_1SAR_CHECKOUT")
+    )
+
+
+def _public_plan_ids() -> frozenset[str]:
+    """Return explicitly approved public plans; empty is the safe default."""
+    if not _flag_enabled("DEALIX_PUBLIC_PRICING_ENABLED"):
+        return frozenset()
+    requested = {
+        value.strip()
+        for value in os.getenv("DEALIX_PUBLIC_PLAN_IDS", "").split(",")
+        if value.strip()
+    }
+    return frozenset(requested & ALLOWED_PLANS)
 
 
 @router.get("/api/v1/pricing/plans")
@@ -195,10 +295,10 @@ async def list_plans() -> dict[str, Any]:
     Hides `pilot_1sar` (E2E test plan only). Surfaces all other plans including
     one-off pilot, metered LaaS plans, and recurring subscriptions.
     """
-    hidden = {"pilot_1sar"}
+    public_plan_ids = _public_plan_ids()
     plans = {}
     for k, v in PLANS.items():
-        if k in hidden:
+        if k not in public_plan_ids:
             continue
         entry = {
             "name": v["name"],
@@ -209,12 +309,26 @@ async def list_plans() -> dict[str, Any]:
         if v.get("unit"):
             entry["unit"] = v["unit"]
         plans[k] = entry
-    return {"currency": "SAR", "plans": plans}
+    return {
+        "currency": "SAR",
+        "plans": plans,
+        "public_pricing_enabled": bool(public_plan_ids),
+        "status": "approved" if public_plan_ids else "founder_approval_required",
+        # Distinguishes "no plans approved for public display" from "the price
+        # catalogue failed to load" — the second must never read as the first.
+        "catalog_status": "registry" if catalog_available() else "unavailable",
+    }
 
 
-@router.post("/api/v1/pricing/usage")
+@router.post("/api/v1/pricing/usage", dependencies=[Depends(require_founder_admin_key)])
 async def record_usage(req: Request) -> dict[str, Any]:
     """Record a metered-billing usage event for LaaS R3 plans.
+
+    Admin-gated: this endpoint decides what a customer is billed, and it takes
+    the ``customer_handle`` from the request body. Behind the shared platform
+    key alone, any service-key holder could add billable events to any
+    customer's account. ``docs/ops/LAAS_INVOICING_SOP.md`` has always
+    documented it as admin-only; the code did not enforce it.
 
     Body:
       {
@@ -292,23 +406,31 @@ async def pricing_menu() -> dict[str, Any]:
     except Exception:
         return {
             "currency": "SAR",
-            "plans": {k: v for k, v in PLANS.items() if k != "pilot_1sar"},
+            "plans": {},
             "service_catalog": [],
+            "sales_ready": False,
+            "checkout_status": "founder_approval_required",
         }
 
     offerings = list_offerings()
     catalog = []
     for offering in offerings:
         plan = PLANS.get(offering.id, {})
+        amount_is_public = offering.commercial_status == "public_approved"
         catalog.append({
             "plan_id": offering.id,
             "name_en": offering.name_en,
             "name_ar": offering.name_ar,
-            "price_sar": offering.price_sar,
+            "price_sar": offering.price_sar if amount_is_public else None,
             "price_unit": offering.price_unit,
-            "price_sar_max": offering.price_sar_max,
-            "price_monthly_sar_min": offering.price_monthly_sar_min,
-            "price_monthly_sar_max": offering.price_monthly_sar_max,
+            "price_sar_max": offering.price_sar_max if amount_is_public else None,
+            "price_monthly_sar_min": (
+                offering.price_monthly_sar_min if amount_is_public else None
+            ),
+            "price_monthly_sar_max": (
+                offering.price_monthly_sar_max if amount_is_public else None
+            ),
+            "commercial_status": offering.commercial_status,
             "duration_days": offering.duration_days,
             "deliverables": list(offering.deliverables),
             "kpi_commitment_ar": offering.kpi_commitment_ar,
@@ -328,9 +450,21 @@ async def pricing_menu() -> dict[str, Any]:
 
     return {
         "currency": "SAR",
-        "plans": {k: v for k, v in PLANS.items() if k != "pilot_1sar"},
+        "plans": {k: PLANS[k] for k in sorted(_public_plan_ids())},
         "service_catalog": catalog,
-        "sales_ready": True,
+        # A menu built from a catalogue that failed to load is not sellable,
+        # whatever the founder-approval flag says.
+        "sales_ready": (
+            _checkout_enabled() and catalog_available() and bool(ALLOWED_PLANS)
+        ),
+        "catalog_status": "registry" if catalog_available() else "unavailable",
+        "checkout_status": (
+            "enabled"
+            if _checkout_enabled() and catalog_available() and bool(ALLOWED_PLANS)
+            else "unavailable"
+            if not catalog_available()
+            else "founder_approval_required"
+        ),
     }
 
 
@@ -341,10 +475,53 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     email = str(body.get("email") or "").strip()
     lead_id = str(body.get("lead_id") or "")
 
-    if plan not in ALLOWED_PLANS:
+    # Checked before the plan lookup so the caller is told the catalogue is
+    # down, rather than getting `unknown_plan` for a plan that exists.
+    if not catalog_available():
+        raise HTTPException(status_code=503, detail="pricing_catalog_unavailable")
+    if not _checkout_enabled():
+        raise HTTPException(status_code=503, detail="checkout_not_founder_approved")
+    if plan in TEST_ONLY_PLANS:
+        if not _test_checkout_enabled():
+            raise HTTPException(status_code=400, detail="test_plan_disabled")
+    elif plan not in ALLOWED_PLANS:
         raise HTTPException(status_code=400, detail=f"unknown_plan: {plan}")
     if "@" not in email:
         raise HTTPException(status_code=400, detail="invalid_email")
+
+    # Idempotency: a retry must return the invoice the first attempt created,
+    # not mint a second one and not fail.
+    #
+    # A checkout retry is ordinary — the customer double-clicks, or their
+    # connection drops after Moyasar answered but before the response landed.
+    # Without this, each attempt created another invoice against the same
+    # buyer and plan. Refusing the retry with 409 would be worse: it stops
+    # someone paying, which costs more than a stray unpaid invoice.
+    #
+    # The client may supply `idempotency_key` to scope the window itself;
+    # otherwise buyer + plan is the natural key, since that pair *is* the
+    # order being placed.
+    #
+    # A client-supplied key is hashed rather than used raw: it is an
+    # unvalidated string from the request body, and it would otherwise become
+    # an unbounded store key. Hashing bounds the length and makes the content
+    # irrelevant, and nothing ever needs to read it back.
+    idem = IdempotencyStore(prefix="idem:checkout:")
+    client_key = str(body.get("idempotency_key") or "").strip()
+    order_fingerprint = f"{plan}:{_fingerprint(email.lower())}"
+    idem_key = (
+        f"client:{_fingerprint(client_key)}:{order_fingerprint}"
+        if client_key
+        else order_fingerprint
+    )
+    remembered = idem.recall(idem_key)
+    if isinstance(remembered, dict) and remembered.get("payment_url"):
+        # Logs the key fingerprint, not the request values. `plan` is
+        # allowlist-constrained a few lines above so it could not carry a
+        # newline, but a hash makes that independent of the check staying
+        # where it is — and correlates the replay with its original.
+        log.info("checkout_idempotent_replay key_fp=%s", _fingerprint(idem_key))
+        return {**remembered, "idempotent_replay": True}
 
     plan_info = PLANS[plan]
     callback_base = os.getenv("APP_URL", "https://dealix.me")
@@ -375,13 +552,18 @@ async def create_checkout(req: Request) -> dict[str, Any]:
             detail="payment_provider_error",
         ) from exc
 
-    return {
+    result = {
         "invoice_id": invoice.get("id"),
         "status": invoice.get("status"),
         "amount_sar": plan_info["amount_halalas"] / 100,
         "payment_url": invoice.get("url"),
         "plan": plan,
     }
+    # 24 hours: long enough to cover a customer returning to a link later the
+    # same day, short enough that a genuine second purchase of the same plan
+    # the next day is not answered with a stale invoice.
+    idem.remember(idem_key, result, ttl_seconds=24 * 3600)
+    return result
 
 
 @router.post("/api/v1/webhooks/moyasar")
@@ -403,7 +585,7 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
     event_type = str(body.get("type") or "")
     event_fp = _fingerprint(event_id)
     idem = IdempotencyStore(prefix="idem:moyasar:")
-    if event_id and not idem.claim(event_id, ttl_seconds=7 * 86400):
+    if not idem.claim(_dedupe_key(body), ttl_seconds=7 * 86400):
         log.info("moyasar_webhook_duplicate event_fp=%s", event_fp)
         return {"status": "duplicate", "id": event_id}
 

@@ -1,5 +1,7 @@
-import argparse,re
+import argparse
+import re
 from pathlib import Path
+
 parser=argparse.ArgumentParser(); parser.add_argument('--client',required=True); parser.add_argument('--monthly-price',default='4500'); args=parser.parse_args()
 slug=re.sub(r'[^\w\u0600-\u06FF-]+','_',args.client).strip('_')
 out=Path('out/retainer_plans'); out.mkdir(parents=True,exist_ok=True)

@@ -104,6 +104,10 @@ The five-rung ladder + an Enterprise tier. The sequence is deliberate: start wit
 
 ## د. خطة الموقع / d. Website Plan
 
+> ⚠️ **تصحيح (2026-07-06):** هذا القسم يصف `frontend/`، وهو مجلد **مجمّد** (لم يُعدَّل خلال آخر 30 يوماً) وليس التطبيق المنشور فعلياً. التطبيق الحي والمنشور هو `apps/web` (Next.js)، وهو ما يبنيه ويفحصه CI بالفعل. مسارات `apps/web` الفعلية تختلف عن جدول المسارات أدناه (`/[locale]/...`) — راجع `docs/ops/TASTE_SKILL_DESIGN_AUTOMATION_PLAN.md` لقرار توحيد العلامة والتسعير (Finding 0، حُسم لصالح نظام B) وحالة `apps/web` الفعلية. جدول المسارات والألوان أدناه تاريخي/تخطيطي فقط ولا يوصف الموقع الحالي.
+>
+> **Correction (2026-07-06):** this section describes `frontend/`, which is **frozen** (no commits in 30+ days) and is not the app that's actually deployed. The live, deployed app is `apps/web` (Next.js) — that's what CI actually builds and checks. `apps/web`'s real routes differ from the route table below (`/[locale]/...`). See `docs/ops/TASTE_SKILL_DESIGN_AUTOMATION_PLAN.md` for the brand/pricing consolidation decision (Finding 0, resolved in favor of System B) and `apps/web`'s actual current state. The route table and color/font references below are historical/aspirational only and do not describe the current live site.
+
 التطبيق حي على Next.js في `frontend/`. المسارات مزدوجة اللغة عبر `[locale]` (ar / en). The live Next.js app lives in `frontend/`. Routes are bilingual via `[locale]` (ar / en).
 
 ### الصفحات الحالية / Existing pages

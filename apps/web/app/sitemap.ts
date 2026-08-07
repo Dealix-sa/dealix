@@ -9,8 +9,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: number;
     changeFrequency: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
   }> = [
-    // ── English / Internal ──────────────────────────────────────────
+    // ── Canonical (System B / PREMIUM_OFFERS, per Finding 0 resolution
+    //    2026-07-06 -- see docs/ops/TASTE_SKILL_DESIGN_AUTOMATION_PLAN.md).
+    //    The old /ar/* subtree is no longer listed here: it now 301s to
+    //    these pages (next.config.js), so it shouldn't compete with them
+    //    for search-engine priority. ──────────────────────────────────
     { path: "",                priority: 1.0,  changeFrequency: "daily"   },
+    { path: "/pricing",        priority: 0.95, changeFrequency: "weekly"  },
+    { path: "/offers",         priority: 0.90, changeFrequency: "weekly"  },
+    { path: "/services",       priority: 0.85, changeFrequency: "weekly"  },
+    { path: "/cases",          priority: 0.75, changeFrequency: "weekly"  },
+    { path: "/book",           priority: 0.85, changeFrequency: "weekly"  },
+    { path: "/products",       priority: 0.75, changeFrequency: "weekly"  },
     { path: "/status",         priority: 0.8,  changeFrequency: "daily"   },
     { path: "/control-plane",  priority: 0.6,  changeFrequency: "weekly"  },
     { path: "/agents",         priority: 0.6,  changeFrequency: "weekly"  },
@@ -22,20 +32,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/revenue-os",     priority: 0.7,  changeFrequency: "weekly"  },
     { path: "/go-to-market",   priority: 0.6,  changeFrequency: "weekly"  },
     { path: "/product-network",priority: 0.6,  changeFrequency: "weekly"  },
-
-    // ── Arabic — Main ───────────────────────────────────────────────
-    { path: "/ar",                        priority: 0.95, changeFrequency: "daily"  },
-    { path: "/ar/pricing",                priority: 0.90, changeFrequency: "weekly" },
-    { path: "/ar/demo",                   priority: 0.85, changeFrequency: "weekly" },
-
-    // ── Arabic — Products ───────────────────────────────────────────
-    { path: "/ar/p1",                     priority: 0.90, changeFrequency: "weekly" },
-    { path: "/ar/p2",                     priority: 0.88, changeFrequency: "weekly" },
-    { path: "/ar/p3",                     priority: 0.85, changeFrequency: "weekly" },
-
-    // ── Arabic — Trust & Compliance ─────────────────────────────────
-    { path: "/ar/zatca-readiness",        priority: 0.80, changeFrequency: "weekly" },
-    { path: "/ar/control-room",           priority: 0.70, changeFrequency: "weekly" },
   ];
 
   return pages.map(({ path, priority, changeFrequency }) => ({
@@ -43,8 +39,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now,
     changeFrequency,
     priority,
-    alternates: path.startsWith("/ar")
-      ? { languages: { "ar-SA": `${siteUrl}${path}` } }
-      : { languages: { "ar-SA": `${siteUrl}/ar`, "en-US": `${siteUrl}${path}` } },
+    alternates: { languages: { "ar-SA": `${siteUrl}${path}` } },
   }));
 }

@@ -10,9 +10,9 @@ from pydantic import BaseModel, Field
 
 from dealix.hermes.loops.task_queue import HermesTaskQueue
 from dealix.hermes.orchestrators.wave_orchestrator import (
+    WAVE_CONFIGS,
     WaveOrchestrator,
     WaveStatus,
-    WAVE_CONFIGS,
 )
 
 logger = structlog.get_logger(__name__)
@@ -37,7 +37,7 @@ class DailyReview:
     def __init__(
         self,
         orchestrator: WaveOrchestrator,
-        task_queue: Optional[HermesTaskQueue] = None,
+        task_queue: HermesTaskQueue | None = None,
     ) -> None:
         self.orchestrator = orchestrator
         self.task_queue = task_queue or HermesTaskQueue()

@@ -398,7 +398,7 @@ def _compliance_brief() -> RoleBrief:
         evidence_pointers=[
             "docs/PRIVACY_PDPL_READINESS.md",
             "docs/SECURITY_PDPL_CHECKLIST.md",
-            "https://github.com/voxc2/dealix/issues/138",
+            "https://github.com/Dealix-sa/dealix/issues/138",
         ],
         next_action_ar="افتح Issue #138 ووثّق قرارك على كل بند.",
         next_action_en="Open Issue #138 and record your decision per item.",

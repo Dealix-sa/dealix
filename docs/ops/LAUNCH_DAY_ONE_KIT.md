@@ -248,7 +248,7 @@ Claude updates scorecard atomically.
 
 1. **Apply 3 patches + push** (5 min, your terminal):
    ```bash
-   git clone https://github.com/VoXc2/dealix.git && cd dealix
+   git clone https://github.com/Dealix-sa/dealix.git && cd dealix
    git am "/path/to/0001-*.patch" "/path/to/0002-*.patch" "/path/to/0003-*.patch"
    git push origin main
    ```

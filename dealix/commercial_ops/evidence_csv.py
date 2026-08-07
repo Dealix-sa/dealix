@@ -186,7 +186,7 @@ def sync_rows_to_api(
             method="POST",
         )
         try:
-            with urlopen(req, timeout=15) as resp:  # noqa: S310
+            with urlopen(req, timeout=15) as resp:
                 if 200 <= resp.status < 300:
                     synced += 1
                     if mark_csv:
@@ -221,7 +221,7 @@ def pull_events_from_api(
         method="GET",
     )
     try:
-        with urlopen(req, timeout=20) as resp:  # noqa: S310
+        with urlopen(req, timeout=20) as resp:
             payload = json.loads(resp.read().decode("utf-8"))
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:
         return {"status": "error", "reason": str(exc), "appended": 0}

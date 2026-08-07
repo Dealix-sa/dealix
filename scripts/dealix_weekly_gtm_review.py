@@ -115,12 +115,12 @@ def _generate_report(rows: list[dict], start: date, end: date, weeks: int) -> st
     lines = []
 
     lines += [
-        f"# تقرير GTM الأسبوعي — Dealix",
-        f"# Weekly GTM Review — Dealix",
-        f"",
+        "# تقرير GTM الأسبوعي — Dealix",
+        "# Weekly GTM Review — Dealix",
+        "",
         f"**الفترة / Period**: {period_label} · الأسبوع {week_num}",
         f"**تاريخ التقرير / Report Date**: {date.today()}",
-        f"",
+        "",
         "---",
         "",
         "## 📊 ملخص الأسبوع | Week Summary",
@@ -202,8 +202,8 @@ def _generate_report(rows: list[dict], start: date, end: date, weeks: int) -> st
         "_Dealix — نظام التشغيل الذكي للشركات السعودية B2B_",
         "_hello@dealix.me | dealix.me | الرياض_",
         "",
-        f"_تقرير تلقائي — للمراجعة فقط. لا يُرسل أي شيء تلقائياً._",
-        f"_Auto-generated for review only. Nothing sends automatically._",
+        "_تقرير تلقائي — للمراجعة فقط. لا يُرسل أي شيء تلقائياً._",
+        "_Auto-generated for review only. Nothing sends automatically._",
     ]
 
     return "\n".join(lines)

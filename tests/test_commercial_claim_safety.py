@@ -11,8 +11,8 @@ from __future__ import annotations
 
 import pytest
 
-from auto_client_acquisition.governance_os.claim_safety import audit_claim_safety
 from auto_client_acquisition.compliance_trust_os.approval_engine import GovernanceDecision
+from auto_client_acquisition.governance_os.claim_safety import audit_claim_safety
 
 
 class TestNoGuaranteedRevenueClaims:

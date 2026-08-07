@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from pathlib import Path
 import csv
 import datetime as dt
 import html
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "reports" / "command_room"

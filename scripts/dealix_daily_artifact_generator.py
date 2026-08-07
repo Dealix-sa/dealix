@@ -1,5 +1,6 @@
-from pathlib import Path
 import json
+from pathlib import Path
+
 out=Path('out/founder/daily_artifacts'); out.mkdir(parents=True, exist_ok=True)
 clients=['شركة تدريب الرياض','مكتب عقار جدة']
 if Path('data/preview/preview_clients.json').exists():

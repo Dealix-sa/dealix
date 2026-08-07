@@ -33,7 +33,7 @@ class Provider:
     name: str
     deterministic: bool
 
-    def generate(self, *, task: str, prompt: str, lang: str = "en", template: str | None = None) -> str:  # noqa: D401
+    def generate(self, *, task: str, prompt: str, lang: str = "en", template: str | None = None) -> str:
         raise NotImplementedError
 
 

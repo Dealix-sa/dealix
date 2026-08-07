@@ -13,8 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.autonomous_ops import build_autonomous_ops_status  # noqa: E402
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.autonomous_ops import build_autonomous_ops_status
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 
 def main() -> int:

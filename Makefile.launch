@@ -1,0 +1,26 @@
+.PHONY: check pack plan brain sales-agent sales-pack backend day
+PYTHON ?= python3
+
+check:
+	$(PYTHON) scripts/commercial/commercial_readiness_check.py
+
+pack:
+	$(PYTHON) scripts/commercial/generate_commercial_go_live_pack.py
+
+plan:
+	$(PYTHON) scripts/commercial/generate_daily_targeting_plan.py
+
+brain:
+	$(PYTHON) scripts/commercial/generate_company_brain_pack.py
+
+sales-agent:
+	$(PYTHON) scripts/commercial/generate_authorized_sales_agent_pack.py
+
+sales-pack:
+	$(PYTHON) scripts/commercial/generate_company_specific_sales_pack.py --company "Sample Riyadh B2B Company" --sector b2b_services --city Riyadh --source-url "manual_review_required"
+
+backend:
+	$(PYTHON) scripts/ops/backend_launch_cleanliness_check.py
+
+day: check pack plan brain sales-agent sales-pack backend
+	@echo "Dealix launch day review complete."

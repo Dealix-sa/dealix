@@ -1,5 +1,8 @@
-import argparse, json, datetime
+import argparse
+import datetime
+import json
 from pathlib import Path
+
 p=Path('data/traction/traction_events.jsonl'); p.parent.mkdir(parents=True, exist_ok=True)
 parser=argparse.ArgumentParser()
 parser.add_argument('--event-type', default='lead')

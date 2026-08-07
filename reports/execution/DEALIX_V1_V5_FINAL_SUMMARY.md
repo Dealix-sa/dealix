@@ -1,9 +1,9 @@
 # Dealix V1-V5 — Final Execution Summary
 
 **Branch:** `feature/dealix-v1-client-acquisition-delivery-os`
-**Repo:** `VoXc2/dealix` (verified by remote)
-**Compare URL:** https://github.com/VoXc2/dealix/compare/main...feature/dealix-v1-client-acquisition-delivery-os
-**PR URL:** https://github.com/VoXc2/dealix/pull/new/feature/dealix-v1-client-acquisition-delivery-os
+**Repo:** `Dealix-sa/dealix` (verified by remote)
+**Compare URL:** https://github.com/Dealix-sa/dealix/compare/main...feature/dealix-v1-client-acquisition-delivery-os
+**PR URL:** https://github.com/Dealix-sa/dealix/pull/new/feature/dealix-v1-client-acquisition-delivery-os
 
 ---
 

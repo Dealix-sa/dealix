@@ -1,4 +1,5 @@
 from pathlib import Path
+
 required = [
  'enterprise/ENTERPRISE_SALES_PLAYBOOK_AR.md',
  'enterprise/BUSINESS_CASE_TEMPLATE_AR.md',

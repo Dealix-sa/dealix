@@ -1,5 +1,9 @@
+import argparse
+import datetime
+import json
+import re
 from pathlib import Path
-import json, datetime, argparse, re
+
 ROOT = Path(__file__).resolve().parents[1]
 def read_json(path, default):
     p=ROOT/path
@@ -16,7 +20,7 @@ def lines_jsonl(path):
 def slug(s):
     return re.sub(r'[^\w\u0600-\u06FF-]+','_',s).strip('_')[:80]
 def now():
-    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+    return datetime.datetime.now(datetime.UTC).isoformat()
 
 
 ap=argparse.ArgumentParser(); ap.add_argument('--company', default='شركة تدريب الرياض'); ap.add_argument('--objection', default='price'); args=ap.parse_args()

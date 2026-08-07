@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 from pathlib import Path
+
 LEADS=Path('data/crm/leads.jsonl')
 leads=[json.loads(x) for x in LEADS.read_text(encoding='utf-8').splitlines() if x.strip()] if LEADS.exists() else []
 print('# Next Actions')

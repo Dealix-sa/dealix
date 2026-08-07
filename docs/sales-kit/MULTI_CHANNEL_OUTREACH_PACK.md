@@ -40,7 +40,7 @@
 محتاج 5 أصدقاء يجربون pilot بـ 1 ريال لمدة أسبوع.
 فكرت فيك لأن [سبب محدد — عنده شركة، عارف founders، إلخ].
 
-الموقع: voxc2.github.io/dealix
+الموقع: dealix-sa.github.io/dealix
 
 نتكلم 10 دقائق؟
 ```
@@ -57,7 +57,7 @@
 لو عندك أو عند أحد تعرفه شركة B2B تحتاج يحسّن قمع المبيعات،
 أفضّل نتكلم 15 دقيقة. أنا متفرّغ أي وقت هذا الأسبوع.
 
-voxc2.github.io/dealix
+dealix-sa.github.io/dealix
 ```
 
 ### WA-3: صاحب متجر إلكتروني (Salla/Zid merchant)
@@ -72,7 +72,7 @@ Dealix (اللي بنيته) يرد تلقائياً بالعربي خلال 45 
 
 Pilot 1 ريال لأسبوع. لو ما يعجبك، نرد 1 ريال + نلغي.
 
-voxc2.github.io/dealix/pricing
+dealix-sa.github.io/dealix/pricing
 ```
 
 ### WA-4: صاحب شركة خدمات B2B
@@ -86,7 +86,7 @@ Dealix = AI sales rep بالعربي الخليجي.
 يرد خلال 45 ثانية، يفهم الطلب، يرسل quote أولي، يحجز demo.
 
 Pilot أسبوع بـ 1 ريال (قابل للاسترداد).
-voxc2.github.io/dealix
+dealix-sa.github.io/dealix
 
 نجرب؟
 ```
@@ -119,7 +119,7 @@ voxc2.github.io/dealix
 Dealix يحل هذه المشكلة تحديداً.
 
 Pilot 1 ريال × 7 أيام (مع استرداد).
-voxc2.github.io/dealix
+dealix-sa.github.io/dealix
 
 15 دقيقة demo هذا الأسبوع؟
 ```
@@ -134,7 +134,7 @@ AI sales rep يرد 24/7 + يؤهّل بـ BANT + يحجز demos.
 Pilot أسبوع بـ 1 ريال.
 
 لو بدّل أو كمّل مع BDRs، أنت تقرر.
-voxc2.github.io/dealix/demo
+dealix-sa.github.io/dealix/demo
 ```
 
 ### LI-4: Engineering/Tech founder
@@ -144,7 +144,7 @@ voxc2.github.io/dealix/demo
 بنيت Dealix على FastAPI + Anthropic Claude + Moyasar.
 أول AI sales rep عربي خليجي حقيقي — مش ترجمة.
 
-للـ founders التقنيين: الـ backend مفتوح على GitHub (VoXc2/dealix).
+للـ founders التقنيين: الـ backend مفتوح على GitHub (Dealix-sa/dealix).
 Pilot أسبوع بـ 1 ريال.
 
 تبغى تشوف الـ architecture + demo؟
@@ -161,7 +161,7 @@ Pilot أسبوع بـ 1 ريال.
 - أو تبادل خدمات: Dealix مجاني مقابل content/SEO/ads
 
 15 دقيقة نتكلم؟
-voxc2.github.io/dealix/partners
+dealix-sa.github.io/dealix/partners
 ```
 
 ---
@@ -173,7 +173,7 @@ voxc2.github.io/dealix/partners
 ```
 هذي المشكلة بالضبط اللي بنيت Dealix لأجلها — AI sales rep عربي خليجي.
 Pilot أسبوع بـ 1 ريال لو تبغى تجربه. DM مفتوحة 🤝
-voxc2.github.io/dealix
+dealix-sa.github.io/dealix
 ```
 
 ### TW-2: Build-in-public launch tweet
@@ -191,7 +191,7 @@ voxc2.github.io/dealix
 
 Pilot أسبوع بـ 1 ريال. Like لو تبغى التفاصيل.
 
-voxc2.github.io/dealix
+dealix-sa.github.io/dealix
 ```
 
 ### TW-3: Thread (10 tweets)
@@ -237,8 +237,8 @@ Replace 2-3 BDRs. Respond in 45s. Book demos directly.
 - Scale: 7,999 ريال/شهر (Enterprise)
 
 8/10: الموقف الحقيقي الآن:
-- ✅ Code: 100% complete, open source (GitHub VoXc2/dealix)
-- ✅ Landing: voxc2.github.io/dealix
+- ✅ Code: 100% complete, open source (GitHub Dealix-sa/dealix)
+- ✅ Landing: dealix-sa.github.io/dealix
 - ⏳ First customer: today I hope
 - ⏳ Revenue: zero
 

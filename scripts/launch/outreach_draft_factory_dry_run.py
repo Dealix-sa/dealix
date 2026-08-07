@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from dealix.launch_os.outreach_factory import build_draft, TrustPreflightError
+from dealix.launch_os.outreach_factory import TrustPreflightError, build_draft
 
 SAMPLE_REQUESTS = [
     {

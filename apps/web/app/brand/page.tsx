@@ -33,9 +33,9 @@ export default function BrandPage() {
           <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
             <p className="text-xs uppercase tracking-widest text-white/50">Visual</p>
             <ul className="mt-3 space-y-1 text-sm text-white/80">
-              <li>• Navy #0E1A33</li>
-              <li>• Gold #E2A53A</li>
-              <li>• Inter / System Arabic</li>
+              <li>• Navy #001F3F</li>
+              <li>• Gold #D4AF37</li>
+              <li>• Poppins (display) / Inter + Tajawal (body)</li>
               <li>• /public/dealix-logo.svg</li>
               <li>• /public/dealix-mark.svg</li>
             </ul>

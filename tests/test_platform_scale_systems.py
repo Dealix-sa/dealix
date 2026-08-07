@@ -50,7 +50,10 @@ from auto_client_acquisition.platform.metrics import (
 from auto_client_acquisition.platform.operational_analytics import build_operational_analytics
 from auto_client_acquisition.platform.policy_engine import ActionRisk, PolicyDecision
 from auto_client_acquisition.platform.recovery_engine import execute_recovery
-from auto_client_acquisition.platform.retrieval_policies import RetrievalRequest, permission_aware_retrieval
+from auto_client_acquisition.platform.retrieval_policies import (
+    RetrievalRequest,
+    permission_aware_retrieval,
+)
 from auto_client_acquisition.platform.reversibility import (
     clear_executions_for_tests,
     rollback_execution,

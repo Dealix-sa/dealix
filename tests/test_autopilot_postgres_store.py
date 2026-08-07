@@ -70,8 +70,10 @@ def test_postgres_store_upsert_and_get_lead() -> None:
 
 
 @pytest.mark.skipif(
-    not __import__("os").environ.get("DATABASE_URL", "").strip(),
-    reason="DATABASE_URL not set",
+    not __import__("os").environ.get("DATABASE_URL", "").strip().startswith(
+        ("postgresql://", "postgresql+asyncpg://", "postgresql+psycopg2://", "postgresql+psycopg://")
+    ),
+    reason="DATABASE_URL not set to a PostgreSQL URL",
 )
 def test_postgres_store_with_live_database_url(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("DEALIX_AUTOPILOT_STORE_BACKEND", "postgres")

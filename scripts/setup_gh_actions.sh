@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # scripts/setup_github_secrets.sh
 # Sets all GitHub Actions secrets required by Dealix workflows.
-# Run LOCALLY after `gh auth login` with admin rights on VoXc2/dealix.
+# Run LOCALLY after `gh auth login` with admin rights on Dealix-sa/dealix.
 #
 # Prompts interactively for each value — no secrets are passed via flags
 # (avoids them landing in shell history).
 
 set -euo pipefail
-REPO="${REPO:-VoXc2/dealix}"
+REPO="${REPO:-Dealix-sa/dealix}"
 
 command -v gh >/dev/null || { echo "gh CLI required: https://cli.github.com"; exit 2; }
 gh auth status >/dev/null 2>&1 || { echo "Run: gh auth login"; exit 2; }

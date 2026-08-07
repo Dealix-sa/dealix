@@ -9,7 +9,6 @@ import datetime as dt
 import json
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPORT_DIR = REPO_ROOT / "business" / "sales-automation" / "exports"
 EXPORT_DIR.mkdir(parents=True, exist_ok=True)

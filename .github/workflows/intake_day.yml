@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -46,7 +46,7 @@ jobs:
           head -30 "${RUNTIME}/INTAKE_SUMMARY.md"
 
       - name: Upload intake pack
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: intake-pack-${{ github.run_number }}

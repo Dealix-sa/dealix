@@ -14,12 +14,12 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.quote_engine import (  # noqa: E402
+from lib.quote_engine import (
     load_deals,
     load_invoices,
-    save_invoices,
     next_id,
     now,
+    save_invoices,
 )
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "business" / "finance" / "exports"

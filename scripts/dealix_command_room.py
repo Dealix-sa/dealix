@@ -106,7 +106,7 @@ def count_ready_drafts(drafts_dir: Path | None) -> int:
 
 def compute_kpis(rows: list[dict[str, str]], ready_drafts: int) -> dict[str, object]:
     """Compute the Command Room KPIs from log rows + today's ready drafts."""
-    by_status: dict[str, int] = {s: 0 for s in STATUSES}
+    by_status: dict[str, int] = dict.fromkeys(STATUSES, 0)
     by_sector: dict[str, dict[str, int]] = {}
     for row in rows:
         status = row["status"]

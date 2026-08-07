@@ -24,7 +24,6 @@
     "opsSales": "تشغيل — خط المبيعات",
     "opsEvidence": "تشغيل — سجل الأدلة",
     "opsSupport": "تشغيل — خدمة العملاء",
-    "opsCommandRoom": "غرفة القيادة",
     "autoDistribution": "التوزيع الذاتي",
     "crm": "نظام CRM",
     "aiEngine": "محرك الإيرادات الذكي",
@@ -594,7 +593,7 @@
     "offers": {
       "audit": {
         "label": "10-Lead Audit",
-        "price": "من 499 ر.س",
+        "price": "السعر بعد جلسة الاكتشاف",
         "desc": "مراجعة 10 leads مع توصية حوكمة ومسار إغلاق."
       },
       "agencyProof": {
@@ -644,23 +643,5 @@
     "evidenceSubtitle": "أحداث أدلة مُدامَة ملفياً ضمن المتجر المحلي للـ autopilot.",
     "supportSubtitle": "تذاكر عامة + تصنيف + مسودة داخلية — الموافقة قبل الرد الخارجي.",
     "approvalsSubtitle": "نفس مركز الموافقات المربوط بالفواتير والإرسالات الخارجية."
-  },
-  "commandRoom": {
-    "title": "غرفة القيادة",
-    "subtitle": "لوحة واحدة لإدارة Dealix: قرار اليوم، War Room، Gmail drafts، الموافقات، والأدلة.",
-    "loading": "جاري التحميل...",
-    "error": "تعذّر تحميل غرفة القيادة.",
-    "missingKey": "ضع NEXT_PUBLIC_DEALIX_ADMIN_API_KEY لتفعيل الغرفة محلياً.",
-    "todayDecision": "قرار اليوم",
-    "systemHealth": "صحة النظام",
-    "warRoom": "War Room — أهداف اليوم",
-    "pipeline": "خط المبيعات",
-    "approvals": "الموافقات المعلقة",
-    "evidence": "سجل الأدلة",
-    "gmailDrafts": "Gmail drafts اليوم",
-    "marketing": "تسويق اليوم",
-    "support": "تذاكر الدعم",
-    "runMorning": "تشغيل صباحي",
-    "runMorningStarted": "بدأ التشغيل الصباحي — تحديث خلال دقيقة."
   }
 }

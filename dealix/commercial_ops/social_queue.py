@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+import tempfile
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
@@ -17,7 +19,13 @@ def load_social_queue(path: Path | None = None) -> dict[str, Any]:
     if not p.is_file():
         return {"posts": []}
     with p.open(encoding="utf-8") as f:
-        return yaml.safe_load(f) or {"posts": []}
+        data = yaml.safe_load(f) or {"posts": []}
+    if not isinstance(data, dict):
+        raise ValueError("social content queue root must be a mapping")
+    posts = data.get("posts") or []
+    if not isinstance(posts, list):
+        raise ValueError("social content queue posts must be a list")
+    return data
 
 
 def get_post_for_date(
@@ -59,8 +67,46 @@ def format_linkedin_draft(post: dict[str, Any]) -> str:
     title = post.get("title_ar") or ""
     body = post.get("body_ar") or ""
     cta = post.get("cta_ar") or post.get("cta") or ""
-    lines = [title, "", body, "", f"➡️ {cta}", "", "— Dealix · Post-Lead Revenue Ops (مسودة — راجع SOAEN قبل النشر)"]
+    lines = [
+        title,
+        "",
+        body,
+        "",
+        f"➡️ {cta}",
+        "",
+        "— Dealix · Post-Lead Revenue Ops (مسودة — راجع SOAEN قبل النشر)",
+    ]
     return "\n".join(lines)
+
+
+def _atomic_dump_yaml(path: Path, data: dict[str, Any]) -> None:
+    """Write YAML atomically so parallel readers never observe a partial file."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=path.parent,
+            prefix=f".{path.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            yaml.safe_dump(data, handle, allow_unicode=True, sort_keys=False)
+            handle.flush()
+            os.fsync(handle.fileno())
+            temp_path = Path(handle.name)
+
+        with temp_path.open(encoding="utf-8") as handle:
+            validated = yaml.safe_load(handle)
+        if not isinstance(validated, dict) or not isinstance(validated.get("posts"), list):
+            raise ValueError("refusing to replace social queue with invalid YAML")
+
+        os.replace(temp_path, path)
+        temp_path = None
+    finally:
+        if temp_path is not None:
+            temp_path.unlink(missing_ok=True)
 
 
 def mark_post_status(
@@ -70,7 +116,7 @@ def mark_post_status(
     status: str,
     path: Path | None = None,
 ) -> dict[str, Any]:
-    """Update queue YAML status (draft | approved | published). Does not publish externally."""
+    """Update queue status atomically. This never publishes externally."""
     allowed = {"draft", "approved", "published"}
     if status not in allowed:
         raise ValueError(f"status must be one of {allowed}")
@@ -86,6 +132,5 @@ def mark_post_status(
     if not hit:
         raise KeyError(f"no post for week={week} day={day}")
     data["posts"] = posts
-    with p.open("w", encoding="utf-8") as f:
-        yaml.safe_dump(data, f, allow_unicode=True, sort_keys=False)
+    _atomic_dump_yaml(p, data)
     return {"week": week, "day": day, "status": status, "updated": True}

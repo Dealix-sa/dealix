@@ -12,7 +12,7 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from auto_client_acquisition.enterprise_layer_validation import (  # noqa: E402
+from auto_client_acquisition.enterprise_layer_validation import (
     load_manifest,
     validate_manifest,
 )

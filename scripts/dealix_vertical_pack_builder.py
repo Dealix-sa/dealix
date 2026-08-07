@@ -1,5 +1,6 @@
 import argparse
 from pathlib import Path
+
 packs={
  'training':'industries/TRAINING_VERTICAL_PACK_AR.md','agencies':'industries/AGENCIES_VERTICAL_PACK_AR.md',
  'real_estate':'industries/REAL_ESTATE_VERTICAL_PACK_AR.md','clinics':'industries/CLINICS_VERTICAL_PACK_AR.md',

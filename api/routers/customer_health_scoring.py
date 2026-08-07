@@ -9,26 +9,22 @@ Prefix: /api/v1/customer-health
 from __future__ import annotations
 
 import logging
-import os
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
+from api.security.api_key import require_founder_admin_key
 from dealix.commercial.customer_health import CustomerHealthEngine, HealthInput
 
 log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/customer-health", tags=["Customers"])
 
-_ADMIN_KEY = os.getenv("DEALIX_ADMIN_API_KEY", "")
-
-
-def _require_admin(x_api_key: str = Header(default="", alias="X-Admin-API-Key")) -> None:
-    if not _ADMIN_KEY:
-        return
-    if x_api_key != _ADMIN_KEY:
-        raise HTTPException(status_code=401, detail="Invalid admin API key")
+# Shared gate — see api/security/api_key.py. Fails closed in production; the
+# local guard it replaced returned early whenever DEALIX_ADMIN_API_KEY was
+# unset, regardless of environment.
+_require_admin = require_founder_admin_key
 
 
 _engine = CustomerHealthEngine()

@@ -1,98 +1,73 @@
-"use client";
-
 import Link from "next/link";
+import { PREMIUM_OFFERS } from "@/lib/sales-machine/ultimate-sales-os";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealix.me";
 
-const productAreas = [
-  {
-    icon: "⚡",
-    title: "Revenue OS",
-    description: "Lead acquisition, ICP scoring, outreach pipeline visibility, and Saudi B2B growth workflows — all in one engine.",
-    href: "/revenue-machine",
-    badge: "نشط"
-  },
-  {
-    icon: "🛡️",
-    title: "Agent Governance",
-    description: "Approval-first AI execution with audit trails, safety gates, and no blind external commitments.",
-    href: "/agents",
-    badge: "PDPL"
-  },
-  {
-    icon: "🔒",
-    title: "Trust & Safety",
-    description: "PDPL-aware controls, approval classes, evidence packs, and live operational guardrails.",
-    href: "/safety",
-    badge: "SDAIA"
-  },
-  {
-    icon: "📊",
-    title: "Value Engine",
-    description: "Business-value tracking, executive dashboards, proof curation, and operational scorecards.",
-    href: "/value-engine",
-    badge: "Proof Pack"
-  }
+// Homepage shows a highlight subset of the same PREMIUM_OFFERS ladder that
+// drives /pricing, /offers, and /cases — the single source of truth for
+// pricing, so this page can never show a different number than those do.
+const homepageOfferIds = ["diagnostic_sprint", "revenue_os", "delivery_os", "custom_enterprise"];
+const launchOffers = PREMIUM_OFFERS.filter((o) => homepageOfferIds.includes(o.id));
+
+const proofBlocks = [
+  ["No fake ROI", "لا نعد بدخل مضمون؛ نثبت الأثر بتقارير وقرارات وقياسات تشغيلية."],
+  ["Draft-first", "كل تواصل خارجي يبدأ كمسودة، ثم يراجعها الإنسان قبل الإرسال."],
+  ["Saudi B2B", "اللغة، القطاعات، التسعير، وطرق البيع مبنية على واقع الشركات السعودية."],
+  ["Proof Pack", "كل مشروع ينتهي بملف قبل/بعد، قرارات، مخاطر، وأعمال منجزة."],
 ];
 
-const commercialLinks = [
-  ["⚡ آلة المبيعات", "/sales-machine"],
-  ["🎯 محرك العملاء", "/lead-engine"],
-  ["📦 العروض", "/offers"],
-  ["💰 التسعير", "/pricing"],
-  ["📈 آلة الإيرادات", "/revenue-machine"],
-  ["🏢 غرفة القيادة", "/command-center"],
-  ["⚔️ غرفة الحرب", "/war-room"],
-  ["📍 خط الأنابيب", "/pipeline"],
+const sectors = [
+  "العيادات",
+  "العقار",
+  "اللوجستيات",
+  "التدريب",
+  "وكالات التسويق",
+  "خدمات B2B",
+  "معارض السيارات",
+  "المكاتب المهنية",
 ];
 
-const stats = [
-  { value: "8",      label: "AI Agents" },
-  { value: "PDPL",   label: "Native Compliance" },
-  { value: "SAR",    label: "Saudi-first Pricing" },
-  { value: "v3.1",   label: "Production Ready" },
-];
-
-const operationalLinks = [
-  ["⚙️  Control plane",    "/control-plane"],
-  ["🤖 Agents",             "/agents"],
-  ["✅ Approvals",           "/approvals"],
-  ["🔒 Safety",             "/safety"],
-  ["🧪 Sandbox",            "/sandbox"],
-  ["📈 Value engine",       "/value-engine"],
-  ["🔄 Self-evolving OS",   "/self-evolving"],
+const processSteps = [
+  ["01", "Map", "نفهم الإيراد، العملاء، القنوات، المتابعة، والبيانات الموجودة."],
+  ["02", "Design", "نحوّل الألم إلى workflow واحد واضح، قبولاته محددة ومخاطره معروفة."],
+  ["03", "Build", "نبني dashboard، ledgers، drafts، reports، وapproval gates بدون تعطيل أنظمتك الحالية."],
+  ["04", "Operate", "نشغل اليوم التجاري: فرص، متابعات، عروض، قرارات، وتقرير مؤسس يومي."],
+  ["05", "Scale", "بعد proof، نضيف التكاملات والإرسال المحكوم والـretainer الشهري."],
 ];
 
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Organization",
   name: "Dealix",
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "Web",
   url: siteUrl,
-  description: "Saudi-first B2B revenue, growth, and compliance engine with approval-first AI execution.",
   areaServed: { "@type": "Country", name: "Saudi Arabia" },
-  offers: { "@type": "Offer", priceCurrency: "SAR", availability: "https://schema.org/InStock" },
-  publisher: { "@type": "Organization", name: "Dealix", url: siteUrl }
+  description:
+    "Dealix builds AI operating systems for Saudi B2B companies: revenue command rooms, company brain, follow-up OS, client delivery, and AI trust controls.",
+  knowsAbout: [
+    "Revenue Operations",
+    "AI Governance",
+    "B2B Sales Operations",
+    "Saudi Business Automation",
+    "Client Delivery Systems",
+  ],
 };
 
 export default function HomePage() {
   return (
     <>
-      {/* Navbar */}
       <nav className="navbar" aria-label="Primary navigation">
         <Link href="/" className="navbar-brand" aria-label="Dealix Home">
           Dealix
         </Link>
         <ul className="navbar-links" role="list">
-          <li><Link href="/sales-machine">Revenue OS</Link></li>
-          <li><Link href="/offers">العروض</Link></li>
-          <li><Link href="/pricing">التسعير</Link></li>
-          <li><Link href="/book">احجز مراجعة</Link></li>
+          <li><Link href="/revenue-machine">نظام الإيراد</Link></li>
+          <li><Link href="/brain">العقل التجاري</Link></li>
+          <li><Link href="/pricing">الأسعار</Link></li>
+          <li><Link href="/founder/command-room">غرفة القيادة</Link></li>
         </ul>
         <div className="actions" style={{ marginTop: 0 }}>
           <Link href="/ar" style={{ minHeight: 38, padding: "0 18px", fontSize: "0.82rem" }}>
-            الموقع العربي
+            عربي
           </Link>
           <Link href="/book" style={{ minHeight: 38, padding: "0 18px", fontSize: "0.82rem" }}>
             احجز مراجعة →
@@ -107,204 +82,168 @@ export default function HomePage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
 
-        {/* ── Hero ── */}
         <section
           className="card dot-pattern animate-fade-up"
           aria-labelledby="hero-title"
-          style={{ position: "relative", overflow: "hidden", paddingTop: "clamp(40px,6vw,72px)", paddingBottom: "clamp(40px,6vw,72px)" }}
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            paddingTop: "clamp(44px,7vw,86px)",
+            paddingBottom: "clamp(44px,7vw,86px)",
+          }}
         >
-          {/* Gold glow blob */}
-          <div aria-hidden="true" style={{
-            position: "absolute", top: "-80px", left: "-80px",
-            width: "400px", height: "400px",
-            background: "radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%)",
-            pointerEvents: "none"
-          }} />
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: "-120px auto auto -120px",
+              width: 460,
+              height: 460,
+              background: "radial-gradient(circle, rgba(212,175,55,0.14), transparent 68%)",
+              pointerEvents: "none",
+            }}
+          />
 
-          <p className="eyebrow">Saudi-first · Approval-first · Revenue-focused</p>
-
-          <h1 id="hero-title" style={{ maxWidth: "860px" }}>
-            Dealix{" "}
-            <span className="gradient-text">Enterprise</span>
-            <br />Control Plane
+          <p className="eyebrow">Saudi B2B · Founder-led · Approval-first AI</p>
+          <h1 id="hero-title" style={{ maxWidth: 980 }}>
+            نبني للشركات السعودية <span className="gradient-text">AI Operating Systems</span>
+            <br /> تضبط الإيراد، المتابعة، والقرار اليومي.
           </h1>
-
-          <p style={{ maxWidth: "680px", fontSize: "1.15rem", lineHeight: 1.7 }}>
-            A Saudi-first B2B revenue, growth, and compliance engine for teams that need
-            AI assistance without losing policy control, auditability, or human approval
-            on critical moves.
+          <p style={{ maxWidth: 760, fontSize: "1.16rem", lineHeight: 1.85 }}>
+            Dealix ليست شات بوت ولا CRM عادي. نحن نبني نظام تشغيل عملي يربط المبيعات، واتساب، العروض،
+            التقارير، التسليم، والحوكمة في workflow يومي قابل للقياس — مع مراجعة بشرية قبل أي إجراء خارجي حساس.
           </p>
 
           <div className="actions" aria-label="Primary actions">
             <Link href="/book">احجز مراجعة تشغيلية</Link>
-            <Link href="/sales-machine">اكتشف Revenue OS</Link>
-            <Link href="/safety">Review safety layer</Link>
+            <Link href="/pricing">شاهد الباقات</Link>
+            <Link href="/safety">كيف نحافظ على الأمان؟</Link>
           </div>
         </section>
 
-        {/* ── Stats ── */}
-        <section aria-label="Platform statistics">
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-            gap: "var(--sp-4)"
-          }}>
-            {stats.map(({ value, label }) => (
-              <div
-                key={label}
-                className="card"
-                style={{ textAlign: "center", padding: "var(--sp-6) var(--sp-4)" }}
-              >
-                <div className="stat-value">{value}</div>
-                <p className="stat-label">{label}</p>
-              </div>
+        <section className="grid-3" aria-label="Commercial proof points">
+          {proofBlocks.map(([title, text]) => (
+            <article className="card" key={title}>
+              <span className="badge badge-gold">{title}</span>
+              <p style={{ marginTop: "var(--sp-4)" }}>{text}</p>
+            </article>
+          ))}
+        </section>
+
+        <section
+          aria-labelledby="problem-title"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "var(--sp-10)" }}
+        >
+          <h2 id="problem-title">الشركة لا تحتاج أدوات أكثر؛ تحتاج نظام تشغيل يومي.</h2>
+          <div className="grid-2">
+            <div>
+              <h3>قبل Dealix</h3>
+              <ul>
+                <li>فرص تأتي من واتساب، إيميل، اتصال، موقع — ولا تدخل في قرار يومي.</li>
+                <li>العروض تُرسل ثم تختفي المتابعة.</li>
+                <li>الإدارة ترى أرقامًا متأخرة بدل next action اليوم.</li>
+                <li>AI يُستخدم بشكل عشوائي بدون سياسة أو approval gates.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>بعد Dealix</h3>
+              <ul>
+                <li>كل فرصة لها owner، status، next action، وreview date.</li>
+                <li>كل follow-up يظهر في queue واضحة.</li>
+                <li>كل صباح يوجد CEO decision وcommercial command report.</li>
+                <li>كل رسالة خارجية تبدأ draft وتحتاج مراجعة بشرية.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="offers-title">
+          <p className="eyebrow">What we sell first</p>
+          <h2 id="offers-title">أنظمة استراتيجية، ليست باقات عامة — لا تفوّت الأنسب لشركتك.</h2>
+          <div className="cards">
+            {launchOffers.map((offer) => (
+              <article className="card" key={offer.id}>
+                <span className="badge badge-emerald">{offer.nameAr}</span>
+                <h3 style={{ marginTop: "var(--sp-4)" }}>{offer.name}</h3>
+                <p>{offer.positioningAr}</p>
+                <Link href="/offers" className="btn btn-secondary">افتح التفاصيل →</Link>
+              </article>
             ))}
           </div>
+          <div className="actions">
+            <Link href="/offers">شاهد كل العروض السبعة →</Link>
+          </div>
         </section>
 
-        {/* ── Product Areas ── */}
-        <section aria-labelledby="areas-title">
-          <h2 id="areas-title" style={{ marginBottom: "var(--sp-6)" }}>
-            Core operating areas
-          </h2>
-          <div className="cards">
-            {productAreas.map((area) => (
-              <article className="card" key={area.href} style={{ position: "relative" }}>
-                <span
-                  className="badge badge-gold"
-                  style={{ position: "absolute", top: "var(--sp-4)", left: "var(--sp-4)" }}
-                >
-                  {area.badge}
-                </span>
-                <div style={{ fontSize: "2rem", marginBottom: "var(--sp-3)", marginTop: "var(--sp-4)" }}>
-                  {area.icon}
-                </div>
-                <h3 style={{ color: "#fff", marginBottom: "var(--sp-2)" }}>{area.title}</h3>
-                <p style={{ fontSize: "0.9rem", marginBottom: "var(--sp-5)" }}>{area.description}</p>
-                <Link
-                  href={area.href}
-                  className="btn btn-secondary"
-                  style={{ fontSize: "0.82rem", minHeight: "36px", padding: "0 16px", borderRadius: "var(--radius-md)" }}
-                >
-                  Open {area.title} →
-                </Link>
+        <section
+          aria-labelledby="process-title"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "var(--sp-10)" }}
+        >
+          <h2 id="process-title">Map → Design → Build → Operate → Scale</h2>
+          <div className="grid-3">
+            {processSteps.map(([step, title, text]) => (
+              <article key={step} style={{ padding: "var(--sp-4)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "var(--r-lg)" }}>
+                <span className="badge badge-gold">{step}</span>
+                <h3 style={{ marginTop: "var(--sp-3)" }}>{title}</h3>
+                <p>{text}</p>
               </article>
             ))}
           </div>
         </section>
 
-        {/* ── Commercial Surfaces ── */}
-        <section className="card" aria-labelledby="commercial-title">
-          <p className="eyebrow">Commercial surfaces</p>
-          <h2 id="commercial-title">المسارات التجارية</h2>
-          <p>
-            استكشف أدوات Dealix التجارية: آلة المبيعات، العروض، التسعير، غرفة القيادة، والمزيد.
-          </p>
-          <div className="divider-gold" />
-          <ul style={{ listStyle: "none", padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--sp-2)" }}>
-            {commercialLinks.map(([label, href]) => (
-              <li key={href} style={{ margin: 0 }}>
-                <Link
-                  href={href}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "var(--sp-2)",
-                    padding: "var(--sp-3) var(--sp-4)",
-                    borderRadius: "var(--radius-md)",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.07)",
-                    color: "rgba(255,255,255,0.70)",
-                    fontSize: "0.88rem",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    transition: "all 0.2s"
-                  }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.borderColor = "rgba(212,175,55,0.35)";
-                    el.style.color = "var(--dealix-gold)";
-                    el.style.background = "rgba(212,175,55,0.06)";
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.borderColor = "rgba(255,255,255,0.07)";
-                    el.style.color = "rgba(255,255,255,0.70)";
-                    el.style.background = "rgba(255,255,255,0.04)";
-                  }}
-                >
-                  {label}
-                </Link>
-              </li>
+        <section className="card card-gold" aria-labelledby="sectors-title">
+          <h2 id="sectors-title">نبدأ من القطاعات التي يظهر فيها ألم المتابعة والإيراد بسرعة.</h2>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--sp-2)" }}>
+            {sectors.map((sector) => (
+              <span className="badge badge-gold" key={sector}>{sector}</span>
             ))}
-          </ul>
+          </div>
         </section>
 
-        {/* ── Operational Surfaces ── */}
-        <section className="card" aria-labelledby="ops-title">
-          <p className="eyebrow">Internal surfaces</p>
-          <h2 id="ops-title">Operational surfaces</h2>
+        <section
+          aria-labelledby="outbound-title"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "var(--sp-10)" }}
+        >
+          <h2 id="outbound-title">استهداف يومي قوي، لكن يحافظ على السمعة والدومين.</h2>
           <p>
-            Use these internal surfaces to inspect agents, approvals, safety,
-            sandbox behavior, and value tracking.
+            النظام الصحيح ليس إرسال عشوائي. النظام الصحيح: 100 شركة تُبحث يوميًا، 40 تُتحقق،
+            25 مسودة تُكتب، 10–15 رسالة تُراجع يدويًا، 3 مكالمات، وعرض واحد واضح — مع opt-out وsource_url لكل target.
           </p>
-          <div className="divider-gold" />
-          <ul style={{ listStyle: "none", padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--sp-2)" }}>
-            {operationalLinks.map(([label, href]) => (
-              <li key={href} style={{ margin: 0 }}>
-                <Link
-                  href={href}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "var(--sp-2)",
-                    padding: "var(--sp-3) var(--sp-4)",
-                    borderRadius: "var(--radius-md)",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.07)",
-                    color: "rgba(255,255,255,0.70)",
-                    fontSize: "0.88rem",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    transition: "all 0.2s"
-                  }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.borderColor = "rgba(212,175,55,0.35)";
-                    el.style.color = "var(--dealix-gold)";
-                    el.style.background = "rgba(212,175,55,0.06)";
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.borderColor = "rgba(255,255,255,0.07)";
-                    el.style.color = "rgba(255,255,255,0.70)";
-                    el.style.background = "rgba(255,255,255,0.04)";
-                  }}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="actions">
+            <Link href="/outreach-review">راجع مسودات الاستهداف</Link>
+            <Link href="/command-center">افتح غرفة القيادة</Link>
+          </div>
         </section>
 
-        {/* ── Footer ── */}
+        <section className="card" aria-labelledby="final-cta-title" style={{ textAlign: "center" }}>
+          <p className="eyebrow">Start small. Prove fast. Scale safely.</p>
+          <h2 id="final-cta-title">ابدأ بـ7 أيام على ألم واحد واضح.</h2>
+          <p style={{ maxWidth: 720, margin: "0 auto var(--sp-6)" }}>
+            إذا كان عندك واتساب مزدحم، عروض بلا متابعة، أو فريق لا يعرف أولويات اليوم،
+            نبدأ بتشخيص سريع ثم نبني sprint واضح بنتائج تشغيلية قابلة للمراجعة.
+          </p>
+          <div className="actions" style={{ justifyContent: "center" }}>
+            <Link href="/book">احجز مراجعة Dealix</Link>
+            <Link href="/offers">شاهد العروض</Link>
+          </div>
+        </section>
+
         <footer style={{ textAlign: "center", paddingTop: "var(--sp-8)", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
           <p className="navbar-brand" style={{ justifyContent: "center", fontSize: "1.2rem", marginBottom: "var(--sp-3)" }}>
             Dealix
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: "var(--sp-4)", marginBottom: "var(--sp-4)", flexWrap: "wrap" }}>
-            <Link href="/sales-machine" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>آلة المبيعات</Link>
-            <Link href="/offers" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>العروض</Link>
-            <Link href="/pricing" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>التسعير</Link>
-            <Link href="/book" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>احجز مراجعة</Link>
-            <Link href="/legal" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>الشروط</Link>
+            <Link href="/revenue-machine" style={{ color: "rgba(255,255,255,0.46)", fontWeight: 500, fontSize: "0.82rem" }}>Revenue OS</Link>
+            <Link href="/brain" style={{ color: "rgba(255,255,255,0.46)", fontWeight: 500, fontSize: "0.82rem" }}>Company Brain</Link>
+            <Link href="/pricing" style={{ color: "rgba(255,255,255,0.46)", fontWeight: 500, fontSize: "0.82rem" }}>Pricing</Link>
+            <Link href="/book" style={{ color: "rgba(255,255,255,0.46)", fontWeight: 500, fontSize: "0.82rem" }}>Book</Link>
+            <Link href="/legal" style={{ color: "rgba(255,255,255,0.46)", fontWeight: 500, fontSize: "0.82rem" }}>Legal</Link>
           </div>
-          <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.30)" }}>
-            © 2026 Dealix · Saudi-first AI Revenue Operations ·{" "}
-            <Link href="/safety" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500 }}>Safety</Link>
-            {" · "}
-            <a href="https://github.com/Dealix-sa/dealix" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500 }}>GitHub</a>
+          <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.30)", maxWidth: 620, margin: "0 auto var(--sp-3)" }}>
+            لا نضمن نتائج محددة أو عائد استثمار مضمون؛ كل رقم في هذه الصفحة يعتمد على دليل موثّق يُبنى أثناء التنفيذ، لا على وعد مسبق.
+          </p>
+          <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.34)" }}>
+            © 2026 Dealix · Saudi-first AI Operating Systems · no uncontrolled external sending
           </p>
         </footer>
       </main>

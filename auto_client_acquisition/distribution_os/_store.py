@@ -63,7 +63,7 @@ class JsonlStore:
                 # skip a malformed JSONL line, do not crash the store
                 try:
                     rec = json.loads(line)
-                except Exception:  # noqa: S112
+                except Exception:
                     continue
                 if predicate is None or predicate(rec):
                     out.append(rec)

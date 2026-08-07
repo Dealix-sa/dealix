@@ -126,7 +126,7 @@ Per `docs/V14_FOUNDER_DAILY_OPS.md` § daily ritual + `scripts/dealix_first_pros
 After that:
 1. Sign DPA: create `data/wave11/founder_legal_signature.txt` per plan §33.11
 2. Coordinate DNS records for email deliverability per `auto_client_acquisition/email/deliverability_check.py` next-action output (founder coordinates with domain registrar)
-3. Open the Wave 12 PR: https://github.com/VoXc2/dealix/pull/new/claude/wave12-saudi-ai-revenue-command-center
+3. Open the Wave 12 PR: https://github.com/Dealix-sa/dealix/pull/new/claude/wave12-saudi-ai-revenue-command-center
 4. Merge → Railway auto-deploys main → production picks up all 12 engines
 
 ---

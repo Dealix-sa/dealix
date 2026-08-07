@@ -25,7 +25,7 @@
 أطلقت Dealix اليوم — AI sales rep بالعربي الخليجي.
 محتاج 3 أصدقاء يجربون pilot بـ 1 ريال لأسبوع.
 فكرت فيك لأن [سبب محدد].
-موقع: voxc2.github.io/dealix
+موقع: dealix-sa.github.io/dealix
 مهتم نتكلم 10 دقائق؟
 ```
 

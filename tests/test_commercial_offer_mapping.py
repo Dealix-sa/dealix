@@ -3,8 +3,9 @@ Test: Commercial Offer Mapping
 Ensures every pain category has a mapped offer, and every offer has a pain category.
 """
 import json
-import yaml
 from pathlib import Path
+
+import yaml
 
 
 def test_pain_to_offer_coverage():

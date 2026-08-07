@@ -3,7 +3,7 @@ maturity, simulator, objections, proof pack, agent registry, playbooks."""
 
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 

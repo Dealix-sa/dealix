@@ -1,5 +1,7 @@
-import json,datetime
+import datetime
+import json
 from pathlib import Path
+
 metrics=json.loads(Path('data/preview/launch_week_metrics.json').read_text(encoding='utf-8'))
 score=0
 score += 1 if metrics.get('prospects_reviewed',0)>=50 else 0

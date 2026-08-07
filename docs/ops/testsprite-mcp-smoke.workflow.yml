@@ -1,0 +1,35 @@
+name: TestSprite MCP Smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  testsprite-mcp-smoke:
+    name: TestSprite MCP smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TESTSPRITE_API_KEY: ${{ secrets.TESTSPRITE_API_KEY }}
+      TESTSPRITE_MCP_TIMEOUT_SECONDS: "20"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate secret presence
+        run: python scripts/ops/check_testsprite_mcp_env.py
+
+      - name: Smoke run TestSprite MCP server
+        run: bash scripts/ops/run_testsprite_mcp_smoke.sh

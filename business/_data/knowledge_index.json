@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "builtAt": "2026-06-11T03:37:27+00:00",
+  "builtAt": "2026-06-30T12:17:32+00:00",
   "demo": true,
   "entries": [
     {
@@ -406,10 +406,28 @@
       "chars": 8491
     },
     {
+      "path": "business/demo/exports/dealix-demo-pack-2026-06-30-ar.md",
+      "title": "Dealix Demo Pack — 2026-06-30 (AR)",
+      "preview": "# Dealix Demo Pack — 2026-06-30 (AR)\n\n_Demo material. No customer data. Founder-reviewed before any external share._\n\n## سيناريو العرض\n\n# سيناريو العرض التوضيحي — Dealix (عربي)\n\nمدة: 20 دقيقة. مستمع: مسؤول تجاري / مالك شركة B2B سعودية.\n\n## (1) دقيقتان — الافتتاحية\n\n\"Dealix يبني نظام تشغيل تجاري حقيقي فوق أدواتك الموجودة. مش CRM جديد، مش وكالة. نظام يومي يقلب تشتيت المبيعات والواتساب والسمعة إلى قرارات قابلة للقياس.\"\n\n## (2) 3 دقائق — لوحة Command Center\n\nافتح `/command-center`:\n- Top accounts بت",
+      "chars": 6924
+    },
+    {
       "path": "business/demo/exports/dealix-demo-pack-2026-06-11-ar.md",
       "title": "Dealix Demo Pack — 2026-06-11 (AR)",
       "preview": "# Dealix Demo Pack — 2026-06-11 (AR)\n\n_Demo material. No customer data. Founder-reviewed before any external share._\n\n## سيناريو العرض\n\n# سيناريو العرض التوضيحي — Dealix (عربي)\n\nمدة: 20 دقيقة. مستمع: مسؤول تجاري / مالك شركة B2B سعودية.\n\n## (1) دقيقتان — الافتتاحية\n\n\"Dealix يبني نظام تشغيل تجاري حقيقي فوق أدواتك الموجودة. مش CRM جديد، مش وكالة. نظام يومي يقلب تشتيت المبيعات والواتساب والسمعة إلى قرارات قابلة للقياس.\"\n\n## (2) 3 دقائق — لوحة Command Center\n\nافتح `/command-center`:\n- Top accounts بت",
       "chars": 6924
+    },
+    {
+      "path": "business/demo/exports/dealix-demo-pack-2026-06-30-en.md",
+      "title": "Dealix Demo Pack — 2026-06-30 (EN)",
+      "preview": "# Dealix Demo Pack — 2026-06-30 (EN)\n\n_Demo material. No customer data. Founder-reviewed before any external share._\n\n## Demo Script\n\n# Dealix Demo Script (English)\n\nLength: 20 minutes. Audience: B2B commercial owner / founder.\n\n## (1) 2 min — Opening\n\n\"Dealix builds a real business operating system on top of the tools you already use. Not a new CRM, not an agency. A daily system that converts scattered sales, WhatsApp, and reputation into measurable decisions.\"\n\n## (2) 3 min — Command Center da",
+      "chars": 7057
+    },
+    {
+      "path": "business/demo/exports/dealix-demo-pack-2026-06-30.md",
+      "title": "Dealix Demo Pack — 2026-06-30 (AR+EN)",
+      "preview": "# Dealix Demo Pack — 2026-06-30 (AR+EN)\n\n_Demo material. No customer data. Founder-reviewed before any external share._\n\n## سيناريو العرض (عربي)\n\n# سيناريو العرض التوضيحي — Dealix (عربي)\n\nمدة: 20 دقيقة. مستمع: مسؤول تجاري / مالك شركة B2B سعودية.\n\n## (1) دقيقتان — الافتتاحية\n\n\"Dealix يبني نظام تشغيل تجاري حقيقي فوق أدواتك الموجودة. مش CRM جديد، مش وكالة. نظام يومي يقلب تشتيت المبيعات والواتساب والسمعة إلى قرارات قابلة للقياس.\"\n\n## (2) 3 دقائق — لوحة Command Center\n\nافتح `/command-center`:\n- Top a",
+      "chars": 8491
     },
     {
       "path": "business/demo/exports/dealix-demo-pack-2026-06-11-en.md",

@@ -1,8 +1,3 @@
-# Enterprise Questionnaire Schema (JSON Schema)
-
-> يُستخدم لتخزين ردود Dealix على استبيانات تقييم المؤسسات.
-
-```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dealix.sa/schemas/enterprise_questionnaire.schema.json",
@@ -42,10 +37,3 @@
     "reviewer_notes": { "type": "string" }
   }
 }
-```
-
-**مثال صف واحد في `data/enterprise/questionnaires.jsonl`:**
-
-```jsonl
-{"questionnaire_id":"q-2026-001","client":{"name":"Acme SA","sector":"healthcare","region":"Riyadh"},"submitted_at":"2026-06-03T03:00:00Z","submitted_by":"founder","answers":[{"question_id":"Q01","question":"أين تُخزّن البيانات؟","answer":"في مزود استضافة سحابي (Railway) — يُحدّد region في DPA","classification":"D1","evidence_refs":["docs/enterprise/SECURITY_OVERVIEW_AR.md"],"owner":"founder","needs_legal_review":false}],"status":"internal_review","reviewer_notes":""}
-```

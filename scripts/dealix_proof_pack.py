@@ -33,7 +33,7 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from auto_client_acquisition.self_growth_os.proof_snippet_engine import (  # noqa: E402
+from auto_client_acquisition.self_growth_os.proof_snippet_engine import (
     render_pack,
 )
 

@@ -1188,12 +1188,12 @@ async def ops_founder_strongest_ops(
     run_checks: bool = False,
 ) -> dict[str, Any]:
     """Autonomous strongest-plan ops snapshot — tasks today, verdict, comprehensive hooks."""
+    from typing import cast
+
     from dealix.commercial_ops.founder_strongest_ops import (
         CadenceMode,
         build_strongest_ops_snapshot,
     )
-
-    from typing import cast
     allowed: tuple[CadenceMode, ...] = ("morning", "evening", "weekly", "full")
     m: CadenceMode = cast(CadenceMode, mode) if mode in allowed else "morning"
     return build_strongest_ops_snapshot(mode=m, run_checks=run_checks)
@@ -1212,9 +1212,9 @@ async def ops_founder_strongest_ops_run(
     body: FounderStrongestOpsRunBody | None = None,
 ) -> dict[str, Any]:
     """Run strongest-plan autonomous brief + checks (no external send)."""
-    from dealix.commercial_ops.founder_strongest_ops import CadenceMode, run_strongest_ops
-
     from typing import cast
+
+    from dealix.commercial_ops.founder_strongest_ops import CadenceMode, run_strongest_ops
     req = body or FounderStrongestOpsRunBody()
     allowed: tuple[CadenceMode, ...] = ("morning", "evening", "weekly", "full")
     m: CadenceMode = cast(CadenceMode, req.mode) if req.mode in allowed else "morning"

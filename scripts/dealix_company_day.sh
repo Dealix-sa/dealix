@@ -16,7 +16,12 @@ fi
 
 echo ""
 echo "2) Secret-aware company day"
-./scripts/dealix_secret_aware_company_day.sh
+if [ -x ./scripts/dealix_secret_aware_company_day.sh ]; then
+  ./scripts/dealix_secret_aware_company_day.sh
+else
+  echo "Legacy secret-aware runner is not present on the canonical branch."
+  echo "Continuing the internal draft-only company day; external execution remains disabled."
+fi
 
 echo ""
 echo "3) CRM"

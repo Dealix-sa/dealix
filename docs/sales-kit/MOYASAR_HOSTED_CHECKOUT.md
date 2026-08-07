@@ -53,7 +53,7 @@ curl -X POST https://api.moyasar.com/v1/invoices \
   -d "amount=100" \
   -d "currency=SAR" \
   -d "description=Dealix Pilot — 7 days (1 SAR refundable)" \
-  -d "callback_url=https://voxc2.github.io/dealix/thank-you.html" \
+  -d "callback_url=https://dealix-sa.github.io/dealix/thank-you.html" \
   -d "metadata[plan]=pilot" \
   -d "metadata[customer_email]=$CUSTOMER_EMAIL"
 ```
@@ -137,7 +137,7 @@ Moyasar يدعم webhooks مباشرة. أرسل إشعار لـ Slack:
 ## 💰 Flow كامل (Live الآن بدون Railway)
 
 ```
-1. عميل يفتح: https://voxc2.github.io/dealix/pricing.html
+1. عميل يفتح: https://dealix-sa.github.io/dealix/pricing.html
    ↓
 2. يختار "Pilot 1 ريال"
    ↓

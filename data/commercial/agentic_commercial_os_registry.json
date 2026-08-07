@@ -1,0 +1,173 @@
+{
+  "version": "2026-06-26",
+  "mode": "draft_only",
+  "company_positioning": "Saudi B2B AI Operating Systems company",
+  "safety_defaults": {
+    "EXTERNAL_SEND_ENABLED": false,
+    "EMAIL_SEND_ENABLED": false,
+    "WHATSAPP_SEND_ENABLED": false,
+    "WHATSAPP_ALLOW_LIVE_SEND": false,
+    "SMS_SEND_ENABLED": false,
+    "OUTBOUND_MODE": "draft_only"
+  },
+  "commercial_products": [
+    {
+      "product_id": "agentic_command_room_sprint",
+      "name": "Dealix Agentic Command Room Sprint",
+      "priority": "P0",
+      "promise": "A 14-day founder-led operating sprint that connects revenue, follow-up, company brain decisions, trust gates, and proof packs into one daily command room.",
+      "first_offer_range_sar": "5000-35000",
+      "allowed_outputs": [
+        "founder actions",
+        "target priorities",
+        "draft follow-ups",
+        "proposal briefs",
+        "trust review notes",
+        "weekly proof pack"
+      ],
+      "forbidden_outputs": [
+        "automatic cold email",
+        "automatic WhatsApp send",
+        "SMS automation",
+        "fake ROI",
+        "fake testimonials"
+      ]
+    },
+    {
+      "product_id": "whatsapp_inbox_followup_sprint",
+      "name": "WhatsApp / Inbox Follow-up Sprint",
+      "priority": "P1",
+      "promise": "Recover missed follow-ups and prepare review-ready responses and next actions.",
+      "first_offer_range_sar": "3000-12000",
+      "allowed_outputs": [
+        "conversation categories",
+        "hot lead list",
+        "reply drafts",
+        "follow-up schedule"
+      ],
+      "forbidden_outputs": [
+        "WhatsApp live send without opt-in",
+        "template bypass",
+        "bulk spam"
+      ]
+    },
+    {
+      "product_id": "company_brain_diagnosis_sprint",
+      "name": "Company Brain Diagnosis Sprint",
+      "priority": "P1",
+      "promise": "Produce an executive map of revenue leaks, bottlenecks, risks, and first 10 operating decisions.",
+      "first_offer_range_sar": "1500-9000",
+      "allowed_outputs": [
+        "daily executive decision",
+        "future radar",
+        "bottleneck map",
+        "30-day action plan"
+      ],
+      "forbidden_outputs": [
+        "deterministic future prediction",
+        "guaranteed revenue claim"
+      ]
+    }
+  ],
+  "loops": [
+    {
+      "loop_id": "revenue_command_room_daily",
+      "goal": "Generate founder-reviewed revenue actions.",
+      "inputs": [
+        "ledgers/prospects.csv",
+        "ledgers/outreach_log.csv",
+        "data/commercial/lead_pipeline.csv"
+      ],
+      "outputs": [
+        "reports/revenue/latest.md",
+        "reports/revenue/latest.json",
+        "outbox/drafts",
+        "reports/command_room/index.html"
+      ],
+      "verifier": "tests/test_no_auto_external_send.py or tests/saas/test_agentic_commercial_os_control_plane.py",
+      "stop_condition": "10 founder actions generated or safety gate fails",
+      "human_review_required": true,
+      "safety_gates": [
+        "source_url required",
+        "verification_status required",
+        "owner_decision required",
+        "no external send"
+      ]
+    },
+    {
+      "loop_id": "company_brain_daily",
+      "goal": "Produce one executive decision with owner, metric, risk, and review date.",
+      "inputs": [
+        "reports/revenue/latest.json",
+        "ledgers/decisions_log.csv",
+        "ledgers/risk_register.csv"
+      ],
+      "outputs": [
+        "reports/brain/latest_daily_decision.md",
+        "reports/brain/latest_future_radar.md",
+        "reports/brain/latest_board_memo.md"
+      ],
+      "verifier": "tests/saas/test_agentic_commercial_os_control_plane.py",
+      "stop_condition": "daily decision created or missing inputs reported",
+      "human_review_required": true,
+      "safety_gates": [
+        "scenario language only",
+        "confidence level required",
+        "no guaranteed ROI"
+      ]
+    },
+    {
+      "loop_id": "trust_review",
+      "goal": "Block unsafe claims and external actions before founder review.",
+      "inputs": [
+        "draft outreach",
+        "proposal claims",
+        "tool action requests"
+      ],
+      "outputs": [
+        "blocked reasons",
+        "approval notes",
+        "safe alternative"
+      ],
+      "verifier": "trust/COMMERCIAL_SAFETY_GATES.md and outbound tests",
+      "stop_condition": "every action is approved, blocked, or marked for revision",
+      "human_review_required": true,
+      "safety_gates": [
+        "no fake ROI",
+        "no fake testimonials",
+        "opt-out required for email drafts",
+        "WhatsApp requires opt-in before live mode"
+      ]
+    },
+    {
+      "loop_id": "proof_pack_weekly",
+      "goal": "Produce weekly proof without fake attribution.",
+      "inputs": [
+        "command room outputs",
+        "decision log",
+        "delivery artifacts",
+        "trust gate results"
+      ],
+      "outputs": [
+        "weekly proof pack",
+        "before/after notes",
+        "next improvement plan"
+      ],
+      "verifier": "proof pack acceptance criteria",
+      "stop_condition": "proof pack ready for founder or client review",
+      "human_review_required": true,
+      "safety_gates": [
+        "measured evidence only",
+        "assumptions labeled",
+        "no fake case studies"
+      ]
+    }
+  ],
+  "next_prs": [
+    "phase/data-connectors-os",
+    "phase/agentic-command-room-os",
+    "phase/customer-pain-radar",
+    "phase/ai-agent-governance-os",
+    "phase/proof-pack-os"
+  ]
+}

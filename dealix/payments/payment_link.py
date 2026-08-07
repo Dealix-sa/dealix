@@ -9,11 +9,9 @@ from __future__ import annotations
 
 import os
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import Any, cast
 
 from pydantic import BaseModel, Field
-from typing import cast
-
 
 _LIVE_MODE = os.getenv("MOYASAR_LIVE_MODE", "0").strip() in ("1", "true", "yes")
 
@@ -150,7 +148,7 @@ async def create_payment_link(req: PaymentLinkRequest) -> PaymentLinkResponse:
         )
 
     # Live mode — call Moyasar
-    from dealix.payments.moyasar import MoyasarClient  # noqa: PLC0415
+    from dealix.payments.moyasar import MoyasarClient
     client = MoyasarClient()
     metadata: dict[str, str] = {
         "account_id": req.account_id or "",

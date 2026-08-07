@@ -16,11 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyyaml pytest
+      - name: Install trust-smoke dependencies
+        run: python3 -m pip install httpx pyyaml pytest pytest-asyncio pytest-timeout
       - name: Railway config + live trust probes
         run: |
           python scripts/verify_railway_production_config.py --api-base https://api.dealix.me

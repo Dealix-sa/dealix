@@ -1,6 +1,6 @@
 # Dealix Follow-up Queue
 
-Generated: 2026-06-21
+Generated: 2026-06-30
 
 ## Due today (3)
 - Demo Marketing Agency 001 — Approve outreach draft (was 2026-06-12)

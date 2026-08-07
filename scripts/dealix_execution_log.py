@@ -1,5 +1,8 @@
-import argparse, json, datetime
+import argparse
+import datetime
+import json
 from pathlib import Path
+
 ap=argparse.ArgumentParser()
 ap.add_argument('--task', required=True)
 ap.add_argument('--status', default='done')

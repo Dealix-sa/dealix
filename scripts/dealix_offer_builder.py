@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import argparse
-from pathlib import Path
 from datetime import date
+from pathlib import Path
 
 TEMPLATES = {
  'diagnostic': 'templates/offers/diagnostic_offer_ar.md',

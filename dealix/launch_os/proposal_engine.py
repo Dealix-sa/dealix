@@ -5,6 +5,7 @@ renders them as Arabic-primary markdown documents ready for client delivery.
 
 The ``ProposalPack`` aligns with ``schemas/launch/proposal_pack.schema.json``.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -67,8 +68,8 @@ class ProposalPack:
     next_step_ar: str
     problem_ar: str = ""
     out_of_scope: list[str] = field(default_factory=list)
-    pricing_status: str = "approved_range_required"
-    approval_required: bool = False
+    pricing_status: str = "draft_only"
+    approval_required: bool = True
     evidence_level: str = "L2"
     created_at_iso: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
@@ -116,9 +117,7 @@ _OFFER_CATALOGUE: dict[str, dict[str, Any]] = {
         ],
         "timeline_weeks": 2,
         "investment_sar": 12_000,
-        "proof_references": [
-            "شركة سيارات في الرياض: اكتشاف تسرب 180,000 ريال/سنة خلال أسبوعين",
-        ],
+        "proof_references": [],
     },
     "WHATSAPP_FOLLOWUP_OS": {
         "name_ar": "منظومة متابعة واتساب",
@@ -136,9 +135,7 @@ _OFFER_CATALOGUE: dict[str, dict[str, Any]] = {
         ],
         "timeline_weeks": 3,
         "investment_sar": 18_000,
-        "proof_references": [
-            "شركة عقارات: رفع معدل الرد على المحتملين من 20% إلى 65% خلال 30 يوماً",
-        ],
+        "proof_references": [],
     },
     "SALES_COMMAND_CENTER": {
         "name_ar": "مركز قيادة المبيعات",
@@ -156,9 +153,7 @@ _OFFER_CATALOGUE: dict[str, dict[str, Any]] = {
         ],
         "timeline_weeks": 4,
         "investment_sar": 25_000,
-        "proof_references": [
-            "شركة مقاولات: تقليل الصفقات المجمدة بنسبة 40% في 6 أسابيع",
-        ],
+        "proof_references": [],
     },
     "PROPOSAL_PROOF_PACK_OS": {
         "name_ar": "منظومة العروض والإثبات",
@@ -176,9 +171,7 @@ _OFFER_CATALOGUE: dict[str, dict[str, Any]] = {
         ],
         "timeline_weeks": 3,
         "investment_sar": 20_000,
-        "proof_references": [
-            "شركة استشارات: رفع معدل إغلاق العروض من 15% إلى 35% خلال ربع سنة",
-        ],
+        "proof_references": [],
     },
     "AI_OPERATING_SYSTEM_FOR_SMB": {
         "name_ar": "نظام التشغيل بالذكاء الاصطناعي للشركات الصغيرة والمتوسطة",
@@ -196,9 +189,7 @@ _OFFER_CATALOGUE: dict[str, dict[str, Any]] = {
         ],
         "timeline_weeks": 8,
         "investment_sar": 45_000,
-        "proof_references": [
-            "شركة خدمات: توفير 15 ساعة أسبوعياً من العمل الإداري خلال 8 أسابيع",
-        ],
+        "proof_references": [],
     },
     "CUSTOM_ENTERPRISE_OS": {
         "name_ar": "نظام تشغيل مؤسسي مخصص",
@@ -217,9 +208,7 @@ _OFFER_CATALOGUE: dict[str, dict[str, Any]] = {
         ],
         "timeline_weeks": 16,
         "investment_sar": 120_000,
-        "proof_references": [
-            "مؤسسة تجارية متعددة الفروع: تحسين كفاءة العمليات بنسبة 30% في أول سنة",
-        ],
+        "proof_references": [],
     },
 }
 
@@ -232,8 +221,8 @@ def build_proposal(
     offer_id: str,
     discovery_notes: dict[str, Any] | None = None,
     *,
-    pricing_status: str = "approved_range_required",
-    approval_required: bool = False,
+    pricing_status: str = "draft_only",
+    approval_required: bool = True,
     evidence_level: str = "L2",
 ) -> ProposalPack:
     """Build a :class:`ProposalPack` from account data and discovery notes.
@@ -282,8 +271,8 @@ def build_proposal(
 
     if leakage and int(leakage) > 0:
         roi_narrative_ar = (
-            f"بناء على جلسة الاكتشاف: التسرب المقدر يبلغ {int(leakage):,} ريال سنوياً. "
-            "العمل على تقليل هذا التسرب هو الهدف الرئيسي للمشروع."
+            f"فرضية كمية أدخلت في الاكتشاف: {int(leakage):,} ريال سنوياً. "
+            "لا تُعامل كحقيقة أو عائد متوقع قبل ربطها بمرجع وخط أساس يتحقق منه العميل."
         )
     else:
         roi_narrative_ar = "سيتم تحديد قيمة العائد بدقة بعد مرحلة التشخيص."
@@ -303,10 +292,15 @@ def build_proposal(
         value_prop_ar=catalogue.get("value_prop_ar", ""),
         scope_items=list(catalogue.get("scope_items", [])),
         timeline_weeks=int(catalogue.get("timeline_weeks", 4)),
-        investment_sar=int(catalogue.get("investment_sar", 0)),
+        investment_sar=(
+            int(catalogue.get("investment_sar", 0)) if pricing_status == "founder_approved" else 0
+        ),
         roi_narrative_ar=roi_narrative_ar,
         proof_references=proof_refs,
-        next_step_ar="توقيع اتفاقية الخدمة وتحديد موعد الكيك-أوف",
+        next_step_ar=(
+            "مراجعة النطاق والدليل والسعر مع أصحاب القرار، ثم طلب موافقة المؤسس "
+            "قبل التوقيع أو تحديد موعد ملزم."
+        ),
         problem_ar=pain_ar,
         out_of_scope=list(catalogue.get("out_of_scope", [])),
         pricing_status=pricing_status,
@@ -361,7 +355,7 @@ def render_markdown(pack: ProposalPack) -> str:
     investment_text = (
         f"{pack.investment_sar:,} ريال سعودي"
         if pack.investment_sar > 0
-        else "يُحدد بعد الاطلاع الكامل على الوضع"
+        else "يُحدد بالريال السعودي بعد اعتماد النطاق والسعر من المؤسس"
     )
 
     return f"""# عرض خدمة: {pack.offer_name_ar}
@@ -435,6 +429,7 @@ def render_markdown(pack: ProposalPack) -> str:
 
 if __name__ == "__main__":
     import doctest
+
     results = doctest.testmod(verbose=False)
     print(f"Proposal engine doctests: {results.attempted} run, {results.failed} failed")
 

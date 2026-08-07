@@ -1,5 +1,7 @@
-import argparse, json
+import argparse
+import json
 from pathlib import Path
+
 p = argparse.ArgumentParser()
 p.add_argument('--weeks', type=int, default=4)
 p.add_argument('--close-rate', type=float, default=0.2)

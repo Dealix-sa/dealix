@@ -1,5 +1,8 @@
+import datetime
+import json
+import re
 from pathlib import Path
-import json, datetime, re
+
 ROOT = Path(__file__).resolve().parents[1]
 def read_json(path, default):
     p=ROOT/path
@@ -16,10 +19,12 @@ def lines_jsonl(path):
 def slug(s):
     return re.sub(r'[^\w\u0600-\u06FF-]+','_',s).strip('_')[:80]
 def now():
-    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+    return datetime.datetime.now(datetime.UTC).isoformat()
 
 
-import subprocess, sys
+import subprocess
+import sys
+
 cmds=[
  [sys.executable,'scripts/dealix_v16_readiness_check.py'],
  [sys.executable,'scripts/dealix_outreach_batch_builder.py','--vertical','training','--limit','10'],

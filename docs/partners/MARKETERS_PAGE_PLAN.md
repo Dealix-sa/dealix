@@ -3,7 +3,7 @@
 **Implementation status:** ✅ BUILT
 
 The marketers page is live at `landing/marketers.html` and deployed to:
-- https://voxc2.github.io/dealix/marketers.html
+- https://dealix-sa.github.io/dealix/marketers.html
 
 Complete content strategy is in:
 - `docs/sales-kit/dealix_marketers_page.html` (standalone version)

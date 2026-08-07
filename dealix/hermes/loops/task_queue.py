@@ -8,7 +8,7 @@ from typing import Any, Optional
 
 import structlog
 
-from dealix.hermes.orchestrators.wave_orchestrator import TaskResult, WaveTask, WaveStatus
+from dealix.hermes.orchestrators.wave_orchestrator import TaskResult, WaveStatus, WaveTask
 
 logger = structlog.get_logger(__name__)
 

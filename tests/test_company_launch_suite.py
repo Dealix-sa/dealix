@@ -88,10 +88,16 @@ def test_target_csv_validation() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-def test_100_target_day_prepare_and_validate() -> None:
-    result = run_script([PYTHON, "scripts/revenue/prepare_100_target_day.py", "--input", "data/outreach/research_queue.example.csv", "--batch-size", "3"])
+def test_100_target_day_prepare_and_validate(tmp_path) -> None:
+    batch_file = tmp_path / "ready_batch_test.csv"
+    result = run_script([
+        PYTHON, "scripts/revenue/prepare_100_target_day.py",
+        "--input", "data/outreach/research_queue.example.csv",
+        "--batch-size", "3",
+        "--output", str(batch_file),
+    ])
     assert result.returncode == 0, result.stdout + result.stderr
-    result = run_script([PYTHON, "scripts/revenue/validate_100_target_day.py", "--input", "data/outreach/ready_batch_2026-06-15.csv"])
+    result = run_script([PYTHON, "scripts/revenue/validate_100_target_day.py", "--input", str(batch_file)])
     assert result.returncode == 0, result.stdout + result.stderr
 
 

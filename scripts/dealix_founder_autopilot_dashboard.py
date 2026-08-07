@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 open_tasks=0
 if Path('data/founder/founder_tasks.json').exists():
     tasks=json.loads(Path('data/founder/founder_tasks.json').read_text(encoding='utf-8'))

@@ -14,12 +14,13 @@ from __future__ import annotations
 import logging
 import os
 import uuid
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from fastapi import APIRouter, Body, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy import func, select
 
+from api.security.api_key import require_admin_key
 from auto_client_acquisition.email.compliance import (
     append_opt_out_line,
     check_outreach,
@@ -44,7 +45,15 @@ from db.models import (
 )
 from db.session import async_session_factory
 
-router = APIRouter(prefix="/api/v1/email", tags=["email"])
+# Founder-internal tooling: these handlers read and write the whole
+# prospecting graph (accounts, contacts, scores) across tenants by design.
+# That is only safe behind the platform-admin credential, so the guard is
+# applied at the router so no future route in this file can miss it.
+router = APIRouter(
+    prefix="/api/v1/email",
+    tags=["email"],
+    dependencies=[Depends(require_admin_key)],
+)
 log = logging.getLogger(__name__)
 
 
@@ -320,7 +329,7 @@ async def send_batch(body: dict[str, Any] = Body(default={})) -> dict[str, Any]:
                     select(ContactRecord).where(
                         ContactRecord.account_id == r.lead_id,
                         ContactRecord.email.is_not(None),
-                        ContactRecord.opt_out == False,  # noqa: E712
+                        ContactRecord.opt_out == False,
                     ).limit(1)
                 )).scalar_one_or_none()
                 acc = (await s2.execute(

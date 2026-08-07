@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from auto_client_acquisition.distribution_os import (  # noqa: E402
+from auto_client_acquisition.distribution_os import (
     draft_factory,
     followup,
     metrics,
@@ -27,8 +27,8 @@ from auto_client_acquisition.distribution_os import (  # noqa: E402
     proposal,
     prospect,
 )
-from auto_client_acquisition.distribution_os.draft_factory import DraftStatus  # noqa: E402
-from auto_client_acquisition.distribution_os.prospect import ProspectStatus  # noqa: E402
+from auto_client_acquisition.distribution_os.draft_factory import DraftStatus
+from auto_client_acquisition.distribution_os.prospect import ProspectStatus
 
 _REPORT = ROOT / "reports" / "distribution" / "DISTRIBUTION_DAY.md"
 

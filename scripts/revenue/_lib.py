@@ -9,7 +9,89 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(os.environ.get("DEALIX_REPO_ROOT") or Path(__file__).resolve().parents[2])
+
+LEDGER_SCHEMAS: dict[str, list[str]] = {
+    "prospects": [
+        "company_name",
+        "sector",
+        "city",
+        "website",
+        "source_url",
+        "verification_status",
+        "owner_decision",
+    ],
+    "outreach_log": [
+        "date",
+        "company_name",
+        "channel",
+        "recipient",
+        "subject_or_template",
+        "status",
+        "owner_decision",
+        "sent_at",
+        "reply_status",
+        "next_action",
+        "notes",
+    ],
+    "reply_log": [
+        "date",
+        "company_name",
+        "contact",
+        "channel",
+        "reply_summary",
+        "intent",
+        "next_action",
+        "meeting_date",
+        "status",
+    ],
+    "deals_pipeline": [
+        "date",
+        "company_name",
+        "stage",
+        "value_sar",
+        "product",
+        "next_action",
+        "owner",
+        "close_probability",
+        "notes",
+    ],
+    "proposal_log": [
+        "date",
+        "company_name",
+        "sector",
+        "pain_hypothesis",
+        "offer",
+        "pilot_scope",
+        "investment_sar",
+        "status",
+        "owner_decision",
+        "source_url",
+    ],
+    "proof_ledger": [
+        "date",
+        "company_name",
+        "claim",
+        "evidence_type",
+        "evidence_url",
+        "verified_by",
+        "status",
+        "notes",
+    ],
+    "clients": [
+        "client_id",
+        "company_name",
+        "sector",
+        "city",
+        "contact_name",
+        "contact_email",
+        "contact_phone",
+        "stage",
+        "start_date",
+        "status",
+        "source_url",
+    ],
+}
 
 
 def today_str() -> str:
@@ -151,6 +233,17 @@ def score_target(row: dict[str, str]) -> dict[str, Any]:
         "reasons": reasons,
         "tier": "hot" if final >= 3.5 else "warm" if final >= 2.5 else "cold",
     }
+
+
+def ensure_ledgers() -> None:
+    """Create all ledger CSVs with headers if they do not exist."""
+    ledgers_dir = REPO_ROOT / "ledgers"
+    ledgers_dir.mkdir(parents=True, exist_ok=True)
+    for name, fields in LEDGER_SCHEMAS.items():
+        path = ledgers_dir / f"{name}.csv"
+        if not path.exists() or path.stat().st_size == 0:
+            with path.open("w", encoding="utf-8-sig", newline="") as f:
+                csv.DictWriter(f, fieldnames=fields).writeheader()
 
 
 def ensure_dirs() -> None:

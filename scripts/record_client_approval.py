@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.workspace_store import load, save, find, now_iso  # noqa: E402
+from lib.workspace_store import find, load, now_iso, save
 
 
 def main() -> int:

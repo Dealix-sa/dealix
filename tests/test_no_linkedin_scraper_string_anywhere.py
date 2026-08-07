@@ -84,6 +84,10 @@ _ALLOWLIST_PATHS = frozenset({
     "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # Agent 2 continuation audit — enumerates guardrail tests by file path
     "reports/agent_2/AGENT_2_CONTINUATION_AUDIT.md",
+    # CEO revenue PR reports — contain the test file path in PR diff metadata
+    # (the JSON and file-list reference the test module by name, not functionality)
+    "reports/ceo/revenue-prs/pr-732-files.txt",
+    "reports/ceo/revenue-prs/pr-732.json",
     # The plan file lives outside the repo (in /root/.claude/plans/) so
     # never appears in git ls-files; no allowlist needed.
 })

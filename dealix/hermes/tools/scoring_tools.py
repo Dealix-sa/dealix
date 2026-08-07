@@ -310,8 +310,8 @@ async def calculate_deal_probability(deal_data: dict[str, Any]) -> dict[str, Any
 
 
 __all__ = [
-    "score_lead",
-    "score_account_health",
-    "prioritize_leads",
     "calculate_deal_probability",
+    "prioritize_leads",
+    "score_account_health",
+    "score_lead",
 ]

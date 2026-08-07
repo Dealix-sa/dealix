@@ -6,7 +6,7 @@ Usage:
     python scripts/import_leads.py <file.csv|file.json> --source-name "X" \
         --source-type owned|public|paid|partner|google_maps|google_search|manual \
         [--allowed-use "..."] [--risk-level low|medium|high] \
-        [--api https://api.dealix.me]
+        [--api https://api.dealix.me] [--api-key "..."] [--admin-key "..."]
 
 The file is parsed locally; we send the rows as JSON to the API. Server
 stores raw rows + creates a RawLeadImport. Then call /normalize → /dedupe → /enrich.
@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -42,6 +43,26 @@ def parse_file(path: Path) -> list[dict]:
     raise SystemExit(f"Unsupported file type: {path.suffix}")
 
 
+def build_auth_headers(
+    api_key: str | None = None,
+    admin_key: str | None = None,
+) -> dict[str, str]:
+    """Resolve both production credentials without logging their values."""
+    resolved_api_key = api_key or os.environ.get("DEALIX_API_KEY", "")
+    resolved_admin_key = admin_key or os.environ.get("DEALIX_ADMIN_API_KEY", "")
+    missing: list[str] = []
+    if not resolved_api_key:
+        missing.append("--api-key or DEALIX_API_KEY")
+    if not resolved_admin_key:
+        missing.append("--admin-key or DEALIX_ADMIN_API_KEY")
+    if missing:
+        raise ValueError("missing required credentials: " + ", ".join(missing))
+    return {
+        "X-API-Key": resolved_api_key,
+        "X-Admin-API-Key": resolved_admin_key,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("file")
@@ -58,7 +79,22 @@ def main() -> int:
     ap.add_argument("--notes", default="")
     ap.add_argument("--auto-pipeline", action="store_true",
                     help="After import, also call normalize → dedupe → enrich")
+    ap.add_argument("--api-key", default=None,
+                    help="Shared platform API key for APIKeyMiddleware "
+                         "(defaults to $DEALIX_API_KEY)")
+    ap.add_argument("--admin-key", default=None,
+                    help="Platform-admin key for /api/v1/data/* "
+                         "(defaults to $DEALIX_ADMIN_API_KEY)")
     args = ap.parse_args()
+
+    # Production data routes cross two independent authentication gates:
+    # APIKeyMiddleware requires X-API-Key, then the router dependency requires
+    # X-Admin-API-Key. Resolve both before touching the file or network.
+    try:
+        headers = build_auth_headers(args.api_key, args.admin_key)
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
 
     p = Path(args.file)
     if not p.exists():
@@ -83,7 +119,7 @@ def main() -> int:
     }
     api = args.api.rstrip("/")
     print(f"→ POST {api}/api/v1/data/import  rows={len(rows)}")
-    with httpx.Client(timeout=60) as client:
+    with httpx.Client(timeout=60, headers=headers) as client:
         r = client.post(f"{api}/api/v1/data/import", json=payload)
         r.raise_for_status()
         out = r.json()

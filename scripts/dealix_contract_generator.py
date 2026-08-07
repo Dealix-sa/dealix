@@ -325,7 +325,7 @@ def generate_contract(
     print("  [ ] Get legal review before sending (optional but recommended)")
     print("  [ ] Send via DocuSign or PDF — never paste raw markdown")
     print(f"  [ ] After signing: make invoice AMOUNT={tier_data['setup_sar']}")
-    print(f"  [ ] Update outreach_log.csv: make outreach-tracker update \\")
+    print("  [ ] Update outreach_log.csv: make outreach-tracker update \\")
     print(f"      --company '{company}' --status won")
     print("━" * 65)
     print()

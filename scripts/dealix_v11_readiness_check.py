@@ -1,4 +1,5 @@
 from pathlib import Path
+
 required = [
  'revenue-sprint/FIRST_5_CLIENTS_SPRINT_AR.md',
  'client-onboarding/CLIENT_INTAKE_FORM_AR.md',

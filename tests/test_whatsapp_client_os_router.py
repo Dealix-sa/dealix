@@ -12,8 +12,8 @@ import pytest
 fastapi = pytest.importorskip("fastapi")
 pytest.importorskip("httpx")  # fastapi TestClient transport
 
-from fastapi import FastAPI  # noqa: E402
-from fastapi.testclient import TestClient  # noqa: E402
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
 
 @pytest.fixture()

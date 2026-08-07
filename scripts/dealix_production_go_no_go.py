@@ -1,4 +1,5 @@
 from pathlib import Path
+
 checks={
  'v10_readiness': Path('scripts/dealix_v10_readiness_check.py').exists(),
  'env_example': Path('.env.example').exists(),

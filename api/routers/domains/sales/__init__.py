@@ -9,6 +9,8 @@ from fastapi import APIRouter
 
 from api.routers import (
     case_study_engine,
+    commercial_intelligence,
+    company_targeting,
     dominance,
     email_send,
     leadops_reliability,
@@ -52,7 +54,23 @@ from api.routers import (
     revenue_profitability as revenue_profitability_router,
 )
 
+_LEGACY_DOMINANCE_PATHS = {
+    "/api/v1/customers/{customer_id}/proof-pack",
+}
+
+# The legacy dominance proof-pack endpoint emits unsupported fixed prices,
+# seven-day claims, fabricated outcome placeholders and referral economics.
+# Keep the useful dominance intelligence routes, but do not expose that endpoint.
+dominance.router.routes[:] = [
+    route
+    for route in dominance.router.routes
+    if getattr(route, "path", None) not in _LEGACY_DOMINANCE_PATHS
+]
+
+
 _ROUTERS = [
+    company_targeting.router,
+    commercial_intelligence.router,
     decision_passport_router.router,
     revenue_os_catalog_router.router,
     commercial_readiness_router.router,
