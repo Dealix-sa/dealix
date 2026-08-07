@@ -34,7 +34,7 @@ def verify() -> int:
     reviewer_requirements = {
         "read_only_sandbox": 'sandbox_mode = "read-only"',
         "fresh_context": "fresh context",
-        "no_self_fix": "do not implement its own findings",
+        "no_self_fix": "implement the fixes you discover",
         "ship_verdict": "`ship`",
         "fix_first_verdict": "`fix-first`",
         "rethink_verdict": "`rethink`",
