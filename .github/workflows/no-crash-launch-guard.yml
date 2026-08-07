@@ -63,6 +63,12 @@ jobs:
       - name: Business NOW
         run: bash scripts/run_business_now.sh
 
+      - name: Company Intelligence entity ownership
+        run: python3 scripts/verify_company_intelligence_entity_ownership.py
+
+      - name: Company Intelligence adapters
+        run: python3 scripts/verify_company_intelligence_adapters.py
+
       - name: Commercial launch ready
         shell: bash
         run: |
