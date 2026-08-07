@@ -54,10 +54,12 @@ def test_step_01_service_catalog_has_17_offerings_with_valid_ladder() -> None:
     assert free is not None
     assert free.price_sar == 0.0
 
-    # Revenue Proof Sprint = 499 (first paid tier)
-    sprint = get_offering("revenue_proof_sprint_499")
+    # Revenue Command Pilot is the quote-only first paid motion.
+    sprint = get_offering("revenue_command_pilot_30d")
     assert sprint is not None
-    assert sprint.price_sar == 499.0
+    assert sprint.price_sar == 0.0
+    assert sprint.duration_days == 30
+    assert sprint.commercial_status == "quote_only"
 
     # Article 4: no live actions in any offering's action_modes_used
     for off in offerings:

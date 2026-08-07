@@ -198,7 +198,26 @@ class ArabicSentimentAnalyzer:
             max_tokens=128,
             temperature=0.0,
         )
-        raw = response.content.strip().strip("```json").strip("```").strip()
-        result = json.loads(raw)
+        # Was: `.strip().strip("```json").strip("```").strip()`.
+        #
+        # Two things wrong with it. `str.strip(chars)` takes a character
+        # *set*, not a prefix, so that call stripped any of ` j s o n from
+        # both ends (ruff B005). It happens not to corrupt well-formed JSON
+        # today only because `{` and `}` are not in that set — a coincidence,
+        # not a design.
+        #
+        # The failure that does bite is prose. The instruction says "Output
+        # valid JSON only", and models routinely ignore it: "Sure! {...}",
+        # or a trailing "Note: ...". Any of those made json.loads raise, and
+        # the caller fell back to the lexicon scorer — silently discarding
+        # the LLM answer it had just paid for, with the same shape of result,
+        # so nothing downstream could tell.
+        #
+        # BaseAgent.parse_json_response already handles fenced blocks, prose
+        # on either side, and a bare object. Reuse it rather than write a
+        # fourth extractor — there are already three in this repo.
+        from core.agents.base import BaseAgent
+
+        result = BaseAgent.parse_json_response(response.content)
         result["method"] = "llm"
         return result

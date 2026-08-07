@@ -62,7 +62,7 @@ run_check "SAUDI_MARKET_RADAR_23_SIGNALS" "python3 -m pytest tests/test_market_r
 run_check "LEAD_INTELLIGENCE_13DIM_SAUDI" "python3 -m pytest tests/test_saudi_dimensions_v1.py -q --no-cov"
 run_check "DECISION_PASSPORT_V2"          "python3 -m pytest tests/test_decision_passport_v2.py -q --no-cov"
 run_check "PAYMENT_REFUND_ZATCA_WIRE"     "python3 -m pytest tests/test_payment_refund_zatca_v1.py -q --no-cov"
-run_check "TENANT_ISOLATION"              "python3 -m pytest tests/test_tenant_isolation_v1.py -q --no-cov"
+run_check "TENANT_ISOLATION"              "python3 -m pytest tests/test_tenant_isolation_helpers.py -q --no-cov"
 run_check "BOPLA_REDACTION"               "python3 -m pytest tests/test_bopla_redaction_v1.py -q --no-cov"
 
 # ── Phase D — Wave 14 new tests ──────────────────────────────────────

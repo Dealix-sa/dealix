@@ -70,10 +70,12 @@ class DocumentIngester:
 
     async def ingest_url(self, url: str, collection: str) -> IngestResult:
         try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as resp:
-                    resp.raise_for_status()
-                    html = await resp.text()
+            async with (
+                aiohttp.ClientSession() as session,
+                session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as resp,
+            ):
+                resp.raise_for_status()
+                html = await resp.text()
 
             soup = BeautifulSoup(html, "html.parser")
             for tag in soup(["script", "style", "nav", "footer", "header"]):
@@ -178,7 +180,7 @@ class DocumentIngester:
         return "\n".join(p.text for p in doc.paragraphs)
 
     async def _read_html(self, file_path: str) -> str:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             html = f.read()
         soup = BeautifulSoup(html, "html.parser")
         for tag in soup(["script", "style", "nav", "footer"]):
@@ -186,14 +188,14 @@ class DocumentIngester:
         return soup.get_text(separator="\n", strip=True)
 
     async def _read_markdown(self, file_path: str) -> str:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read()
         html = markdown.markdown(content)
         soup = BeautifulSoup(html, "html.parser")
         return soup.get_text(separator="\n", strip=True)
 
     async def _read_text(self, file_path: str) -> str:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             return f.read()
 
     def _ext_to_doc_type(self, ext: str) -> DocumentType:

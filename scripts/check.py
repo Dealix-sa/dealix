@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Dealix System Check - Validates entire setup."""
 
 import os

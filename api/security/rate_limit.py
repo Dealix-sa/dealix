@@ -28,6 +28,8 @@ from typing import Any
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
+from core.config.settings import get_settings
+
 # Patch Starlette's Config reader so .env files are read as UTF-8 on Windows.
 # This prevents slowapi from crashing when .env contains Arabic comments.
 try:
@@ -133,8 +135,34 @@ LIMITS = {
 
 
 def setup_rate_limit(app: FastAPI) -> None:
-    """Wire slowapi into the FastAPI app. No-op if slowapi is missing."""
+    """Wire slowapi into the FastAPI app.
+
+    Missing slowapi is tolerated in dev/test and refused in production.
+
+    The silent no-op it replaces was the dangerous half of a pair:
+    ``RateLimitHeadersMiddleware`` advertises ``X-RateLimit-*`` on every
+    response and defers enforcement to this function, so a deployment without
+    slowapi served rate-limit headers that nothing honoured — while
+    ``/api/v1/auth/login`` sits behind ``PUBLIC_PREFIXES`` and skips the API
+    key middleware entirely. An unthrottled login endpoint that announces a
+    throttle is worse than one that announces nothing.
+
+    slowapi is pinned in ``requirements.txt``, so this should be unreachable
+    in production; raising is how it stays that way, matching
+    ``api/main.py:_validate_production_secrets``, which also refuses to start
+    rather than run insecure.
+    """
     if not _HAS_SLOWAPI or limiter is None:
+        # Use the canonical Settings aliases (APP_ENV, ENVIRONMENT,
+        # VERCEL_ENV). Reading APP_ENV directly would fail open on Railway or
+        # Vercel deployments that set only their platform-standard alias.
+        if get_settings().is_production:
+            raise RuntimeError(
+                "SECURITY: slowapi is not installed, so no rate limiting is "
+                "enforced while X-RateLimit-* headers claim otherwise. "
+                "/api/v1/auth/login is public and would be unthrottled. "
+                "Install slowapi (it is pinned in requirements.txt)."
+            )
         return
 
     app.state.limiter = limiter

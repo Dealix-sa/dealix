@@ -135,8 +135,16 @@ def render_proposal(context: ProposalContext, template_path: Path | None = None)
         raw = path.read_text(encoding="utf-8")
         try:
             import jinja2
+            # autoescape stays off deliberately: the template is Markdown
+            # (templates/PROPOSAL_*.md.j2), not HTML. Escaping here would
+            # corrupt every proposal — `&` becomes `&amp;`, quotes become
+            # `&quot;` — in output a human reads and a founder approves.
+            # If a proposal is ever converted to HTML for the web, escaping
+            # belongs at that conversion, not at Markdown render time.
             env = jinja2.Environment(
-                autoescape=False, keep_trailing_newline=True, trim_blocks=True
+                autoescape=False,  # noqa: S701 - Markdown output, not HTML
+                keep_trailing_newline=True,
+                trim_blocks=True,
             )
             return env.from_string(raw).render(**mapping)
         except ImportError:

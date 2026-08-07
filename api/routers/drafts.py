@@ -28,9 +28,10 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter, Body, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy import func, select
 
+from api.security.api_key import require_admin_key
 from auto_client_acquisition.email.compliance import (
     append_opt_out_line,
     check_outreach,
@@ -65,7 +66,12 @@ from db.models import (
 )
 from db.session import async_session_factory
 
-router = APIRouter(prefix="/api/v1", tags=["revenue-machine"])
+# Founder-internal cross-tenant tooling must stay behind the admin plane.
+router = APIRouter(
+    prefix="/api/v1",
+    tags=["revenue-machine"],
+    dependencies=[Depends(require_admin_key)],
+)
 log = logging.getLogger(__name__)
 
 
@@ -391,11 +397,12 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
             msg_ar = (
                 f"{brief.best_first_sentence}\n\n"
                 f"{brief.dealix_fit}\n\n"
-                f"عندنا Pilot 7 أيام بـ 499 ريال. تناسبكم 20 دقيقة هذا الأسبوع؟"
+                "نبدأ بتشخيص مختصر، ثم نجهّز نطاق Revenue Command Pilot لمدة 30 يومًا وquote موثقًا. "
+                "تناسبكم 20 دقيقة هذا الأسبوع؟"
             )
             msg_en = (
                 f"Quick reach-out about {cand['company_name']}. "
-                f"{brief.dealix_fit}. We have a 7-day Pilot at 499 SAR — "
+                f"{brief.dealix_fit}. We start with discovery, then prepare a 30-day Pilot scope and documented quote — "
                 "open to a 20-min chat this week?"
             )
             ld = LinkedInDraftRecord(
@@ -430,7 +437,7 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
                 f"شركتكم في {cand.get('sector_ar') or cand.get('sector') or 'القطاع'} "
                 f"بـ {cand.get('city') or 'السعودية'} — "
                 f"{brief.pain_hypothesis}\n\n"
-                f"نقدم Pilot 7 أيام بـ 499 ريال — نرد على leadsكم نحن، تشوفون النتيجة، ثم تقرّرون.\n\n"
+                "نبدأ بتشخيص مختصر لفهم المسار، ثم نجهّز نطاق Pilot لمدة 30 يومًا للمراجعة، بدون وعد نتائج.\n\n"
                 f"تناسبكم 20 دقيقة هذا الأسبوع نوضح؟"
             )
             call_scripts_out.append({

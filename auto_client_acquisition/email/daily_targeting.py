@@ -124,8 +124,8 @@ def render_email_template(account: dict[str, Any], priority: str) -> dict[str, s
     angle = angle_for(account.get("sector"))
     opener = opener_for(priority)
     cta = (
-        "Pilot 7 أيام بـ 499 ريال — نشتغل على leadsكم نحن، تشوفون النتيجة، ثم تقرّرون. "
-        "تناسبكم 20 دقيقة هذا الأسبوع؟"
+        "نبدأ بتشخيص مختصر ومحدود. بعد discovery نجهّز نطاق Revenue Command Pilot "
+        "لمدة 30 يومًا وquote موثقًا للمراجعة. تناسبكم 20 دقيقة هذا الأسبوع؟"
     )
     body = (
         f"{opener} {company}،\n\n"

@@ -2,10 +2,13 @@
 Row-Level Security (RLS) policies for PostgreSQL multi-tenant isolation.
 سياسات أمان مستوى الصف (RLS) لعزل المستأجرين في PostgreSQL.
 
-Enforces tenant isolation at the database level. Every query automatically
-filters by tenant_id using the app.tenant_id session variable.
+Defines tenant isolation at the database level. These policies are currently
+inactive: application request sessions do not yet use ``tenant_session()``,
+and no runtime caller invokes ``apply_rls()``.
 
-Usage: Run apply_rls() after Alembic migrations create the tables.
+Do not run ``apply_rls()`` until transaction-scoped binding has passed the
+PostgreSQL tests in ``tests/test_tenant_session_binding.py`` and request
+sessions have been migrated to the bound dependency.
 Ref: https://www.postgresql.org/docs/16/ddl-rowsecurity.html
 """
 
@@ -13,13 +16,16 @@ from __future__ import annotations
 
 from typing import Any
 
+from sqlalchemy import text
+
 from core.logging import get_logger
 from db.session import get_session
 
 log = get_logger(__name__)
 
-# Maps table name -> policy expression using PostgreSQL current_setting
-# The app sets app.tenant_id at the start of each request via middleware
+# Maps table name -> policy expression using PostgreSQL current_setting.
+# db.tenant_session provides the prerequisite binding, but is not wired into
+# request handling yet; the policies must remain inactive until it is.
 RLS_POLICIES: dict[str, str] = {
     "leads": "tenant_id = current_setting('app.tenant_id', true)",
     "deals": "tenant_id = current_setting('app.tenant_id', true)",
@@ -65,14 +71,12 @@ RLS_EXEMPT_TABLES: list[str] = [
 async def apply_rls() -> None:
     """Enable RLS on all tenant-scoped tables and create policies.
 
-    Idempotent: uses IF NOT EXISTS for policy creation.
-    Should be called once after migrations, typically from a startup script.
+    This is a production schema/security operation, not an app-startup hook.
+    It requires a reviewed migration and green PostgreSQL binding tests.
 
-    The app sets ``app.tenant_id`` at middleware level using:
-        SET app.tenant_id = '<tenant_id>';
-
-    Super admin users bypass RLS by not setting the session variable
-    (set it to an empty string or skip the SET command).
+    Missing/empty ``app.tenant_id`` denies every protected row. A super admin
+    does not bypass these policies by omitting the setting; they must target
+    and bind an explicit tenant unless the database role itself has BYPASSRLS.
     """
     async with get_session() as session:
         for table_name, policy_expr in RLS_POLICIES.items():
@@ -87,7 +91,6 @@ async def apply_rls() -> None:
                     f"END IF; "
                     f"END $$;"
                 ),
-                # Default-deny policy: if app.tenant_id is not set, no rows returned
                 (
                     f"DO $$ BEGIN "
                     f"IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = '{table_name}' AND policyname = 'tenant_isolation_deny') THEN "
@@ -101,7 +104,7 @@ async def apply_rls() -> None:
 
             for sql in sqls:
                 try:
-                    await session.execute(sql)
+                    await session.execute(text(sql))
                 except Exception as exc:
                     if "does not exist" in str(exc).lower():
                         log.warning(
@@ -134,7 +137,7 @@ async def disable_rls(table_name: str | None = None) -> None:
         for tbl in tables:
             try:
                 await session.execute(
-                    f"ALTER TABLE IF EXISTS {tbl} DISABLE ROW LEVEL SECURITY;"
+                    text(f"ALTER TABLE IF EXISTS {tbl} DISABLE ROW LEVEL SECURITY;")
                 )
                 log.info("rls_disabled", table=tbl)
             except Exception as exc:
@@ -142,10 +145,7 @@ async def disable_rls(table_name: str | None = None) -> None:
 
 
 async def verify_rls() -> dict[str, Any]:
-    """Verify RLS is active on all tenant tables.
-
-    Returns a dict with status for each table.
-    """
+    """Verify RLS is active on all tenant tables."""
     async with get_session() as session:
         tables = list(RLS_POLICIES.keys())
         status: dict[str, Any] = {"enabled": [], "disabled": [], "not_found": []}
@@ -153,7 +153,10 @@ async def verify_rls() -> dict[str, Any]:
         for table_name in tables:
             try:
                 result = await session.execute(
-                    "SELECT relrowsecurity FROM pg_class WHERE relname = :table_name",
+                    text(
+                        "SELECT relrowsecurity FROM pg_class "
+                        "WHERE relname = :table_name"
+                    ),
                     {"table_name": table_name},
                 )
                 row = result.scalar_one_or_none()

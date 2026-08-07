@@ -60,6 +60,10 @@ def test_scope_requested_within_days():
     assert scope_requested_within_days(14, rows) is True
     assert scope_requested_within_days(3, rows) is False
 
+    # `old` was never defined, so this raised NameError and the assertion
+    # below never ran. The xfail entry in conftest blamed "verify-script
+    # output drift", which described a different failure entirely.
+    old = (today - timedelta(days=40)).isoformat()
     old_rows = [{"event_date": old, "event_type": "scope_requested"}]
     assert scope_requested_within_days(14, old_rows) is False
 
