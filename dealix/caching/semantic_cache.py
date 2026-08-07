@@ -98,8 +98,6 @@ class SemanticCache:
 
     async def lookup(self, query: str) -> CacheHit | None:
         """Return a CacheHit if a semantically similar entry exists."""
-        import numpy as np
-
         from dealix.caching.embeddings import LocalEmbedder
 
         try:
@@ -121,7 +119,7 @@ class SemanticCache:
                 if not raw:
                     continue
                 entry = json.loads(raw)
-                vec = np.asarray(entry["embedding"], dtype=np.float32)
+                vec = [float(value) for value in entry["embedding"]]
                 sim = LocalEmbedder.similarity(q_vec, vec)
                 if sim >= self.threshold and sim > best_sim:
                     best_sim = sim
@@ -153,7 +151,7 @@ class SemanticCache:
         from dealix.caching.embeddings import LocalEmbedder
 
         try:
-            vec = LocalEmbedder.embed(query).tolist()
+            vec = LocalEmbedder.embed(query)
             key = f"{self.namespace}:{LocalEmbedder.fingerprint(query)}"
             payload = {
                 "query": query,

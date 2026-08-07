@@ -46,7 +46,7 @@ def run_step(name: str, command: list[str], *, timeout: int = 120) -> bool:
 def probe_url(url: str, *, timeout: int = 15) -> bool:
     request = Request(url, headers={"User-Agent": "dealix-founder-final-check/1.0"})
     try:
-        with urlopen(request, timeout=timeout) as response:  # noqa: S310 - operator-supplied URL
+        with urlopen(request, timeout=timeout) as response:
             body = response.read(4096).decode("utf-8", errors="replace")
             print(f"{url} -> HTTP {response.status}")
             try:

@@ -17,7 +17,7 @@ These endpoints power /landing/command-center.html and the customer portal.
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Body, HTTPException, Query

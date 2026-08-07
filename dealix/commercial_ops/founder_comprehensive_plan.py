@@ -201,8 +201,7 @@ def analyze_pdpl_compliance_pass() -> dict[str, Any]:
 def analyze_weekly_one_decision() -> dict[str, Any]:
     """Weekly founder decision — canonical config yaml, legacy data/founder_weekly fallback."""
     config_path = REPO_ROOT / "dealix/config/founder_weekly_one_decision.yaml"
-    config_data = _load_registry() if False else {}  # noqa: placeholder removed below
-    config_data = {}
+    config_data: dict[str, Any] = {}
     if config_path.is_file():
         try:
             raw = yaml.safe_load(config_path.read_text(encoding="utf-8"))

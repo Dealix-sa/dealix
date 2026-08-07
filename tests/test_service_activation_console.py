@@ -51,7 +51,7 @@ def test_console_js_exists_and_exports_renderer():
 
 def test_console_status_ctas_use_arabic_labels():
     js = CONSOLE_JS.read_text(encoding="utf-8")
-    assert "جرّب الآن" in js              # Live CTA
+    assert "اطلب بايلوت" in js            # Code-ready CTA
     assert "اختبر مع مؤسس Dealix" in js   # Pilot CTA
     assert "شاهد خطة التفعيل" in js       # Partial CTA
     assert "في خارطة الطريق" in js        # Target CTA

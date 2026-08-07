@@ -86,7 +86,9 @@ def use_in_memory_store(enabled: bool = True) -> None:
 
 def _load_all() -> dict[str, dict[str, Any]]:
     if _memory_store is not None:
-        return _memory_store
+        # Return a shallow copy: callers (e.g. _persist) clear-and-replace via
+        # _save_all, and aliasing the live store would wipe pending writes.
+        return dict(_memory_store)
     path = _path()
     if not path.is_file():
         return {}

@@ -106,9 +106,14 @@ def count_evidence_events(
     }
 
 
-def scope_requested_within_days(days: int, rows: list[dict[str, str]] | None = None) -> bool:
+def scope_requested_within_days(
+    days: int,
+    rows: list[dict[str, str]] | None = None,
+    *,
+    today: date | None = None,
+) -> bool:
     data = rows if rows is not None else load_evidence_rows()
-    cutoff = datetime.now(UTC).date() - timedelta(days=days)
+    cutoff = (today or datetime.now(UTC).date()) - timedelta(days=days)
     for row in data:
         if (row.get("event_type") or "").strip() != "scope_requested":
             continue
@@ -181,7 +186,7 @@ def sync_rows_to_api(
             method="POST",
         )
         try:
-            with urlopen(req, timeout=15) as resp:  # noqa: S310
+            with urlopen(req, timeout=15) as resp:
                 if 200 <= resp.status < 300:
                     synced += 1
                     if mark_csv:
@@ -216,7 +221,7 @@ def pull_events_from_api(
         method="GET",
     )
     try:
-        with urlopen(req, timeout=20) as resp:  # noqa: S310
+        with urlopen(req, timeout=20) as resp:
             payload = json.loads(resp.read().decode("utf-8"))
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:
         return {"status": "error", "reason": str(exc), "appended": 0}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "demo": true,
+  "sources": [
+    "business/enterprise",
+    "business/deal-desk",
+    "business/contracts",
+    "business/proof",
+    "business/ai",
+    "business/knowledge",
+    "business/delivery-workspace",
+    "business/demo",
+    "docs/ai",
+    "docs/auth",
+    "docs/payments"
+  ]
+}

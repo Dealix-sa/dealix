@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
-from dealix.commercial_ops.value_map_status import (  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
+from dealix.commercial_ops.value_map_status import (
     build_commercial_value_map,
     build_value_map_status,
     write_value_map_artifacts,

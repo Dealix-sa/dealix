@@ -1,39 +1,37 @@
-## Summary
+# Pull Request
 
-- 
+## Summary | الملخص
+<!-- What does this PR change and why? -->
 
-## Type of change
+## Type of change | نوع التغيير
+- [ ] 🐛 Bug fix
+- [ ] ✨ New feature
+- [ ] 💥 Breaking change
+- [ ] 📝 Docs only
+- [ ] ♻️ Refactor
+- [ ] 🔒 Security
 
-- [ ] Product / feature
-- [ ] Backend / API
-- [ ] Frontend / UX
-- [ ] Trust / compliance
-- [ ] Security
-- [ ] Operations / CI / deployment
-- [ ] Documentation
+## Engineering cutover (only if env/backend persistence changes)
 
-## Verification
+If this PR touches `PROOF_LEDGER_BACKEND`, `VALUE_LEDGER_BACKEND`, `DEALIX_OPERATIONAL_STREAM_BACKEND`, or `OTEL_CONTRACT_TRACE_EXPORT`:
 
-- [ ] `make env-check`
-- [ ] `make openapi-export`
-- [ ] `make test`
-- [ ] `make prod-verify` when production-facing
-- [ ] Manual smoke test documented below
+```text
+external_signal: <contract_signed|pilot_scope_locked|...>
+contract_or_pilot_ref: <internal id or account name>
+```
 
-## Trust, compliance, and claims
+See [docs/transformation/CUTOVER_PR_CHECKLIST_AR.md](docs/transformation/CUTOVER_PR_CHECKLIST_AR.md) and [docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md](docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md).
 
-- [ ] No public claim was added or changed
-- [ ] Public claims are backed by tests, docs, or `dealix/registers/no_overclaim.yaml`
-- [ ] No secrets, production data, or customer personal data are included
-- [ ] Approval class / risk level is unchanged or documented
+## Checklist | قائمة التحقق
+- [ ] Tests added / updated
+- [ ] Docs updated (if needed)
+- [ ] No secrets committed (verified via `gitleaks`)
+- [ ] `make lint` passes
+- [ ] `make test` passes
+- [ ] Linked to an issue (if applicable)
+- [ ] Cutover PR body validated (`python3 scripts/verify_cutover_pr_body.py`) if applicable
 
-## Deployment notes
+## How to test | كيف أختبر هذا
+<!-- Steps to verify -->
 
-Rollback plan:
-
-
-Environment changes:
-
-
-Screenshots / evidence, if relevant:
-
+## Screenshots / Logs (optional)

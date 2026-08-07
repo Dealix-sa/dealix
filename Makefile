@@ -4,19 +4,27 @@
 # ═══════════════════════════════════════════════════════════════
 
 .PHONY: help install install-dev install-observability install-security install-evals install-docs \
-        setup first-setup test test-unit test-integration \
-        lint format type-check security security-smoke clean run demo cockpit doctor \
+        setup first-setup test test-unit test-integration full-repo-test railway-env-check \
+        lint format type-check security security-smoke security-smoke-ci clean run demo cockpit doctor \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
+        design-os-list design-os-generate design-os-all design-os-daily design-os-validate design-os-index design-os-html test-design-os \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        ai-provider-radar ai-provider-radar-json ai-provider-coding ai-provider-arabic ai-provider-batch daily-value-loop \
+        launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
+        launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
+        launch-content launch-pipeline launch-all-dry-runs test-launch \
+        score-prospect score-batch analyze-pipeline intelligence-test
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 OPENAPI_OUTPUT ?= docs/architecture/openapi.json
 PRODUCTION_BASE_URL ?= https://api.dealix.me
+TYPE ?= revenue-command-room
+CONTEXT ?= Dealix operating system launch and commercial command room.
 
 help: ## Show this help
 	@echo "🏢 Dealix — Available commands:"
@@ -71,8 +79,17 @@ security: security-smoke ## Run security scans
 security-smoke: ## Run dependency-free repository security smoke checks
 	$(PYTHON) scripts/security_smoke.py
 
+security-smoke-ci: ## Run CI-safe security smoke checks for docs/tests synthetic fixtures
+	$(PYTHON) scripts/ops/security_smoke_ci.py
+
+tenant-scope-check: ## Fail on tenant-owned records queried by id without a tenant filter
+	$(PYTHON) scripts/ops/check_tenant_scoped_queries.py
+
 env-check: ## Validate .env.example contract and duplicate keys
 	$(PYTHON) scripts/check_env_contract.py
+
+railway-env-check: ## Validate Railway production env names without printing secret values
+	$(PYTHON) scripts/ops/check_railway_production_env.py
 
 openapi-export: ## Export FastAPI OpenAPI schema (OPENAPI_OUTPUT=...)
 	$(PYTHON) scripts/export_openapi.py --output $(OPENAPI_OUTPUT)
@@ -91,6 +108,68 @@ production-smoke: ## Run production API smoke test (PRODUCTION_BASE_URL=...)
 
 prod-verify: env-check security-smoke api-contract-check dependency-inventory release-manifest v5-verify ## Canonical production-readiness verification bundle
 	@echo "✅ Dealix production verification bundle completed"
+
+full-repo-test: ## Run the full repo test matrix with TestSprite when TESTSPRITE_API_KEY is set
+	bash scripts/ops/run_full_repo_test_matrix.sh
+
+launch-engine: ## Run the full local launch machine + readiness audit (writes data/daily_ops/<date>/)
+	$(PYTHON) scripts/dealix_launch_engine.py
+
+# ── Free LLM Provider Radar ────────────────────────────────────
+# Read-only/draft-only operating layer for choosing low-cost AI providers.
+# It never sends customer messages and never commits secrets.
+
+ai-provider-radar: ## Show daily provider choices for coding, Arabic, batch, and sensitive work
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task coding --limit 3
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task arabic --limit 3
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task batch --limit 3
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task sensitive --limit 3
+
+ai-provider-radar-json: ## Print machine-readable provider radar for coding
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task coding --json
+
+ai-provider-registry-check: ## Guard: fail if the free-LLM provider registry is stale (improve executor safety)
+	$(PYTHON) scripts/ops/check_provider_registry_freshness.py
+
+ai-provider-coding: ## Provider radar optimized for repo/code work
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task coding --limit 5
+
+ai-provider-arabic: ## Provider radar optimized for Arabic/Saudi draft work
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task arabic --limit 5
+
+ai-provider-batch: ## Provider radar optimized for daily batch drafting
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task batch --limit 5
+
+daily-value-loop: ai-provider-radar distribution-day ## Run provider radar then founder distribution day
+	@echo "✅ Daily value loop ready — review docs/ops/FREE_LLM_DAILY_VALUE_LOOP.md before external action"
+
+# ── Design Command Room OS ─────────────────────────────────────
+# Draft-only artifact generation. No external sends, no production mutations,
+# no runtime dependency changes. Outputs go to reports/design/.
+
+design-os-list: ## Design OS: list available artifact templates
+	$(PYTHON) scripts/design_command_room.py --list
+
+design-os-generate: ## Design OS: generate one draft artifact (TYPE=... CONTEXT=...)
+	$(PYTHON) scripts/design_command_room.py --type $(TYPE) --context "$(CONTEXT)"
+
+design-os-all: ## Design OS: generate all core draft artifacts
+	$(PYTHON) scripts/design_command_room.py --type all --context "$(CONTEXT)"
+
+design-os-daily: ## Design OS: generate daily pack + index + validation + HTML preview
+	$(PYTHON) scripts/design_os_suite.py daily-pack --context "$(CONTEXT)"
+
+design-os-validate: ## Design OS: validate generated draft artifacts
+	$(PYTHON) scripts/design_os_suite.py validate
+
+design-os-index: ## Design OS: build artifact index
+	$(PYTHON) scripts/design_os_suite.py index
+
+design-os-html: ## Design OS: render reports/design/latest.md to HTML preview
+	$(PYTHON) scripts/design_os_suite.py html
+
+test-design-os: ## Design OS: run focused generator and automation tests
+	$(PYTHON) -m pytest -q tests/test_design_command_room.py tests/test_design_os_suite.py
 
 # ── Tests ──────────────────────────────────────────────────────
 test: ## Run full test suite with coverage
@@ -148,6 +227,19 @@ clean: ## Remove build artifacts, caches
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
 
+# ── Distribution / Revenue Execution OS ────────────────────────
+# Approval-first revenue execution. All read-only or draft-only — none of
+# these send anything externally or charge a customer.
+
+distribution-day: ## Founder morning command report (pending drafts, due follow-ups, queues)
+	$(PYTHON) scripts/distribution_day.py
+
+draft-quality: ## Draft Quality Gate — fail on guaranteed-outcome / forbidden-channel drafts
+	$(PYTHON) scripts/check_draft_quality.py
+
+distribution-metrics: ## Write the daily + weekly distribution KPI snapshot
+	$(PYTHON) scripts/distribution_metrics.py
+
 # ── v5 founder CLIs ────────────────────────────────────────────
 # These wrap the read-only Dealix v5 founder tooling. Each is safe
 # to run any time — none of them write to production or send anything.
@@ -182,3 +274,53 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Launch OS (GTM Revenue Intelligence) ───────────────────────
+# All targets are read-only dry-runs — no external sends, no production mutations.
+
+launch-validate: ## Launch OS: validate schemas + file inventory
+	$(PYTHON) scripts/launch/launch_bundle_validate.py
+
+launch-vertical-score: ## Launch OS: print ranked Saudi verticals + top wedge
+	$(PYTHON) scripts/launch/vertical_score_dry_run.py
+
+launch-icp-score: ## Launch OS: score sample accounts, print tier table
+	$(PYTHON) scripts/launch/icp_score_dry_run.py
+
+launch-trust-preflight: ## Launch OS: run trust preflight on sample drafts
+	$(PYTHON) scripts/launch/trust_preflight_dry_run.py
+
+launch-outreach-drafts: ## Launch OS: generate sample outreach drafts (email/linkedin/phone)
+	$(PYTHON) scripts/launch/outreach_draft_factory_dry_run.py
+
+launch-proposal: ## Launch OS: render sample proposal pack to markdown
+	$(PYTHON) scripts/launch/proposal_pack_dry_run.py
+
+launch-founder-command: ## Launch OS: generate today's founder daily brief
+	$(PYTHON) scripts/launch/founder_daily_command_dry_run.py
+
+launch-weekly-review: ## Launch OS: print weekly GTM review from sample pipeline
+	$(PYTHON) scripts/launch/weekly_gtm_review_dry_run.py
+
+launch-content: ## Launch OS: generate sample content assets (LinkedIn / video / email)
+	$(PYTHON) scripts/launch/content_factory_dry_run.py
+
+launch-pipeline: ## Launch OS: print pipeline summary from sample data
+	$(PYTHON) -c "from dealix.launch_os.pipeline_tracker import PipelineTracker; t = PipelineTracker(); t.seed_sample(); print(t.pipeline_summary())"
+
+launch-all-dry-runs: launch-validate launch-vertical-score launch-icp-score launch-trust-preflight launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review launch-content ## Launch OS: run all dry-run scripts in sequence
+	@echo "✅ All Launch OS dry-runs completed"
+
+# ── Commercial Intelligence CLI ─────────────────────────────────
+
+score-prospect: ## CI: score one Saudi prospect
+	$(PYTHON) -m cli.sales_strategist --company "$(COMPANY)" --sector "$(SECTOR)" --city "$(CITY)" --employees $(EMPLOYEES) --website "$(WEBSITE)"
+
+score-batch: ## CI: score a batch of prospects from JSON
+	$(PYTHON) -m cli.sales_strategist --batch $(BATCH_FILE)
+
+analyze-pipeline: ## CI: analyze a pipeline CSV and print recommendations
+	$(PYTHON) scripts/analyze_pipeline.py --input $(PIPELINE_CSV)
+
+intelligence-test: ## CI: run the new intelligence layer tests
+	$(PYTHON) -m pytest tests/test_intelligence_layer.py tests/test_sales_strategist_agent.py -q

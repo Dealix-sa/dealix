@@ -227,7 +227,7 @@ export function ProofPackSampleView() {
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">{isAr ? "التوصية" : "Recommendation"}</span>
-            <span className="font-bold text-amber-600">{isAr ? "Sprint 7 أيام" : "7-Day Sprint"}</span>
+            <span className="font-bold text-amber-600">{isAr ? "Revenue Command Pilot لمدة 30 يومًا" : "30-Day Revenue Command Pilot"}</span>
           </div>
         </div>
         <div className="mt-4 rounded-lg border border-amber-500/20 bg-amber-50/50 dark:bg-amber-950/20 p-3 text-sm text-amber-800 dark:text-amber-300">

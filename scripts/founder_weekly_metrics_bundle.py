@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.founder_weekly_metrics import (  # noqa: E402
+from dealix.commercial_ops.founder_weekly_metrics import (
     build_founder_weekly_metrics,
     write_weekly_metrics_artifact,
 )

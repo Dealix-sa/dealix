@@ -1,0 +1,11 @@
+{
+  "items": [
+    {
+      "company": "شركة تدريب الرياض",
+      "objection": "price",
+      "path": "out/objection_followups/شركة_تدريب_الرياض_price_followup.md",
+      "created_at": "2026-06-07T18:11:54.609181+00:00",
+      "status": "draft_needs_review"
+    }
+  ]
+}

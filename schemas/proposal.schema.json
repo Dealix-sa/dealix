@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/proposal.schema.json",
+  "title": "Proposal",
+  "description": "A proposal bound to a catalog product. Price band is read from the catalog, never invented.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "prospect_id", "product_id", "approval_status"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^prop_[a-f0-9]+$" },
+    "prospect_id": { "type": "string", "minLength": 1 },
+    "product_id": { "type": "string", "minLength": 1, "description": "Must be a valid catalog product id" },
+    "sector": { "type": "string" },
+    "problem": { "type": "string" },
+    "proposed_solution": { "type": "string" },
+    "scope": { "type": "array", "items": { "type": "string" } },
+    "out_of_scope": { "type": "array", "items": { "type": "string" }, "minItems": 1, "description": "Scope is never left open" },
+    "timeline": { "type": "string" },
+    "price_min_sar": { "type": "integer", "minimum": 0 },
+    "price_max_sar": { "type": "integer", "minimum": 0 },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "evidence_level": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "payment_terms": { "type": "string" },
+    "next_step": { "type": "string" },
+    "approval_status": { "type": "string", "enum": ["pending_approval", "approved", "rejected", "sent"] },
+    "quality_issues": { "type": "array", "items": { "type": "string" } },
+    "created_at": { "type": "string" }
+  }
+}

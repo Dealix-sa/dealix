@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/payment_handoff.schema.json",
+  "title": "PaymentHandoff",
+  "description": "A founder-controlled payment step. AI never charges and never sends a link.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "proposal_id", "product_id", "status", "approvals"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^pay_[a-f0-9]+$" },
+    "proposal_id": { "type": "string", "minLength": 1 },
+    "customer_id": { "type": "string" },
+    "product_id": { "type": "string", "minLength": 1 },
+    "amount_sar": { "type": "integer", "minimum": 0 },
+    "status": { "type": "string", "enum": ["draft", "pending_approval", "approved", "sent", "paid", "expired", "cancelled"] },
+    "approvals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proposal_approved", "scope_confirmed", "price_confirmed", "decision_maker_confirmed", "risk_reviewed", "founder_approved"],
+      "properties": {
+        "proposal_approved": { "type": "boolean" },
+        "scope_confirmed": { "type": "boolean" },
+        "price_confirmed": { "type": "boolean" },
+        "decision_maker_confirmed": { "type": "boolean" },
+        "risk_reviewed": { "type": "boolean" },
+        "founder_approved": { "type": "boolean" }
+      }
+    },
+    "governance_status": { "type": "string", "enum": ["requires_founder_approval", "approved"] },
+    "notes": { "type": "string" },
+    "created_at": { "type": "string" }
+  }
+}

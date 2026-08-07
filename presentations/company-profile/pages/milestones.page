@@ -1,0 +1,232 @@
+pageType: content
+background:
+  type: solid
+  color: "$background"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 400, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>MILESTONES  //  الإنجازات</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      style: "$title"
+      text: |
+        <p>ما أنجزناه حتى الآن</p>
+      wrap: false
+  - elementId: m1-bg
+    elementType: shape
+    bounds: [60, 170, 270, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: m1-num
+    elementType: text
+    bounds: [80, 190, 230, 60]
+    content:
+      fontSize: 48
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>575</p>
+  - elementId: m1-label
+    elementType: text
+    bounds: [80, 255, 230, 30]
+    content:
+      fontSize: 18
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>Commit في الريبو</p>
+  - elementId: m1-desc
+    elementType: text
+    bounds: [80, 295, 230, 80]
+    content:
+      fontSize: 14
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>تطوير مستمر وتحديثات دورية للمنصة</p>
+  - elementId: m2-bg
+    elementType: shape
+    bounds: [355, 170, 270, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: m2-num
+    elementType: text
+    bounds: [375, 190, 230, 60]
+    content:
+      fontSize: 48
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>6,816</p>
+  - elementId: m2-label
+    elementType: text
+    bounds: [375, 255, 230, 30]
+    content:
+      fontSize: 18
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>ملف في المشروع</p>
+  - elementId: m2-desc
+    elementType: text
+    bounds: [375, 295, 230, 80]
+    content:
+      fontSize: 14
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>بنية برمجية شاملة ومتكاملة</p>
+  - elementId: m3-bg
+    elementType: shape
+    bounds: [650, 170, 270, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: m3-num
+    elementType: text
+    bounds: [670, 190, 230, 60]
+    content:
+      fontSize: 48
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>172</p>
+  - elementId: m3-label
+    elementType: text
+    bounds: [670, 255, 230, 30]
+    content:
+      fontSize: 18
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>نقطة API</p>
+  - elementId: m3-desc
+    elementType: text
+    bounds: [670, 295, 230, 80]
+    content:
+      fontSize: 14
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>واجهات برمجية شاملة للتكامل</p>
+  - elementId: m4-bg
+    elementType: shape
+    bounds: [945, 170, 270, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: m4-num
+    elementType: text
+    bounds: [965, 190, 230, 60]
+    content:
+      fontSize: 48
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>563</p>
+  - elementId: m4-label
+    elementType: text
+    bounds: [965, 255, 230, 30]
+    content:
+      fontSize: 18
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>اختبار تلقائي</p>
+  - elementId: m4-desc
+    elementType: text
+    bounds: [965, 295, 230, 80]
+    content:
+      fontSize: 14
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>تغطية شاملة لجودة المنصة</p>
+  - elementId: bottom-bar
+    elementType: shape
+    bounds: [60, 450, 1160, 200]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: bottom-text
+    elementType: text
+    bounds: [100, 475, 500, 50]
+    content:
+      fontSize: 24
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>المنصة جاهزة للبيع</p>
+      wrap: false
+  - elementId: bottom-sub
+    elementType: text
+    bounds: [100, 530, 500, 60]
+    content:
+      fontSize: 16
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>ابدأ بالتشخيص المجاني واكتشف قوة Dealix لأعمالك</p>
+  - elementId: bottom-cta
+    elementType: text
+    bounds: [100, 590, 300, 30]
+    content:
+      fontSize: 18
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>GET STARTED  →</p>

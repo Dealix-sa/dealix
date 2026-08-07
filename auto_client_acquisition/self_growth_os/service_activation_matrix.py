@@ -36,11 +36,25 @@ LIVE_GATES = (
 )
 
 
+# Parsing the matrix YAML is ~0.3s and callers (e.g. check_all → check_service)
+# invoke _load() over a hundred times per dashboard build. Memoize on the file's
+# (path, mtime, size) so a single build parses once, while edits on disk still
+# invalidate the cache.
+_LOAD_CACHE: dict[tuple[str, float, int], dict] = {}
+
+
 def _load() -> dict:
     if not MATRIX_PATH.exists():
         raise FileNotFoundError(f"matrix not found at {MATRIX_PATH}")
+    st = MATRIX_PATH.stat()
+    key = (str(MATRIX_PATH), st.st_mtime, st.st_size)
+    cached = _LOAD_CACHE.get(key)
+    if cached is not None:
+        return cached
     with MATRIX_PATH.open("r", encoding="utf-8") as f:
         data = yaml.safe_load(f) or {}
+    _LOAD_CACHE.clear()  # only retain the latest version
+    _LOAD_CACHE[key] = data
     return data
 
 

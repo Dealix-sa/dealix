@@ -200,27 +200,43 @@ async def update_tenant_theme(
         log.warning("tenant_theme_update_skipped_imports error=%s", exc)
         raise HTTPException(status_code=503, detail="DB layer unavailable")
 
-    async with async_session_factory()() as session:
-        tenant = (
-            await session.execute(select(TenantRecord).where(TenantRecord.slug == handle))
-        ).scalar_one_or_none()
-        if tenant is None:
-            raise HTTPException(status_code=404, detail=f"tenant {handle!r} not found")
+    try:
+        async with async_session_factory()() as session:
+            tenant = (
+                await session.execute(select(TenantRecord).where(TenantRecord.slug == handle))
+            ).scalar_one_or_none()
+            if tenant is None:
+                raise HTTPException(status_code=404, detail=f"tenant {handle!r} not found")
 
-        existing = (
-            await session.execute(
-                select(TenantThemeRecord).where(TenantThemeRecord.tenant_id == tenant.id)
-            )
-        ).scalar_one_or_none()
+            existing = (
+                await session.execute(
+                    select(TenantThemeRecord).where(TenantThemeRecord.tenant_id == tenant.id)
+                )
+            ).scalar_one_or_none()
 
-        if existing is None:
-            new_theme = TenantThemeRecord(tenant_id=tenant.id, **fields_to_set)
-            session.add(new_theme)
-        else:
-            for k, v in fields_to_set.items():
-                setattr(existing, k, v)
+            if existing is None:
+                new_theme = TenantThemeRecord(tenant_id=tenant.id, **fields_to_set)
+                session.add(new_theme)
+            else:
+                for k, v in fields_to_set.items():
+                    setattr(existing, k, v)
 
-        await session.commit()
+            await session.commit()
+    except HTTPException:
+        raise
+    except (ConnectionError, OSError) as exc:
+        # DB unreachable (e.g. no Postgres in CI/dev) — degrade gracefully.
+        log.warning("tenant_theme_update_db_unavailable error=%s", exc)
+        raise HTTPException(status_code=503, detail="DB unavailable")
+    except Exception as exc:  # SQLAlchemy OperationalError etc.
+        if "connect" in str(exc).lower() or exc.__class__.__name__ in (
+            "OperationalError",
+            "InterfaceError",
+            "DBAPIError",
+        ):
+            log.warning("tenant_theme_update_db_error error=%s", exc)
+            raise HTTPException(status_code=503, detail="DB unavailable")
+        raise
 
     return {
         "status": "updated" if existing else "created",

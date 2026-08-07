@@ -69,10 +69,15 @@ def test_no_forbidden_claims_in_customer_pages() -> None:
         path = Path(page)
         if not path.exists():
             continue
-        # Strip script/style first
+        # Strip script/style/comments first — non-visible content (e.g. the
+        # no-guarantee disclaimer "...not guaranteed outcomes..." lives in an
+        # HTML comment) must not trip the customer-visible claims sweep.
         html = path.read_text(encoding="utf-8")
         html_visible = re.sub(r"<script[^>]*>.*?</script>", "", html, flags=re.DOTALL | re.IGNORECASE)
         html_visible = re.sub(r"<style[^>]*>.*?</style>", "", html_visible, flags=re.DOTALL | re.IGNORECASE)
+        html_visible = re.sub(r"<!--.*?-->", "", html_visible, flags=re.DOTALL)
+        # Drop the explicit no-guarantee disclaimer line (a negation, not a claim).
+        html_visible = re.sub(r"[^\n<]*(not guaranteed outcomes|ليست نتائج مضمونة)[^\n>]*", "", html_visible)
         for pat in forbidden:
             assert not pat.search(html_visible), f"{page} contains: {pat.pattern}"
 

@@ -20,7 +20,7 @@ async def test_health(async_client):
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "ok"
-    assert "providers" in data
+    # /health is the lightweight probe (platform_meta); providers are in /health/deep
 
 
 @pytest.mark.asyncio

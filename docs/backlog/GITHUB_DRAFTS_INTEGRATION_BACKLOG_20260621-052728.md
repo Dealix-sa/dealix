@@ -1,0 +1,373 @@
+# Dealix GitHub Drafts Integration Backlog
+Generated: 
+
+## قواعد الدمج
+- لا bulk merge للدرافتات.
+- كل Draft PR لازم يتصنف: merge / extract docs only / superseded / close.
+- أي ملاحظة مهمة تتحول إلى docs أو backlog أو tests.
+- أي كود لازم rebase + tests + PR clean.
+- لا أسرار، لا إرسال خارجي مفتوح، لا fake ROI.
+
+## Draft PRs to triage
+- [ ] PR #726: feat(outreach): daily Arabic email targeting system — 30 Saudi ICPs + Gmail runner — https://github.com/Dealix-sa/dealix/pull/726
+- [ ] PR #711: feat(wave-2): Revenue Engine v2 — daily commercial pack generation — https://github.com/Dealix-sa/dealix/pull/711
+- [ ] PR #698: fix: resolve CI failures — standalone Dockerfile + Article 13 allowlist — https://github.com/Dealix-sa/dealix/pull/698
+- [ ] PR #692: feat(launch): Dealix V15 — Founder Daily Execution Autopilot — https://github.com/Dealix-sa/dealix/pull/692
+- [ ] PR #691: feat(launch): Dealix V14 — Controlled Preview Execution & Quality Assurance Layer — https://github.com/Dealix-sa/dealix/pull/691
+- [ ] PR #690: feat(v13): Dealix Consolidation & Master Merge Kit — https://github.com/Dealix-sa/dealix/pull/690
+- [ ] PR #689: feat(launch): Dealix V12 — Scale & Operating Cadence Layer — https://github.com/Dealix-sa/dealix/pull/689
+- [ ] PR #688: feat(v11): Live Customer Onboarding & First Revenue Sprint — https://github.com/Dealix-sa/dealix/pull/688
+- [ ] PR #687: feat(v10): Production Implementation Bridge — جسر التنفيذ الإنتاجي — https://github.com/Dealix-sa/dealix/pull/687
+- [ ] PR #686: feat(v8): Proof, Trust & Investor Readiness Layer — https://github.com/Dealix-sa/dealix/pull/686
+- [ ] PR #685: feat: Activation Spine v1 — قِف الشركة وشغّلها يومياً — https://github.com/Dealix-sa/dealix/pull/685
+- [ ] PR #684: feat(launch): Dealix Enterprise Revenue & Service Factory V6 — https://github.com/Dealix-sa/dealix/pull/684
+- [ ] PR #683: feat(revenue): V3 Revenue Machine integration layer — governed UTM attribution + 7-layer wiring map — https://github.com/Dealix-sa/dealix/pull/683
+- [ ] PR #682: feat(v5): Dealix Acquisition Machine — آلة اكتساب العملاء الكاملة — https://github.com/Dealix-sa/dealix/pull/682
+- [ ] PR #681: feat(launch): Dealix commercial activation — real leads → daily drafts → founder approval (consolidated launch) — https://github.com/Dealix-sa/dealix/pull/681
+- [ ] PR #680: Launch-safe website, custom-AI intake, and green official go-live gate — https://github.com/Dealix-sa/dealix/pull/680
+- [ ] PR #679: تفعيل Dealix التجاري — المحرك اليومي + تصليب الإطلاق + الهوية (Commercial Activation) — https://github.com/Dealix-sa/dealix/pull/679
+- [ ] PR #678: Launch activation: public website, custom AI intake, working checkout, founder ops loop — https://github.com/Dealix-sa/dealix/pull/678
+- [ ] PR #677: feat(activation): one-command daily ops pack + unified website offer ladder — https://github.com/Dealix-sa/dealix/pull/677
+- [ ] PR #676: feat(launch): Dealix Production Growth V4 — deployment, DB schema, API, industries, partners, finance, observability — https://github.com/Dealix-sa/dealix/pull/676
+- [ ] PR #675: Reconcile external launch package: archive as reference + promote net-new compliant pieces — https://github.com/Dealix-sa/dealix/pull/675
+- [ ] PR #674: feat(v3): Dealix Revenue Machine V3 — نظام إيراد كامل — https://github.com/Dealix-sa/dealix/pull/674
+- [ ] PR #673: feat(activation): تفعيل Dealix — موقع موحّد + هوية بصرية + محرك يومي + خطة أم + تنظيف عقيدة — https://github.com/Dealix-sa/dealix/pull/673
+- [ ] PR #672: feat(gtm): موقع حقيقي وصادق — التقاط عملاء فعلي + صفحة حلول مخصصة + تواصل — https://github.com/Dealix-sa/dealix/pull/672
+- [ ] PR #671: feat: Dealix Now — daily founder operating console + deterministic engine — https://github.com/Dealix-sa/dealix/pull/671
+- [ ] PR #670: feat(launch): Custom AI intake + founder call sheet + launch master plan (+ Next security fix) — https://github.com/Dealix-sa/dealix/pull/670
+- [ ] PR #669: إطلاق Dealix: موقع صادق وقوي + ماكينة تجارية حقيقية + نشر الواجهة المرجعية — https://github.com/Dealix-sa/dealix/pull/669
+- [ ] PR #668: Dealix commercial activation: real lead engine, daily drafts, website elevation, launch readiness — https://github.com/Dealix-sa/dealix/pull/668
+- [ ] PR #667: feat(activation): Day-0 operator pack — one command stands the company up — https://github.com/Dealix-sa/dealix/pull/667
+- [ ] PR #666: feat(live): "Dealix يشتغل الآن / Dealix, Live" — unified governed operating website — https://github.com/Dealix-sa/dealix/pull/666
+- [ ] PR #665: feat(pricing): Dealix Pricing & Revenue Operating System — https://github.com/Dealix-sa/dealix/pull/665
+- [ ] PR #664: docs(acquisition): Dealix Acquisition OS v2 — governed acquisition package (AR) — https://github.com/Dealix-sa/dealix/pull/664
+- [ ] PR #663: feat(pricing): Dealix high-touch Pricing OS v2.0 — configs, price books, quote + margin tooling — https://github.com/Dealix-sa/dealix/pull/663
+- [ ] PR #662: feat(web): Services + Custom AI website + founder operating kit — https://github.com/Dealix-sa/dealix/pull/662
+- [ ] PR #660: ci(security): fix Trivy filesystem scan — pin trivy-action to existing release v0.36.0 — https://github.com/Dealix-sa/dealix/pull/660
+- [ ] PR #659: resources: add Dealix company OS resource vault + integration tooling — https://github.com/Dealix-sa/dealix/pull/659
+- [ ] PR #658: feat(commercial): Packages & Marketer Enablement Kit — عدّة الحزم وتمكين المسوّق — https://github.com/Dealix-sa/dealix/pull/658
+- [ ] PR #657: docs(acquisition): Dealix Client Acquisition Packs bundle — https://github.com/Dealix-sa/dealix/pull/657
+- [ ] PR #656: fix(ci): unblock org-wide security gates (Trivy pin + license-free Gitleaks) + launch decision record — https://github.com/Dealix-sa/dealix/pull/656
+- [ ] PR #655: chore(launch): private launch-close package + CI least-privilege hardening — https://github.com/Dealix-sa/dealix/pull/655
+- [ ] PR #654: docs(ops): official private-launch decision + 50-PR consolidation triage — https://github.com/Dealix-sa/dealix/pull/654
+- [ ] PR #653: Launch readiness: OFFICIAL_LAUNCH_DECISION + JWT_SECRET_KEY env fix + VoXc2→Dealix-sa retarget — https://github.com/Dealix-sa/dealix/pull/653
+- [ ] PR #652: ops(launch): private-launch close-out artifacts (decision, offer, outreach, tracker, verify script) — https://github.com/Dealix-sa/dealix/pull/652
+- [ ] PR #651: docs(launch): private-launch decision + close-now script + Command Sprint offer — https://github.com/Dealix-sa/dealix/pull/651
+- [ ] PR #650: fix(launch): green the doctrine/governance CI gates + canonical /health endpoint — https://github.com/Dealix-sa/dealix/pull/650
+- [ ] PR #649: feat(launch): comprehensive launch pass — close productization & verification gaps — https://github.com/Dealix-sa/dealix/pull/649
+- [ ] PR #648: fix(launch): flip official launch verdict to PASS — close code blockers — https://github.com/Dealix-sa/dealix/pull/648
+- [ ] PR #646: feat(waves-7-8): founder operations completion pack — verification, E2E, customer workspace, revenue command — https://github.com/Dealix-sa/dealix/pull/646
+- [ ] PR #645: Wave 7: Verification → Private Launch → First Revenue — https://github.com/Dealix-sa/dealix/pull/645
+- [ ] PR #644: feat(os): close Waves 7 & 8 — full verification + E2E dry run + revenue rhythm — https://github.com/Dealix-sa/dealix/pull/644
+- [ ] PR #643: feat(launch): close paid-customer money path + green canonical gates — https://github.com/Dealix-sa/dealix/pull/643
+- [ ] PR #641: Dealix launch-verification scaffold + Wave 7 Private Launch assets — https://github.com/Dealix-sa/dealix/pull/641
+- [ ] PR #639: Dealix Wave 3 — Full Company OS foundation & launch gates — https://github.com/Dealix-sa/dealix/pull/639
+- [ ] PR #638: Add Claude Code GitHub Action workflow and CLAUDE.md — https://github.com/Dealix-sa/dealix/pull/638
+- [ ] PR #637: ops: add Dealix wave 6 revenue-to-proof operating rhythm — https://github.com/Dealix-sa/dealix/pull/637
+- [ ] PR #636: fix: undefined-name bugs, plan-wiring check, and pyproject dependency divergence — https://github.com/Dealix-sa/dealix/pull/636
+- [ ] PR #634: PR1: Claude Company OS Foundation — https://github.com/Dealix-sa/dealix/pull/634
+- [ ] PR #633: PR 1 — Dealix Company OS scaffolding + frozen launch blueprint — https://github.com/Dealix-sa/dealix/pull/633
+- [ ] PR #632: PR1: Claude Company OS foundation — https://github.com/Dealix-sa/dealix/pull/632
+- [ ] PR #630: ci(security): unblock repository-hardening (Trivy pin + Gitleaks license) — https://github.com/Dealix-sa/dealix/pull/630
+- [ ] PR #629: Add Dealix Claude Company OS launch layer — https://github.com/Dealix-sa/dealix/pull/629
+- [ ] PR #628: launch: position Dealix as Saudi AI Business Operating System (brand + website + growth OS) — https://github.com/Dealix-sa/dealix/pull/628
+- [ ] PR #627: growth: Dealix Self-Selling Distribution Engine — https://github.com/Dealix-sa/dealix/pull/627
+- [ ] PR #626: growth: Dealix Self-Growth & Distribution OS — https://github.com/Dealix-sa/dealix/pull/626
+- [ ] PR #625: launch: Dealix AI Business OS launch system (14 OS + Command Sprint wedge) — https://github.com/Dealix-sa/dealix/pull/625
+- [ ] PR #624: launch: add Dealix Launch Operating System docs layer — https://github.com/Dealix-sa/dealix/pull/624
+- [ ] PR #623: company: Intelligence-to-Revenue-to-Delivery OS — https://github.com/Dealix-sa/dealix/pull/623
+- [ ] PR #622: feat(gtm): Dealix Market Intelligence & Targeting OS — https://github.com/Dealix-sa/dealix/pull/622
+- [ ] PR #621: Add Dealix Research &amp; Targeting OS (daily governed targeting loop) — https://github.com/Dealix-sa/dealix/pull/621
+- [ ] PR #620: feat: AI Business OS repositioning + governed Target Company Intelligence — https://github.com/Dealix-sa/dealix/pull/620
+- [ ] PR #619: Reposition Dealix as a Saudi AI Business Operating System (Command Sprint wedge) — https://github.com/Dealix-sa/dealix/pull/619
+- [ ] PR #618: chore(launch): close private-pilot readiness — commercial source of truth + security smoke green — https://github.com/Dealix-sa/dealix/pull/618
+- [ ] PR #617: docs: 30-day launch master plan (go-live + first paying customer) — https://github.com/Dealix-sa/dealix/pull/617
+- [ ] PR #616: Launch readiness: green the official launch gate + security/CI hardening — https://github.com/Dealix-sa/dealix/pull/616
+- [ ] PR #615: feat(company): add Dealix institutional scale and CEO cockpit OS v10 — https://github.com/Dealix-sa/dealix/pull/615
+- [ ] PR #614: feat(company): add Dealix strategic moat and enterprise readiness OS v9 — https://github.com/Dealix-sa/dealix/pull/614
+- [ ] PR #613: feat(company): add Dealix revenue execution and scale control OS v7 — https://github.com/Dealix-sa/dealix/pull/613
+- [ ] PR #612: feat(startup): complete Dealix full startup company OS v5 — https://github.com/Dealix-sa/dealix/pull/612
+- [ ] PR #611: feat(startup): complete Dealix full startup operating system — https://github.com/Dealix-sa/dealix/pull/611
+- [ ] PR #610: خطة الإطلاق الشاملة + تخضير بوابات الجاهزية (Soft Launch 2026-06-05) — https://github.com/Dealix-sa/dealix/pull/610
+- [ ] PR #609: feat(launch): complete Dealix full launch company OS — https://github.com/Dealix-sa/dealix/pull/609
+- [ ] PR #608: feat(launch): final Dealix launch control tower and evidence pack — https://github.com/Dealix-sa/dealix/pull/608
+- [ ] PR #607: feat(launch): final Dealix launch control tower and evidence pack — https://github.com/Dealix-sa/dealix/pull/607
+- [ ] PR #606: feat(launch): official Dealix commercial/site/media launch OS — https://github.com/Dealix-sa/dealix/pull/606
+- [ ] PR #605: feat(commercial): official launch OS and 400 daily founder-review drafts — https://github.com/Dealix-sa/dealix/pull/605
+- [ ] PR #604: feat(commercial): official launch OS and 400 daily founder-review drafts — https://github.com/Dealix-sa/dealix/pull/604
+- [ ] PR #603: feat(commercial): official Launch OS — 400 daily review-only drafts + Social/Media OS + launch site — https://github.com/Dealix-sa/dealix/pull/603
+- [ ] PR #602: feat(launch): full commercial activation — green all official launch gates — https://github.com/Dealix-sa/dealix/pull/602
+- [ ] PR #601: feat: Dealix Success Architecture — 5 War Rooms, 14 check scripts, CLI commands — https://github.com/Dealix-sa/dealix/pull/601
+- [ ] PR #600: CI: green baseline + 5 feature OS modules (WhatsApp · Distribution · GTM · Founder ledgers · Agent governance) — https://github.com/Dealix-sa/dealix/pull/600
+- [ ] PR #599: feat(delivery): Client Delivery Acceptance System — https://github.com/Dealix-sa/dealix/pull/599
+- [ ] PR #598: fix(ci): repair broken hardening workflow (Gitleaks + Trivy) — https://github.com/Dealix-sa/dealix/pull/598
+- [ ] PR #597: feat(gtm): Market Production OS — 250/day draft factory, quality gate & sending ramp — https://github.com/Dealix-sa/dealix/pull/597
+- [ ] PR #596: fix: CI hardening — free Gitleaks CLI + Trivy action bump — https://github.com/Dealix-sa/dealix/pull/596
+- [ ] PR #595: feat(market-production-os): governed 250-drafts/day outbound layer (0 auto-sends) — https://github.com/Dealix-sa/dealix/pull/595
+- [ ] PR #594: docs(gtm): Market Production OS map — unify GTM vision onto existing constitution — https://github.com/Dealix-sa/dealix/pull/594
+- [ ] PR #593: feat(market-production-os): Saudi B2B go-to-market production layer — https://github.com/Dealix-sa/dealix/pull/593
+- [ ] PR #592: feat(gtm): Dealix Market Production OS — governed Saudi B2B go-to-market machine — https://github.com/Dealix-sa/dealix/pull/592
+- [ ] PR #591: feat(market-os): Dealix Market Production OS — Saudi B2B GTM machine (docs + schemas + verifier) — https://github.com/Dealix-sa/dealix/pull/591
+- [ ] PR #590: feat(whatsapp): Client-facing WhatsApp Client OS — controlled flows, readiness scan, action cards, permissions, handoff — https://github.com/Dealix-sa/dealix/pull/590
+- [ ] PR #589: feat(whatsapp): Dealix WhatsApp Client OS — client-facing governed surface — https://github.com/Dealix-sa/dealix/pull/589
+- [ ] PR #588: feat: Revenue Execution OS (distribution) — approval-first, no external send — https://github.com/Dealix-sa/dealix/pull/588
+- [ ] PR #587: ci(hardening): fix pre-existing Trivy + Gitleaks scan jobs — https://github.com/Dealix-sa/dealix/pull/587
+- [ ] PR #586: feat(revenue-execution-os): approval-first product distribution layer — https://github.com/Dealix-sa/dealix/pull/586
+- [ ] PR #585: fix(ci): repair Repository Hardening workflow (Gitleaks license + Trivy tag) — https://github.com/Dealix-sa/dealix/pull/585
+- [ ] PR #584: fix(ci): green the coverage gate — kill suite-wide hang + launch-readiness verification — https://github.com/Dealix-sa/dealix/pull/584
+- [ ] PR #583: feat(distribution): Revenue Execution OS — governed product-distribution layer — https://github.com/Dealix-sa/dealix/pull/583
+- [ ] PR #582: ci: fix repository-hardening scans (Gitleaks license + breached Trivy action) — https://github.com/Dealix-sa/dealix/pull/582
+- [ ] PR #581: feat(distribution-os): approval-first Product Distribution OS v1 — https://github.com/Dealix-sa/dealix/pull/581
+- [ ] PR #580: fix(security): upgrade Next.js 15.1.3 → 15.5.19 (CVE fixes) + Trivy FP skip — https://github.com/Dealix-sa/dealix/pull/580
+- [ ] PR #579: feat(distribution): Product Distribution OS v1 — approval-first draft factory — https://github.com/Dealix-sa/dealix/pull/579
+- [ ] PR #578: P0 — Stabilize CI: fix runtime bugs, auth-aware smoke, consolidate workflow sprawl — https://github.com/Dealix-sa/dealix/pull/578
+- [ ] PR #577: fix(ci): per-builder dashboard cache key (fixes 5 failing tests) + Recurring Revenue Radar — https://github.com/Dealix-sa/dealix/pull/577
+- [ ] PR #576: feat(agents): agent-team governance layer (registry, audit, policies) — https://github.com/Dealix-sa/dealix/pull/576
+- [ ] PR #575: docs: Business Autopilot OS map (12 machines → governed system) — https://github.com/Dealix-sa/dealix/pull/575
+- [ ] PR #574: Harden CI + commercial sharpening — dependency-bound parity, SDAIA alignment — https://github.com/Dealix-sa/dealix/pull/574
+- [ ] PR #573: feat(founder-os): additive Founder OS layer — index, command center, ledgers — https://github.com/Dealix-sa/dealix/pull/573
+- [ ] PR #572: Automation OS — layered-permission agent governance layer — https://github.com/Dealix-sa/dealix/pull/572
+- [ ] PR #566: feat(company-os): operationalize Dealix end-to-end Company OS — https://github.com/Dealix-sa/dealix/pull/566
+- [ ] PR #565: feat(os-runtime): operationalize Dealix Company OS — runtime, 18 offers, GCC markets, growth layer — https://github.com/Dealix-sa/dealix/pull/565
+- [ ] PR #564: fix(ci): repo hardening + OS build — P0/P1/P2 comprehensive execution — https://github.com/Dealix-sa/dealix/pull/564
+- [ ] PR #563: feat(growth-os): Dealix Full-Automation Growth OS — 24/7 Multi-Channel Execution System — https://github.com/Dealix-sa/dealix/pull/563
+- [ ] PR #562: feat(growth-os): Dealix Growth OS — Complete Verification System — https://github.com/Dealix-sa/dealix/pull/562
+- [ ] PR #561: feat: Dealix Omni-Channel Growth OS — 15-channel GCC marketing system — https://github.com/Dealix-sa/dealix/pull/561
+- [ ] PR #560: feat(gcc-factory): Dealix GCC Multi-Market Draft Factory — 300+ daily drafts — https://github.com/Dealix-sa/dealix/pull/560
+- [ ] PR #558: feat(marketing-os): Dealix 24/7 Persuasion Draft Factory — https://github.com/Dealix-sa/dealix/pull/558
+- [ ] PR #557: feat(token-optimizer): complete 7-layer token reduction stack — https://github.com/Dealix-sa/dealix/pull/557
+- [ ] PR #556: fix(web): regenerate package-lock.json to fix npm ci in CI — https://github.com/Dealix-sa/dealix/pull/556
+- [ ] PR #441: Hermes Sovereign OS kernel (12-module Signal→Asset pipeline + Trust gateway) — https://github.com/Dealix-sa/dealix/pull/441
+- [ ] PR #440: feat(hermes): Sovereign Universal Value Machine kernel — https://github.com/Dealix-sa/dealix/pull/440
+- [ ] PR #439: Level Max System Spec + sovereign Control Plane kernel — https://github.com/Dealix-sa/dealix/pull/439
+- [ ] PR #438: Dealix Max OS — Hermes Universal Kernel + Trust extensions + workspace docs — https://github.com/Dealix-sa/dealix/pull/438
+- [ ] PR #437: Add Hermes — sovereign operating doctrine for Dealix — https://github.com/Dealix-sa/dealix/pull/437
+- [ ] PR #436: Add Hermes — Universal Sovereign Kernel — https://github.com/Dealix-sa/dealix/pull/436
+- [ ] PR #435: Add Hermes Universal Kernel: sovereign Signal→Asset loop — https://github.com/Dealix-sa/dealix/pull/435
+- [ ] PR #434: Audit-First Remediation Layer: manifest + verifier suite + reports — https://github.com/Dealix-sa/dealix/pull/434
+- [ ] PR #433: Dealix Production AI Certification Layer — https://github.com/Dealix-sa/dealix/pull/433
+- [ ] PR #432: AI Stack OS: unified L1..L11 orchestrator + shadow-mode self-evolving — https://github.com/Dealix-sa/dealix/pull/432
+- [ ] PR #431: Founder/CEO Hypergrowth Operating Layer (P0+P1) — https://github.com/Dealix-sa/dealix/pull/431
+- [ ] PR #430: Founder/CEO hypergrowth layer: 16 missing docs + 4 automation scripts — https://github.com/Dealix-sa/dealix/pull/430
+- [ ] PR #429: Anti-bullshit audit layer: manifest + verifiers + reports + CI gates — https://github.com/Dealix-sa/dealix/pull/429
+- [ ] PR #428: Add Dealix production certification layer — https://github.com/Dealix-sa/dealix/pull/428
+- [ ] PR #427: Build-Out Plan Day 1-7: AI tier register, multi-PSP router, PDPL artifacts — https://github.com/Dealix-sa/dealix/pull/427
+- [ ] PR #426: Day 1 commercial activation: Tap + Customer Portal + Proposal Renderer + Sales Playbook — https://github.com/Dealix-sa/dealix/pull/426
+- [ ] PR #425: feat(verification): Company OS audit layer + master verify_everything orchestrator — https://github.com/Dealix-sa/dealix/pull/425
+- [ ] PR #424: Dealix Company OS — full founder-facing operating system — https://github.com/Dealix-sa/dealix/pull/424
+- [ ] PR #423: feat(company-os): Dealix Company OS verifier surface + Founder Console — https://github.com/Dealix-sa/dealix/pull/423
+- [ ] PR #422: Add comprehensive Dealix AI Layers stack (22 layers + 28-endpoint unified API) — https://github.com/Dealix-sa/dealix/pull/422
+- [ ] PR #421: Holistic founder execution pass — May 2026 (PDPL, sprint, doctrine, KPI guardrail) — https://github.com/Dealix-sa/dealix/pull/421
+- [ ] PR #420: Holistic execution plan + 9 governed AI Layers — https://github.com/Dealix-sa/dealix/pull/420
+- [ ] PR #419: Dealix Company OS — 26-layer implementation — https://github.com/Dealix-sa/dealix/pull/419
+- [ ] PR #418: 12-month master plan to 1M SAR ARR + agent realignment + docs consolidation wave 1 — https://github.com/Dealix-sa/dealix/pull/418
+- [ ] PR #417: v5 closure: docs consolidation, M-1/2/3, session infra, founder action board — https://github.com/Dealix-sa/dealix/pull/417
+- [ ] PR #416: feat(autonomy): Phase 0-2 foundation for autonomous distribution — https://github.com/Dealix-sa/dealix/pull/416
+- [ ] PR #415: feat(autonomous_distribution): unified engine + 4 loops wiring 9 OS modules — https://github.com/Dealix-sa/dealix/pull/415
+- [ ] PR #412: docs(ops): Railway postgres-ssl and production service map — https://github.com/Dealix-sa/dealix/pull/412
+- [ ] PR #411: Commercial launch pack: daily ops, founder API, Next.js operator UI — https://github.com/Dealix-sa/dealix/pull/411
+- [ ] PR #410: Commercial closure plan: messaging, GTM assets, and product trust — https://github.com/Dealix-sa/dealix/pull/410
+- [ ] PR #409: feat(llm): Dealix runtime AI router (DeepSeek primary, MiniMax fallback) — https://github.com/Dealix-sa/dealix/pull/409
+- [ ] PR #408: feat(market-attack): Dealix Market Attack & Scaling Layer (v12) — https://github.com/Dealix-sa/dealix/pull/408
+- [ ] PR #407: feat(execution-launch): Dealix Execution & Market Launch Command System — https://github.com/Dealix-sa/dealix/pull/407
+- [ ] PR #406: feat(market-domination): brand-led, trust-gated revenue operating layer — https://github.com/Dealix-sa/dealix/pull/406
+- [ ] PR #405: feat(dealix-os): Dealix complete OS — brand, founder console, trust gates — https://github.com/Dealix-sa/dealix/pull/405
+- [ ] PR #404: feat(os): Dealix 18-layer brand-led, trust-gated revenue operating company — https://github.com/Dealix-sa/dealix/pull/404
+- [ ] PR #403: feat(brand): Brand &amp; Growth Operating Layer — market-ready stack — https://github.com/Dealix-sa/dealix/pull/403
+- [ ] PR #402: feat: Dealix brand-led autonomous growth operating layer — https://github.com/Dealix-sa/dealix/pull/402
+- [ ] PR #401: feat(market-entry): Dealix v7 Master Operating Stack — https://github.com/Dealix-sa/dealix/pull/401
+- [ ] PR #400: feat(sovereign): Dealix Sovereign AI Operating Stack — Founder Console + governance — https://github.com/Dealix-sa/dealix/pull/400
+- [ ] PR #399: feat(ulo): Dealix Ultimate Operating Layer (Founder Console + trust gate) — https://github.com/Dealix-sa/dealix/pull/399
+- [ ] PR #398: feat(ops): Dealix Ultimate Operating Layer (founder console + control plane) — https://github.com/Dealix-sa/dealix/pull/398
+- [ ] PR #397: feat(backend): v5 production engine — Milestone 1 (schema + migration) — https://github.com/Dealix-sa/dealix/pull/397
+- [ ] PR #396: feat(ops): Dealix Operating Layer v1 — docs, policy, and verifier — https://github.com/Dealix-sa/dealix/pull/396
+- [ ] PR #395: feat(backend): Dealix Backend v5 — full production engine — https://github.com/Dealix-sa/dealix/pull/395
+- [ ] PR #394: docs: define Dealix ultimate autonomous enterprise level — https://github.com/Dealix-sa/dealix/pull/394
+- [ ] PR #393: Revenue Factory OS — strategic documentation suite (52 files) — https://github.com/Dealix-sa/dealix/pull/393
+- [ ] PR #392: feat(founder-console): v1 shell, internal read-only API, and CI gate — https://github.com/Dealix-sa/dealix/pull/392
+- [ ] PR #391: feat(certification): C0–C5 Dealix OS acceptance system — https://github.com/Dealix-sa/dealix/pull/391
+- [ ] PR #390: feat(frontend): founder P0 command center + revenue factory pages — https://github.com/Dealix-sa/dealix/pull/390
+- [ ] PR #389: feat(founder-console): v4 live runtime + approval audit + production gate — https://github.com/Dealix-sa/dealix/pull/389
+- [ ] PR #388: feat(founder-console): v3 console + audited internal API + trust gate — https://github.com/Dealix-sa/dealix/pull/388
+- [ ] PR #387: Dealix Enterprise Revenue & Distribution Architecture v2 — https://github.com/Dealix-sa/dealix/pull/387
+- [ ] PR #386: feat(founder-console): v2 runtime layer — internal API + 10 pages + CI gate — https://github.com/Dealix-sa/dealix/pull/386
+- [ ] PR #385: feat(company_os): Enterprise Company OS v3 blueprint layer — https://github.com/Dealix-sa/dealix/pull/385
+- [ ] PR #384: feat(ops): Dealix Master Verification System (9-layer wrapper) — https://github.com/Dealix-sa/dealix/pull/384
+- [ ] PR #383: feat(founder): add founder operating layer (CEO console + 7 routes) — https://github.com/Dealix-sa/dealix/pull/383
+- [ ] PR #382: feat(company-os): Dealix Enterprise Company OS v3 scaffolding — https://github.com/Dealix-sa/dealix/pull/382
+- [ ] PR #381: feat(distribution): Dealix Distribution & Conversion Mega-System — https://github.com/Dealix-sa/dealix/pull/381
+- [ ] PR #380: feat: Dealix Implementation Sprint Pack (sprints 0–8 scaffolding) — https://github.com/Dealix-sa/dealix/pull/380
+- [ ] PR #379: feat(acquisition): done-for-you acquisition OS + ERP/CRM batch 1 — https://github.com/Dealix-sa/dealix/pull/379
+- [ ] PR #378: feat(growth): scaffold Dealix 24/7 Growth Factory — https://github.com/Dealix-sa/dealix/pull/378
+- [ ] PR #377: feat(acquisition): done-for-you lead acquisition and outreach autopilot — https://github.com/Dealix-sa/dealix/pull/377
+- [ ] PR #376: feat(acquisition): Lead &amp; Outreach Autopilot OS with founder approval gate — https://github.com/Dealix-sa/dealix/pull/376
+- [ ] PR #375: feat: Dealix Implementation Automation Pack — https://github.com/Dealix-sa/dealix/pull/375
+- [ ] PR #374: docs(security): Security, Reliability & Supply Chain OS v1 — https://github.com/Dealix-sa/dealix/pull/374
+- [ ] PR #373: docs(ops): Dealix Master Integration & Final Operating Blueprint v1 — https://github.com/Dealix-sa/dealix/pull/373
+- [ ] PR #372: feat(people-partner-os): v1 — founder leverage, delegation ladder, partner guardrails — https://github.com/Dealix-sa/dealix/pull/372
+- [ ] PR #371: feat(content): Brand, Proof & Content Operating System v1 — https://github.com/Dealix-sa/dealix/pull/371
+- [ ] PR #370: feat(product): Dealix Productization & Engineering OS v1 — https://github.com/Dealix-sa/dealix/pull/370
+- [ ] PR #369: feat(delivery): Delivery & Client Success Operating System v1 — https://github.com/Dealix-sa/dealix/pull/369
+- [ ] PR #368: feat(revenue-ops): Revenue Operations Playbook v1 + commercial machine — https://github.com/Dealix-sa/dealix/pull/368
+- [ ] PR #367: feat(ops): enterprise operating architecture layer — https://github.com/Dealix-sa/dealix/pull/367
+- [ ] PR #366: feat(founder): Dealix CEO Operating Architecture — https://github.com/Dealix-sa/dealix/pull/366
+- [ ] PR #365: feat(data): company data architecture, contracts, and CEO CLI — https://github.com/Dealix-sa/dealix/pull/365
+- [ ] PR #364: Dealix CEO Operating System v2 — 14-layer founder operating spine — https://github.com/Dealix-sa/dealix/pull/364
+- [ ] PR #363: feat(company-os): Dealix Company Architecture v1.0 — Revenue Company OS — https://github.com/Dealix-sa/dealix/pull/363
+- [ ] PR #362: feat(company-os): bootstrap 12 Super Systems + Trust modules + verifiers — https://github.com/Dealix-sa/dealix/pull/362
+- [ ] PR #361: feat(ops): Dealix Execution Assurance System — https://github.com/Dealix-sa/dealix/pull/361
+- [ ] PR #360: feat(ceo): CEO Operating Intelligence v4 — control tower + executive cadence — https://github.com/Dealix-sa/dealix/pull/360
+- [ ] PR #359: feat(board-level-os): monthly investor-grade operating layer — https://github.com/Dealix-sa/dealix/pull/359
+- [ ] PR #358: feat(ceo): operating model + financial model v1 + growth system + finance runtime — https://github.com/Dealix-sa/dealix/pull/358
+- [ ] PR #357: feat(control-plane): Executive Control Plane (CEO layer) — https://github.com/Dealix-sa/dealix/pull/357
+- [ ] PR #356: feat(audit): Dealix Implementation Audit system — https://github.com/Dealix-sa/dealix/pull/356
+- [ ] PR #355: feat(ceo): Dealix Strategic CEO System v3 — https://github.com/Dealix-sa/dealix/pull/355
+- [ ] PR #354: feat(ceo): CEO Business Score system and business-audit CLI — https://github.com/Dealix-sa/dealix/pull/354
+- [ ] PR #353: feat(ceo): CEO Business Verification System (score, audit, workflow) — https://github.com/Dealix-sa/dealix/pull/353
+- [ ] PR #352: feat(ceo): operating model, financial model, growth system, KPI tree, cadence — https://github.com/Dealix-sa/dealix/pull/352
+- [ ] PR #351: feat(revenue-sprint): Revenue Sprint Kit v1 — public docs + CI guards — https://github.com/Dealix-sa/dealix/pull/351
+- [ ] PR #350: feat(company-os): lay down the canonical Master File Tree — https://github.com/Dealix-sa/dealix/pull/350
+- [ ] PR #349: feat(revenue-sprint): Dealix Revenue Sprint Kit v1 — https://github.com/Dealix-sa/dealix/pull/349
+- [ ] PR #348: Revenue Sprint Kit v1 — public docs + verifier — https://github.com/Dealix-sa/dealix/pull/348
+- [ ] PR #347: feat(execution-engine): stage evidence automation v2 — https://github.com/Dealix-sa/dealix/pull/347
+- [ ] PR #346: feat(ops): Dealix full-spectrum OS command centers + verifiers — https://github.com/Dealix-sa/dealix/pull/346
+- [ ] PR #345: feat(os): full-spectrum operating system command centers — https://github.com/Dealix-sa/dealix/pull/345
+- [ ] PR #344: feat(governance): stage-gated roadmap + 30-day execution plan + no-overbuild — https://github.com/Dealix-sa/dealix/pull/344
+- [ ] PR #343: feat(founder): Dealix CEO Autopilot — 12-system Company OS — https://github.com/Dealix-sa/dealix/pull/343
+- [ ] PR #342: feat(sprint): Dealix Priority Execution Sprint stack — https://github.com/Dealix-sa/dealix/pull/342
+- [ ] PR #341: chore: prioritize Dealix revenue, trust, delivery control — https://github.com/Dealix-sa/dealix/pull/341
+- [ ] PR #340: docs(company-os): operating doctrine, scorecard, and deep content verifiers — https://github.com/Dealix-sa/dealix/pull/340
+- [ ] PR #339: feat(ops): Dealix Master Content Pack v1 — operating doctrine + deep verification — https://github.com/Dealix-sa/dealix/pull/339
+- [ ] PR #338: feat(founder): Dealix CEO Operating System v2 — 4-layer Company OS — https://github.com/Dealix-sa/dealix/pull/338
+- [ ] PR #337: feat(company-os): document standard + deep verification chain — https://github.com/Dealix-sa/dealix/pull/337
+- [ ] PR #336: feat(dashboard): CEO Dashboard v2 + Operating Command Center — https://github.com/Dealix-sa/dealix/pull/336
+- [ ] PR #335: feat(ops): Dealix weekly review automation v1 — https://github.com/Dealix-sa/dealix/pull/335
+- [ ] PR #334: feat(dashboard): Dealix CEO Dashboard + Operating Intelligence v1 — https://github.com/Dealix-sa/dealix/pull/334
+- [ ] PR #333: feat(company-os): Master Content + Deep Verification layer — https://github.com/Dealix-sa/dealix/pull/333
+- [ ] PR #332: feat(ops): Dealix Master Content Pack v1 — https://github.com/Dealix-sa/dealix/pull/332
+- [ ] PR #331: feat(cli): Dealix Command CLI (daily/weekly/dashboard/verify) — https://github.com/Dealix-sa/dealix/pull/331
+- [ ] PR #330: feat(ops): Master Operations Pack — private-ops → CEO brief / weekly review / decision queue — https://github.com/Dealix-sa/dealix/pull/330
+- [ ] PR #329: feat(ops): Master Operations Layer — runtime that turns private ops into CEO decisions — https://github.com/Dealix-sa/dealix/pull/329
+- [ ] PR #328: feat(ops): Dealix CEO Autopilot control plane v1 — https://github.com/Dealix-sa/dealix/pull/328
+- [ ] PR #327: feat(control-plane): Autonomous Company Control Plane v1 — https://github.com/Dealix-sa/dealix/pull/327
+- [ ] PR #326: docs(strategy): Full-Ops Revenue Machine as source of truth — https://github.com/Dealix-sa/dealix/pull/326
+- [ ] PR #325: chore(ops): add Dealix full ops control system — https://github.com/Dealix-sa/dealix/pull/325
+- [ ] PR #324: fix(ops): wire missing autopilot routers + 6 test/config gaps — https://github.com/Dealix-sa/dealix/pull/324
+- [ ] PR #323: feat(stage-gates): live PASS/FIX/BLOCKED dashboard with auto-render — https://github.com/Dealix-sa/dealix/pull/323
+- [ ] PR #322: feat(brand): Dealix brand layer — guidelines, tokens, GitHub + landing direction — https://github.com/Dealix-sa/dealix/pull/322
+- [ ] PR #321: Brand v2 — Navy + Emerald Teal identity (docs + tokens + logo SVGs) — https://github.com/Dealix-sa/dealix/pull/321
+- [ ] PR #320: feat(brand): adopt DEALIX visual identity — navy/teal/silver system — https://github.com/Dealix-sa/dealix/pull/320
+- [ ] PR #319: fix(ci): unblock verify-stack — drop unbuildable ummalqura pin and wire revenue_ops_autopilot routers — https://github.com/Dealix-sa/dealix/pull/319
+- [ ] PR #317: feat(ops): founder daily verdict — single GO/WARN/BLOCKED morning signal — https://github.com/Dealix-sa/dealix/pull/317
+- [ ] PR #310: feat(ops): public /version, Railway verify, and founder executive rise loop — https://github.com/Dealix-sa/dealix/pull/310
+- [ ] PR #306: feat: governed sales + support ops autopilot foundation — https://github.com/Dealix-sa/dealix/pull/306
+- [ ] PR #304: Reposition Dealix around Governed Revenue & AI Ops category — https://github.com/Dealix-sa/dealix/pull/304
+- [ ] PR #303: docs: define GCC governed revenue & AI ops control map — https://github.com/Dealix-sa/dealix/pull/303
+
+## Open PRs to review
+- [ ] PR #757: Save public website brand OS work — https://github.com/Dealix-sa/dealix/pull/757
+- [ ] PR #739: feat(outreach): daily Arabic email targeting system — 30 Saudi ICPs +… — https://github.com/Dealix-sa/dealix/pull/739
+- [ ] PR #738: Resolve pr 713 — https://github.com/Dealix-sa/dealix/pull/738
+- [ ] PR #732: Resolve pr 727 — https://github.com/Dealix-sa/dealix/pull/732
+- [ ] PR #713: feat: add Dealix V1-V5 commercial operating system — https://github.com/Dealix-sa/dealix/pull/713
+- [ ] PR #571: chore(docker): bump node from 22-bookworm-slim to 26-bookworm-slim — https://github.com/Dealix-sa/dealix/pull/571
+- [ ] PR #570: chore(web-deps): bump react-dom from 19.2.6 to 19.2.7 in /apps/web — https://github.com/Dealix-sa/dealix/pull/570
+- [ ] PR #568: chore(web-deps): bump postcss from 8.4.31 to 8.5.15 in /apps/web — https://github.com/Dealix-sa/dealix/pull/568
+- [ ] PR #567: chore(web-deps): bump critters from 0.0.23 to 0.0.25 in /apps/web — https://github.com/Dealix-sa/dealix/pull/567
+- [ ] PR #552: feat: comprehensive platform build — Waves 18-20 (subscription, onboarding, cockpit, intelligence) — https://github.com/Dealix-sa/dealix/pull/552
+- [ ] PR #549: feat(commercial): Risk Score wizard + Sprint 499 + ZATCA landing + SEO + 3 articles — https://github.com/Dealix-sa/dealix/pull/549
+- [ ] PR #547: feat(brand+gtm): brand guidelines, OG images, enhanced Proof Pack — https://github.com/Dealix-sa/dealix/pull/547
+- [ ] PR #543: feat(commercial): governance_decision field, bilingual disclaimer, diagnostic form wiring — https://github.com/Dealix-sa/dealix/pull/543
+- [ ] PR #542: feat: strategic sales targeting, persuasion, ROI, proof-stack & outreach engines — https://github.com/Dealix-sa/dealix/pull/542
+- [ ] PR #539: fix(web): Railway config + Dockerfile.web for Next.js web service — https://github.com/Dealix-sa/dealix/pull/539
+- [ ] PR #537: ops: commercial launch infrastructure — deploy targets, CI branches, LinkedIn outreach — https://github.com/Dealix-sa/dealix/pull/537
+- [ ] PR #535: feat: complete commercial engine — diagnostic + pilot + proof + upsell + automation — https://github.com/Dealix-sa/dealix/pull/535
+- [ ] PR #534: feat: 30-day demo-ready & revenue-ready plan (Week 1-4) — https://github.com/Dealix-sa/dealix/pull/534
+- [ ] PR #531: feat(custom-systems-os): governed bespoke design + structure + internal-system builder — https://github.com/Dealix-sa/dealix/pull/531
+- [ ] PR #530: ops: Founder-OS worker + watchdog Railway services (additive) — https://github.com/Dealix-sa/dealix/pull/530
+- [ ] PR #529: Activate Dealix end-to-end + founder first-revenue tooling — https://github.com/Dealix-sa/dealix/pull/529
+- [ ] PR #528: feat(notion): Founder Command Center — live cockpit + durable auto-sync — https://github.com/Dealix-sa/dealix/pull/528
+- [ ] PR #527: ops: Railway Founder OS worker + watchdog + runbooks — https://github.com/Dealix-sa/dealix/pull/527
+- [ ] PR #526: chore(frontend-deps): bump next-intl from 3.26.5 to 4.13.0 in /frontend — https://github.com/Dealix-sa/dealix/pull/526
+- [ ] PR #525: Commercial Public Launch — Go-Live Evidence & Final Artifacts — https://github.com/Dealix-sa/dealix/pull/525
+- [ ] PR #524: phase 3: real-launch + fleet hardening + content finalization (L1-L4) — https://github.com/Dealix-sa/dealix/pull/524
+- [ ] PR #523: feat(hermes): top-layer agent orchestrator with doctrine-enforced dispatch — https://github.com/Dealix-sa/dealix/pull/523
+- [ ] PR #522: ops: phase 2 — audits, invite email, drafts wiring, checkout page (6 phases) — https://github.com/Dealix-sa/dealix/pull/522
+- [ ] PR #520: feat(hermes): add governed Hermes agent operating layer — https://github.com/Dealix-sa/dealix/pull/520
+- [ ] PR #519: Complete self hosted Docker platform — https://github.com/Dealix-sa/dealix/pull/519
+- [ ] PR #518: feat: add Strategic Opportunity OS and Hermes Agents Layer — https://github.com/Dealix-sa/dealix/pull/518
+- [ ] PR #517: chore: add AI workflow and Hermes operating layer — https://github.com/Dealix-sa/dealix/pull/517
+- [ ] PR #513: chore(frontend-deps): bump typescript from 5.9.3 to 6.0.3 in /frontend — https://github.com/Dealix-sa/dealix/pull/513
+- [ ] PR #511: chore(frontend-deps): bump @dnd-kit/sortable from 8.0.0 to 10.0.0 in /frontend — https://github.com/Dealix-sa/dealix/pull/511
+- [ ] PR #510: chore(frontend-deps): bump @hookform/resolvers from 3.10.0 to 5.4.0 in /frontend — https://github.com/Dealix-sa/dealix/pull/510
+- [ ] PR #509: chore(frontend-deps): bump eslint from 9.39.4 to 10.4.0 in /frontend — https://github.com/Dealix-sa/dealix/pull/509
+- [ ] PR #508: chore(frontend-deps): bump date-fns from 4.1.0 to 4.3.0 in /frontend — https://github.com/Dealix-sa/dealix/pull/508
+- [ ] PR #507: chore(frontend-deps): bump next from 15.1.3 to 16.2.6 in /frontend — https://github.com/Dealix-sa/dealix/pull/507
+- [ ] PR #506: chore(frontend-deps): bump eslint-config-next from 15.1.3 to 16.2.6 in /frontend — https://github.com/Dealix-sa/dealix/pull/506
+- [ ] PR #505: chore(frontend-deps): bump sonner from 1.7.4 to 2.0.7 in /frontend — https://github.com/Dealix-sa/dealix/pull/505
+- [ ] PR #504: chore(frontend-deps): bump jose from 5.10.0 to 6.2.3 in /frontend — https://github.com/Dealix-sa/dealix/pull/504
+- [ ] PR #462: chore(deps): update certifi requirement from >=2024.7.4 to >=2026.5.20 — https://github.com/Dealix-sa/dealix/pull/462
+- [ ] PR #460: chore(deps): update opentelemetry-exporter-otlp-proto-http requirement from >=1.41.0 to >=1.42.1 — https://github.com/Dealix-sa/dealix/pull/460
+- [ ] PR #459: chore(web-deps): bump @types/react from 19.2.14 to 19.2.15 in /apps/web — https://github.com/Dealix-sa/dealix/pull/459
+- [ ] PR #458: chore(web-deps): bump typescript from 5.9.3 to 6.0.3 in /apps/web — https://github.com/Dealix-sa/dealix/pull/458
+- [ ] PR #457: chore(web-deps): bump @types/node from 22.19.19 to 25.9.1 in /apps/web — https://github.com/Dealix-sa/dealix/pull/457
+- [ ] PR #456: chore(web-deps): bump next from 15.1.3 to 16.2.6 in /apps/web — https://github.com/Dealix-sa/dealix/pull/456
+- [ ] PR #454: chore(actions): bump actions/dependency-review-action from 4 to 5 — https://github.com/Dealix-sa/dealix/pull/454
+- [ ] PR #452: docs: company-grade + enterprise-grade + investor-grade positioning (131–165) — https://github.com/Dealix-sa/dealix/pull/452
+- [ ] PR #451: Company-Grade + Enterprise-Grade + Investor-Grade positioning (sections 131-165) — https://github.com/Dealix-sa/dealix/pull/451
+- [ ] PR #450: feat(hermes): Production Empire layer — sovereign control plane + verified-revenue OS — https://github.com/Dealix-sa/dealix/pull/450
+- [ ] PR #449: Hermes — Production + Growth + Governance Max layer (§§69–100) — https://github.com/Dealix-sa/dealix/pull/449
+- [ ] PR #448: feat(hermes): Hermes Universal Kernel — sovereign value control plane — https://github.com/Dealix-sa/dealix/pull/448
+- [ ] PR #447: feat(hermes): Sovereign Value Control Plane — production architecture v1 — https://github.com/Dealix-sa/dealix/pull/447
+- [ ] PR #446: feat(growth_os): Growth Engine + Revenue Assurance + Marketing Attribution — https://github.com/Dealix-sa/dealix/pull/446
+- [ ] PR #445: feat(revenue-marketing-os): add Hermes Growth Money Loop — https://github.com/Dealix-sa/dealix/pull/445
+- [ ] PR #444: Revenue Marketing Engine: signal → offer → attribution loop — https://github.com/Dealix-sa/dealix/pull/444
+- [ ] PR #443: Revenue Marketing Engine: governed signal-to-revenue loop — https://github.com/Dealix-sa/dealix/pull/443
+- [ ] PR #442: Sovereign Value Control Plane — §81–§110 — https://github.com/Dealix-sa/dealix/pull/442
+- [ ] PR #414: Fix preDeployCommand config schema violation — https://github.com/Dealix-sa/dealix/pull/414
+- [ ] PR #318: Sprint Day 2–5 deliverables: CSV intake, account ranking, outreach drafts, proof pack assembly — https://github.com/Dealix-sa/dealix/pull/318
+- [ ] PR #316: Wave 16–17: Customer Health OS, Revenue Forecast, GCC Expansion, M&A Radar, Capital OS, Exit Readiness — https://github.com/Dealix-sa/dealix/pull/316
+- [ ] PR #315: Reposition Dealix as Post-Lead Revenue Ops OS; lock product narrative and governance — https://github.com/Dealix-sa/dealix/pull/315
+- [ ] PR #314: Add audit tool and founder reality check for local artifact curation — https://github.com/Dealix-sa/dealix/pull/314
+- [ ] PR #313: Strategic launch: verified readiness, unified master doc, founder action list — https://github.com/Dealix-sa/dealix/pull/313
+- [ ] PR #312: feat(full_ops_os): Full Ops Sales System + Distribution OS + agent hierarchy (Waves 18–22) — https://github.com/Dealix-sa/dealix/pull/312
+- [ ] PR #311: Add Dealix Distribution Kit: 6 bilingual GTM enablement docs — https://github.com/Dealix-sa/dealix/pull/311
+- [ ] PR #309: Add GTM Sales Strategy document (EN/AR bilingual) — https://github.com/Dealix-sa/dealix/pull/309
+- [ ] PR #308: chore(deps): update certifi requirement from >=2024.7.4 to >=2026.4.22 — https://github.com/Dealix-sa/dealix/pull/308
+- [ ] PR #305: feat(sales): add governed Sales Loop Orchestrator (lead -> paid) — https://github.com/Dealix-sa/dealix/pull/305
+- [ ] PR #302: Align Dealix to GCC governed operating layer strategy — https://github.com/Dealix-sa/dealix/pull/302
+- [ ] PR #300: Add governed Revenue Factory policy gates — https://github.com/Dealix-sa/dealix/pull/300
+- [ ] PR #296: Add Revenue Company OS factory blueprint endpoint — https://github.com/Dealix-sa/dealix/pull/296
+- [ ] PR #295: Add Dealix Revenue Autopilot blueprint and diagnostic landing page — https://github.com/Dealix-sa/dealix/pull/295
+- [ ] PR #294: Add founder-led diagnostic sales machine endpoints and landing page — https://github.com/Dealix-sa/dealix/pull/294
+- [ ] PR #293: Add governed diagnostic sales funnel API and landing page — https://github.com/Dealix-sa/dealix/pull/293
+- [ ] PR #290: Dealix 100 strategic spine — registry, North Star, readiness API, Deal Desk — https://github.com/Dealix-sa/dealix/pull/290
+- [ ] PR #289: docs: add governed revenue & AI operations board blueprint — https://github.com/Dealix-sa/dealix/pull/289
+- [ ] PR #288: Align service catalog with CEO/Board governed ops plan — https://github.com/Dealix-sa/dealix/pull/288
+- [ ] PR #286: fix(ci): repair the chronically-red test job (~58 pre-existing failures) — https://github.com/Dealix-sa/dealix/pull/286
+- [ ] PR #285: Add Governed Revenue & AI Ops contracts and API — https://github.com/Dealix-sa/dealix/pull/285
+- [ ] PR #284: Align Dealix operating model to governed revenue and AI ops — https://github.com/Dealix-sa/dealix/pull/284
+- [ ] PR #283: Add governed revenue & AI ops blueprint API surface — https://github.com/Dealix-sa/dealix/pull/283
+- [ ] PR #281: Add governed revenue ops API surface and rollout docs — https://github.com/Dealix-sa/dealix/pull/281
+- [ ] PR #280: Add CEO Market Motion OS workflow with evidence scoring — https://github.com/Dealix-sa/dealix/pull/280
+- [ ] PR #274: Close CEO Top50 loop to 50/50 DONE_NOW — https://github.com/Dealix-sa/dealix/pull/274
+- [ ] PR #273: chore(deps): bump next from 15.1.3 to 15.5.18 in /apps/web — https://github.com/Dealix-sa/dealix/pull/273
+- [ ] PR #272: Stabilize full-stack setup checks and frontend build blockers — https://github.com/Dealix-sa/dealix/pull/272
+- [ ] PR #266: Hardening foundation for enterprise control plane systems 26-35 — https://github.com/Dealix-sa/dealix/pull/266
+- [ ] PR #265: Harden wiring audit gates and health observability — https://github.com/Dealix-sa/dealix/pull/265
+- [ ] PR #263: Restore Value OS ledger API and harden Revenue OS verification — https://github.com/Dealix-sa/dealix/pull/263
+- [ ] PR #262: Stabilize control runtime and restore startup compatibility surfaces — https://github.com/Dealix-sa/dealix/pull/262
+- [ ] PR #261: Add operational infrastructure runtime and enterprise readiness drill — https://github.com/Dealix-sa/dealix/pull/261
+- [ ] PR #260: Add deterministic AI control plane runtime primitives — https://github.com/Dealix-sa/dealix/pull/260
+- [ ] PR #258: Add governed enterprise workflow foundation — https://github.com/Dealix-sa/dealix/pull/258
+- [ ] PR #257: Build governed lead qualification foundation stack — https://github.com/Dealix-sa/dealix/pull/257
+- [ ] PR #256: Establish governed Revenue OS operational dependency scaffold — https://github.com/Dealix-sa/dealix/pull/256
+- [ ] PR #255: feat: add foundation-core governed enterprise loop v1 — https://github.com/Dealix-sa/dealix/pull/255
+- [ ] PR #254: Add institutional intelligence layer systems 56-65 — https://github.com/Dealix-sa/dealix/pull/254
+- [ ] PR #253: feat: add agentic economic operating layer scaffolding (systems 46-55) — https://github.com/Dealix-sa/dealix/pull/253
+
+## Next action
+1. ابدأ بالدرافتات إن وجدت.
+2. بعدها راجع open PRs الأحدث.
+3. حول المفيد إلى docs/backlog/tests.
+4. لا تدمج كود إلا بفحص مستقل.

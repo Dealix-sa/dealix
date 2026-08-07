@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/launch/pipeline_item.schema.json",
+  "title": "PipelineItem",
+  "description": "A single account in the Dealix launch sales pipeline.",
+  "type": "object",
+  "required": ["id", "account_name_ar", "stage", "offer_id", "value_sar", "icp_score", "last_touch_date", "next_action_ar"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^pipe_[a-z0-9_]+$"
+    },
+    "account_id": {
+      "type": "string"
+    },
+    "account_name_ar": {
+      "type": "string",
+      "minLength": 2
+    },
+    "account_name_en": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["RESEARCH", "OUTREACH", "DISCOVERY", "PROPOSAL", "NEGOTIATION", "WON", "LOST"],
+      "description": "Current pipeline stage"
+    },
+    "offer_id": {
+      "type": "string",
+      "enum": [
+        "revenue_leak_audit",
+        "whatsapp_followup_os",
+        "sales_command_center",
+        "proposal_proof_pack",
+        "ai_os_smb",
+        "custom_enterprise_os"
+      ]
+    },
+    "value_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Deal value in SAR"
+    },
+    "icp_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "icp_tier": {
+      "type": "string",
+      "enum": ["A", "B", "C", "DQ"]
+    },
+    "last_touch_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "next_action_ar": {
+      "type": "string",
+      "minLength": 5
+    },
+    "next_action_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "owner_notes": {
+      "type": "string"
+    },
+    "stage_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["stage", "entered_date"],
+        "properties": {
+          "stage": { "type": "string" },
+          "entered_date": { "type": "string", "format": "date" },
+          "exited_date": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

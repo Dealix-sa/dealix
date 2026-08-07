@@ -1,0 +1,177 @@
+pageType: content
+background:
+  type: solid
+  color: "$background"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 300, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>PROOF  //  الإثبات</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      style: "$title"
+      text: |
+        <p>منصة جاهزة ومجربة</p>
+      wrap: false
+  - elementId: stat-row-bg
+    elementType: shape
+    bounds: [60, 170, 1160, 130]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: s1-num
+    elementType: text
+    bounds: [100, 185, 200, 50]
+    content:
+      fontSize: 40
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>2,587</p>
+  - elementId: s1-label
+    elementType: text
+    bounds: [100, 240, 200, 40]
+    content:
+      fontSize: 14
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      text: |
+        <p>ملف Python</p>
+  - elementId: s2-num
+    elementType: text
+    bounds: [380, 185, 200, 50]
+    content:
+      fontSize: 40
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>172</p>
+  - elementId: s2-label
+    elementType: text
+    bounds: [380, 240, 200, 40]
+    content:
+      fontSize: 14
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      text: |
+        <p>نقطة API</p>
+  - elementId: s3-num
+    elementType: text
+    bounds: [660, 185, 200, 50]
+    content:
+      fontSize: 40
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>563</p>
+  - elementId: s3-label
+    elementType: text
+    bounds: [660, 240, 200, 40]
+    content:
+      fontSize: 14
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      text: |
+        <p>اختبار تلقائي</p>
+  - elementId: s4-num
+    elementType: text
+    bounds: [940, 185, 200, 50]
+    content:
+      fontSize: 40
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>60</p>
+  - elementId: s4-label
+    elementType: text
+    bounds: [940, 240, 200, 40]
+    content:
+      fontSize: 14
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      text: |
+        <p>خط CI/CD</p>
+  - elementId: feature-title
+    elementType: text
+    bounds: [60, 340, 600, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>مميزات تم اختبارها وجاهزة للاستخدام:</p>
+  - elementId: checklist
+    elementType: text
+    bounds: [60, 390, 560, 280]
+    content:
+      fontSize: 18
+      color: "$text"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.8
+      text: |
+        <p><span style="color:#1B5E3B;">✓</span>  CRM عقاري متكامل مع تتبع العملاء</p>
+        <p><span style="color:#1B5E3B;">✓</span>  تحليلات السوق العقاري بالذكاء الاصطناعي</p>
+        <p><span style="color:#1B5E3B;">✓</span>  إدارة المشاريع والوحدات</p>
+        <p><span style="color:#1B5E3B;">✓</span>  تواصل ذكي عبر WhatsApp والبريد</p>
+        <p><span style="color:#1B5E3B;">✓</span>  امتثال كامل لـ PDPL وZATCA</p>
+        <p><span style="color:#1B5E3B;">✓</span>  بوابة دفع Moyasar متكاملة</p>
+  - elementId: badge-bg
+    elementType: shape
+    bounds: [700, 390, 520, 280]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: badge-icon
+    elementType: icon
+    bounds: [910, 420, 64, 64]
+    iconName: shield-check
+    color: "$primary"
+  - elementId: badge-text
+    elementType: text
+    bounds: [730, 500, 460, 40]
+    content:
+      fontSize: 20
+      color: "$primary"
+      fontFamily: "Liter, alimamashuheiti"
+      align: center
+      wrap: false
+      text: |
+        <p>منصة جاهزة للبيع اليوم</p>
+  - elementId: badge-sub
+    elementType: text
+    bounds: [730, 550, 460, 60]
+    content:
+      fontSize: 14
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      align: center
+      lineHeight: 1.5
+      text: |
+        <p>ابدأ بالتشخيص المجاني واكتشف كيف تساعدك Dealix</p>

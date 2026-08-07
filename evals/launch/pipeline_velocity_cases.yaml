@@ -1,0 +1,109 @@
+name: pipeline_velocity_eval
+version: "1.0"
+description: |
+  Evaluates whether the pipeline tracker correctly identifies stuck deals,
+  computes velocity, and surfaces the right next actions.
+
+cases:
+  - id: velocity_001
+    description: "Deal stuck in OUTREACH for 7+ days — must be flagged"
+    input:
+      stage: "OUTREACH"
+      days_in_stage: 8
+      last_touch_date: "2026-06-04"
+    expected:
+      flag: "STUCK"
+      recommended_action_contains: ["escalate", "change_channel", "re-engage"]
+      alert_level: "HIGH"
+
+  - id: velocity_002
+    description: "Deal in DISCOVERY for 3 days — normal velocity"
+    input:
+      stage: "DISCOVERY"
+      days_in_stage: 3
+      last_touch_date: "2026-06-09"
+    expected:
+      flag: "ON_TRACK"
+      alert_level: "LOW"
+
+  - id: velocity_003
+    description: "Deal in PROPOSAL for 5+ days without response — needs follow-up"
+    input:
+      stage: "PROPOSAL"
+      days_in_stage: 5
+      last_touch_date: "2026-06-07"
+    expected:
+      flag: "NEEDS_FOLLOWUP"
+      recommended_action_contains: ["send_reminder", "call"]
+      alert_level: "MEDIUM"
+
+  - id: velocity_004
+    description: "Deal moves RESEARCH → OUTREACH in 2 days — fast progression"
+    input:
+      stage_transition:
+        from: "RESEARCH"
+        to: "OUTREACH"
+        days_elapsed: 2
+    expected:
+      velocity_rating: "FAST"
+      flag: "HEALTHY"
+
+  - id: velocity_005
+    description: "Pipeline ARR calculation with 3 deals at different stages"
+    input:
+      deals:
+        - { stage: "PROPOSAL", value_sar: 2999 }
+        - { stage: "DISCOVERY", value_sar: 1500 }
+        - { stage: "NEGOTIATION", value_sar: 4999 }
+    expected:
+      weighted_pipeline_sar_min: 3000
+      total_nominal_sar: 9498
+      highest_probability_stage: "NEGOTIATION"
+
+  - id: velocity_006
+    description: "Empty pipeline returns valid summary without errors"
+    input:
+      deals: []
+    expected:
+      total_nominal_sar: 0
+      total_weighted_sar: 0
+      stages_count: {}
+
+  - id: velocity_007
+    description: "NEGOTIATION stage deal with 10 days elapsed — still acceptable"
+    input:
+      stage: "NEGOTIATION"
+      days_in_stage: 10
+      last_touch_date: "2026-06-02"
+    expected:
+      flag: "NEEDS_FOLLOWUP"
+      alert_level: "MEDIUM"
+
+  - id: velocity_008
+    description: "WON deal revenue is correctly added to closed ARR"
+    input:
+      stage: "WON"
+      value_sar: 2999
+      close_date: "2026-06-10"
+    expected:
+      closed_arr_includes: 2999
+      flag: "CLOSED_WON"
+
+  - id: velocity_009
+    description: "LOST deal is excluded from pipeline ARR"
+    input:
+      stage: "LOST"
+      value_sar: 4999
+    expected:
+      pipeline_arr_excludes: 4999
+      flag: "CLOSED_LOST"
+
+  - id: velocity_010
+    description: "Stage transition validation — cannot skip from RESEARCH to PROPOSAL"
+    input:
+      stage_transition:
+        from: "RESEARCH"
+        to: "PROPOSAL"
+    expected:
+      valid: false
+      error_contains: "invalid_transition"

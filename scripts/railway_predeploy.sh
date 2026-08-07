@@ -1,8 +1,5 @@
-#!/usr/bin/env sh
-# Railway pre-deploy — run Alembic when DATABASE_URL is available (production).
-# Policy: docs/ops/RAILWAY_PRODUCTION_POLICY_AR.md
-# Override skip (emergency only): RUN_RAILWAY_PRE_DEPLOY_MIGRATE=0
-set -e
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
 cd /app 2>/dev/null || cd "$(dirname "$0")/.." || exit 1
 
@@ -12,14 +9,16 @@ if [ "${RUN_RAILWAY_PRE_DEPLOY_MIGRATE:-0}" = "0" ]; then
 fi
 
 if [ -z "${DATABASE_URL:-}" ]; then
-  echo "RAILWAY_PREDEPLOY: SKIP — DATABASE_URL unset (build/pre-deploy without DB)"
+  echo "RAILWAY_PREDEPLOY: SKIP — DATABASE_URL unset"
   exit 0
 fi
 
 echo "RAILWAY_PREDEPLOY: alembic upgrade head"
+
 if command -v alembic >/dev/null 2>&1; then
   alembic upgrade head
 else
   python -m alembic upgrade head 2>/dev/null || python3 -m alembic upgrade head
 fi
+
 echo "RAILWAY_PREDEPLOY: OK"

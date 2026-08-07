@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "account_id": "demo-test",
+    "offer": "Revenue OS",
+    "language": "en",
+    "timeline": "21 days",
+    "mode": "demo",
+    "generated_at": "2026-06-11T02:45:00.656289Z",
+    "review_status": "pending_review"
+  },
+  "executive_summary": "Proposal for demo-test to implement Revenue OS over 21 days.",
+  "client_situation_hypothesis": "Client operates with scattered tools and manual follow-up. Revenue leakage is likely.",
+  "scope": [
+    "Discovery and diagnostic",
+    "System design and configuration",
+    "Pilot delivery",
+    "Proof-of-value reporting",
+    "Handover and training"
+  ],
+  "deliverables": [
+    "Operating system configuration",
+    "Dashboard and reporting layer",
+    "Governance and review gates",
+    "Documentation and SOPs"
+  ],
+  "implementation_timeline": "21 days",
+  "governance": "Weekly review calls. Human approval required for all client-facing sends.",
+  "proof_plan": "L0-L5 evidence ladder. Pilot metrics tracked weekly.",
+  "client_responsibilities": [
+    "Provide CRM access and data exports",
+    "Assign a point of contact",
+    "Review drafts within 48 hours"
+  ],
+  "exclusions": [
+    "Third-party advertising spend",
+    "Platform subscription fees (billed separately)",
+    "Custom development outside agreed scope"
+  ],
+  "pricing": {
+    "currency": "SAR",
+    "setup": "TBD",
+    "monthly": "TBD",
+    "note": "Pricing placeholders. Fill after discovery call."
+  },
+  "next_step": "Schedule discovery call to confirm scope and pricing.",
+  "signature_placeholder": "____________________\nClient Name & Title\nDate",
+  "offer_reference": "# Revenue OS Offer\n\n## Purpose\nTurn scattered sales, follow-up, and pipeline into a governed revenue operating system.\n\n## Scope\n- Lead intake and scoring\n- Outreach draft generation (human-reviewed)\n- Follow-up queue and reminders\n- Pipeline dashboard\n- Weekly revenue brief\n\n## Deliverables\n- Configured Revenue OS instance\n- Outreach template library (AR/EN)\n- Pipeline dashboard\n- SOP manual\n\n## Timeline\n21 days\n\n## Pricing\nSetup: 15,000 – 30,000 SAR\nMonthly: 3,000 – 7,000 SAR\n\n## Governance\n- "
+}

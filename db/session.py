@@ -61,6 +61,8 @@ async def init_db() -> None:
     # Side-effect import — registers RevenueEventRecord on Base.metadata
     # (model lives in db/models_revenue_events.py to avoid bloating models.py).
     import db.models_revenue_events
+    import db.models_company_targeting
+    import db.models_commercial_intelligence
     from db.models import Base
 
     async with _engine().begin() as conn:

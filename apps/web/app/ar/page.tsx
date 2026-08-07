@@ -93,6 +93,12 @@ export default function ArabicHomePage() {
           >
             الأسعار الكاملة
           </a>
+          <a
+            href="/ar/transformation"
+            className="rounded-2xl border border-cyan-300/30 px-8 py-4 text-lg font-semibold text-cyan-100 hover:bg-cyan-400/10"
+          >
+            أنظمة التحول
+          </a>
         </div>
         <p className="mt-5 text-sm text-slate-500">
           لا عقد شهري قبل إثبات القيمة · لا auto-send · AI يكتب، أنت ترسل

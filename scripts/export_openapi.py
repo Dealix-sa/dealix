@@ -10,7 +10,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+# Ensure the repo root is on sys.path so local packages (e.g. platform_core)
+# are importable when this script is invoked directly by CI.
+_REPO = Path(__file__).resolve().parents[1]
+if str(_REPO) not in sys.path:
+    sys.path.insert(0, str(_REPO))
 
 from api.main import app
 
@@ -25,7 +32,11 @@ def export_openapi(output: Path) -> None:
         json.dumps(schema, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    print(f"Exported OpenAPI schema to {output.relative_to(ROOT)}")
+    try:
+        display = output.relative_to(ROOT)
+    except ValueError:
+        display = output
+    print(f"Exported OpenAPI schema to {display}")
 
 
 def main() -> int:

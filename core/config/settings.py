@@ -31,16 +31,22 @@ class Settings(BaseSettings):
     # ── App ─────────────────────────────────────────────────────
     app_name: str = "Dealix"
     app_version: str = "3.0.0"
-    app_env: Environment = "development"
+    app_env: Environment = Field(
+        default="development",
+        validation_alias=AliasChoices("APP_ENV", "ENVIRONMENT", "VERCEL_ENV", "app_env"),
+    )
     app_debug: bool = False
     app_host: str = "0.0.0.0"  # noqa: S104 — intentional for containerized deploy
     app_port: int = 8000
     # Surfaced on /health so closure/smoke checks can record the deployed
-    # commit. Reads (in order): GIT_SHA (Dockerfile ARG → ENV) or
-    # RAILWAY_GIT_COMMIT_SHA (Railway-provided). Defaults to "unknown".
+    # commit. Reads (in order): GIT_SHA (Dockerfile ARG → ENV),
+    # VERCEL_GIT_COMMIT_SHA (Vercel system env), or RAILWAY_GIT_COMMIT_SHA
+    # (Railway-provided). Defaults to "unknown".
     git_sha: str = Field(
         default="unknown",
-        validation_alias=AliasChoices("GIT_SHA", "RAILWAY_GIT_COMMIT_SHA"),
+        validation_alias=AliasChoices(
+            "GIT_SHA", "VERCEL_GIT_COMMIT_SHA", "RAILWAY_GIT_COMMIT_SHA"
+        ),
     )
     app_timezone: str = "Asia/Riyadh"
     app_default_locale: Locale = "ar"
@@ -52,6 +58,23 @@ class Settings(BaseSettings):
     # Set ADMIN_API_KEYS=key1,key2 in production. Checked at startup.
     # مفتاح API مخصص لمسارات الإدارة — يجب ضبطه في بيئة الإنتاج.
     admin_api_keys: str = ""
+
+    @field_validator("app_env", mode="before")
+    @classmethod
+    def _normalize_app_env(cls, value: str | None) -> str:
+        """Normalize platform env names into Dealix runtime environments.
+
+        Vercel exposes VERCEL_ENV=production|preview|development. Dealix does
+        not have a preview runtime, so preview deployments run as staging while
+        production deployments run as production without requiring a manual
+        APP_ENV variable.
+        """
+        if value is None:
+            return "development"
+        normalized = str(value).strip().lower()
+        if normalized == "preview":
+            return "staging"
+        return normalized
 
     @property
     def admin_api_key_list(self) -> list[str]:

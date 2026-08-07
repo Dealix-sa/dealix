@@ -12,9 +12,9 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-import yaml  # noqa: E402
+import yaml
 
-from auto_client_acquisition.delivery_os.service_readiness import (  # noqa: E402
+from auto_client_acquisition.delivery_os.service_readiness import (
     compute_service_readiness_score,
 )
 
@@ -743,7 +743,7 @@ COMPANY_FILES = (
 
 
 def _run(script: str) -> int:
-    return subprocess.call(  # noqa: S603
+    return subprocess.call(
         [sys.executable, str(REPO / "scripts" / script)],
         cwd=REPO,
     )

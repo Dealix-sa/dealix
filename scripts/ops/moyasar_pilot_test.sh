@@ -100,7 +100,7 @@ echo
 echo "[4/6] Polling Moyasar for invoice status (max 60s)"
 MOYASAR_KEY=$(grep '^MOYASAR_SECRET_KEY=' /opt/dealix/.env | cut -d= -f2- | tr -d '"')
 for i in $(seq 1 20); do
-  INV=$(curl -s -u "${MOYASAR_KEY}:" "https://api.moyasar.com/v1/invoices/$INVOICE_ID")
+  INV=$(curl -s -u "${MOYASAR_KEY}:" "https://api.moyasar.com/v1/invoices/$INVOICE_ID") # gitleaks:allow
   INV_STATUS=$(echo "$INV" | python3 -c "import json,sys; print(json.load(sys.stdin).get('status','?'))")
   echo "  poll $i: status=$INV_STATUS"
   if [[ "$INV_STATUS" == "paid" ]]; then

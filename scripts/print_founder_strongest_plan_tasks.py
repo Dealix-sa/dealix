@@ -11,11 +11,11 @@ _REPO = Path(__file__).resolve().parents[1]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from dealix.commercial_ops.founder_strongest_plan import (  # noqa: E402
+from dealix.commercial_ops.founder_strongest_plan import (
     load_strongest_plan_checklist,
     tasks_by_section,
 )
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 
 def _refs(task: dict) -> list[str]:

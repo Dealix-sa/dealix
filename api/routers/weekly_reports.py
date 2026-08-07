@@ -9,26 +9,25 @@ Prefix: /api/v1/reports
 from __future__ import annotations
 
 import logging
-import os
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
+
+from api.security.api_key import require_founder_admin_key
 
 log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/reports", tags=["Analytics"])
 
-_ADMIN_KEY = os.getenv("DEALIX_ADMIN_API_KEY", "")
-
-
-def _require_admin(x_api_key: str = Header(default="", alias="X-Admin-API-Key")) -> None:
-    if not _ADMIN_KEY:
-        return
-    if x_api_key != _ADMIN_KEY:
-        raise HTTPException(status_code=401, detail="Invalid admin API key")
+# Shared gate: reads ADMIN_API_KEYS / DEALIX_ADMIN_API_KEY per request and
+# refuses production traffic when neither is configured. The local guard this
+# replaced captured DEALIX_ADMIN_API_KEY at import and returned early when it
+# was empty, which left these endpoints open on a host that only set the
+# server-side ADMIN_API_KEYS allowlist.
+_require_admin = require_founder_admin_key
 
 
 class WeekDataInput(BaseModel):

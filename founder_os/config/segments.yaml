@@ -1,0 +1,71 @@
+version: 1.0
+
+default_city: Riyadh
+daily_minimums:
+  research_targets: 50
+  outbound_messages: 20
+  replies: 5
+  calls: 2
+  demos: 1
+
+segments:
+  clinics:
+    name_ar: "عيادات ومراكز طبية"
+    priority: 1
+    google_queries:
+      - "عيادات أسنان في الرياض"
+      - "عيادات تجميل في الرياض"
+      - "عيادات جلدية في الرياض"
+      - "مراكز علاج طبيعي في الرياض"
+    core_offer: "WhatsApp Revenue OS + Review Intelligence OS"
+    high_ticket_offer: "AI Business Command Center"
+    pain_angle: "الاستفسارات والحجوزات تضيع بين واتساب والمتابعة والتقييمات"
+    transformation_angle: "تحويل واتساب والتقييمات والمتابعة إلى نظام حجوزات وتقارير يومية"
+
+  training_centers:
+    name_ar: "مراكز تدريب ومعاهد"
+    priority: 2
+    google_queries:
+      - "مراكز تدريب في الرياض"
+      - "معاهد تدريب في الرياض"
+      - "دورات تدريبية في الرياض"
+    core_offer: "Growth Engine OS"
+    high_ticket_offer: "Command Center OS"
+    pain_angle: "leads الدورات لا تتحول إلى تسجيلات بسبب ضعف المتابعة"
+    transformation_angle: "تحويل الاستفسارات إلى pipeline تسجيل ومتابعة وتقارير"
+
+  agencies:
+    name_ar: "وكالات تسويق"
+    priority: 3
+    google_queries:
+      - "وكالات تسويق في الرياض"
+      - "شركات تسويق رقمي في الرياض"
+      - "وكالة دعاية واعلان في الرياض"
+    core_offer: "Client Command Center OS"
+    high_ticket_offer: "Brand Intelligence OS + Executive Reporting OS"
+    pain_angle: "تقارير العملاء والمهام والتسليم متفرقة"
+    transformation_angle: "ربط العملاء، المهام، التقارير، والهوية في نظام واحد"
+
+  restaurants:
+    name_ar: "مطاعم وكافيهات"
+    priority: 4
+    google_queries:
+      - "مطاعم في الرياض"
+      - "كافيهات في الرياض"
+      - "مطاعم عائلية في الرياض"
+    core_offer: "Review Intelligence OS"
+    high_ticket_offer: "Customer Experience OS"
+    pain_angle: "التقييمات والشكاوى لا تتحول إلى قرارات تشغيلية"
+    transformation_angle: "تحويل صوت العميل إلى قرارات للفروع والتشغيل والهوية"
+
+  real_estate:
+    name_ar: "عقار وخدمات B2B"
+    priority: 5
+    google_queries:
+      - "شركات عقار في الرياض"
+      - "مكاتب عقار في الرياض"
+      - "شركات خدمات اعمال في الرياض"
+    core_offer: "Sales Pipeline OS"
+    high_ticket_offer: "Proposal & Follow-up OS"
+    pain_angle: "العملاء والعروض تحتاج متابعة طويلة وتضيع بدون نظام"
+    transformation_angle: "تحويل leads والعروض إلى pipeline واضح مع follow-up"

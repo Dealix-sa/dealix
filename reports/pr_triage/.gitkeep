@@ -1,0 +1,2 @@
+# Keeps reports/pr_triage/ tracked. Generated triage artifacts here are git-ignored
+# (see .gitignore). Run: make pr-triage  ->  OPEN_PR_TRIAGE.md + open_pr_triage.json

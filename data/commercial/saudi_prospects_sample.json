@@ -1,0 +1,37 @@
+[
+  {
+    "company_name": "Najm Tech",
+    "sector": "software",
+    "city": "Riyadh",
+    "employees_estimate": 45,
+    "website": "https://najmtech.sa"
+  },
+  {
+    "company_name": "Saudi Fintech Labs",
+    "sector": "fintech",
+    "city": "Jeddah",
+    "employees_estimate": 80,
+    "website": "https://saudifintechlabs.com"
+  },
+  {
+    "company_name": "Desert Logistics",
+    "sector": "logistics",
+    "city": "Dammam",
+    "employees_estimate": 120,
+    "website": "https://desertlogistics.sa"
+  },
+  {
+    "company_name": "Riyadh Health Systems",
+    "sector": "healthcare_tech",
+    "city": "Riyadh",
+    "employees_estimate": 30,
+    "website": "https://riyadhhealth.sa"
+  },
+  {
+    "company_name": "Al-Mamlaka PropTech",
+    "sector": "proptech",
+    "city": "Khobar",
+    "employees_estimate": 55,
+    "website": "https://almamlakapt.sa"
+  }
+]

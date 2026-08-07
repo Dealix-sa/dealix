@@ -1,0 +1,70 @@
+{
+  "company": "Dealix",
+  "release_name": "Commercial Launch Control",
+  "release_mode": "founder_led_commercial_launch",
+  "launch_verdict_target": "READY_FOR_FOUNDER_LED_COMMERCIAL_SPRINT",
+  "required_foundations": [
+    "Database foundation PR must be reviewed first",
+    "Startup OS Release Gate must pass locally",
+    "Startup OS Day reports must generate",
+    "Commercial queue must contain reviewed accounts",
+    "Frontend command pages must build or have documented non-blocking verifier status"
+  ],
+  "launch_products": [
+    "Revenue Command Room OS",
+    "Company Brain OS",
+    "Follow-up Recovery OS",
+    "Client Delivery OS",
+    "AI Trust and Governance OS"
+  ],
+  "commercial_sprint_packages": [
+    {
+      "name": "AI Revenue Diagnostic",
+      "price_range_sar": "0-1500",
+      "duration": "1-3 days",
+      "goal": "turn a company pain into a scoped sprint"
+    },
+    {
+      "name": "7-Day Revenue Command Room Sprint",
+      "price_range_sar": "5000-12000",
+      "duration": "7 days",
+      "goal": "build the first revenue command room and daily queue"
+    },
+    {
+      "name": "14-Day Company Brain Sprint",
+      "price_range_sar": "15000-35000",
+      "duration": "14 days",
+      "goal": "build decision desk, risk radar, and board memo workflow"
+    },
+    {
+      "name": "Monthly Managed OS",
+      "price_range_sar": "3000-25000 monthly",
+      "duration": "monthly",
+      "goal": "operate and improve the client system with proof packs"
+    }
+  ],
+  "daily_launch_outputs": [
+    "startup command center",
+    "founder daily brief",
+    "startup proof pack",
+    "commercial priority queue",
+    "founder review actions",
+    "frontend snapshots"
+  ],
+  "launch_guardrails": [
+    "review-first external action",
+    "no fake ROI",
+    "no fake testimonials",
+    "no guaranteed revenue claim",
+    "source_url required",
+    "pain remains a hypothesis until verified",
+    "proof pack required after every paid sprint"
+  ],
+  "merge_order": [
+    "Review and finish PR 787 first if it remains open",
+    "Rebase PR 788 on updated main",
+    "Run Startup OS Release Gate",
+    "Run apps/web verifier",
+    "Resolve conflicts and only then merge PR 788"
+  ]
+}

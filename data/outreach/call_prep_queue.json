@@ -1,0 +1,18 @@
+{
+  "calls": [
+    {
+      "company": "شركة تدريب الرياض",
+      "sector": "training",
+      "status": "ready",
+      "path": "out/call_prep/شركة_تدريب_الرياض_call_prep.md",
+      "created_at": "2026-06-07T18:11:49.718843+00:00"
+    },
+    {
+      "company": "شركة تدريب الرياض",
+      "sector": "training",
+      "status": "ready",
+      "path": "out/call_prep/شركة_تدريب_الرياض_call_prep.md",
+      "created_at": "2026-06-07T18:17:31.655358+00:00"
+    }
+  ]
+}

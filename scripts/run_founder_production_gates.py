@@ -16,7 +16,7 @@ if str(ROOT) not in sys.path:
 from dealix.commercial_ops.founder_production_gates import (
     build_founder_production_gates,
 )
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 ensure_stdout_utf8()
 

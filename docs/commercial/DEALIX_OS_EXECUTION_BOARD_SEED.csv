@@ -1,0 +1,18 @@
+table,item,area,priority,status,autonomy_level,next_step
+Strategy Backlog,Production Trust Spine,Production Trust,P0,Todo,L4 Repo Execute,Verify Railway CI smoke and security gates
+Strategy Backlog,Company OS Foundation,Company OS,P0,Todo,L3 Internal Execute,Generate report drafts approvals and proof logs
+Strategy Backlog,Autonomous Growth OS,Autonomous Growth,P1,Todo,L3 Internal Execute,Generate safe daily action queue and content queue
+Strategy Backlog,Self Improvement Layer,Self Improvement,P1,Todo,L3 Internal Execute,Detect failures and propose improvements
+Strategy Backlog,Revenue Command Pilot,Revenue Execution,P0,Todo,L2 Draft,Prepare first closeable 14-day pilot offer
+Strategy Backlog,Skill System,Skill System,P1,Done,L2 Draft,Package reusable Dealix operating skill
+Action Queue,Run production trust triage,Production Trust,P0,Todo,L1 Analyze,Identify current CI and production blockers
+Action Queue,Verify Company OS daily runner,Company OS,P0,Todo,L3 Internal Execute,Run draft-only daily report command
+Action Queue,Verify Autonomous Growth runner,Autonomous Growth,P1,Todo,L3 Internal Execute,Run draft-only growth command
+Action Queue,Verify Self Improvement runner,Self Improvement,P1,Todo,L3 Internal Execute,Run daily learning command
+Action Queue,Prepare Slack command brief,Connector Ops,P1,Todo,L2 Draft,Create internal Slack message not customer outbound
+Action Queue,Build warm Contacts Radar,Connector Ops,P1,Todo,L1 Analyze,Use only known or opt-in contacts
+Approval Queue,Approve first outbound template,Revenue Execution,P0,Waiting Approval,L5 External Blocked,Review before any send
+Approval Queue,Approve Revenue Command Pilot offer,Revenue Execution,P0,Waiting Approval,L2 Draft,Confirm price and promise boundaries
+Approval Queue,Approve production config mutation,Production Trust,P0,Waiting Approval,L5 External Blocked,Only after CI and explicit approval
+Proof Ledger,Skill packaged,Skill System,P1,Done,L2 Draft,skill.zip created and validated
+Proof Ledger,GitHub execution branch created,Production Trust,P0,Done,L4 Repo Execute,Branch feat/dealix-autonomous-company-os-execution-spine created

@@ -80,7 +80,10 @@ fi
 
 echo "── Forbidden tokens sweep ─────────────────────────────"
 FORBIDDEN_RE='(\bguaranteed?\b|\bblast\b|\bscraping\b|نضمن|مضمون|cold[[:space:]]+(whatsapp|outreach|email))'
-if grep -qiE "$FORBIDDEN_RE" landing/customer-portal.html landing/executive-command-center.html 2>/dev/null; then
+# Allow negation/disclaimer lines (e.g. "not guaranteed outcomes", "بدون cold
+# WhatsApp ولا scraping") — these describe what we DON'T do, not claims.
+DISCLAIMER_RE='not guaranteed outcomes|ليست نتائج مضمونة|بدون|ولا |صفر|[^a-zA-Z]no |never|without'
+if grep -hiE "$FORBIDDEN_RE" landing/customer-portal.html landing/executive-command-center.html 2>/dev/null | grep -qivE "$DISCLAIMER_RE"; then
   results+=("FORBIDDEN_CLAIMS_HTML=FAIL")
   overall_pass=false
 else

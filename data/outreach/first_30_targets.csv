@@ -1,0 +1,11 @@
+id,company,sector,city,source,relationship,priority,approved_for_outreach,notes
+1,,marketing_agency,Riyadh,warm_intro,,P0,no,Seed row — fill with a real warm lead. approved_for_outreach stays 'no' until founder approves (A3).
+2,,ecommerce,Jeddah,referral,,P0,no,
+3,,real_estate,Riyadh,warm_intro,,P1,no,
+4,,clinic,Dammam,referral,,P1,no,
+5,,logistics,Riyadh,inbound,,P1,no,
+6,,saas,Riyadh,warm_intro,,P2,no,
+7,,retail,Jeddah,referral,,P2,no,
+8,,education,Riyadh,warm_intro,,P2,no,
+9,,hospitality,Makkah,referral,,P2,no,
+10,,fintech,Riyadh,inbound,,P2,no,

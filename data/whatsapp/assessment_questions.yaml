@@ -1,0 +1,95 @@
+# Dealix Company Readiness Scan — «فحص جاهزية الإيرادات والمتابعة»
+# Source of truth mirrors auto_client_acquisition/whatsapp_client_os/assessment.py::AXES
+# 10 axes × 3–4 options. Each option carries a 0–10 readiness score.
+# Higher score = more ready. The engine maps (axis, option_id) → score.
+schema_version: "1.0"
+title_ar: "فحص جاهزية الإيرادات والمتابعة — Dealix Company Readiness Scan"
+title_en: "Dealix Company Readiness Scan"
+pillars:
+  revenue_readiness: [lead_flow, decision_maker, offer_clarity, urgency]
+  follow_up_maturity: [channel_chaos, follow_up, crm, reporting]
+  automation_readiness: [automation_readiness, compliance_privacy]
+
+axes:
+  - axis: lead_flow
+    pillar: revenue_readiness
+    question_ar: "هل عندكم استفسارات أو leads شهريًا؟"
+    options:
+      - { id: lead_flow_high, label_ar: "نعم، كثير (50+ شهريًا)", score: 9 }
+      - { id: lead_flow_some, label_ar: "نعم، متوسط", score: 6 }
+      - { id: lead_flow_few,  label_ar: "قليل", score: 3 }
+      - { id: lead_flow_none, label_ar: "لا / غير متأكد", score: 1 }
+
+  - axis: channel_chaos
+    pillar: follow_up_maturity
+    question_ar: "وين تجيكم الاستفسارات غالبًا؟"
+    options:
+      - { id: channel_one,    label_ar: "قناة واحدة منظمة", score: 9 }
+      - { id: channel_two,    label_ar: "قناتين (واتساب + إيميل)", score: 6 }
+      - { id: channel_many,   label_ar: "قنوات متعددة ومبعثرة", score: 3 }
+      - { id: channel_unsure, label_ar: "غير متأكد", score: 2 }
+
+  - axis: follow_up
+    pillar: follow_up_maturity
+    question_ar: "هل في متابعة موحّدة للـ leads؟"
+    options:
+      - { id: follow_up_yes,     label_ar: "نعم، عملية واضحة", score: 9 }
+      - { id: follow_up_partial, label_ar: "جزئيًا / يدوي", score: 5 }
+      - { id: follow_up_no,      label_ar: "لا، تضيع كثير", score: 2 }
+
+  - axis: crm
+    pillar: follow_up_maturity
+    question_ar: "هل تستخدمون CRM؟"
+    options:
+      - { id: crm_active,  label_ar: "نعم، فعّال", score: 9 }
+      - { id: crm_partial, label_ar: "موجود لكن غير منظم", score: 5 }
+      - { id: crm_none,    label_ar: "لا / Excel فقط", score: 2 }
+
+  - axis: decision_maker
+    pillar: revenue_readiness
+    question_ar: "مين يقرر الشراء عندكم؟"
+    options:
+      - { id: dm_clear,   label_ar: "واضح (شخص/لجنة محددة)", score: 9 }
+      - { id: dm_shared,  label_ar: "أكثر من شخص", score: 6 }
+      - { id: dm_unclear, label_ar: "غير واضح", score: 3 }
+
+  - axis: offer_clarity
+    pillar: revenue_readiness
+    question_ar: "هل عروضكم وأسعاركم واضحة؟"
+    options:
+      - { id: offer_clear,   label_ar: "نعم، واضحة وموثّقة", score: 9 }
+      - { id: offer_partial, label_ar: "واضحة جزئيًا", score: 5 }
+      - { id: offer_unclear, label_ar: "غير واضحة", score: 2 }
+
+  - axis: reporting
+    pillar: follow_up_maturity
+    question_ar: "هل الإدارة تشوف تقرير أسبوعي للمبيعات؟"
+    options:
+      - { id: report_weekly,  label_ar: "نعم، أسبوعي", score: 9 }
+      - { id: report_monthly, label_ar: "شهري فقط", score: 5 }
+      - { id: report_none,    label_ar: "لا يوجد تقرير", score: 2 }
+
+  - axis: automation_readiness
+    pillar: automation_readiness
+    question_ar: "هل عندكم أدوات مربوطة (CRM/تقويم/واتساب أعمال)؟"
+    options:
+      - { id: auto_connected, label_ar: "نعم، مربوطة", score: 9 }
+      - { id: auto_some,      label_ar: "بعضها", score: 5 }
+      - { id: auto_none,      label_ar: "لا شيء مربوط", score: 2 }
+
+  - axis: compliance_privacy
+    pillar: automation_readiness
+    question_ar: "هل بياناتكم منظمة وواضحة الحساسية؟"
+    options:
+      - { id: comp_none,   label_ar: "لا بيانات حساسة", score: 9 }
+      - { id: comp_some,   label_ar: "بيانات شخصية (أرقام/إيميلات)", score: 6, sensitive: true }
+      - { id: comp_high,   label_ar: "بيانات حساسة (مالية/صحية/هويات)", score: 3, sensitive: true }
+      - { id: comp_unsure, label_ar: "غير متأكد", score: 4, sensitive: true }
+
+  - axis: urgency
+    pillar: revenue_readiness
+    question_ar: "وش تبغون تحققون خلال 14 يوم؟"
+    options:
+      - { id: urgency_now,    label_ar: "نتيجة سريعة الآن", score: 9 }
+      - { id: urgency_soon,   label_ar: "خلال هذا الشهر", score: 6 }
+      - { id: urgency_explore, label_ar: "نستكشف فقط", score: 3 }

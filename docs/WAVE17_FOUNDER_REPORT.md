@@ -23,7 +23,7 @@ Engineering: **PASS (10/10)** · 0 FAIL · 4 founder actions pending.
 
 | # | Action | Time | Detail |
 |---|---|---|---|
-| 1 | **Merge PR #222** (Wave 16) | 2 min | https://github.com/voxc2/dealix/pull/222 — engineering already PASS |
+| 1 | **Merge PR #222** (Wave 16) | 2 min | https://github.com/Dealix-sa/dealix/pull/222 — engineering already PASS |
 | 2 | **Sign DPA self-execution** | 5 min | Create `data/wave11/founder_legal_signature.txt` per `LEGAL_FOUNDER_SELF_EXECUTION.md` §7 |
 | 3 | **Coordinate DNS records** (SPF/DKIM/DMARC) | ~30 min + propagation | At domain registrar; verify via `dealix_dns_verify.py` |
 | 4 | **Log first 5 warm intros** | 10 min | Run `dealix_first10_warm_intros.py add` 5× |

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/followup.schema.json",
+  "title": "Followup",
+  "description": "A scheduled follow-up reminder. Reminders only; nothing is sent automatically.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "prospect_id", "due_date", "status"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^fu_[a-f0-9]+$" },
+    "prospect_id": { "type": "string" },
+    "due_date": { "type": "string" },
+    "channel": { "type": "string", "enum": ["email", "whatsapp", "linkedin", "phone", "proposal"] },
+    "draft_type": { "type": "string" },
+    "message_ref": { "type": "string", "description": "Draft id once a draft exists" },
+    "status": { "type": "string", "enum": ["due", "scheduled", "completed", "skipped"] },
+    "risk": { "type": "string", "enum": ["low", "medium", "high"] },
+    "created_at": { "type": "string" }
+  }
+}

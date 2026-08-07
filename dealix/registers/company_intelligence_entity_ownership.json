@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Prevent duplicate Company Intelligence OS entities and assign one canonical ownership boundary for every object in the Dealix execution spine.",
+  "source_issue": 1012,
+  "rules": {
+    "one_canonical_owner_per_entity": true,
+    "aliases_require_adapter": true,
+    "new_entities_require_registry_change": true,
+    "external_tools_are_never_source_of_truth": true,
+    "external_actions_require_approval": true,
+    "revenue_requires_payment_evidence": true,
+    "delivery_requires_proof_evidence": true
+  },
+  "entities": [
+    {
+      "name": "Tenant",
+      "owner": "tenant_and_auth",
+      "canonical_boundary": "existing tenant/auth models and request context",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["id", "status"],
+      "forbidden_parallel_names": ["WorkspaceTenant", "ClientTenant"]
+    },
+    {
+      "name": "CompanyBrain",
+      "owner": "company_brain",
+      "canonical_boundary": "existing company brain/configuration surfaces",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "offers", "personas", "restrictions", "proof_requirements"],
+      "forbidden_parallel_names": ["BusinessBrain", "ClientBrain", "BrandBrain"]
+    },
+    {
+      "name": "Offer",
+      "owner": "commercial_offers",
+      "canonical_boundary": "canonical commercial offer ladder and quote-only constraints",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "name", "status", "approval_policy"],
+      "forbidden_parallel_names": ["Package", "ProductOffer"]
+    },
+    {
+      "name": "Persona",
+      "owner": "company_brain",
+      "canonical_boundary": "company brain target-persona definitions",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "name", "evidence"],
+      "forbidden_parallel_names": ["ICPProfile", "BuyerAvatar"]
+    },
+    {
+      "name": "Company",
+      "owner": "opportunity_graph",
+      "canonical_boundary": "company/contact/signal graph",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "name", "source_id", "confidence"],
+      "forbidden_parallel_names": ["Account", "ProspectCompany", "OrganizationRecord"]
+    },
+    {
+      "name": "Contact",
+      "owner": "opportunity_graph",
+      "canonical_boundary": "company/contact/signal graph",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "company_id", "source_id", "confidence"],
+      "forbidden_parallel_names": ["LeadPerson", "ProspectContact"]
+    },
+    {
+      "name": "Source",
+      "owner": "data_provenance",
+      "canonical_boundary": "source and provenance registry",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "source_type", "source_url", "retrieved_at", "confidence"],
+      "forbidden_parallel_names": ["EvidenceSource", "ResearchSource"]
+    },
+    {
+      "name": "ConsentBasis",
+      "owner": "privacy_and_governance",
+      "canonical_boundary": "consent, lawful-basis and channel-eligibility policy",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "basis", "channel", "status", "recorded_at"],
+      "forbidden_parallel_names": ["Reachability", "ContactPermission"]
+    },
+    {
+      "name": "Signal",
+      "owner": "opportunity_graph",
+      "canonical_boundary": "company/contact/signal graph",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "company_id", "source_id", "signal_type", "confidence"],
+      "forbidden_parallel_names": ["IntentSignal", "MarketSignalRecord"]
+    },
+    {
+      "name": "Relationship",
+      "owner": "opportunity_graph",
+      "canonical_boundary": "relationship edges between companies, contacts and partners",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "from_id", "to_id", "relationship_type", "source_id"],
+      "forbidden_parallel_names": ["Connection", "NetworkEdge"]
+    },
+    {
+      "name": "Opportunity",
+      "owner": "deal_intelligence",
+      "canonical_boundary": "sales and commercial opportunity intelligence",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "company_id", "offer_id", "stage", "score", "score_reasons", "next_action"],
+      "forbidden_parallel_names": ["Deal", "RevenueOpportunity", "LeadOpportunity"]
+    },
+    {
+      "name": "PartnershipOpportunity",
+      "owner": "partnership_intelligence",
+      "canonical_boundary": "partnership and market-access opportunity intelligence",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "company_id", "partnership_type", "score", "score_reasons", "next_action"],
+      "forbidden_parallel_names": ["PartnerDeal", "AllianceOpportunity"]
+    },
+    {
+      "name": "DepartmentPlan",
+      "owner": "strategy_execution",
+      "canonical_boundary": "department strategy translated into bounded actions",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "department", "goal", "actions", "kpis"],
+      "forbidden_parallel_names": ["AgentPlan", "TeamPlan"]
+    },
+    {
+      "name": "Action",
+      "owner": "action_queue",
+      "canonical_boundary": "single internal action queue",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "action_type", "risk_level", "autonomy_level", "status", "idempotency_key"],
+      "forbidden_parallel_names": ["TaskAction", "ExecutionTask"]
+    },
+    {
+      "name": "Draft",
+      "owner": "draft_generation",
+      "canonical_boundary": "channel and proposal drafts linked to actions and approvals",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "action_id", "draft_type", "content_hash", "status"],
+      "forbidden_parallel_names": ["MessageDraft", "OutboundDraft"]
+    },
+    {
+      "name": "Approval",
+      "owner": "approval_center",
+      "canonical_boundary": "single approval ledger for all external or sensitive actions",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "action_id", "risk_level", "status", "decision_at"],
+      "forbidden_parallel_names": ["HumanGate", "DecisionApproval"]
+    },
+    {
+      "name": "Proposal",
+      "owner": "proposal_intelligence",
+      "canonical_boundary": "proposal factory using approved offers, evidence and capacity constraints",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "opportunity_id", "offer_id", "version", "status", "approval_id"],
+      "forbidden_parallel_names": ["QuoteProposal", "CommercialProposalRecord"]
+    },
+    {
+      "name": "OutcomeEvent",
+      "owner": "outcome_ledger",
+      "canonical_boundary": "real or explicitly synthetic execution outcomes",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "action_id", "event_type", "occurred_at", "evidence_type", "is_synthetic"],
+      "forbidden_parallel_names": ["ResultEvent", "ExecutionOutcome"]
+    },
+    {
+      "name": "ProofEvent",
+      "owner": "proof_ledger",
+      "canonical_boundary": "single evidence ledger for payment, delivery and verified value",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "entity_type", "entity_id", "proof_type", "evidence_ref", "verified_at"],
+      "forbidden_parallel_names": ["EvidenceEvent", "ProofLogRecord"]
+    },
+    {
+      "name": "LearningEvent",
+      "owner": "self_improvement",
+      "canonical_boundary": "learning events derived from outcomes, failures and approvals",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "event_type", "evidence_refs", "confidence", "recommended_change"],
+      "forbidden_parallel_names": ["Lesson", "ImprovementEvent"]
+    },
+    {
+      "name": "PlaybookVersion",
+      "owner": "self_improvement",
+      "canonical_boundary": "versioned playbook changes with evidence and approval",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "playbook_name", "version", "change_reason", "evidence_refs", "approval_status"],
+      "forbidden_parallel_names": ["StrategyVersion", "WorkflowVersion"]
+    },
+    {
+      "name": "DailyCommand",
+      "owner": "executive_reporting",
+      "canonical_boundary": "single daily executive command output",
+      "status": "retain_and_consolidate",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "command_date", "priorities", "approval_items", "proof_summary", "learning_summary"],
+      "forbidden_parallel_names": ["DailyBrief", "CEOReport", "FounderCommand"]
+    }
+  ]
+}

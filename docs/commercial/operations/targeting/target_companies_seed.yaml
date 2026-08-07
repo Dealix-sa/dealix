@@ -1,0 +1,89 @@
+# Target Companies Seed — Daily Targeting Brief input
+#
+# HOW TO USE:
+#   - Fill this list ONLY from your own CRM, founder network, or directly
+#     sourced inputs. The system NEVER scrapes the web, email, or LinkedIn.
+#   - Every company here is an EXAMPLE / PLACEHOLDER. Replace each "REPLACE:"
+#     row with a real company you already have a relationship or lead with.
+#   - `declared_weaknesses` are OPERATOR HYPOTHESES (your read), not verified
+#     facts. They are labeled is_hypothesis in the dossier. Never assert an
+#     invented weakness, revenue, or headcount about a real named company.
+#   - All outreach generated from this file is DRAFT-ONLY and queued for human
+#     approval. No auto-send, no cold WhatsApp, no LinkedIn automation.
+#
+# Valid declared_weaknesses codes (see WEAKNESS_CATALOG):
+#   untracked_source, incomplete_profile, stale_relationship,
+#   sector_outside_icp, no_followup_owner, slow_first_response, no_proof,
+#   low_data_quality, no_clear_offer, manual_excel_ops
+
+companies:
+  # Placeholder rows — the loader SKIPS any company_name starting with "REPLACE:".
+  - company_name: "REPLACE: وكالة تسويق من شبكتك"
+    sector: "marketing_agency"
+    city: "Riyadh"
+    source: "founder_network"
+    relationship_status: "warm_intro"
+    employee_count: 25
+    last_contact_days: 14
+    manual_priority: true
+    declared_weaknesses:
+      - no_clear_offer
+      - manual_excel_ops
+    notes: "Replace with a real warm contact from your network."
+    consent_note: "Confirm consent before any outreach."
+
+  - company_name: "REPLACE: شركة عميل سابق"
+    sector: "retail"
+    city: "Jeddah"
+    source: ""
+    relationship_status: "none"
+    employee_count: 40
+    last_contact_days: 120
+    manual_priority: false
+    declared_weaknesses:
+      - stale_relationship
+    notes: "Replace with a dormant account you want to re-activate."
+    consent_note: "No cold outreach without prior relationship."
+
+  # Generic, clearly-fictional examples (safe to keep for demos / tests).
+  - company_name: "شركة مثال — تجزئة إلكترونية"
+    sector: "ecommerce"
+    city: "Riyadh"
+    source: "founder_network"
+    relationship_status: "warm_intro"
+    employee_count: 30
+    last_contact_days: 10
+    manual_priority: true
+    declared_weaknesses:
+      - manual_excel_ops
+      - no_proof
+    notes: "Fictional example company for demonstration only."
+    consent_note: "Example only — not a real lead."
+
+  - company_name: "شركة مثال — خدمات لوجستية"
+    sector: "logistics"
+    city: "Dammam"
+    source: "founder_network"
+    relationship_status: "explicit_consent"
+    employee_count: 80
+    last_contact_days: 75
+    manual_priority: false
+    declared_weaknesses:
+      - stale_relationship
+      - no_followup_owner
+    notes: "Fictional example company for demonstration only."
+    consent_note: "Example only — not a real lead."
+
+  - company_name: "شركة مثال — عيادة أسنان"
+    sector: "healthcare"
+    city: "Riyadh"
+    source: ""
+    relationship_status: "none"
+    employee_count: 12
+    last_contact_days: 200
+    manual_priority: false
+    declared_weaknesses:
+      - low_data_quality
+      - slow_first_response
+    notes: "Fictional example with missing source to exercise untracked_source."
+    consent_note: "Example only — not a real lead."

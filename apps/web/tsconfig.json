@@ -20,7 +20,11 @@
       }
     ],
     "allowJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": [
     "**/*.ts",

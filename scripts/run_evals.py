@@ -18,9 +18,9 @@ _REPO = Path(__file__).resolve().parents[1]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-import httpx  # noqa: E402
+import httpx
 
-from api.main import create_app  # noqa: E402
+from api.main import create_app
 
 _DEFAULT_SUITES = ("personal_operator", "revenue_os")
 

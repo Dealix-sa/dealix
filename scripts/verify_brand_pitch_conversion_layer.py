@@ -1,5 +1,5 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 required = [
     "docs/brand/DEALIX_VISUAL_IDENTITY_AR.md",

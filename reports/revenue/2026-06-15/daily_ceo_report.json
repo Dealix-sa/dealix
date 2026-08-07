@@ -1,0 +1,26 @@
+{
+  "date": "2026-06-15",
+  "prospects": {
+    "total": 3,
+    "hot": 3,
+    "warm": 0,
+    "cold": 0
+  },
+  "drafts_generated_today": 3,
+  "pipeline_forecast_sar": 0,
+  "sector_breakdown": {
+    "logistics": 1,
+    "real_estate": 1,
+    "clinics": 1
+  },
+  "top_pain_patterns": [
+    "متابعة الطلبات وغرفة قيادة تشغيلية",
+    "leads كثيرة بدون متابعة منظمة",
+    "تقييمات ومواعيد ومتابعة مرضى"
+  ],
+  "next_actions_today": [
+    "Review 3 drafts in outbox/2026-06-15",
+    "Contact 3 hot prospects",
+    "Update ledgers/deals_pipeline.csv after meetings"
+  ]
+}

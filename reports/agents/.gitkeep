@@ -1,0 +1,2 @@
+# Keeps reports/agents/ tracked. Generated audit artifacts here are git-ignored
+# (see .gitignore). Run: make agents-audit  ->  agent_team_audit.{json,md}

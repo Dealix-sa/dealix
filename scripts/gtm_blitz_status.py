@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.gtm_blitz_tracker import build_gtm_blitz_snapshot  # noqa: E402
+from dealix.commercial_ops.gtm_blitz_tracker import build_gtm_blitz_snapshot
 
 
 def main() -> int:

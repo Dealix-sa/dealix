@@ -1,0 +1,44 @@
+[
+  {
+    "account_id": "acct-clinic-001",
+    "company_name": "عيادة تجريبية متعددة الفروع",
+    "sector": "clinics",
+    "city": "Riyadh",
+    "website": "https://example-clinic.com",
+    "source_url": "https://example-clinic.com/contact",
+    "source_type": "client_provided",
+    "public_email": "ops@example-clinic.com",
+    "whatsapp": "+966500000001",
+    "whatsapp_opt_in": true,
+    "pain_hypothesis": "استفسارات وحجوزات واتساب تحتاج متابعة منظمة.",
+    "recommended_motion": "sales",
+    "recommended_product": "WhatsApp / Inbox Follow-up OS"
+  },
+  {
+    "account_id": "acct-logistics-001",
+    "company_name": "شركة لوجستية تجريبية",
+    "sector": "logistics",
+    "city": "Jeddah",
+    "website": "https://example-logistics.com",
+    "source_url": "https://example-logistics.com/partners",
+    "source_type": "public_contact_page",
+    "public_email": "partnerships@example-logistics.com",
+    "linkedin_url": "https://linkedin.com/company/example-logistics",
+    "pain_hypothesis": "فرص شراكات وتوزيع تحتاج follow-up وproposal push.",
+    "recommended_motion": "partnership",
+    "recommended_product": "Partnership Growth Sprint"
+  },
+  {
+    "account_id": "acct-training-001",
+    "company_name": "مركز تدريب تجريبي",
+    "sector": "training",
+    "city": "Dammam",
+    "website": "https://example-training.com",
+    "source_url": "https://example-training.com/programs",
+    "source_type": "client_provided",
+    "public_email": "sales@example-training.com",
+    "pain_hypothesis": "عروض التدريب تحتاج متابعة قبل إغلاق التسجيل.",
+    "recommended_motion": "proposal_push",
+    "recommended_product": "Growth Card Sprint"
+  }
+]

@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from auto_client_acquisition.proof_architecture_os.proof_pack_render import (  # noqa: E402
+from auto_client_acquisition.proof_architecture_os.proof_pack_render import (
     proof_pack_to_markdown,
     proof_pack_to_pdf,
 )

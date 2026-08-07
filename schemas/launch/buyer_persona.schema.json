@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/buyer_persona.schema.json",
+  "title": "Dealix Buyer Persona (launch bundle)",
+  "type": "object",
+  "required": ["persona_id", "name", "role_examples", "mindset", "triggers", "fears", "best_channel", "tone_rules", "forbidden_in_copy"],
+  "additionalProperties": false,
+  "properties": {
+    "persona_id": { "type": "string", "pattern": "^[a-z_]+$" },
+    "name": { "type": "string" },
+    "role_examples": { "type": "array", "items": { "type": "string" } },
+    "mindset": { "type": "string" },
+    "triggers": { "type": "array", "items": { "type": "string" } },
+    "fears": { "type": "array", "items": { "type": "string" } },
+    "best_channel": { "enum": ["email", "linkedin_manual", "phone", "whatsapp_after_consent"] },
+    "tone_rules": { "type": "array", "items": { "type": "string" } },
+    "forbidden_in_copy": { "type": "array", "items": { "type": "string" } }
+  }
+}

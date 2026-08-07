@@ -1,0 +1,104 @@
+version: 1.0
+
+daily_targets:
+  default_city: "Riyadh"
+  daily_search_limit: 30
+  daily_outbound_limit: 20
+  max_followups_per_day: 20
+
+segments:
+  - id: clinics
+    name_ar: "عيادات ومراكز طبية"
+    city_queries:
+      - "عيادات أسنان في الرياض"
+      - "عيادات تجميل في الرياض"
+      - "مراكز علاج طبيعي في الرياض"
+      - "عيادات جلدية في الرياض"
+    primary_offer: "whatsapp_revenue_os"
+    secondary_offers:
+      - "review_intelligence_os"
+      - "ai_business_command_center"
+      - "customer_experience_os"
+    pain_signals:
+      - "واتساب يستقبل استفسارات كثيرة"
+      - "المواعيد والمتابعات تضيع"
+      - "التقييمات لا تتحول إلى قرارات"
+      - "الإدارة لا ترى pipeline يومي"
+    opening_message_angle: "تقليل ضياع الاستفسارات والحجوزات من واتساب"
+    priority: 1
+
+  - id: training_centers
+    name_ar: "مراكز تدريب ومعاهد"
+    city_queries:
+      - "مراكز تدريب في الرياض"
+      - "معاهد تدريب في الرياض"
+      - "دورات تدريبية في الرياض"
+    primary_offer: "growth_engine_os"
+    secondary_offers:
+      - "whatsapp_revenue_os"
+      - "executive_reporting_os"
+      - "ai_business_command_center"
+    pain_signals:
+      - "leads كثيرة للدورات"
+      - "المتابعات متأخرة"
+      - "العروض لا تغلق"
+      - "لا يوجد report أسبوعي واضح"
+    opening_message_angle: "تحويل الاستفسارات إلى تسجيلات ومتابعات منظمة"
+    priority: 2
+
+  - id: agencies
+    name_ar: "وكالات تسويق"
+    city_queries:
+      - "وكالات تسويق في الرياض"
+      - "شركات تسويق رقمي في الرياض"
+      - "وكالة دعاية واعلان في الرياض"
+    primary_offer: "client_experience_os"
+    secondary_offers:
+      - "executive_reporting_os"
+      - "brand_intelligence_os"
+      - "ai_agent_workforce_os"
+    pain_signals:
+      - "تقارير العملاء يدوية"
+      - "متابعة العملاء والمهام متفرقة"
+      - "صعوبة إثبات الأثر"
+      - "حاجة لهوية وقوالب ثابتة"
+    opening_message_angle: "Command Center يربط العملاء والتقارير والمهام"
+    priority: 3
+
+  - id: restaurants
+    name_ar: "مطاعم وكافيهات متعددة الفروع"
+    city_queries:
+      - "مطاعم في الرياض"
+      - "كافيهات في الرياض"
+      - "مطاعم عائلية في الرياض"
+    primary_offer: "review_intelligence_os"
+    secondary_offers:
+      - "customer_experience_os"
+      - "ai_business_command_center"
+      - "brand_intelligence_os"
+    pain_signals:
+      - "تقييمات كثيرة لا يتم تحليلها"
+      - "شكاوى متكررة"
+      - "اختلاف جودة الفروع"
+      - "غياب تقرير تنفيذي عن صوت العميل"
+    opening_message_angle: "تحويل التقييمات والشكاوى إلى قرارات تشغيلية"
+    priority: 4
+
+  - id: real_estate
+    name_ar: "عقار وخدمات B2B"
+    city_queries:
+      - "شركات عقار في الرياض"
+      - "مكاتب عقار في الرياض"
+      - "شركات خدمات اعمال في الرياض"
+    primary_offer: "sales_pipeline_os"
+    secondary_offers:
+      - "proposal_followup_os"
+      - "growth_engine_os"
+      - "ai_business_command_center"
+    pain_signals:
+      - "leads طويلة وتحتاج متابعة"
+      - "العروض تضيع بدون follow-up"
+      - "لا يوجد lost reasons واضح"
+      - "فريق المبيعات يحتاج dashboard"
+    opening_message_angle: "تنظيم pipeline والمتابعة والعروض"
+    priority: 5

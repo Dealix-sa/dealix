@@ -1,0 +1,26 @@
+{
+  "schema": "dealix.release_manifest.v1",
+  "generated_at": "2026-06-30T01:42:08.394943+00:00",
+  "commit_sha": "3b5a12dccb3c67a17ee15cfbda6f0ae8fe43a6ce",
+  "checks": [
+    "make env-check",
+    "make api-contract-check",
+    "make security-smoke",
+    "make dependency-inventory",
+    "make prod-verify"
+  ],
+  "documents": {
+    "production_readiness": true,
+    "commercial_go_live": true,
+    "domain_runbook": true,
+    "frontend_runbook": true,
+    "server_hardening": true,
+    "monitoring": true,
+    "incident_drill": true,
+    "supply_chain_policy": true
+  },
+  "artifacts": {
+    "dependency_inventory": "docs/generated/dependency-inventory.json",
+    "openapi_baseline": "docs/architecture/openapi.json"
+  }
+}

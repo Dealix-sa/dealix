@@ -1,0 +1,117 @@
+{
+  "additionalProperties": false,
+  "description": "A qualified company record. No personal data — roles + public domains.",
+  "properties": {
+    "prospect_ref": {
+      "title": "Prospect Ref",
+      "type": "string"
+    },
+    "company_label": {
+      "default": "",
+      "title": "Company Label",
+      "type": "string"
+    },
+    "website_domain": {
+      "default": "",
+      "title": "Website Domain",
+      "type": "string"
+    },
+    "sector": {
+      "default": "",
+      "title": "Sector",
+      "type": "string"
+    },
+    "region": {
+      "default": "Saudi Arabia",
+      "title": "Region",
+      "type": "string"
+    },
+    "source": {
+      "default": "founder_input",
+      "title": "Source",
+      "type": "string"
+    },
+    "signal_ref": {
+      "default": "",
+      "title": "Signal Ref",
+      "type": "string"
+    },
+    "decision_maker_role": {
+      "default": "",
+      "title": "Decision Maker Role",
+      "type": "string"
+    },
+    "pain_hypothesis": {
+      "default": "",
+      "title": "Pain Hypothesis",
+      "type": "string"
+    },
+    "offer_match": {
+      "default": "",
+      "title": "Offer Match",
+      "type": "string"
+    },
+    "personalization_note": {
+      "default": "",
+      "title": "Personalization Note",
+      "type": "string"
+    },
+    "risk_level": {
+      "default": "low",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Risk Level",
+      "type": "string"
+    },
+    "evidence_level": {
+      "default": "L1",
+      "title": "Evidence Level",
+      "type": "string"
+    },
+    "status": {
+      "default": "new",
+      "enum": [
+        "new",
+        "researching",
+        "drafted",
+        "queued",
+        "contacted",
+        "replied",
+        "nurture",
+        "do_not_contact"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "next_action": {
+      "default": "",
+      "title": "Next Action",
+      "type": "string"
+    },
+    "score": {
+      "default": 0.0,
+      "title": "Score",
+      "type": "number"
+    },
+    "score_tier": {
+      "default": "C",
+      "title": "Score Tier",
+      "type": "string"
+    },
+    "governance_decision": {
+      "default": "approval_required",
+      "title": "Governance Decision",
+      "type": "string"
+    }
+  },
+  "required": [
+    "prospect_ref"
+  ],
+  "title": "Prospect",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/prospect.schema.json"
+}

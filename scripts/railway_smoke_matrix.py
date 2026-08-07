@@ -35,7 +35,7 @@ def _request_json(url: str, timeout: float) -> tuple[int, str, dict[str, object]
     started = time.perf_counter()
     req = Request(url, headers={"User-Agent": "dealix-railway-smoke/1.0"})
     try:
-        with urlopen(req, timeout=timeout) as response:  # noqa: S310 - operator-supplied URLs
+        with urlopen(req, timeout=timeout) as response:
             body = response.read(4096).decode("utf-8", errors="replace")
             elapsed_ms = (time.perf_counter() - started) * 1000
             try:

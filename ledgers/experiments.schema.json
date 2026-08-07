@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/ledgers/experiments.schema.json",
+  "title": "Dealix Growth Experiments Ledger",
+  "description": "Lightweight founder learning loop: one row per growth/product experiment with a falsifiable hypothesis and a single metric. Keeps Dealix honest about what actually moved revenue.",
+  "type": "object",
+  "required": ["ledger", "version", "records"],
+  "additionalProperties": false,
+  "properties": {
+    "ledger": { "const": "experiments" },
+    "version": { "type": "integer", "minimum": 1 },
+    "updated": { "type": "string" },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/experiment" }
+    }
+  },
+  "$defs": {
+    "experiment": {
+      "type": "object",
+      "required": ["id", "hypothesis", "metric", "status", "started"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "pattern": "^EXP-[0-9]{4,}$" },
+        "hypothesis": { "type": "string", "minLength": 1, "description": "Falsifiable: 'If we do X, then metric Y improves by Z.'" },
+        "metric": { "type": "string", "minLength": 1 },
+        "status": {
+          "type": "string",
+          "enum": ["proposed", "running", "done", "abandoned"]
+        },
+        "result": {
+          "type": "string",
+          "enum": ["pending", "supported", "refuted", "inconclusive"]
+        },
+        "started": { "type": "string" },
+        "ended": { "type": "string" },
+        "learning": { "type": "string" },
+        "owner": { "type": "string" }
+      }
+    }
+  }
+}

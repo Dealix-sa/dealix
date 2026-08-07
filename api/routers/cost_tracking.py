@@ -21,7 +21,7 @@ matches the unit used in api/routers/pricing.py PLANS.
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends
@@ -43,9 +43,9 @@ TIER_VARIABLE_COSTS = {
     "pilot": {
         "llm_inference":   500,   # 5 SAR     (50 LLM calls × 0.10 SAR avg)
         "lead_adapters":   500,   # 5 SAR     (Hunter quota share + Maps + Firecrawl)
-        "moyasar_fees":    100,   # 1 SAR     (transaction fees on 499 pilot)
+        "moyasar_fees":    100,   # Legacy test-mode transaction-cost assumption.
         "support_time":   2000,   # 20 SAR    (founder time amortized)
-        "total_per_pilot": 3100,  # 31 SAR    per 7-day pilot
+        "total_per_pilot": 3100,  # Internal cost model; not a public offer price.
     },
     "starter": {
         "llm_inference":  3000,   # 30 SAR    (200 leads × 0.15 SAR scoring + replies)
@@ -67,9 +67,12 @@ TIER_VARIABLE_COSTS = {
         "llm_inference": 60000,   # 600 SAR   (5000 leads, full agent workforce)
         "lead_adapters": 25000,   # 250 SAR
         "moyasar_fees":   2400,   # 24 SAR
-        "support_time":  30000,   # 300 SAR
+        # Support time per customer drops at scale: the AI workforce handles
+        # the added volume autonomously, so human CS time amortizes rather
+        # than growing linearly (economies of scale — see module docstring).
+        "support_time":   6000,   # 60 SAR
         "infra_share":    1725,   # 17 SAR
-        "total_per_month": 119125, # 1,191 SAR/mo
+        "total_per_month": 95125, # 951 SAR/mo
     },
 }
 

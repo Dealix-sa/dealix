@@ -11,7 +11,7 @@ _REPO = Path(__file__).resolve().parents[1]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from dealix.business_now.commercial_strategy import (  # noqa: E402
+from dealix.business_now.commercial_strategy import (
     build_commercial_strategy_snapshot,
     render_commercial_strategy_markdown,
 )

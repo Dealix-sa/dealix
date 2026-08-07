@@ -29,7 +29,7 @@ import re
 import sys
 import time
 from dataclasses import asdict, dataclass
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 logger = logging.getLogger("reconcile")

@@ -1,0 +1,94 @@
+name: proposal_quality_eval
+version: "1.0"
+description: |
+  Evaluates proposal pack quality: Arabic copy, pricing accuracy,
+  scope completeness, and trust compliance.
+
+cases:
+  - id: proposal_001
+    description: "Proposal must include Arabic value proposition"
+    input:
+      offer_id: "whatsapp_followup_os"
+      account_sector: "real_estate"
+      discovery_notes:
+        pain_ar: "فقدان العملاء بعد الاستفسار"
+        budget_signal: "مرن"
+    expected:
+      has_arabic_content: true
+      has_value_prop_ar: true
+      char_count_body_ar_min: 200
+
+  - id: proposal_002
+    description: "Revenue Leak Audit priced at 499 SAR"
+    input:
+      offer_id: "revenue_leak_audit"
+      account_sector: "automotive"
+    expected:
+      investment_sar: 499
+      currency: "SAR"
+
+  - id: proposal_003
+    description: "WhatsApp OS offer priced at 2999 SAR"
+    input:
+      offer_id: "whatsapp_followup_os"
+      account_sector: "contracting"
+    expected:
+      investment_sar: 2999
+
+  - id: proposal_004
+    description: "Custom Enterprise OS priced between 5000 and 25000 SAR"
+    input:
+      offer_id: "custom_enterprise_os"
+      account_sector: "real_estate"
+    expected:
+      investment_sar_min: 5000
+      investment_sar_max: 25000
+
+  - id: proposal_005
+    description: "Proposal must NOT include guarantee language"
+    input:
+      offer_id: "ai_os_smb"
+      account_sector: "healthcare_clinic"
+    expected:
+      contains_guarantee_language: false
+      forbidden_terms: ["مضمون", "نضمن", "guaranteed", "we guarantee"]
+
+  - id: proposal_006
+    description: "Proposal includes proof reference for the sector"
+    input:
+      offer_id: "proposal_proof_pack"
+      account_sector: "contracting"
+      available_proofs: ["real_estate", "contracting"]
+    expected:
+      has_proof_reference: true
+      proof_sector_matches: true
+
+  - id: proposal_007
+    description: "Proposal timeline is reasonable for the offer tier"
+    input:
+      offer_id: "revenue_leak_audit"
+    expected:
+      timeline_weeks_max: 1
+
+  - id: proposal_008
+    description: "Managed Ops proposal timeline is 30+ days"
+    input:
+      offer_id: "ai_os_smb"
+    expected:
+      timeline_weeks_min: 4
+
+  - id: proposal_009
+    description: "Proposal next_step_ar is non-empty and actionable"
+    input:
+      offer_id: "whatsapp_followup_os"
+      account_sector: "automotive"
+    expected:
+      next_step_ar_nonempty: true
+      next_step_word_count_min: 5
+
+  - id: proposal_010
+    description: "Proposal payment terms reflect the approved 50/50 policy"
+    input:
+      offer_id: "sales_command_center"
+    expected:
+      payment_terms_contains: ["50%", "عند البدء", "عند التسليم"]

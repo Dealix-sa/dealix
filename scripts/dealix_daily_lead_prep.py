@@ -40,7 +40,7 @@ import csv
 import json
 import sys
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, date, datetime, timezone
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any, Literal
 
@@ -50,14 +50,14 @@ DEFAULT_OUT_DIR = REPO_ROOT / "data" / "wave12" / "daily_lead_prep"
 # Make the auto_client_acquisition package importable when running standalone.
 sys.path.insert(0, str(REPO_ROOT))
 
-from auto_client_acquisition.market_intelligence.saudi_seasons import (  # noqa: E402
+from auto_client_acquisition.market_intelligence.saudi_seasons import (
     detect_saudi_season,
 )
-from auto_client_acquisition.market_intelligence.signal_detectors import (  # noqa: E402
+from auto_client_acquisition.market_intelligence.signal_detectors import (
     SIGNAL_TYPES,
     get_signal_output,
 )
-from auto_client_acquisition.pipelines.saudi_dimensions import (  # noqa: E402
+from auto_client_acquisition.pipelines.saudi_dimensions import (
     SaudiScoreBoard,
     compute_saudi_score_board,
 )

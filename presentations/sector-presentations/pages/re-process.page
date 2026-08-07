@@ -1,0 +1,225 @@
+pageType: content
+background:
+  type: solid
+  color: "$dark"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 400, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>PROCESS  //  عملية التنفيذ</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      fontSize: 36
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>كيف نبدأ معاً؟</p>
+      wrap: false
+  - elementId: step1-bg
+    elementType: shape
+    bounds: [60, 180, 260, 380]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: step1-num
+    elementType: text
+    bounds: [80, 200, 100, 50]
+    content:
+      fontSize: 36
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>01</p>
+  - elementId: step1-title
+    elementType: text
+    bounds: [80, 260, 220, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>التشخيص المجاني</p>
+  - elementId: step1-desc
+    elementType: text
+    bounds: [80, 300, 220, 120]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>نحلل أعمالك الحالية ونحدد فرص النمو والتحسين خلال 30 دقيقة</p>
+  - elementId: arrow1
+    elementType: icon
+    bounds: [330, 340, 24, 24]
+    iconName: chevron-right
+    color: "$accent"
+  - elementId: step2-bg
+    elementType: shape
+    bounds: [370, 180, 260, 380]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: step2-num
+    elementType: text
+    bounds: [390, 200, 100, 50]
+    content:
+      fontSize: 36
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>02</p>
+  - elementId: step2-title
+    elementType: text
+    bounds: [390, 260, 220, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>البايلوت المدفوع</p>
+  - elementId: step2-desc
+    elementType: text
+    bounds: [390, 300, 220, 120]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>7 أيام اختبار المنصة على أرض الواقع مع تقارير أسبوعية</p>
+  - elementId: arrow2
+    elementType: icon
+    bounds: [640, 340, 24, 24]
+    iconName: chevron-right
+    color: "$accent"
+  - elementId: step3-bg
+    elementType: shape
+    bounds: [680, 180, 260, 380]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: step3-num
+    elementType: text
+    bounds: [700, 200, 100, 50]
+    content:
+      fontSize: 36
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>03</p>
+  - elementId: step3-title
+    elementType: text
+    bounds: [700, 260, 220, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>التشغيل الكامل</p>
+  - elementId: step3-desc
+    elementType: text
+    bounds: [700, 300, 220, 120]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>الاشتراك الشهري مع الدعم المستمر والتحديثات</p>
+  - elementId: arrow3
+    elementType: icon
+    bounds: [950, 340, 24, 24]
+    iconName: chevron-right
+    color: "$accent"
+  - elementId: step4-bg
+    elementType: shape
+    bounds: [990, 180, 230, 380]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: step4-num
+    elementType: text
+    bounds: [1010, 200, 100, 50]
+    content:
+      fontSize: 36
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>04</p>
+  - elementId: step4-title
+    elementType: text
+    bounds: [1010, 260, 190, 55]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      lineHeight: 1.3
+      text: |
+        <p>التوسع والنمو</p>
+  - elementId: step4-desc
+    elementType: text
+    bounds: [1010, 325, 190, 120]
+    content:
+      fontSize: 14
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>أنظمة مخصصة وتكاملات إضافية حسب النمو</p>
+  - elementId: timeline-line
+    elementType: shape
+    bounds: [60, 580, 1160, 2]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF22"
+  - elementId: timeline-label
+    elementType: text
+    bounds: [60, 600, 400, 24]
+    content:
+      fontSize: 14
+      color: "#FFFFFF66"
+      fontFamily: "QuattrocentoSans, MiSans"
+      wrap: false
+      text: |
+        <p>من التشخيص إلى التشغيل الكامل في أقل من 30 يوم</p>

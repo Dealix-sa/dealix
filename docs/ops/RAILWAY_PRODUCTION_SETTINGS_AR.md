@@ -1,13 +1,14 @@
 # إعدادات إنتاج Railway — مرجع المؤسس (api.dealix.me)
 
-**المستودع:** `VoXc2/dealix` · **الفرع:** `main` · **Config-as-code:** [`railway.toml`](../../railway.toml) · [`railway.json`](../../railway.json) · **قائمة نسخ:** [`dealix/config/railway_ui_canonical.yaml`](../../dealix/config/railway_ui_canonical.yaml)
+**المستودع:** `Dealix-sa/dealix` · **الفرع:** `main` · **Config-as-code:** [`railway.toml`](../../railway.toml) · [`railway.json`](../../railway.json) · **قائمة نسخ:** [`dealix/config/railway_ui_canonical.yaml`](../../dealix/config/railway_ui_canonical.yaml)
 
 **تحقق محلي (مع محاكاة خطأ UI):**
 
 ```bash
 py -3 scripts/verify_railway_production_config.py \
   --ui-start-command "./start.sh" \
-  --ui-predeploy 'echo "no migration needed"'
+  --ui-predeploy 'echo "no migration needed"' \
+  --ui-restart-max-retries 10
 bash scripts/railway_ui_alignment.sh
 curl -fsS https://api.dealix.me/healthz
 curl -fsS https://api.dealix.me/version
@@ -56,6 +57,7 @@ bash scripts/railway_ui_alignment.sh --with-smoke
 powershell -File scripts/railway_ui_alignment.ps1 -WithSmoke
 python scripts/verify_railway_production_config.py --ui-start-command "./start.sh"
 python scripts/verify_railway_production_config.py --ui-predeploy 'echo "no migration needed"'
+python scripts/verify_railway_production_config.py --ui-restart-max-retries 10
 ```
 
 مرجع آلي: [`dealix/config/railway_ui_canonical.yaml`](../../dealix/config/railway_ui_canonical.yaml)

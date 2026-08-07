@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 required = [
     "docs/commercial/offers/P1_REVENUE_INTELLIGENCE_SPRINT_AR.md",

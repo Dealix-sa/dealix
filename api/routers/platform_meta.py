@@ -9,10 +9,16 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
+from core.config.deployment_identity import resolve_deployment_git_sha
 from core.config.settings import get_settings
 from dealix.commercial_ops.gtm_public_surfaces import build_gtm_public_surfaces_snapshot
 
 router = APIRouter(tags=["platform"])
+
+
+def _deployment_git_sha() -> str:
+    settings = get_settings()
+    return resolve_deployment_git_sha(settings.git_sha)
 
 
 @router.get("/health", include_in_schema=False)
@@ -24,14 +30,25 @@ async def health() -> dict[str, object]:
         "service": "dealix-api",
         "version": settings.app_version,
         "env": settings.app_env,
-        "git_sha": settings.git_sha,
+        "git_sha": _deployment_git_sha(),
     }
 
 
 @router.get("/healthz", include_in_schema=False)
-async def healthz() -> dict[str, object]:
-    """Standard Railway/Kubernetes-compatible health alias."""
-    return await health()
+async def healthz(deep: bool = False) -> dict[str, object]:
+    """Standard Railway/Kubernetes-compatible health alias.
+
+    By default returns a tiny low-latency payload for liveness probes.
+    Pass ?deep=1 to get the full dependency-check payload (same shape as
+    /health/deep) — used by post-deploy smoke checks.
+    """
+    if deep:
+        from api.routers.health import health_deep
+
+        return await health_deep()
+    # Minimal liveness payload — version/identity live at /version (see
+    # test_health_deep::test_healthz_default_is_simple, which pins this shape).
+    return {"status": "ok", "service": "dealix"}
 
 
 @router.get("/ready", include_in_schema=False)
@@ -55,7 +72,7 @@ async def version() -> dict[str, object]:
         "status": "ok",
         "version": settings.app_version,
         "env": settings.app_env,
-        "git_sha": settings.git_sha,
+        "git_sha": _deployment_git_sha(),
         "health": "/healthz",
         "docs": "/docs",
         "meta": "/api/v1/meta",
@@ -71,7 +88,7 @@ async def platform_meta() -> dict[str, object]:
         "service": settings.app_name,
         "version": settings.app_version,
         "env": settings.app_env,
-        "git_sha": settings.git_sha,
+        "git_sha": _deployment_git_sha(),
         "surfaces": surfaces,
         "canonical_links": {
             "healthz": "/healthz",

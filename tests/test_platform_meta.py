@@ -38,8 +38,11 @@ def test_mcp_tools_read_only() -> None:
 
 
 def test_healthz_includes_version() -> None:
+    # /healthz is a minimal liveness probe (pinned simple by
+    # test_health_deep::test_healthz_default_is_simple). Deploy identity —
+    # including the version — is exposed at the canonical /version endpoint.
     client = TestClient(app)
-    r = client.get("/healthz")
+    r = client.get("/version")
     assert r.status_code == 200
     body = r.json()
     assert body.get("version")

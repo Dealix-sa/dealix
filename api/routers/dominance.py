@@ -21,12 +21,13 @@ import logging
 import os
 import uuid
 from collections import Counter, defaultdict
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from fastapi import APIRouter, Body, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy import func, select
 
+from api.security.api_key import require_admin_key
 from auto_client_acquisition.email.reply_classifier import (
     PATTERNS,
     RESPONSE_TEMPLATES,
@@ -61,7 +62,15 @@ from db.models import (
 )
 from db.session import async_session_factory
 
-router = APIRouter(prefix="/api/v1", tags=["dominance"])
+# Founder-internal tooling: these handlers read and write the whole
+# prospecting graph (accounts, contacts, scores) across tenants by design.
+# That is only safe behind the platform-admin credential, so the guard is
+# applied at the router so no future route in this file can miss it.
+router = APIRouter(
+    prefix="/api/v1",
+    tags=["dominance"],
+    dependencies=[Depends(require_admin_key)],
+)
 log = logging.getLogger(__name__)
 
 

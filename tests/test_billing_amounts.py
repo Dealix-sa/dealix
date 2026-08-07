@@ -12,10 +12,14 @@ def test_all_plan_amounts_positive_halalas():
 
 
 def test_halalas_to_sar_conversion():
-    """Display amounts use halalas / 100 as SAR (see Moyasar docs)."""
+    """Display amounts use halalas / 100 as SAR (see Moyasar docs).
+
+    'starter' is a backwards-compat alias mapped to the canonical
+    growth_ops_monthly_2999 offering (2999 SAR/mo).
+    """
     starter = PLANS["starter"]
     sar = starter["amount_halalas"] / 100
-    assert sar == 999.0
+    assert sar == 2999.0
 
 
 def test_pilot_plan_small_amount_for_sandbox_smoke():

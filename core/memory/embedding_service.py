@@ -142,7 +142,19 @@ class EmbeddingService:
 
         vector = await self.embed(text)
 
-        # Upsert embedding record
+        # Deliberately NOT tenant-scoped, unlike index_conversation below.
+        # `account_embeddings.account_id` is declared unique, so exactly one
+        # row exists per account across the whole platform, and `accounts`
+        # itself carries no tenant_id — accounts are global in this schema and
+        # `tenant_id` here is provenance, not ownership. Adding the predicate
+        # would make a second tenant's index call miss the existing row and
+        # attempt an insert that violates that unique constraint, turning a
+        # working flow into an IntegrityError inside a worker.
+        #
+        # The real gap is in the schema, not this query: an embedding table
+        # carrying tenant_id over a base table that has none cannot express a
+        # tenant boundary either way. Recorded in the gate's ALLOWLIST rather
+        # than papered over here.
         existing = await sess.execute(
             select(AccountEmbeddingRecord).where(AccountEmbeddingRecord.account_id == account_id)
         )
@@ -201,10 +213,21 @@ class EmbeddingService:
 
         vector = await self.embed(text)
 
-        # Upsert
+        # Upsert, tenant-scoped. Unlike account_embeddings, conversation_id is
+        # NOT unique here, so several rows may exist for one conversation and
+        # the unscoped lookup returned whichever tenant happened to index it
+        # first — then overwrote that row's embedding_json in place, leaving
+        # its tenant_id untouched. `conversation_id` arrives from a
+        # background-job payload the caller controls
+        # (core/queue/tasks.py:_run_embedding_index), so one tenant could name
+        # another's conversation and silently poison its semantic memory.
+        #
+        # A None tenant is matched as NULL rather than skipped: a tenant-less
+        # caller must reach only tenant-less rows, never every row.
         existing = await sess.execute(
             select(ConversationEmbeddingRecord).where(
-                ConversationEmbeddingRecord.conversation_id == conversation_id
+                ConversationEmbeddingRecord.conversation_id == conversation_id,
+                ConversationEmbeddingRecord.tenant_id == tenant_id,
             )
         )
         record = existing.scalar_one_or_none()

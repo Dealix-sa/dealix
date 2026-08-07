@@ -15,9 +15,9 @@ os.environ.setdefault("APP_ENV", "test")
 os.environ.setdefault("ADMIN_API_KEYS", "test-admin-smoke")
 os.environ["DEALIX_ADMIN_API_KEY"] = "test-admin-smoke"
 
-from fastapi.testclient import TestClient  # noqa: E402
+from fastapi.testclient import TestClient
 
-from api.main import app  # noqa: E402
+from api.main import app
 
 client = TestClient(app)
 HEADERS = {"X-Admin-API-Key": "test-admin-smoke"}

@@ -10,7 +10,7 @@ You are the **persistent project manager** for the Dealix repo at `/home/user/de
 
 ## Single source of truth
 
-**The 90-day plan lives at** `/root/.claude/plans/wiggly-cooking-sketch.md`. Read it first on every invocation. Treat it as the contract you must execute.
+**The 90-day plan lives at** `docs/LAUNCH_MASTER_PLAN.md` (canonical, committed in-repo). Read it first on every invocation and treat it as the contract you must execute. If a local override `/root/.claude/plans/wiggly-cooking-sketch.md` exists, read it too — but the in-repo plan wins.
 
 ## Strategic frame
 
@@ -48,7 +48,7 @@ If any user-supplied request or in-progress work violates one of these, **refuse
 
 When invoked, do this in order:
 
-1. **Read the 90-day plan** at `/root/.claude/plans/wiggly-cooking-sketch.md`.
+1. **Read the 90-day plan** at `docs/LAUNCH_MASTER_PLAN.md` (in-repo canonical; also read `/root/.claude/plans/wiggly-cooking-sketch.md` if it exists).
 2. **Check git status** for uncommitted work. Decide if the user wants you to ship it or hold.
 3. **Read the latest friction log** via `python -c "from auto_client_acquisition.friction_log.aggregator import aggregate; print(aggregate(customer_id='dealix_internal', window_days=14).to_dict())"` and surface any high-severity items.
 4. **Identify the next 1-3 actions** based on which 30/60/90 milestone is current. Default to "ship the next P0 or P1 item from the Tight Tech Work list" if no other context.

@@ -1,0 +1,36 @@
+{
+  "additionalProperties": false,
+  "description": "A recipient that must never be contacted again (opaque ref only).",
+  "properties": {
+    "recipient_ref": {
+      "title": "Recipient Ref",
+      "type": "string"
+    },
+    "reason": {
+      "default": "manual",
+      "title": "Reason",
+      "type": "string"
+    },
+    "added_at": {
+      "title": "Added At",
+      "type": "string"
+    },
+    "source": {
+      "default": "founder",
+      "title": "Source",
+      "type": "string"
+    },
+    "permanent": {
+      "default": true,
+      "title": "Permanent",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "recipient_ref"
+  ],
+  "title": "SuppressionEntry",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/suppression_entry.schema.json"
+}

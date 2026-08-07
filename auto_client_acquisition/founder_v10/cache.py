@@ -19,12 +19,21 @@ import time
 from collections.abc import Callable
 from typing import Any
 
-_CACHE: dict[int, dict[str, Any]] = {}
+# Keyed by (builder identity, minute bucket) so distinct dashboards that
+# share this cache within the same bucket never collide — see the
+# beast-command-center vs founder-dashboard cross-contamination bug.
+_CACHE: dict[tuple[str, int], dict[str, Any]] = {}
 _DEFAULT_TTL_SECONDS = 60
 
 
 def _bucket(ttl_seconds: int) -> int:
     return int(time.time() // ttl_seconds)
+
+
+def _builder_key(builder: Callable[[], dict[str, Any]]) -> str:
+    module = getattr(builder, "__module__", "") or ""
+    qualname = getattr(builder, "__qualname__", None) or repr(builder)
+    return f"{module}.{qualname}"
 
 
 def _has_degraded(payload: dict[str, Any]) -> bool:
@@ -42,8 +51,8 @@ def cached_dashboard_payload(
     On a cache miss we call it once, time it, and stash the result.
     Degraded payloads are NEVER cached so we don't pin a transient failure.
     """
-    bucket = _bucket(ttl_seconds)
-    cached = _CACHE.get(bucket)
+    key = (_builder_key(builder), _bucket(ttl_seconds))
+    cached = _CACHE.get(key)
     if cached is not None:
         out = dict(cached)
         out["cache_hit"] = True
@@ -58,8 +67,10 @@ def cached_dashboard_payload(
     payload["cache_hit"] = False
 
     if not _has_degraded(payload):
-        _CACHE.clear()
-        _CACHE[bucket] = payload
+        # Drop other buckets for this builder (keep other builders' entries).
+        for existing in [k for k in _CACHE if k[0] == key[0]]:
+            del _CACHE[existing]
+        _CACHE[key] = payload
     return payload
 
 

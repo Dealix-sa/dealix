@@ -160,6 +160,149 @@ def demo() -> None:
     asyncio.run(demo_main())
 
 
+# ── Hermes sub-app ─────────────────────────────────────────────
+hermes_app = typer.Typer(help="Hermes multi-agent commands.")
+app.add_typer(hermes_app, name="hermes")
+
+
+@hermes_app.command("agents")
+def hermes_agents() -> None:
+    """List all registered Hermes agents."""
+    _banner()
+    try:
+        from dealix.hermes.config import get_hermes_config
+        from dealix.hermes.registry import HermesRegistry
+    except ImportError as exc:
+        console.print(f"[red]Hermes not available: {exc}[/red]")
+        raise typer.Exit(code=1)
+
+    registry = HermesRegistry.instance()
+    registry.build_all_agents(config=get_hermes_config())
+
+    table = Table(title="Hermes Agents", show_lines=True)
+    table.add_column("Name", style="cyan")
+    table.add_column("Description")
+    for info in registry.all_info():
+        table.add_row(info["name"], info["description"])
+    if not registry.list_agents():
+        table.add_row("(none)", "[dim]no agents registered[/dim]")
+    console.print(table)
+
+
+@hermes_app.command("run")
+def hermes_run(
+    name: Annotated[str, typer.Argument(help="Agent name to run")],
+    input: Annotated[
+        str,
+        typer.Option("--input", "-i", help="JSON string of input data"),
+    ] = "{}",
+) -> None:
+    """Run a named Hermes agent with optional JSON input."""
+    import json
+
+    _banner()
+    try:
+        from dealix.hermes.config import get_hermes_config
+        from dealix.hermes.registry import HermesRegistry
+    except ImportError as exc:
+        console.print(f"[red]Hermes not available: {exc}[/red]")
+        raise typer.Exit(code=1)
+
+    try:
+        input_data: dict = json.loads(input)
+    except json.JSONDecodeError as exc:
+        console.print(f"[red]Invalid JSON input: {exc}[/red]")
+        raise typer.Exit(code=1)
+
+    registry = HermesRegistry.instance()
+    registry.build_all_agents(config=get_hermes_config())
+
+    try:
+        agent = registry.get(name)
+    except KeyError as exc:
+        console.print(f"[red]{exc}[/red]")
+        raise typer.Exit(code=1)
+
+    with console.status(f"[cyan]Running agent {name!r}...[/cyan]"):
+        result = asyncio.run(agent.run(input_data))
+
+    console.print_json(json.dumps(result, ensure_ascii=False, default=str))
+
+
+@hermes_app.command("pipeline")
+def hermes_pipeline(
+    name: Annotated[str, typer.Argument(help="Pipeline name to run")],
+    input: Annotated[
+        str,
+        typer.Option("--input", "-i", help="JSON string of input data"),
+    ] = "{}",
+) -> None:
+    """Run a named Hermes pipeline with optional JSON input."""
+    import json
+
+    _banner()
+    try:
+        from dealix.hermes.config import get_hermes_config
+        from dealix.hermes.orchestrator import HermesOrchestrator
+        from dealix.hermes.registry import HermesRegistry
+    except ImportError as exc:
+        console.print(f"[red]Hermes not available: {exc}[/red]")
+        raise typer.Exit(code=1)
+
+    try:
+        input_data: dict = json.loads(input)
+    except json.JSONDecodeError as exc:
+        console.print(f"[red]Invalid JSON input: {exc}[/red]")
+        raise typer.Exit(code=1)
+
+    registry = HermesRegistry.instance()
+    config = get_hermes_config()
+    registry.build_all_agents(config=config)
+    orchestrator = HermesOrchestrator(registry=registry, config=config)
+
+    with console.status(f"[cyan]Running pipeline {name!r}...[/cyan]"):
+        result = asyncio.run(orchestrator.run_pipeline(name, input_data))
+
+    console.print_json(json.dumps(result, ensure_ascii=False, default=str))
+
+
+@hermes_app.command("health")
+def hermes_health() -> None:
+    """Check Hermes system health: API key presence and registered agents."""
+    import os
+
+    _banner()
+    try:
+        from dealix.hermes.config import get_hermes_config
+        from dealix.hermes.registry import HermesRegistry
+    except ImportError as exc:
+        console.print(f"[red]Hermes not available: {exc}[/red]")
+        raise typer.Exit(code=1)
+
+    config = get_hermes_config()
+    api_key = config.effective_api_key()
+
+    table = Table(title="Hermes Health", show_lines=True)
+    table.add_column("Check", style="cyan")
+    table.add_column("Status")
+
+    if api_key:
+        table.add_row("API key", "[green]set[/green]")
+    else:
+        table.add_row("API key", "[red]not set (set ANTHROPIC_API_KEY or HERMES_API_KEY)[/red]")
+
+    registry = HermesRegistry.instance()
+    registry.build_all_agents(config=config)
+    agent_names = registry.list_agents()
+    table.add_row(
+        "Registered agents",
+        f"[green]{len(agent_names)}[/green]: {', '.join(agent_names)}" if agent_names
+        else "[yellow]none[/yellow]",
+    )
+
+    console.print(table)
+
+
 @app.command()
 def menu() -> None:
     """Interactive menu (Arabic + English)."""

@@ -1,0 +1,70 @@
+{
+  "additionalProperties": false,
+  "description": "A single permission the client is asked to grant.",
+  "properties": {
+    "permission_id": {
+      "title": "Permission Id",
+      "type": "string"
+    },
+    "level": {
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5"
+      ],
+      "title": "Level",
+      "type": "string"
+    },
+    "system": {
+      "default": "",
+      "title": "System",
+      "type": "string"
+    },
+    "scope": {
+      "default": "",
+      "title": "Scope",
+      "type": "string"
+    },
+    "purpose_ar": {
+      "default": "",
+      "title": "Purpose Ar",
+      "type": "string"
+    },
+    "risk": {
+      "default": "low",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Risk",
+      "type": "string"
+    },
+    "duration_days": {
+      "default": 30,
+      "title": "Duration Days",
+      "type": "integer"
+    },
+    "secure_portal_required": {
+      "default": false,
+      "title": "Secure Portal Required",
+      "type": "boolean"
+    },
+    "manual_alternative_ar": {
+      "default": "",
+      "title": "Manual Alternative Ar",
+      "type": "string"
+    }
+  },
+  "required": [
+    "permission_id",
+    "level"
+  ],
+  "title": "PermissionRequest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/PermissionRequest.schema.json"
+}

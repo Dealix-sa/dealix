@@ -44,7 +44,7 @@ from typing import Literal
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from auto_client_acquisition.email.deliverability_check import (  # noqa: E402
+from auto_client_acquisition.email.deliverability_check import (
     check_deliverability,
 )
 

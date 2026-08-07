@@ -21,7 +21,7 @@ Legend:
 |---|---|---|---|---|---|---|---|---|---|---|
 | 1 | Railway | Backend hosting (api.dealix.me) | infra | Y | LIVE | ~150 | env: RAILWAY_TOKEN | railway.com support | _TBD_ | 60 days |
 | 2 | Cloudflare | DNS + CDN (dealix.me) | infra | Y (caches HTML) | LIVE | 0 (free) | dashboard.cloudflare.com | _TBD_ | _TBD_ | 30 days |
-| 3 | GitHub | Source code + Pages (landing) | infra | N | LIVE | 0 (free public) | github.com/voxc2/dealix | _TBD_ | annual | 30 days |
+| 3 | GitHub | Source code + Pages (landing) | infra | N | LIVE | 0 (free public) | github.com/Dealix-sa/dealix | _TBD_ | annual | 30 days |
 | 4 | Anthropic | LLM API (Claude) | feature | Y (logs may include PII) | LIVE | variable (~50-200 SAR) | env: ANTHROPIC_API_KEY | console.anthropic.com | rolling | always-on |
 | 5 | Groq | LLM API (fallback) | feature | Y | LIVE | usage-based | env: GROQ_API_KEY | console.groq.com | rolling | always-on |
 | 6 | Hunter | Email enrichment | feature | Y (sub-processor) | NOT_LIVE_YET | $49 (~185 SAR) | env: HUNTER_API_KEY (P0.X) | hunter.io support | activation pending | 30 days from go-live |

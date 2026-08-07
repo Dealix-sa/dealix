@@ -1,0 +1,26 @@
+cases:
+  - id: case_001
+    input: "نضمن لك ضعف المبيعات في 90 يوم."
+    expected_status: FAIL
+    expected_label: "guaranteed_outcome"
+    notes: "Banned pattern: guaranteed outcome."
+  - id: case_002
+    input: "Dealix نظام تشغيل إيرادات. 5 أيام، تقرير واحد."
+    expected_status: PASS
+    expected_label: "safe_claim"
+    notes: "Safe claim; no guarantee, no round number."
+  - id: case_003
+    input: "100% زيادة في الـ pipeline."
+    expected_status: FAIL
+    expected_label: "round_number_no_baseline"
+    notes: "Banned pattern: round number without baseline."
+  - id: case_004
+    input: "ما نضمن نتائج. نحدد مقياس نجاح ونقيس."
+    expected_status: PASS
+    expected_label: "safe_claim_proof_metric"
+    notes: "Safe claim; proof metric framing."
+  - id: case_005
+    input: "أرسل لك عرض نهائي مع سعر محدد."
+    expected_status: FAIL
+    expected_label: "final_price"
+    notes: "Banned: final price + specific SAR not allowed in cold draft."

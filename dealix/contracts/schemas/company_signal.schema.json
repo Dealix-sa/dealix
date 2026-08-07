@@ -1,0 +1,76 @@
+{
+  "additionalProperties": false,
+  "description": "A buying-timing signal observed by the founder or from public data.",
+  "properties": {
+    "signal_id": {
+      "title": "Signal Id",
+      "type": "string"
+    },
+    "observed_at": {
+      "title": "Observed At",
+      "type": "string"
+    },
+    "company_label": {
+      "default": "",
+      "title": "Company Label",
+      "type": "string"
+    },
+    "sector": {
+      "default": "",
+      "title": "Sector",
+      "type": "string"
+    },
+    "signal_type": {
+      "default": "",
+      "title": "Signal Type",
+      "type": "string"
+    },
+    "source": {
+      "default": "founder_input",
+      "title": "Source",
+      "type": "string"
+    },
+    "evidence_note": {
+      "default": "",
+      "title": "Evidence Note",
+      "type": "string"
+    },
+    "strength": {
+      "default": "medium",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Strength",
+      "type": "string"
+    },
+    "suggested_offer": {
+      "default": "",
+      "title": "Suggested Offer",
+      "type": "string"
+    },
+    "suggested_angle_ar": {
+      "default": "",
+      "title": "Suggested Angle Ar",
+      "type": "string"
+    },
+    "suggested_angle_en": {
+      "default": "",
+      "title": "Suggested Angle En",
+      "type": "string"
+    },
+    "governance_decision": {
+      "default": "approval_required",
+      "title": "Governance Decision",
+      "type": "string"
+    }
+  },
+  "required": [
+    "signal_id"
+  ],
+  "title": "CompanySignal",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/company_signal.schema.json"
+}

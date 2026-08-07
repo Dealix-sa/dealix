@@ -1,0 +1,51 @@
+{
+  "company": "Dealix",
+  "control_name": "Client Delivery Control",
+  "delivery_method": "Map → Design → Build → Operate → Scale",
+  "purpose": "turn a sold sprint into a controlled delivery workflow with proof and renewal path",
+  "stages": [
+    {
+      "name": "Intake",
+      "goal": "capture business context, stakeholders, data sources, risks, and success criteria",
+      "outputs": ["intake form", "stakeholder map", "access checklist", "success metric"]
+    },
+    {
+      "name": "Diagnosis",
+      "goal": "map current state, bottlenecks, opportunity, risk, and first workflow recommendation",
+      "outputs": ["current state map", "pain map", "bottleneck report", "opportunity map", "risk register"]
+    },
+    {
+      "name": "Blueprint",
+      "goal": "turn diagnosis into a clear system scope and workflow design",
+      "outputs": ["system blueprint", "workflow map", "data model", "AI policy", "acceptance criteria"]
+    },
+    {
+      "name": "Sprint Delivery",
+      "goal": "build the first working operating workflow with human review gates",
+      "outputs": ["sprint plan", "test plan", "UAT notes", "operator guide", "admin guide"]
+    },
+    {
+      "name": "Proof Pack",
+      "goal": "prove what changed and define the next improvement cycle",
+      "outputs": ["before/after", "weekly command report", "decisions log", "actions completed", "next 30 days"]
+    },
+    {
+      "name": "Renewal Path",
+      "goal": "convert one-off sprint into managed monthly operating partnership",
+      "outputs": ["retainer recommendation", "monthly KPI tree", "next sprint backlog", "renewal memo"]
+    }
+  ],
+  "client_files_required": [
+    "clients/_template/00_intake/intake_form.md",
+    "clients/_template/01_diagnosis/current_state.md",
+    "clients/_template/02_solution/system_blueprint.md",
+    "clients/_template/05_proof/before_after.md"
+  ],
+  "delivery_guardrails": [
+    "no scope expansion without acceptance criteria",
+    "no sensitive data access without documented need",
+    "no AI external action without owner approval",
+    "proof pack required before renewal pitch",
+    "client success metric required before build"
+  ]
+}
