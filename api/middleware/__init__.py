@@ -6,10 +6,11 @@ cross-cutting safety invariants:
 - ``http_stack``: request ID, security headers, PDPL audit logging, ETag,
   rate-limit headers (shared HTTP layer used by ``api.main``).
 
-- ``tenant_isolation``: resolves tenant_id from JWT/header → injects
-  into request.state → all repository calls MUST assert match
-  (defense against OWASP API1:2023 BOLA — Broken Object-Level
-  Authorization).
+- ``tenant_isolation``: repository-layer assertions — given the request's
+  tenant and the object's tenant, refuse a mismatch (defense against
+  OWASP API1:2023 BOLA — Broken Object-Level Authorization). It does
+  **not** resolve the tenant; that is ``api/security/tenant_scope.py``,
+  which derives it from verified identity rather than from a header.
 
 - ``bopla_redaction``: Pydantic response-model decorator that filters
   sensitive fields (bank_account, personal_email, phone) by role

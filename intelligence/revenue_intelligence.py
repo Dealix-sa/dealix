@@ -10,8 +10,8 @@ Computes intelligent revenue signals from pipeline data:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from typing import Any
 
 
@@ -44,6 +44,16 @@ class RevenueIntelligence:
     revenue_at_risk_sar: float
     recommended_actions: list[str]
     stage_breakdown: list[StageStats]
+
+
+def _aware_utc(value: datetime) -> datetime:
+    """Treat a naive timestamp as UTC so it can be compared with `now`.
+
+    Callers supply Deal timestamps from several stores, some of which
+    persist naive datetimes. Subtracting a naive from an aware datetime
+    raises, so normalise at the boundary rather than at every call site.
+    """
+    return value if value.tzinfo is not None else value.replace(tzinfo=UTC)
 
 
 class RevenueIntelligenceEngine:
@@ -103,12 +113,12 @@ class RevenueIntelligenceEngine:
         )
 
     def _calculate_risk(self) -> float:
-        now = datetime.utcnow()
+        now = datetime.now(UTC)
         at_risk = 0.0
         for deal in self._deals:
             if deal.stage in ("closed_won", "closed_lost"):
                 continue
-            days_since_activity = (now - deal.last_activity_at).days
+            days_since_activity = (now - _aware_utc(deal.last_activity_at)).days
             if days_since_activity > self.STALE_DAYS:
                 prob = self.STAGE_PROBABILITY.get(deal.stage, 0.1)
                 at_risk += deal.value_sar * prob * 0.5
@@ -126,7 +136,7 @@ class RevenueIntelligenceEngine:
             prob = self.STAGE_PROBABILITY.get(deal.stage, 0.1)
             score += prob * 50  # up to 50 for stage
 
-            days = (datetime.utcnow() - deal.last_activity_at).days
+            days = (datetime.now(UTC) - _aware_utc(deal.last_activity_at)).days
             if days <= 3:
                 score += 30
             elif days <= 7:

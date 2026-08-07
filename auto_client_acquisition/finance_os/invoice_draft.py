@@ -67,6 +67,10 @@ def draft_invoice(
         raise ValueError(
             f"tier {tier_id!r} is free — no invoice needed"
         )
+    if tier["pricing_basis"] == "quote_only" or tier["price_sar"] is None:
+        raise ValueError(
+            f"tier {tier_id!r} is quote-only — complete discovery and approve a documented quote first"
+        )
 
     md = dict(metadata or {})
     md.setdefault("tier_id", tier_id)

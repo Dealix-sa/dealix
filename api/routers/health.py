@@ -17,9 +17,16 @@ def _deployment_git_sha() -> str:
     return resolve_deployment_git_sha(settings.git_sha)
 
 
-@router.get("/health", response_model=HealthResponse)
+@router.get("/health", response_model=HealthResponse, include_in_schema=False)
 async def health() -> HealthResponse:
-    """Liveness + config summary."""
+    """Liveness + config summary.
+
+    Shadowed at runtime: api.main registers platform_meta.router's lighter
+    /health first, so this handler never actually serves requests through the
+    full app. `include_in_schema=False` stops /openapi.json from documenting
+    a HealthResponse (with `providers`) shape that isn't what's actually
+    live. Kept for standalone-router test mounts (see test_gtm_public_surfaces.py).
+    """
     settings = get_settings()
     providers = [p.value for p in get_model_router().available_providers()]
     return HealthResponse(
@@ -31,15 +38,15 @@ async def health() -> HealthResponse:
     )
 
 
-@router.get("/ready")
+@router.get("/ready", include_in_schema=False)
 async def ready() -> dict[str, str]:
-    """Readiness probe."""
+    """Readiness probe. Shadowed at runtime by platform_meta.router — see /health above."""
     return {"status": "ready"}
 
 
-@router.get("/live")
+@router.get("/live", include_in_schema=False)
 async def live() -> dict[str, str]:
-    """Liveness probe."""
+    """Liveness probe. Shadowed at runtime by platform_meta.router — see /health above."""
     return {"status": "alive"}
 
 

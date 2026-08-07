@@ -53,6 +53,10 @@ ALLOWED_PURPOSES = frozenset({
     "follow_up",       # post-pilot check-in within 30 days
 })
 
+# Marks a record written before ``tenant_id`` existed. Not a valid tenant id
+# and never written to disk — assigned at read time only.
+_LEGACY_TENANT = "\x00legacy"
+
 _DEFAULT_PATH = "var/consent-table.jsonl"
 _lock = threading.Lock()
 
@@ -79,6 +83,10 @@ class ConsentRecord:
     occurred_at: str      # ISO 8601 UTC
     source: str = "manual"  # form_submission / api / explicit_email / etc.
     proof_url: str = ""   # link to original consent capture, if any
+    # Which tenant captured this consent. Defaults to "" so records written
+    # before this field existed still load; see _matches_tenant for how those
+    # legacy rows are treated.
+    tenant_id: str = ""
 
 
 def _validate(channel: str, purpose: str) -> None:
@@ -100,6 +108,7 @@ def grant(
     source: str = "form_submission",
     proof_url: str = "",
     occurred_at: str | None = None,
+    tenant_id: str = "",
 ) -> ConsentRecord:
     """Record an explicit consent grant for (channel, purpose)."""
     _validate(channel, purpose)
@@ -111,6 +120,7 @@ def grant(
         occurred_at=occurred_at or datetime.now(UTC).isoformat(),
         source=source,
         proof_url=proof_url,
+        tenant_id=tenant_id,
     )
     _append(rec)
     return rec
@@ -123,6 +133,7 @@ def revoke(
     purpose: str,
     source: str = "list_unsubscribe_header",
     occurred_at: str | None = None,
+    tenant_id: str = "",
 ) -> ConsentRecord:
     """Permanent revocation. Overrides any earlier grant for the same
     (channel, purpose) pair. PDPL: opt-out is permanent."""
@@ -134,6 +145,7 @@ def revoke(
         kind="revoke",
         occurred_at=occurred_at or datetime.now(UTC).isoformat(),
         source=source,
+        tenant_id=tenant_id,
     )
     _append(rec)
     return rec
@@ -166,6 +178,11 @@ def _all_records() -> list[ConsentRecord]:
                     continue
                 try:
                     d = json.loads(line)
+                    # A row from before the field existed has no key at all.
+                    # Tag it so _matches_tenant can tell it apart from a row a
+                    # current tenant-less caller wrote with an empty string.
+                    if "tenant_id" not in d:
+                        d["tenant_id"] = _LEGACY_TENANT
                     out.append(ConsentRecord(**d))
                 except Exception:
                     continue
@@ -174,9 +191,52 @@ def _all_records() -> list[ConsentRecord]:
     return out
 
 
-def records_for(contact_id: str) -> list[ConsentRecord]:
-    """All records for one contact, oldest first."""
-    return [r for r in _all_records() if r.contact_id == contact_id]
+def _matches_tenant(rec: ConsentRecord, tenant_id: str) -> bool:
+    """Whether ``rec`` binds the tenant asking the question.
+
+    The store is one shared append-only file, and until now nothing in it
+    named a tenant. That made consent global: a grant captured by one tenant
+    authorised every other tenant to send to that contact, and — worse — a
+    revoke by one tenant permanently silenced every other tenant's
+    transactional messages to a contact they had their own lawful basis for.
+    ``records_for`` also let any caller read another tenant's proof URLs and
+    timestamps.
+
+    A row written before this field existed has no ``tenant_id`` key at all
+    and is tagged ``_LEGACY_TENANT`` when read. That is kept distinct from a
+    row a *current* caller wrote with ``tenant_id=""`` — a single-tenant or
+    CLI caller — which is an ordinary identity that matches itself, so such
+    callers still read back their own grants.
+
+    Legacy rows get the asymmetric treatment:
+
+    * a legacy **revoke** binds everyone. An opt-out whose owner cannot be
+      determined must be honoured broadly — losing it is a PDPL Article 5
+      violation, and over-honouring it only costs a message.
+    * a legacy **grant** binds nobody. Consent whose owner cannot be
+      determined is not consent, and the module's stated rule is default-deny.
+
+    Both directions fail closed. Under ``OUTBOUND_MODE=draft_only`` no send
+    happens either way today, so the behaviour change lands before it can
+    affect a real message.
+    """
+    if rec.tenant_id == _LEGACY_TENANT:
+        return rec.kind == "revoke"
+    return rec.tenant_id == tenant_id
+
+
+def records_for(contact_id: str, tenant_id: str = "") -> list[ConsentRecord]:
+    """All records for one contact that bind ``tenant_id``, oldest first.
+
+    ``tenant_id=""`` means "the caller named no tenant", which after the
+    change above sees only tenant-less revokes — never another tenant's
+    grants, and never their proof URLs.
+    """
+    return [
+        r
+        for r in _all_records()
+        if r.contact_id == contact_id and _matches_tenant(r, tenant_id)
+    ]
 
 
 def is_consented(
@@ -184,6 +244,7 @@ def is_consented(
     contact_id: str,
     channel: str,
     purpose: str,
+    tenant_id: str = "",
 ) -> bool:
     """Default-deny consent gate.
 
@@ -195,7 +256,7 @@ def is_consented(
     """
     if not contact_id or channel not in ALLOWED_CHANNELS or purpose not in ALLOWED_PURPOSES:
         return False  # malformed input → default-deny
-    records = records_for(contact_id)
+    records = records_for(contact_id, tenant_id)
     for rec in reversed(records):  # newest first
         if rec.channel == channel and rec.purpose == purpose:
             return rec.kind == "grant"

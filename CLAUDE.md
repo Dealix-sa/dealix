@@ -1,66 +1,139 @@
-# Dealix — Claude Code Operating Manual
+# Dealix — Canonical Operating Manual
 
-## Identity
+## Mission
 
-Dealix is a Saudi-first AI Business Operating Systems company.
-We build command-room OS products for Saudi B2B companies:
+Dealix is a Saudi B2B AI-native Revenue Command OS delivered first as a concierge-assisted operating service. It overlays the customer's existing CRM, ERP, email, WhatsApp, spreadsheets, and reporting. It is not a CRM replacement, generic chatbot, blind automation agency, or self-serve SaaS at this stage.
 
-- Revenue Command Room OS
-- Company Brain OS
-- WhatsApp / Inbox Follow-up OS
-- AI Outreach & Targeting OS
-- Client Growth Operator OS
-- AI Trust & Compliance OS
-- Client Delivery OS
-- Controlled Live Outbound OS (draft-only default)
-- Founder Decision Desk
-- Proposal / Contract / Payment OS
-- Executive Proof Pack OS
-- Offer Intelligence OS
-- Market & Competitor Watch OS
-- Customer Pain Radar
-- Operations Bottleneck Scanner
-- Loop Operating System
-- Agentic Command Room OS
-- Data Intelligence OS
-- MCP Gateway
-- SaaS / Tenant Foundation OS
+The product goal is not maximum feature count. The goal is one trusted operating layer that turns company context, opportunities, actions, approvals, outcomes, proof, and learning into a measurable daily command.
 
-**Primary paid entry:** Transformation Diagnostic Sprint — 7,500–25,000 SAR, 3–7 days.
+## Canonical product spine
 
----
-
-## Architecture Summary
-
-```
-api/          FastAPI app + routers (uvicorn api.main:app)
-core/         Settings, logging, errors, DB, LLM base
-db/           Async SQLAlchemy + Alembic migrations
-dealix/       Hermes multi-agent framework + observability
-company/      Daily OS engines (micro, CRM, reports, outbox)
-scripts/      CLI tools, ops checks, daily shell scripts
-scripts/ops/  CI, Railway checks, security smoke
-apps/web/     Next.js command room frontend (npm --prefix apps/web)
-docs/ops/     Runbooks, checklists, deployment guides
-sales/        Sales assets, proposals, playbooks
-reports/      Runtime outputs (gitignored under reports/runtime/)
+```text
+Company Brain
+→ Sources and Consent
+→ Company / Contact / Signal Graph
+→ Opportunity / Partnership
+→ Department Plan
+→ Action
+→ Draft
+→ Approval
+→ Controlled Execution
+→ Outcome
+→ Finance / Delivery / Proof
+→ Learning
+→ Daily Command
 ```
 
-Key files:
-- `api/main.py` — app factory; production secret guard at startup
-- `core/config/settings.py` — pydantic-settings; no hardcoded secrets
-- `railway.toml` — Dockerfile builder, uvicorn start, /healthz
-- `Dockerfile` — multi-stage Python 3.12-slim, non-root, tini
-- `Makefile` — all canonical commands
-- `scripts/ops/run_full_repo_test_matrix.sh` — launch gate runner
+Canonical entity ownership is defined in:
 
----
-
-## Outbound Safety Policy — NON-NEGOTIABLE
-
-These env vars **must remain false** unless a controlled-live approval PR exists:
-
+```text
+dealix/registers/company_intelligence_entity_ownership.json
 ```
+
+Do not create a second Company Brain, Opportunity object, Approval Center, Proof Ledger, or Daily Command under a new name.
+
+## Commercial truth
+
+Canonical sources:
+
+- `docs/DEALIX_BUSINESS_MODEL.md` — founder-governed business model;
+- `auto_client_acquisition/service_catalog/registry.py` — executable offer status;
+- `landing/assets/data/services-catalog.json` — synchronized committed export.
+
+Only two offers are commercially active:
+
+| Offer | Commercial status | Pricing rule |
+|---|---|---|
+| Free Mini Diagnostic | `free_entry` | Free |
+| Revenue Command Pilot — 30 days | `quote_only` | Quote after discovery; no public fixed price |
+
+All other catalog entries are `internal_experiment` until separately approved. Do not quote, market, or sell them as live offers.
+
+A proposal is not an invoice. An invoice is not revenue. Revenue requires payment evidence.
+
+## First-five ICP
+
+Focus the first five customers on Saudi B2B SaaS and business-service companies with approximately 20–200 employees that have:
+
+- direct founder or GM access;
+- a specific revenue-operations pain;
+- usable lawful data;
+- an accountable owner;
+- willingness to run a measured 30-day pilot;
+- acceptance of human approval gates.
+
+Defer banks, government, heavily regulated enterprise transformation, anonymous mass outbound, and customers requesting guaranteed revenue until Dealix has repeatable proof and references.
+
+## Product priorities
+
+Execute in this order:
+
+1. Production trust: CI, startup, auth, deployment SHA, smoke tests, secrets, tenancy.
+2. Canonical Company Brain and entity ownership.
+3. Opportunity Graph and evidence-backed prioritization.
+4. Action, Draft, Approval, Outcome, and Proof loop.
+5. Revenue Command Pilot delivery quality.
+6. Self-improvement from verified failures and outcomes.
+7. Optional integrations only behind existing Dealix contracts.
+
+Do not add another CRM, workflow runtime, vector database, crawler, model router, or observability platform without a measured gap and an approved adapter boundary.
+
+## Architecture map
+
+```text
+api/                 FastAPI app and routers
+core/                settings, logging, errors, database, LLM foundations
+db/                  SQLAlchemy and Alembic
+dealix/              canonical Company Intelligence and agent surfaces
+auto_client_acquisition/  commercial and customer acquisition engines
+company/             daily internal operating engines
+scripts/             verification and operating commands
+scripts/ops/         CI, deployment, security, and production checks
+apps/web/            Next.js command-room frontend
+docs/                product, strategy, architecture, and runbooks
+sales/               proposals, playbooks, and delivery assets
+reports/runtime/     generated runtime output; never canonical source truth
+```
+
+Important files:
+
+- `api/main.py`
+- `core/config/settings.py`
+- `railway.toml`
+- `Dockerfile`
+- `Makefile`
+- `docs/DEALIX_BUSINESS_MODEL.md`
+- `dealix/registers/company_intelligence_entity_ownership.json`
+- `dealix/company_intelligence/`
+- `auto_client_acquisition/service_catalog/registry.py`
+
+## Autonomy and approval model
+
+### Automatically allowed
+
+- reading, searching, analysis, and classification;
+- tests, static verification, and safe diagnostics;
+- internal drafts, reports, queues, proof packs, and plans;
+- branches, commits, and Draft PRs;
+- internal data organization without deleting source evidence.
+
+### Explicit approval required
+
+- sending any external message;
+- publishing public content;
+- issuing or sending a quote, proposal, invoice, or contract;
+- charging a customer or recording revenue;
+- merging to `main`;
+- rotating secrets;
+- changing Railway, Vercel, production, billing, or branch protection;
+- running migrations or enabling RLS;
+- deleting material data or branches.
+
+## External-action safety — NON-NEGOTIABLE
+
+These settings remain disabled unless a controlled approval explicitly authorizes a live action:
+
+```text
 EXTERNAL_SEND_ENABLED=false
 EMAIL_SEND_ENABLED=false
 WHATSAPP_SEND_ENABLED=false
@@ -69,234 +142,149 @@ SMS_SEND_ENABLED=false
 OUTBOUND_MODE=draft_only
 ```
 
-**Allowed:** generate drafts, proposals, WhatsApp payload drafts, email drafts, approval cards, command room reports, proof packs, audit logs, classification results.
+Forbidden:
 
-**Forbidden:** automatic WhatsApp/SMS/email sending, cold outbound without opt-in, LinkedIn automation/scraping, sending without human approval.
+- cold WhatsApp blasts;
+- mass LinkedIn automation or scraping;
+- automatic email/SMS sending;
+- fake clients, logos, testimonials, case studies, revenue, or ROI;
+- guaranteed sales or outcome claims;
+- public exposure of local-model or MCP control surfaces;
+- using external tools as canonical truth for consent, payment, approval, or proof.
 
----
+## Secrets and customer-data policy
 
-## Secrets Policy — NON-NEGOTIABLE
+- Never commit `.env`, tokens, API keys, passwords, private certificates, or production customer data.
+- Never print secret values in logs, markdown, tests, issues, or PRs.
+- Use names-only environment diagnostics.
+- Use synthetic or public data for integration pilots.
+- Keep TestSprite and MCP credentials local or in approved secret stores.
+- Do not enable PostgreSQL RLS until PostgreSQL-only tenant tests run without skips and trusted server-side tenant binding is reviewed.
 
-- Never commit `.env`, API keys, tokens, or credential values.
-- Never print secret values in logs, tests, markdown, or PRs.
-- Never commit `.secrets.baseline` with actual secrets.
-- Generate secrets locally; paste only into Railway/GitHub Secrets UI.
+## Claim and evidence rules
 
----
+Every material claim must have one of:
 
-## Execution Constraints — MANDATORY
+- code or test evidence;
+- GitHub workflow evidence;
+- deployment and live-SHA evidence;
+- signed commercial evidence;
+- payment evidence;
+- customer-consented proof.
 
-- **No Docker** — do not run `docker`, `docker-compose`, or `make` unless explicitly told.
-- **No `npm run dev`** — never start the frontend dev server in a PR workflow.
-- **No auto-send** — never send WhatsApp, email, or any external message.
-- **No auto-invoicing** — never issue invoices or contracts automatically.
-- **No secrets in commits** — never commit `.env`, API keys, or credentials.
-- **No mega-pushes** — if a change touches more than 3 unrelated systems, split it.
-- **No fake data** — no fake customers, logos, testimonials, or guaranteed ROI claims.
+Use measured language:
 
----
+- "نتوقع" / "we expect";
+- "الهدف هو" / "the goal is";
+- "سنقيس" / "we will measure".
 
-## Verification Commands (safe, always allowed)
+Do not use "guaranteed", "مضمون", or unsupported market leadership claims.
 
-```bash
-python3 --version
-git status --short
-git log --oneline -10
-bash -n scripts/<script>.sh                         # syntax only
-python3 scripts/ops/check_railway_production_env.py # prints names, never values
-python3 scripts/ops/security_smoke_ci.py
-python3 scripts/verify_no_auto_external_send.py
-python3 scripts/verify_company_launch_ready.py
-make full-repo-test                                 # full launch gate
-npm --prefix apps/web run verify                    # frontend typecheck+build
-```
+## Development constraints
 
----
+- Inspect existing implementations before creating new modules.
+- Search for an existing PR or issue before opening another.
+- One bounded concern per PR.
+- Split changes that touch unrelated systems.
+- Do not weaken security, tests, or production guards to obtain green CI.
+- Do not assume generated runtime files exist.
+- Do not commit generated lead lists, daily reports, approval queues, or customer data unless the file is an explicitly reviewed static template or governance artifact.
+- Do not run a development server inside a PR workflow.
+- Do not perform production mutations from tests.
 
-## Test Matrix
+## Required verification
 
-Run: `make full-repo-test`
-
-Required gates (must all pass):
-- `python-version`
-- `python-compileall-core-surfaces`
-- `env-contract`
-- `security-smoke` (CI-safe, no secrets)
-- `no-auto-external-send`
-- `company-launch-ready`
-- `pytest-launch-critical-suite` (tests/test_full_repo_matrix_contract.py + tests/test_growth_sales_cards.py)
-- `apps-web-npm-ci`
-- `apps-web-verify`
-
-Optional/diagnostic (failures are non-blocking):
-- `pytest-full-suite-diagnostic`
-- `launch-os-dry-runs`
-- `production-verify-bundle`
-- `testsprite-env-check`
-- `testsprite-mcp-smoke`
-
-**Current status:** PASS (as of 2026-06-30)
-
----
-
-## Railway Deployment Rules
-
-- `railway.toml` builder = DOCKERFILE, start = uvicorn api.main:app
-- Dockerfile = multi-stage Python 3.12-slim, non-root, tini
-- Health = `/healthz`, timeout = 300s
-- **Do not remove the production secret guard** in `api/main.py:_validate_production_secrets`
-- If Railway fails: fix billing, source, and env vars — not the security guard
-- Required Railway variables: see `docs/ops/RAILWAY_GO_LIVE_CHECKLIST.md`
-- Full recovery procedure: see `docs/ops/RAILWAY_RECOVERY_RUNBOOK.md`
-- Generate secrets locally: `python -c "import secrets; print(secrets.token_hex(32))"`
-- Validate: `make railway-env-check`
-
----
-
-## GitHub / CI Rules
-
-- Required CI: `.github/workflows/full-repo-test-matrix.yml`
-- All PRs start as **draft** — never auto-merge
-- Branch naming: `feat/<wave-name>` or `claude/<slug>` for agent branches
-- One Wave per PR — never merge multiple Waves in one PR
-- Never create workflows that run Docker or npm dev server
-- Never commit generated reports, runtime CSVs, or approval queues
-- PR must include: what changed, validation output, what NOT to do next
-- Allowed: docs, scripts, schema, templates, static assets
-
----
-
-## Generated File Policy
-
-- Runtime output: `company/runtime/` — gitignored
-- Never commit: `*_REPORT.md` daily outputs, `*.csv` generated leads, `approval_queue*`
-- Never commit: `reports/runtime/` contents
-- Templates and static docs: commit freely
-
----
-
-## Daily Operating Commands
+Use the narrowest relevant commands first, then repository gates:
 
 ```bash
-bash scripts/dealix_command_day.sh   # all engines + Command Room → reports/command_room/index.html
-./scripts/dealix_micro_day.sh        # morning CEO pack
-./scripts/dealix_revenue_day.sh      # after Wave 2 lands
-./scripts/dealix_intake_day.sh       # after Wave 2 lands
-./scripts/dealix_followup_day.sh     # after Wave 5+
-./scripts/dealix_trust_day.sh        # after Wave 5+
+python scripts/verify_company_intelligence_entity_ownership.py
+python scripts/verify_company_intelligence_adapters.py
+pytest -q tests/test_company_intelligence_entity_ownership.py
+pytest -q tests/test_canonical_company_brain_facade.py
+python scripts/verify_no_auto_external_send.py
+python scripts/ops/security_smoke_ci.py
+python scripts/verify_company_launch_ready.py
+python scripts/dealix_export_service_catalog_json.py --check
+npm --prefix apps/web run verify
+make full-repo-test
 ```
 
----
+A merge candidate requires:
 
-## Wave Roadmap
+- exact-head CI success;
+- CodeQL, Security, Docker, Repository Hardening, No-Crash, and product checks successful;
+- zero unresolved review threads;
+- no unexplained skipped proof for the changed risk surface;
+- current-base mergeability;
+- explicit merge approval.
 
-| Wave | Branch | Purpose |
-|------|--------|---------|
-| 1 | `feat/ceo-operating-context` | CLAUDE.md + CEO context docs |
-| 2 | `feat/revenue-engine-v2` | Daily commercial pack generation |
-| 3 | `feat/intake-presentation-os` | Client intake + presentation engine |
-| 4 | `feat/website-conversion-upgrade` | Website conversion pages |
-| 5 | `feat/crm-followup-os` | CRM + follow-up cadence |
-| 6 | `feat/client-delivery-os` | Client delivery + Diagnostic Sprint OS |
-| 7 | `feat/trust-launch-os` | Trust pack + launch readiness |
+An optional live Railway smoke may be skipped when no authorized production secret is available. Do not represent a skipped live smoke as production proof.
 
-**Rule:** Never start Wave N+1 before Wave N PR is merged.
+## Production trust rules
 
----
+- Repository CI is not live production proof.
+- A READY Vercel preview is not proof that Railway runs the same SHA.
+- Production readiness requires exact deployed SHA, public health, protected smoke, and correct authentication behavior.
+- Do not remove startup secret guards.
+- Fix billing, environment, deployment source, and service configuration rather than weakening security.
+- Do not expose secret values while diagnosing production.
 
-## Approval Gates
+## Company Brain rules
 
-Require explicit founder (Sami Assiri) approval before execution:
+The canonical package is:
 
-- Sending any external message (WhatsApp, email, LinkedIn)
-- Issuing a proposal or invoice
-- Merging a PR to `main`
-- Rotating secrets or changing Railway config
-- Publishing website changes to production
-- Enabling live outbound (any channel)
+```text
+dealix/company_intelligence/
+```
 
----
+It provides a normalized, persistence-neutral facade over existing authoritative builders. Existing builders remain compatible until callers are migrated deliberately.
 
-## Business Model Summary
+Required properties:
 
-| # | Offer | Price |
-|---|-------|-------|
-| 1 | Free Diagnostic | Free |
-| 2 | Micro Sprint | 499 SAR |
-| 3 | Data Pack | 1,500 SAR |
-| 4 | Managed Ops | 2,999–4,999 SAR/mo |
-| 5 | Transformation Diagnostic Sprint | 7,500–25,000 SAR |
-| 6 | Custom Enterprise System | 25,000–100,000+ SAR |
+- tenant-scoped provenance;
+- network-free and LLM-free internal snapshot behavior;
+- preservation of forbidden-channel enforcement;
+- explicit source identity;
+- no silent replacement of existing authoritative behavior.
 
-See `docs/DEALIX_BUSINESS_MODEL.md` for full detail.
+## Integration rules
 
----
+External tools may be adapters, never canonical owners.
 
-## Key File Locations
+Current direction:
 
-| Purpose | Path |
-|---------|------|
-| App entry point | `api/main.py` |
-| Settings | `core/config/settings.py` |
-| Railway config | `railway.toml` |
-| Docker build | `Dockerfile` |
-| Full test matrix | `scripts/ops/run_full_repo_test_matrix.sh` |
-| Railway env check | `scripts/ops/check_railway_production_env.py` |
-| Railway go-live | `docs/ops/RAILWAY_GO_LIVE_CHECKLIST.md` |
-| Railway recovery | `docs/ops/RAILWAY_RECOVERY_RUNBOOK.md` |
-| Micro daily script | `scripts/dealix_micro_day.sh` |
-| Lead research | `company/lead_research/` |
-| CRM | `company/crm/` |
-| Outbox | `company/outbox/` |
-| Runtime outputs | `company/runtime/` (gitignored) |
-| CEO context | `docs/CEO_OPERATING_CONTEXT.md` |
-| Business model | `docs/DEALIX_BUSINESS_MODEL.md` |
-| Safe execution | `docs/DEALIX_SAFE_EXECUTION_RULES.md` |
-| Sales assets | `sales/` |
-| Agent rules | `.claude/rules/` |
-| Codebase advisor skill | `.claude/skills/improve/` |
-| improve executor agent | `.claude/agents/improve-executor.md` |
-| Improvement backlog | `plans/` (INDEX + seeded plans) |
-| Provider registry guard | `scripts/ops/check_provider_registry_freshness.py` |
-| improve outbound bridge (draft-only) | `auto_client_acquisition/gtm_os/improve_followup.py` |
-| Diagnostic report template | `sales/DIAGNOSTIC_REPORT_TEMPLATE_AR.md` |
-| improve delivery SOP (AR) | `sales/IMPROVE_DIAGNOSTIC_DELIVERY_SOP_AR.md` |
-| improve commercial playbook | `docs/IMPROVE_COMMERCIAL_PLAYBOOK.md` |
-| improve integration doc | `docs/IMPROVE_SKILL_INTEGRATION.md` |
+- Langfuse: harden one existing canonical path;
+- Docling: private-document pilot behind file and provenance gates;
+- LiteLLM: benchmark only behind the current Model Router;
+- Activepieces: optional approval bridge, not Approval truth;
+- Firecrawl: legal/privacy/terms hold before embedded use;
+- Temporal, Qdrant, Twenty: hold until a measured gap exists;
+- Playwright agents: isolated QA only, without founder/customer sessions;
+- MCP: trusted hosts, origins, scopes, audit, and no production credentials by default.
 
----
+## Daily operating outcome
 
-## Codebase Advisor Skill (`improve`)
+Each operating cycle should produce:
 
-`.claude/skills/improve/` — adapted from `shadcn/improve` (MIT). Run `/improve`
-(or `/improve quick`, `/improve branch`, `/improve <category>`) to audit the repo
-and produce **executable plans** in `plans/`. It uses the expensive model to
-advise and hands execution to a cheap executor (via the free-LLM provider radar)
-in a disposable worktree. It **never edits source, never mutates the tree, never
-weakens a guard** — the only writes go to `plans/`, and merging stays a founder
-approval gate. Doubles as the delivery engine for the Free Diagnostic and
-Transformation Diagnostic Sprint offers — see `docs/IMPROVE_SKILL_INTEGRATION.md`.
+1. highest production-trust blocker;
+2. highest money-now action;
+3. opportunity and action queue updates;
+4. approvals required;
+5. proof events;
+6. failure and learning events;
+7. one safe next execution step.
 
----
+## Definition of product success
 
-## Known Launch Status (2026-06-30)
+Dealix is stronger when it has:
 
-- **Repo matrix:** PASS (all required gates green)
-- **Railway:** Billing past due — founder must pay to redeploy
-- **Frontend:** `npm --prefix apps/web run verify` PASS
-- **Production API:** Not yet live (Railway billing issue)
-- **Live outbound:** DISABLED (draft-only default)
-- **Secrets in repo:** NONE confirmed
+- one canonical truth per entity;
+- fewer contradictory workflows and offers;
+- exact production evidence;
+- measurable customer outcomes;
+- zero unauthorized external actions;
+- tenant and provenance guarantees;
+- repeatable pilot delivery;
+- actual paid proof and renewal evidence.
 
----
-
-## What NOT to Do
-
-- Do not rebuild from scratch — the repo already has Company OS, Founder OS, Micro OS.
-- Do not run `dealix_micro_day.sh` inside a PR workflow validation step.
-- Do not create `.github/workflows` that auto-run Docker or npm dev server.
-- Do not create giant "all-in-one" scripts.
-- Do not assume `company/runtime/` files exist — always create with fallbacks.
-- Do not weaken security to make Railway boot. Fix Railway configuration instead.
-- Do not claim features not yet implemented.
-- Do not generate fake ROI numbers, fake clients, or fake testimonials.
+Do not substitute feature volume for these outcomes.

@@ -8,6 +8,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+import httpx
+
 VAT_PERCENTAGE = 0.0  # 0% (standard rate 0%, 10% on some services)
 
 REGULATORS: dict[str, str] = {

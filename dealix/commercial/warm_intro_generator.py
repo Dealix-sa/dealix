@@ -148,7 +148,8 @@ class WarmIntroGenerator:
             "This is a draft-only warm outreach task. Do not claim past client results, "
             "percentages, guaranteed ROI, government access, certifications, deadlines, "
             "or customer proof unless explicitly supplied in the request. Do not invent facts. "
-            "Offer a practical 499 SAR Revenue Proof Sprint or a one-page opportunity snapshot. "
+            "Start with a bounded diagnostic. Only after discovery may you propose a 30-day "
+            "Revenue Command Pilot with a documented quote. Never state a fixed public price. "
             f"Previous interaction: {context}. Founder: {req.founder_name}."
         )
 
@@ -261,9 +262,9 @@ class WarmIntroGenerator:
             ),
             (
                 "evidence_first",
-                f"مرحبًا {name}، أعمل على Revenue Proof Sprint بقيمة 499 ريال لقياس فجوة واحدة فعلية خلال مدة قصيرة.\n"
+                f"مرحبًا {name}، نبدأ بتشخيص مختصر لفهم فجوة تشغيل واحدة قبل تحديد أي نطاق أو سعر.\n"
                 f"هل {pain} أولوية حالية لدى {company}؟",
-                f"Hi {name}, I run a 499 SAR Revenue Proof Sprint to measure one real operating gap in a short cycle.\n"
+                f"Hi {name}, we start with a bounded diagnostic to understand one operating gap before setting scope or price.\n"
                 f"Is {pain} a current priority for {company}?",
             ),
             (
@@ -317,18 +318,18 @@ class WarmIntroGenerator:
             },
             {
                 "tone": "evidence_first",
-                "subject_line": f"Revenue Proof Sprint بقيمة 499 ريال لـ {company}",
+                "subject_line": f"تشخيص مسار الإيراد في {company}",
                 "body_ar": (
-                    f"مرحبًا {name}،\n\nDealix تقدم Revenue Proof Sprint بقيمة 499 ريال لاختبار مشكلة واحدة فعلية خلال دورة قصيرة. "
+                    f"مرحبًا {name}،\n\nDealix تبدأ بتشخيص مختصر لفهم مشكلة تشغيل واحدة قبل تحديد النطاق أو السعر. "
                     f"بالنسبة لـ {company}، الفرضية الأولية هي: {pain}.\n\n"
-                    "لا نعد بنتيجة قبل القياس؛ المخرج هو تقرير واضح بما حدث وما يستحق التوسع.\n\n"
-                    f"هل يناسبك ملخص النطاق؟\n\n{founder}"
+                    "بعد جلسة الاكتشاف نجهّز نطاق Revenue Command Pilot لمدة 30 يومًا وquote موثقًا للمراجعة؛ لا نعد بنتيجة إيراد.\n\n"
+                    f"هل يناسبك تشخيص مختصر؟\n\n{founder}"
                 ),
                 "body_en": (
-                    f"Hi {name},\n\nDealix offers a 499 SAR Revenue Proof Sprint to test one real operating problem in a short cycle. "
+                    f"Hi {name},\n\nDealix starts with a bounded diagnostic to understand one operating problem before setting scope or price. "
                     f"For {company}, the initial hypothesis is: {pain}.\n\n"
-                    "We do not promise an outcome before measurement; the deliverable is a clear report on what happened and whether expansion is justified.\n\n"
-                    f"May I send the scope summary?\n\n{founder}"
+                    "After discovery, we prepare a 30-day Revenue Command Pilot scope and documented quote for review; we do not promise revenue outcomes.\n\n"
+                    f"Would a short diagnostic be useful?\n\n{founder}"
                 ),
             },
             {

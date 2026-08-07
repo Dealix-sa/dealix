@@ -2,22 +2,30 @@
 
 ## Offer ladder
 
-| # | Offer | Price |
-|---|-------|-------|
-| 1 | Free Diagnostic | Free (30 min) |
-| 2 | Micro Sprint | 499 SAR |
-| 3 | Data Pack | 1,500 SAR |
-| 4 | Managed Ops | 2,999–4,999 SAR/mo |
-| 5 | Transformation Diagnostic Sprint | 7,500–25,000 SAR |
-| 6 | Custom Enterprise System | 25,000–100,000+ SAR |
+**Only two offers are commercially active.** Canonical sources of truth:
+
+- `docs/DEALIX_BUSINESS_MODEL.md` for the founder-governed commercial model;
+- `auto_client_acquisition/service_catalog/registry.py` for executable offer status;
+- `landing/assets/data/services-catalog.json` as the synchronized committed export.
+
+Everything else in the catalog is `internal_experiment` and must not be sold or publicly priced without a separate approved decision.
+
+| # | Offer | Price | `commercial_status` |
+|---|-------|-------|---|
+| 1 | Free Mini Diagnostic | Free | `free_entry` |
+| 2 | Revenue Command Pilot — 30 days | Quote after discovery; no public fixed price | `quote_only` |
 
 ## Positioning
 
-Dealix builds AI Operating Systems for Saudi B2B companies.
-It turns scattered follow-up, proposals, WhatsApp, CRM, operations, and founder decisions into a daily command room.
+Dealix is a Saudi Revenue Command OS delivered first as a concierge-assisted operating service. It overlays the client's existing CRM, ERP, email, WhatsApp, spreadsheets, and reporting; it is not a CRM replacement, generic chatbot, blind automation agency, or self-serve SaaS at this stage.
 
-Primary beta offer: **7-Day Revenue Command Room Sprint** — 5,000–12,000 SAR.
-Retainer path: 3,000–15,000 SAR/month depending on scope.
+Primary paid entry: **Revenue Command Pilot — 30 days**. Discovery-first; price, scope, data boundary, approvals, acceptance criteria, and remedy terms are defined in a documented quote after discovery. Never state a fixed public price.
+
+## First-five ICP
+
+Focus on Saudi B2B SaaS and business-service companies with approximately 20–200 employees, direct founder/GM access, a specific revenue-operations pain, usable lawful data, and willingness to run a measured 30-day pilot.
+
+Defer banks, government, heavily regulated enterprise transformation, anonymous mass outbound, and customers requesting guaranteed revenue until repeatable proof exists.
 
 ## Language rules
 
@@ -27,10 +35,10 @@ Retainer path: 3,000–15,000 SAR/month depending on scope.
 
 ## Claim rules — NON-NEGOTIABLE
 
-- No fake testimonials, no fake client names, no fake logos.
-- No guaranteed ROI claims.
-- No fabricated revenue numbers.
-- Use hypothesis language only:
+- No fake testimonials, client names, logos, revenue, or case studies.
+- No guaranteed ROI or guaranteed sales claims.
+- A proposal is not an invoice; an invoice is not revenue; revenue requires payment evidence.
+- Use hypothesis and measurement language:
   - "نتوقع" / "we expect"
   - "الهدف هو" / "the goal is"
   - "سنقيس" / "we will measure"
@@ -52,10 +60,11 @@ sales/DAILY_FOUNDER_SELLING_ROUTINE_AR.md
 ## Approval required before
 
 - Sending any external message (WhatsApp, email, LinkedIn DM)
-- Issuing any proposal or invoice
+- Issuing or sending any proposal, quote, invoice, or contract
 - Enabling any live outbound channel
-- Charging any customer
+- Charging any customer or recording revenue
+- Publishing a case study or customer claim
 
 ## Draft generation is always allowed
 
-Generating WhatsApp drafts, email drafts, proposal briefs, follow-up sequences, and approval cards is safe and encouraged. The founder reviews and approves before any actual send.
+Generating WhatsApp drafts, email drafts, proposal briefs, follow-up sequences, pilot scopes, proof packs, and approval cards is safe and encouraged. The founder reviews and approves before any external action.

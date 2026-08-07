@@ -593,7 +593,7 @@
     "offers": {
       "audit": {
         "label": "10-Lead Audit",
-        "price": "من 499 ر.س",
+        "price": "السعر بعد جلسة الاكتشاف",
         "desc": "مراجعة 10 leads مع توصية حوكمة ومسار إغلاق."
       },
       "agencyProof": {

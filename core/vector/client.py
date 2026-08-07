@@ -38,6 +38,12 @@ class VectorClient(ABC):
         except Exception:
             return False
 
+    # Abstract, like its four siblings above: the body is `...`, not a usable
+    # default. Without the decorator a subclass that forgot to implement it
+    # inherited a silent no-op — `delete_collection` would report success and
+    # delete nothing. `list_collections` and `collection_info` below are
+    # deliberately different: they return real, safe defaults.
+    @abstractmethod
     async def delete_collection(self, name: str) -> None:
         ...
 

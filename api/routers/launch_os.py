@@ -69,7 +69,6 @@ class VerticalOut(BaseModel):
 
 
 class PipelineAccountIn(BaseModel):
-    account_id: str
     company_name: str
     offer_id: str
     value_sar: int = 0
@@ -238,7 +237,7 @@ async def get_vertical(sector: str) -> VerticalOut:
 async def get_pipeline_summary() -> dict[str, Any]:
     """Return pipeline summary: stage counts + total ARR."""
     tracker = _get_tracker()
-    stage_counts = tracker.pipeline_summary()
+    stage_counts = tracker.pipeline_summary()["by_stage"]
     all_items = tracker.list_all()
     total_arr = sum(i.value_sar for i in all_items)
     arr_by_stage = {}
@@ -254,11 +253,15 @@ async def get_pipeline_summary() -> dict[str, Any]:
 
 @router.post("/pipeline/accounts", summary="Add account to pipeline", dependencies=[Depends(require_admin_key)])
 async def add_to_pipeline(account: PipelineAccountIn) -> dict[str, Any]:
-    """Add a new account to the sales pipeline."""
+    """Add a new account to the sales pipeline.
+
+    The pipeline assigns its own ``id`` (PipelineTracker never accepts a
+    caller-supplied id) — use the ``id`` in the response for subsequent
+    GET/PATCH calls, not any identifier you may have used elsewhere.
+    """
     tracker = _get_tracker()
     item = tracker.add(
-        account_id=account.account_id,
-        company_name=account.company_name,
+        account.company_name,
         offer_id=account.offer_id,
         value_sar=account.value_sar,
         icp_score=account.icp_score,

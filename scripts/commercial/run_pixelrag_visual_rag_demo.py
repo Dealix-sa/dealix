@@ -16,8 +16,8 @@ from dealix.visual_rag import (
     VisualRAGAdapter,
     VisualRAGJob,
     VisualRAGMode,
-    VisualRAGSource,
     VisualRAGSensitivity,
+    VisualRAGSource,
 )
 
 

@@ -15,8 +15,12 @@ import os as _os
 import traceback as _traceback
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from typing import TYPE_CHECKING
 
 from fastapi import FastAPI, Request
+
+if TYPE_CHECKING:  # annotation only — avoids importing settings at module load
+    from core.config.settings import Settings
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
