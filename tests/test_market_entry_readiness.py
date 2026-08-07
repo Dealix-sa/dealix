@@ -60,7 +60,7 @@ def test_demo_snapshot_fails_closed_without_fake_market_readiness() -> None:
     assert snapshot["external_actions_executed"] == 0
 
 
-def test_primary_offer_is_governed_and_legacy_price_stays_internal() -> None:
+def test_primary_offer_is_governed_and_quote_only_after_discovery() -> None:
     audit = audit_pilot_pricing(ROOT)
     assert audit["ok"] is True
     assert audit["offer_id"] == "revenue_command_pilot_30d"
@@ -68,9 +68,15 @@ def test_primary_offer_is_governed_and_legacy_price_stays_internal() -> None:
     assert audit["pilot_price"] is None
     assert audit["pricing_status"] == "no_public_amount_until_validation"
     assert audit["publication_status"] == "founder_approval_required"
-    assert audit["legacy_price_consistent"] is True
+    assert audit["quote_only_sources_consistent"] is True
     assert audit["legacy_offer_public"] is False
-    assert set(audit["observed"].values()) == {499.0}
+    assert audit["observed"]["finance_catalog"] == {
+        "pricing_basis": "quote_only",
+        "price_sar": None,
+    }
+    assert audit["observed"]["product_catalog"]["setup_sar"] is None
+    assert audit["observed"]["pricing_rules"]["min"] is None
+    assert audit["observed"]["pricing_rules"]["max"] is None
 
 
 def test_positive_metric_without_evidence_is_not_accepted() -> None:
@@ -179,4 +185,3 @@ def test_market_entry_runbook_matches_founder_offer_decision() -> None:
     assert "30 يومًا" in runbook
     assert "السعر العام غير معتمد" in runbook
     assert "السعر الكانوني الفعلي في الكود اليوم" not in runbook
-

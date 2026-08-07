@@ -25,7 +25,7 @@ import os
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 log = logging.getLogger(__name__)
 
@@ -37,6 +37,74 @@ def _module_present(name: str) -> bool:
     try:
         importlib.import_module(name)
         return True
+    except Exception:
+        return False
+
+
+def _caller_declared_tenant_rejected() -> bool:
+    """Return True only if a mismatching declared tenant is actually denied.
+
+    Exercises the canonical resolver instead of asserting that a module can be
+    imported. A compliance surface that reports "isolation: available" because
+    a file is on disk is worse than one that reports nothing — it converts an
+    unverified claim into an auditable statement.
+
+    The probe is the attack: a normal user whose own tenant is A declares B.
+    """
+    try:
+        from api.security.tenant_scope import (
+            TenantScopeDenied,
+            resolve_request_tenant_id,
+        )
+
+        try:
+            resolve_request_tenant_id(
+                user_tenant_id="__probe_tenant_a__",
+                system_role="member",
+                requested_tenant_id="__probe_tenant_b__",
+            )
+        except TenantScopeDenied as denied:
+            return denied.reason == "cross_tenant_access_denied"
+        return False
+    except Exception:
+        return False
+
+
+def _repository_assertions_available() -> bool:
+    """Return True if the fail-closed per-object helpers are importable.
+
+    Narrower than it used to be, and narrower than it sounds: this says the
+    helpers exist, not that any call site uses them. The enforcement claim is
+    `caller_declared_tenant_rejected` above, which runs the real resolver.
+    """
+    try:
+        from api.middleware.tenant_isolation import (
+            assert_tenant_match,
+            filter_tenant_scoped_list,
+        )
+
+        return True
+    except Exception:
+        return False
+
+
+def _rate_limiting_enforced(app: Any) -> bool:
+    """Return True only if the rate-limit middleware is on the running app.
+
+    Reads the live middleware stack rather than asking whether slowapi can be
+    imported. The two differ exactly where it matters: a deployment missing
+    the library still serves ``X-RateLimit-*`` headers, so importability would
+    report a throttle that nothing enforces.
+
+    The app is passed in rather than imported. ``api.main`` imports this
+    router, so importing it back — even lazily inside the function — closes a
+    cycle; ``request.app`` is the same object without one.
+    """
+    try:
+        return any(
+            middleware.cls.__name__ == "SlowAPIMiddleware"
+            for middleware in getattr(app, "user_middleware", [])
+        )
     except Exception:
         return False
 
@@ -121,7 +189,7 @@ def _zatca_status() -> dict[str, Any]:
     }
 
 
-def _security_status() -> dict[str, Any]:
+def _security_status(app: Any = None) -> dict[str, Any]:
     return {
         "sentry_pii_scrubber": {
             "implemented": _module_present("dealix.observability.sentry"),
@@ -147,21 +215,40 @@ def _security_status() -> dict[str, Any]:
             # Reports enforcement wiring, not module importability: a module
             # that no request path calls proves nothing about isolation.
             "entitlement_context_enforced": _entitlement_tenant_context_enforced(),
-            "helpers_available": _module_present("api.middleware.tenant_isolation"),
+            # Runs the real resolver against the real attack rather than
+            # checking that a file imports.
+            "caller_declared_tenant_rejected": _caller_declared_tenant_rejected(),
+            "repository_assertions_available": _repository_assertions_available(),
             "evidence": (
-                "dealix.feature_gating.service:FeatureGate resolves the tenant "
-                "from the authenticated user (never X-Tenant-ID) via "
-                "dealix.feature_gating.tenant_context:resolve_entitlement_tenant_id; "
-                "tenant-scoped routes read current_user.tenant_id. "
-                "api.middleware.tenant_isolation provides repository-layer "
-                "assertion helpers. "
-                "Tests: tests/test_feature_gating_tenant_context.py"
+                "api.security.tenant_scope:resolve_request_tenant_id is the "
+                "single resolver: it derives the tenant from verified identity "
+                "and denies a mismatching declared tenant, honouring "
+                "X-Tenant-ID only for a super admin who names the target "
+                "explicitly. dealix.feature_gating.service:FeatureGate and "
+                "tenant-scoped routes both read it. "
+                "api.middleware.tenant_isolation supplies fail-closed "
+                "per-object assertions for defence in depth; its own "
+                "header-based resolver was removed rather than left available "
+                "to be wired up. "
+                "Tests: tests/test_feature_gating_tenant_context.py, "
+                "tests/test_tenant_isolation_helpers.py"
             ),
         },
         "rate_limiting": {
-            "implemented": _module_present("slowapi"),
-            "evidence": "slowapi-based per-IP + per-route limits (see "
-                        "PRODUCTION_ENV_TEMPLATE.md P8)",
+            # Was `_module_present("slowapi")` — importability, not
+            # enforcement. RateLimitHeadersMiddleware advertises
+            # X-RateLimit-* regardless of whether anything honours them, so
+            # "the library is installed" was the least informative thing this
+            # field could report.
+            "enforced": _rate_limiting_enforced(app),
+            "evidence": (
+                "api.security.rate_limit:setup_rate_limit installs "
+                "SlowAPIMiddleware; this field reports whether that "
+                "middleware is actually on the running app, not whether "
+                "slowapi can be imported. setup_rate_limit refuses to start "
+                "in production when slowapi is missing. "
+                "Tests: tests/test_rate_limit_enforced.py"
+            ),
         },
     }
 
@@ -193,15 +280,19 @@ def _audit_trail_status() -> dict[str, Any]:
 
 
 @router.get("/status")
-async def compliance_status() -> dict[str, Any]:
+async def compliance_status(request: Request) -> dict[str, Any]:
     """Live compliance posture. Public read-only.
 
     Each section returns truthful state computed from actual module
     presence + env config, not hardcoded badges.
+
+    ``request.app`` is threaded into the security section so it can read the
+    running middleware stack without importing ``api.main``, which imports
+    this router back.
     """
     pdpl = _pdpl_status()
     zatca = _zatca_status()
-    security = _security_status()
+    security = _security_status(request.app)
 
     # Compute overall posture from sub-statuses
     pdpl_articles_implemented = sum(
@@ -211,7 +302,9 @@ async def compliance_status() -> dict[str, Any]:
         1 for v in zatca.values() if isinstance(v, dict) and v.get("implemented")
     )
     security_controls_implemented = sum(
-        1 for v in security.values() if v.get("implemented") or v.get("configured")
+        1
+        for v in security.values()
+        if v.get("implemented") or v.get("configured") or v.get("enforced")
     )
 
     return {

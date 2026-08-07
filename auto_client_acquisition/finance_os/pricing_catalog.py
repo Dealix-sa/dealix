@@ -1,7 +1,7 @@
-"""Static pricing catalog — single source of truth for the 5 commercial tiers.
+"""Internal commercial catalogue.
 
-Mirrors ``docs/STRATEGIC_MASTER_PLAN_2026.md`` Part IV.A pricing
-ladder. Numbers stay until Decision Pack S1 is signed.
+The first paid motion is quote-only after discovery. Other numeric entries are
+internal experiments and cannot authorize a quote, invoice, or checkout.
 """
 from __future__ import annotations
 
@@ -14,8 +14,8 @@ class PricingTier:
     tier_id: str
     name_ar: str
     name_en: str
-    price_sar: float
-    pricing_basis: str  # "free" | "one_shot" | "recurring_monthly" | "project" | "custom"
+    price_sar: float | None
+    pricing_basis: str  # "free" | "quote_only" | "recurring_monthly" | "project" | "custom"
     description_ar: str
     description_en: str
     includes: list[str]
@@ -55,27 +55,29 @@ _CATALOG: tuple[PricingTier, ...] = (
             "external_outreach",
             "data_processing_at_scale",
         ],
-        upgrade_path="growth_starter_pilot_499_sar",
+        upgrade_path="revenue_command_pilot_30d",
     ),
     PricingTier(
-        tier_id="growth_starter_pilot",
-        name_ar="باقة بداية النمو — Pilot",
-        name_en="Growth Starter Pilot",
-        price_sar=499.0,
-        pricing_basis="one_shot",
-        description_ar="7 أيام: 10 فرص، مسوّدات عربيّة، خطة متابعة، Proof Pack موقَّع.",
-        description_en="7 days: 10 opportunities + Arabic drafts + follow-up plan + signed Proof Pack.",
+        tier_id="revenue_command_pilot_30d",
+        name_ar="تجربة مركز قيادة الإيرادات — 30 يومًا",
+        name_en="Revenue Command Pilot — 30 days",
+        price_sar=None,
+        pricing_basis="quote_only",
+        description_ar="نطاق واحد بعد discovery: ICP واحد، مسار إيراد واحد، baseline وProof Pack أسبوعي.",
+        description_en="One post-discovery scope: one ICP, one revenue workflow, a baseline, and weekly proof packs.",
         includes=[
-            "10_qualified_opportunities",
+            "one_icp",
+            "one_revenue_workflow",
+            "one_operational_baseline",
+            "one_approval_queue",
             "arabic_outreach_drafts",
-            "followup_plan_72h",
-            "signed_proof_pack",
+            "weekly_proof_pack",
         ],
         excludes=[
             "live_external_send",
             "scraped_data_sources",
         ],
-        upgrade_path="executive_growth_os",
+        upgrade_path="monthly_revenue_governance",
     ),
     PricingTier(
         tier_id="data_to_revenue",

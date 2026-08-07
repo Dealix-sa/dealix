@@ -103,13 +103,15 @@ def test_recommend_service_returns_one_of_five_bundles():
     assert len(CUSTOMER_FACING_BUNDLES) == 5
 
 
-def test_pilot_offer_is_exactly_499_sar():
+def test_pilot_offer_is_quote_only_after_discovery():
     record = parse_intake(IntakeRequest(company="ACME"))
     bundle = build_diagnostic(record)
     offer = build_pilot_offer(bundle)
     assert isinstance(offer, PilotOffer)
-    assert offer.amount_sar == 499
-    # Literal[499] enforces this — assigning anything else must raise.
+    assert offer.amount_sar is None
+    assert offer.duration_days == 30
+    assert offer.commercial_status == "quote_only"
+    # A public amount is not accepted by the quote-only schema.
     with pytest.raises(Exception):
         PilotOffer(
             company="X",
@@ -130,7 +132,8 @@ def test_pilot_description_in_both_languages_no_forbidden_tokens():
     assert any("؀" <= ch <= "ۿ" for ch in offer.description_ar)
     assert any("؀" <= ch <= "ۿ" for ch in offer.terms_ar)
     assert "pilot" in offer.description_en.lower()
-    assert "Moyasar" in offer.terms_en
+    assert "documented quote" in offer.description_en
+    assert "payment link" in offer.terms_en
     # No forbidden marketing claims anywhere.
     for txt in (
         offer.description_ar,
@@ -202,7 +205,9 @@ def test_router_pilot_offer_triggers_full_pipeline(client: TestClient):
     assert resp.status_code == 200
     body = resp.json()
     assert body["company"] == "ACME Saudi"
-    assert body["amount_sar"] == 499
+    assert body["amount_sar"] is None
+    assert body["duration_days"] == 30
+    assert body["commercial_status"] == "quote_only"
     assert body["recommended_bundle"] in CUSTOMER_FACING_BUNDLES
     assert body["payment_url"] is None
 
@@ -215,7 +220,7 @@ def test_router_status_reports_guardrails(client: TestClient):
     g = body["guardrails"]
     assert g["no_llm_calls"] is True
     assert g["no_live_sends"] is True
-    assert g["pilot_price_locked_499_sar"] is True
+    assert g["pilot_quote_only_after_discovery"] is True
     assert g["no_raw_email_or_phone"] is True
 
 

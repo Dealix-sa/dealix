@@ -29,11 +29,11 @@ _FALLBACK_LADDER: list[dict[str, Any]] = [
     {
         "rung": 2,
         "service": "growth_starter_pilot",
-        "name_ar": "499 ريال — Pilot نمو 7 أيام",
-        "name_en": "499 SAR 7-Day Growth Proof Sprint (Growth Starter Pilot)",
-        "price_band_sar": "499",
-        "summary_ar": "7 أيام: 10 فرص + مسوّدات عربيّة + خطة متابعة + Proof Pack.",
-        "summary_en": "7 days: 10 opportunities + Arabic drafts + follow-up plan + Proof Pack.",
+        "name_ar": "Revenue Command Pilot — 30 يومًا",
+        "name_en": "Revenue Command Pilot — 30 days",
+        "price_band_sar": "quote_after_discovery",
+        "summary_ar": "نطاق تشغيل واحد + baseline + مسوّدات محكومة + Proof Pack.",
+        "summary_en": "One operating scope + baseline + governed drafts + Proof Pack.",
     },
     {
         "rung": 3,
@@ -121,7 +121,7 @@ def generate_pricing_page(highlight: str | None = None) -> dict[str, Any]:
     # Spec-required tier labels — render explicit named-section block.
     named_tiers_ar = [
         "Free Diagnostic",
-        "499 SAR 7-Day Growth Proof Sprint (=Growth Starter Pilot)",
+        "30-Day Revenue Command Pilot (quote after discovery)",
         "Growth Starter",
         "Data to Revenue",
         "Executive Growth OS",

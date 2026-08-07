@@ -1,9 +1,10 @@
 name: dealix-autonomous-company-os
 
+# Legacy/manual compatibility path only. The scheduled daily owner is
+# governed-full-ops-daily.yml (issue #883).
+
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 5 * * *"
 
 permissions:
   contents: read
@@ -32,7 +33,7 @@ jobs:
           AUTO_DEPLOY_ENABLED: "false"
           LIVE_PAYMENT_CAPTURE_ENABLED: "false"
         run: |
-          python scripts/commercial/run_dealix_autonomous_company_os.py --limit 4
+          python3 scripts/commercial/run_dealix_autonomous_company_os.py --limit 4
 
       - name: Upload operating packet
         uses: actions/upload-artifact@v7

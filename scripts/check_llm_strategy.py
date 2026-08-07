@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Diagnostic script to verify Minimax-First LLM Strategy."""
 
 import os

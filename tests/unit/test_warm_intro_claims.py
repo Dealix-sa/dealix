@@ -56,8 +56,10 @@ def test_offer_is_evidence_first_and_approval_gated(monkeypatch) -> None:
         WarmIntroRequest(prospect_name="محمد", company_name="شركة اختبار")
     )
     text = _all_text(result)
-    assert "499" in text
-    assert "لا نعد بنتيجة قبل القياس" in text
+    assert "499" not in text
+    assert "بعد جلسة الاكتشاف" in text
+    assert "documented quote" in text
+    assert "لا نعد بنتيجة إيراد" in text
     assert result.approval_status == "approval_required"
     assert all(
         draft.approval_status == "approval_required"

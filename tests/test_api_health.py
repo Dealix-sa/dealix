@@ -66,3 +66,21 @@ class TestHealthEndpoints:
         assert data["status"] == "operational"
         assert "external_send_enabled" in data
         assert "outbound_mode" in data
+
+    def test_openapi_health_routes_match_what_actually_runs(self):
+        """api/routers/health.py's /health, /ready, /live are shadowed at
+        runtime by platform_meta.router (registered first in api.main). They
+        must stay include_in_schema=False so /openapi.json never documents a
+        response shape (e.g. HealthResponse with `providers`) that the live
+        endpoint doesn't actually return — see api/routers/health.py comments.
+        """
+        schema = app.openapi()
+        for path in ("/health", "/ready", "/live"):
+            assert path not in schema["paths"], (
+                f"{path} reappeared in the OpenAPI schema — if health.py's handler "
+                "is now reachable, drop include_in_schema=False; otherwise this is "
+                "a docs/reality mismatch regression"
+            )
+        # Confirm the schema omission isn't hiding a live behavior change.
+        live = client.get("/health").json()
+        assert "providers" not in live

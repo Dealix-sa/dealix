@@ -12,7 +12,11 @@ from auto_client_acquisition.platform.optimization import (
     OptimizationSuggestion,
     propose_optimizations,
 )
-from auto_client_acquisition.platform.risk_forecasting import RiskSignal, forecast_risk_score, risk_band
+from auto_client_acquisition.platform.risk_forecasting import (
+    RiskSignal,
+    forecast_risk_score,
+    risk_band,
+)
 
 
 @dataclass(frozen=True, slots=True)

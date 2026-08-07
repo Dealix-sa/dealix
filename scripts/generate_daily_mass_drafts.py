@@ -183,7 +183,7 @@ SUBJECT_EN_TEMPLATE = "Dealix — AI Operating System for {company}"
 BODY_AR_TEMPLATE = (
     "السلام عليكم {company}،\n\n"
     "{angle}\n\n"
-    "Pilot 7 أيام بـ 499 ريال — نشتغل على leadsكم نحن، تشوفون النتيجة، ثم تقرّرون.\n"
+    "نبدأ بتشخيص مختصر. بعد discovery نجهّز نطاق Revenue Command Pilot لمدة 30 يومًا وquote موثقًا للمراجعة.\n"
     "تناسبكم 20 دقيقة هذا الأسبوع؟\n\n"
     "سامي\n"
     "Dealix — https://dealix.me\n"
@@ -195,7 +195,7 @@ BODY_AR_TEMPLATE = (
 BODY_EN_TEMPLATE = (
     "Hello {company},\n\n"
     "{angle}\n\n"
-    "7-day Pilot at 499 SAR — we do the work on your leads, you see the results, then decide.\n"
+    "We start with a bounded diagnostic. After discovery, we prepare a 30-day Revenue Command Pilot scope and documented quote for review.\n"
     "Would 20 minutes this week work for you?\n\n"
     "Sami\n"
     "Dealix — https://dealix.me\n"

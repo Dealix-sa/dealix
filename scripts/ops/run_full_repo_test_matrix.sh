@@ -93,6 +93,8 @@ run_step "env-contract" required python3 scripts/check_env_contract.py
 run_step "security-smoke" required python3 scripts/ops/security_smoke_ci.py
 run_step "no-auto-external-send" required python3 scripts/verify_no_auto_external_send.py
 run_step "tenant-scoped-queries" required python3 scripts/ops/check_tenant_scoped_queries.py
+run_step "company-intelligence-entity-ownership" required python3 scripts/verify_company_intelligence_entity_ownership.py
+run_step "company-intelligence-adapters" required python3 scripts/verify_company_intelligence_adapters.py
 run_step "company-launch-ready" required python3 scripts/verify_company_launch_ready.py
 run_step "pytest-launch-critical-suite" required run_existing_pytest
 run_step "pytest-full-suite-diagnostic" optional python3 -m pytest -q --maxfail=25 --timeout=45

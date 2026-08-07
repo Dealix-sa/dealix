@@ -8,7 +8,10 @@ from auto_client_acquisition.platform.continuous_optimization import (
     ContinuousOptimizationSummary,
     build_continuous_optimization_summary,
 )
-from auto_client_acquisition.platform.meta_governance import GovernanceDriftReport, assess_meta_governance
+from auto_client_acquisition.platform.meta_governance import (
+    GovernanceDriftReport,
+    assess_meta_governance,
+)
 from auto_client_acquisition.platform.meta_orchestration import (
     MetaOrchestrationPlan,
     propose_meta_orchestration_changes,

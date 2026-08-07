@@ -1,4 +1,4 @@
-﻿"""
+"""
 Dealix LLM Engine - Three Gear System v3.0
 The brain that selects the right model for the right job.
 """

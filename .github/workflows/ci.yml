@@ -156,6 +156,12 @@ jobs:
             tests/test_commercial_doctrine.py \
             -q --no-cov
 
+      - name: Company Intelligence spine
+        run: |
+          python3 scripts/verify_company_intelligence_entity_ownership.py
+          python3 scripts/verify_company_intelligence_adapters.py
+          pytest -q tests/test_company_intelligence_entity_ownership.py tests/test_canonical_company_brain_facade.py tests/test_company_intelligence_spine_integration.py tests/test_company_intelligence_adapter_registry.py tests/test_transition_validator_enforcement.py --no-cov
+
       - name: Commercial chain tests
         run: |
           pytest \

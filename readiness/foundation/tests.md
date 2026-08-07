@@ -2,7 +2,7 @@
 
 - Required test evidence paths:
   - `tests/unit/test_auth_flow.py`
-  - `tests/test_tenant_isolation_v1.py`
+  - `tests/test_tenant_isolation_helpers.py`
   - `tests/test_secure_agent_runtime.py`
 
 - Verification command:

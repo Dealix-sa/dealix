@@ -1,11 +1,11 @@
-# عرض برنامج الأسبوع المكثف — 499 ريال سعودي
+# عرض برنامج الأسبوع المكثف — quote after discovery
 # Dealix Intensive Week Sprint — Proposal Template
 # يتطلب موافقة الفاوندر قبل الإرسال
 
 ---
 
 # عرض Dealix لـ {{company_name}}
-**برنامج الأسبوع المكثف | 499 ريال سعودي**
+**برنامج الأسبوع المكثف | quote after discovery**
 
 التاريخ: {{date}}
 مُعدّ لـ: {{contact_name}} — {{company_name}}
@@ -55,7 +55,7 @@
 
 | البند | القيمة |
 |-------|--------|
-| السعر | **499 ريال سعودي** (شامل ضريبة القيمة المضافة 15%) |
+| السعر | **quote after discovery** (شامل ضريبة القيمة المضافة 15%) |
 | طريقة الدفع | رابط Moyasar (بطاقة / Apple Pay / STC Pay) |
 | موعد الدفع | قبل بدء البرنامج |
 | الفاتورة | ZATCA-compliant e-invoice |

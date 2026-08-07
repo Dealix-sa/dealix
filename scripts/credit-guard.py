@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Dealix Credit Guard - Checks OpenRouter balance before starting."""
 
 import json
