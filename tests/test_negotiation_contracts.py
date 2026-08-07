@@ -19,7 +19,6 @@ from dealix.company_intelligence.negotiation_contracts import (
     valid_strategy_transitions_from,
 )
 
-
 # ---------------------------------------------------------------------------
 # Builder
 # ---------------------------------------------------------------------------

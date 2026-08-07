@@ -18,7 +18,6 @@ from dealix.company_intelligence.human_loop_contracts import (
     valid_policy_transitions_from,
 )
 
-
 # ---------------------------------------------------------------------------
 # Builder
 # ---------------------------------------------------------------------------
