@@ -397,6 +397,7 @@ reports/meetings/*
 company/runtime/places/
 dealix_local_test.db
 reports/runtime/
+reports/daily_intelligence/
 reports/github-context/
 ledgers/private/
 .env.production

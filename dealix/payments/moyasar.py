@@ -96,4 +96,10 @@ def verify_webhook(body: dict[str, Any], expected_secret: str | None = None) -> 
     provided = str(body.get("secret_token") or "")
     if not provided:
         return False
-    return hmac.compare_digest(provided, expected)
+    # Compare bytes, not str: `secret_token` arrives from JSON and may hold any
+    # code point, and hmac.compare_digest raises TypeError on a str above
+    # U+007F. That would escape as an unhandled 500 rather than the 401 this
+    # returns — the caller runs this check before its try block.
+    return hmac.compare_digest(
+        provided.encode("utf-8", "surrogateescape"), expected.encode("utf-8")
+    )

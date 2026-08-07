@@ -31,7 +31,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request, status
 from jose import JWTError
 from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr, field_validator
-from sqlalchemy import and_, delete, select
+from sqlalchemy import and_, delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.security.auth_deps import (
@@ -51,6 +51,7 @@ from api.security.jwt import (
     verify_token_hash,
 )
 from api.security.rbac import DEFAULT_TENANT_ROLES, Role
+from core.logging import get_logger
 from db.models import (
     RefreshTokenRecord,
     RoleRecord,
@@ -59,6 +60,8 @@ from db.models import (
     UserRecord,
 )
 from db.session import get_db
+
+log = get_logger(__name__)
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -369,19 +372,61 @@ async def refresh_tokens(
     user_id = payload.get("sub")
     token_hash = hash_token(body.refresh_token)
 
-    # Find and validate stored token
+    # Look the token up *without* filtering on revoked_at, so an
+    # already-rotated token is distinguishable from one that never existed.
+    # Both used to collapse into the same 401, which threw away the only
+    # signal that a token had been stolen.
     result = await db.execute(
         select(RefreshTokenRecord).where(
             and_(
                 RefreshTokenRecord.user_id == user_id,
                 RefreshTokenRecord.token_hash == token_hash,
-                RefreshTokenRecord.revoked_at.is_(None),
-                RefreshTokenRecord.expires_at > _utcnow(),
             )
         )
     )
     stored = result.scalar_one_or_none()
     if not stored:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Refresh token not found or revoked")
+
+    if stored.revoked_at is not None:
+        # Reuse detection. A rotated token should never be presented again, so
+        # seeing one means two parties hold it: whoever rotated it legitimately
+        # and whoever kept a copy.
+        #
+        # Rejecting just this request is not enough, and gets the wrong party.
+        # If the thief refreshes first, they hold a live token while the real
+        # user's replay 401s — the victim is logged out and the attacker is
+        # not. Revoking the whole family means either party replaying the old
+        # token ends both sessions and forces re-authentication, which the
+        # attacker cannot do and the user can.
+        #
+        # This is the standard rotation-with-reuse-detection behaviour from
+        # the OAuth 2.0 security BCP.
+        await db.execute(
+            update(RefreshTokenRecord)
+            .where(
+                and_(
+                    RefreshTokenRecord.user_id == user_id,
+                    RefreshTokenRecord.revoked_at.is_(None),
+                )
+            )
+            .values(revoked_at=_utcnow())
+        )
+        # This endpoint deliberately raises 401 after revocation. The normal
+        # get_db dependency rolls back on every exception, including
+        # HTTPException, so flush() would make the security update disappear.
+        # Commit the revocation before returning the denial.
+        await db.commit()
+        log.warning(
+            "refresh_token_reuse_detected user_id=%s — all sessions revoked",
+            user_id,
+        )
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED,
+            "Refresh token reuse detected — all sessions have been revoked",
+        )
+
+    if stored.expires_at <= _utcnow():
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Refresh token not found or revoked")
 
     # Revoke old token (rotation)

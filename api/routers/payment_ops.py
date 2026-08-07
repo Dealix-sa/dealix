@@ -16,8 +16,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Body, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 
+from api.security.api_key import require_founder_admin_key
 from auto_client_acquisition.payment_ops import (
     confirm_payment,
     create_invoice_intent,
@@ -26,7 +27,21 @@ from auto_client_acquisition.payment_ops import (
     upload_manual_evidence,
 )
 
-router = APIRouter(prefix="/api/v1/payment-ops", tags=["payment-ops"])
+# Admin-gated at the router, not per route, so a payment endpoint added to this
+# file cannot miss the guard — the same shape `revenue_ops_autopilot` already
+# uses for /api/v1/invoices.
+#
+# `POST /confirm` is the endpoint that turns a record into recognised revenue,
+# and it takes `confirmed_by` from the request body. Behind the shared platform
+# key alone, any service-key holder could declare money that never arrived —
+# defeating the `no_fake_revenue` gate this module advertises. `GET
+# /{payment_id}/state` is covered too: it returns another customer's payment
+# record keyed on an ID.
+router = APIRouter(
+    prefix="/api/v1/payment-ops",
+    dependencies=[Depends(require_founder_admin_key)],
+    tags=["payment-ops"],
+)
 
 _HARD_GATES: dict[str, bool] = {
     "no_live_charge": True,

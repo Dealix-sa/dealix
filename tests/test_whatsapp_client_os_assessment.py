@@ -49,7 +49,7 @@ def test_recommendation_is_a_real_catalog_id() -> None:
 
 
 def test_followup_gap_recommends_sprint() -> None:
-    # Leads present + weak follow-up → Revenue Proof Sprint.
+    # Leads present + weak follow-up → governed 30-day Revenue Command Pilot.
     answers = [
         asmt.make_answer("lead_flow", "lead_flow_high"),
         asmt.make_answer("channel_chaos", "channel_many"),
@@ -64,7 +64,8 @@ def test_followup_gap_recommends_sprint() -> None:
     ]
     score = asmt.score_assessment(answers)
     rec = asmt.recommend_offer(score, answers)
-    assert rec["offer_id"] in {"revenue_proof_sprint_499", "data_to_revenue_pack_1500"}
+    assert rec["offer_id"] in {"revenue_command_pilot_30d", "data_to_revenue_pack_1500"}
+    assert rec["offer_id"] in SERVICE_IDS
 
 
 def test_sensitive_data_forces_high_risk_and_warning() -> None:

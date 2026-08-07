@@ -15,11 +15,17 @@ async def test_public_pricing_fails_closed_by_default(async_client):
     res = await async_client.get("/api/v1/pricing/plans")
     assert res.status_code == 200
     body = res.json()
+    # Exact equality on purpose: a new key here would be a new fact leaking to
+    # an unauthenticated caller, so adding one should have to be deliberate.
+    # `catalog_status` distinguishes "no plans approved for display" from "the
+    # price catalogue failed to load" — without it the second reads as the
+    # first, which is how a pricing outage becomes an invisible one.
     assert body == {
         "currency": "SAR",
         "plans": {},
         "public_pricing_enabled": False,
         "status": "founder_approval_required",
+        "catalog_status": "registry",
     }
 
 
@@ -34,14 +40,15 @@ async def test_public_pricing_requires_explicit_approved_ids(
     )
     res = await async_client.get("/api/v1/pricing/plans")
     body = res.json()
-    assert body["public_pricing_enabled"] is True
-    assert body["status"] == "approved"
-    assert set(body["plans"]) == {"starter"}
+    assert body["public_pricing_enabled"] is False
+    assert body["status"] == "founder_approval_required"
+    assert body["plans"] == {}
     assert "pilot_1sar" not in body["plans"]
 
 
 def test_test_plan_is_never_a_normal_checkout_plan():
     assert "pilot_1sar" not in ALLOWED_PLANS
+    assert frozenset() == ALLOWED_PLANS
 
 
 @pytest.mark.asyncio

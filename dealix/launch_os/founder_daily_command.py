@@ -124,8 +124,8 @@ def generate_daily_command(
     research_items = pipeline.list_by_stage(PipelineStage.RESEARCH)
     outreach_queue = [
         {
-            "account_id": item.account_id,
-            "account_name": item.company_name,
+            "account_id": item.id,
+            "account_name": item.account_name,
             "offer_id": item.offer_id,
             "next_action": item.next_action,
         }
@@ -143,8 +143,8 @@ def generate_daily_command(
     for stage in review_stages:
         for item in pipeline.list_by_stage(stage):
             review_items.append({
-                "account_id": item.account_id,
-                "account_name": item.company_name,
+                "account_id": item.id,
+                "account_name": item.account_name,
                 "stage": item.stage,
                 "value_sar": item.value_sar,
                 "next_action": item.next_action,
@@ -253,13 +253,13 @@ if __name__ == "__main__":
         tmp = f.name
 
     tracker = PipelineTracker(path=tmp)
-    tracker.add("acme_001", "Acme Motors", offer_id="REVENUE_LEAK_AUDIT",
+    tracker.add("Acme Motors", offer_id="REVENUE_LEAK_AUDIT",
                 value_sar=15000, icp_score=82, next_action="Send intro email")
-    tracker.add("realty_001", "Global Realty", offer_id="SALES_COMMAND_CENTER",
+    tracker.add("Global Realty", offer_id="SALES_COMMAND_CENTER",
                 value_sar=25000, icp_score=70, next_action="Book discovery call")
-    t3 = tracker.add("clinic_001", "Clinic Pro", offer_id="WHATSAPP_FOLLOWUP_OS",
+    t3 = tracker.add("Clinic Pro", offer_id="WHATSAPP_FOLLOWUP_OS",
                      value_sar=10000, icp_score=60, next_action="Send proposal")
-    tracker.advance(t3.account_id, to_stage=PipelineStage.PROPOSAL)
+    tracker.update_stage(t3.id, PipelineStage.PROPOSAL)
 
     accounts = [
         {"account_id": "acme_001", "account_name": "Acme Motors", "urgency": "high",

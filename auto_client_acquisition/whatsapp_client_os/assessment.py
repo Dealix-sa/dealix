@@ -247,11 +247,11 @@ def recommend_offer(score: ReadinessScore, answers: list[AssessmentAnswer]) -> d
             "أول قيمة سريعة وبدون مخاطرة.",
         ]
     elif score.follow_up_maturity < 55 and lead_present:
-        offer_id = "revenue_proof_sprint_499"
+        offer_id = "revenue_command_pilot_30d"
         rationale = [
             "عندكم leads لكن المتابعة تتسرّب.",
-            "أفضل قيمة سريعة هي كشف التسرّب قبل بناء نظام كبير.",
-            "أول مخرج خلال 7 أيام.",
+            "أفضل قيمة هي تحديد نطاق Pilot بعد جلسة discovery وقياس baseline.",
+            "الـPilot لمدة 30 يومًا وبـquote موثق فقط.",
         ]
     elif score.automation_readiness < 50:
         offer_id = "data_to_revenue_pack_1500"
@@ -291,7 +291,7 @@ def recommend_offer(score: ReadinessScore, answers: list[AssessmentAnswer]) -> d
 def _required_permissions(offer_id: str) -> list[str]:
     base = ["L1: ملف/رابط يرسله العميل", "L1: رابط حجز التقويم"]
     if offer_id in {
-        "revenue_proof_sprint_499",
+        "revenue_command_pilot_30d",
         "growth_ops_monthly_2999",
         "executive_command_center_7500",
     }:
@@ -305,8 +305,8 @@ def _required_permissions(offer_id: str) -> list[str]:
 def _next_action_ar(offer_id: str) -> str:
     if offer_id == "free_mini_diagnostic":
         return "ابدأ التشخيص المجاني (24 ساعة)."
-    if offer_id == "revenue_proof_sprint_499":
-        return "ابدأ Sprint إثبات الإيرادات (7 أيام)."
+    if offer_id == "revenue_command_pilot_30d":
+        return "احجز جلسة discovery لتوثيق نطاق Pilot لمدة 30 يومًا والـquote."
     if offer_id == "data_to_revenue_pack_1500":
         return "ابدأ حزمة البيانات (14 يوم)."
     return "احجز مكالمة 10 دقائق لتأكيد النطاق."

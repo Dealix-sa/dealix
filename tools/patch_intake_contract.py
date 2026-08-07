@@ -87,8 +87,6 @@ def recommend(row: Mapping[str, Any] | None) -> str:
 
 # Strong fix: remove previous compatibility layer if any, then append clean final contract.
 if marker in original:
-    original = original.split(marker)[0].rstrip() + contract.
-if marker in original:
     original = original.split(marker)[0].rstrip() + "\n"
 
 new_text = original.rstrip() + "\n\n" + compat.strip() + "\n"

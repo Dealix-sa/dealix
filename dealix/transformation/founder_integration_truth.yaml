@@ -18,13 +18,13 @@ ladder:
     verify_script: "curl intake or landing"
     status: green
     founder_says_ar: "مجاني — مراجعة يدوية من المؤسس"
-  - id: revenue_proof_sprint_499
-    label_ar: "سبرنت إثبات 499"
-    price_sar: "499"
+  - id: revenue_command_pilot_30d
+    label_ar: "تجربة مركز قيادة الإيرادات — 30 يوماً"
+    price_sar: "quote_after_discovery"
     endpoint: "POST /api/v1/sprint/run"
     verify_script: "tests/test_revenue_os_golden_chain_smoke.py"
     status: green
-    founder_says_ar: "مسار Sprint + Proof Pack في الريبو — الدفع يدوي أو sandbox"
+    founder_says_ar: "نطاق 30 يوماً + Proof Pack؛ السعر يحدد بعرض موثق بعد الاكتشاف وموافقة المؤسس"
   - id: data_to_revenue_pack_1500
     label_ar: "حزمة بيانات 1500"
     price_sar: "1500"

@@ -152,14 +152,14 @@ def build_diagnostic(
     summary_ar = (
         f"تقرير تشخيص AI Ops لشركة {company} في قطاع {sector} ({region}). "
         f"المشكلة المُعلنة: {problem or '—'}. "
-        f"التقرير يحدد ٣ bottlenecks متكررة في القطاع، خطّة ٧ أيّام مبدئيّة، "
-        f"وعرض Sprint بـ ٤٩٩ ريال. لا ضمانات. كل قرار خارجي بموافقتك."
+        f"التقرير يحدد ٣ bottlenecks متكررة في القطاع وخطّة تشخيص مبدئيّة. "
+        f"بعد discovery يمكن إعداد نطاق Pilot لمدة 30 يومًا وquote موثق. لا ضمانات. كل قرار خارجي بموافقتك."
     )
     summary_en = (
         f"AI Ops diagnostic for {company} in {sector} ({region}). "
         f"Stated problem: {problem or '—'}. "
-        f"The report identifies 3 recurring sector bottlenecks, a 7-day "
-        f"plan outline, and a 499 SAR Sprint offer. No guarantees. "
+        f"The report identifies 3 recurring sector bottlenecks and a diagnostic "
+        f"outline. After discovery, a 30-day Pilot scope and documented quote may be prepared. No guarantees. "
         f"All external actions remain approval-first."
     )
 
@@ -237,7 +237,7 @@ def build_diagnostic(
         "top_3_risks_en": [_scrub(s)[0] for s in top_3_risks_en],
         "first_7_day_plan_ar": [_scrub(s)[0] for s in first_7_day_plan_ar],
         "first_7_day_plan_en": [_scrub(s)[0] for s in first_7_day_plan_en],
-        "recommended_offer": "7-Day Revenue Proof Sprint @ 499 SAR",
+        "recommended_offer": "30-day Revenue Command Pilot — documented quote after discovery",
         "what_not_to_automate": [
             "إرسال WhatsApp تلقائي للعميل — gate: NO_LIVE_SEND",
             "أتمتة LinkedIn — gate: NO_LINKEDIN_AUTO",
