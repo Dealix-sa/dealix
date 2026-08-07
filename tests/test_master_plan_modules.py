@@ -1,4 +1,4 @@
-﻿"""Smoke tests for master-plan wave modules."""
+"""Smoke tests for master-plan wave modules."""
 from auto_client_acquisition.approval_center.postgres_store import PostgresApprovalStore
 from auto_client_acquisition.approval_center.schemas import ApprovalRequest
 from auto_client_acquisition.revenue_science.pricing_outcome import (

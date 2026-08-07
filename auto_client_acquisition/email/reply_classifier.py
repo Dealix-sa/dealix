@@ -109,8 +109,8 @@ RESPONSE_TEMPLATES: dict[str, dict[str, Any]] = {
         "followup_days": 2,
     },
     "ask_price": {
-        "ar": "Pilot 7 أيام بـ 499 ريال — استرجاع كامل لو لم نرد على lead واحد بالعربي. "
-              "بعد البايلوت Starter 999/شهر، Growth 2,499/شهر، Pro 5,000/شهر. "
+        "ar": "السعر يحدد بعد discovery وفهم الحالة والمتطلبات. بعدها نجهّز نطاق "
+              "Revenue Command Pilot لمدة 30 يومًا وquote موثقًا للمراجعة. "
               "تبغوا نوضح بمكالمة 20 دقيقة؟",
         "auto_send_allowed": False,
         "next_action": "send_pricing_then_offer_call", "deal_stage": "pricing_sent",
@@ -125,8 +125,8 @@ RESPONSE_TEMPLATES: dict[str, dict[str, Any]] = {
         "followup_days": 3,
     },
     "objection_budget": {
-        "ar": "أفهم. Pilot 499 ريال هو أرخص طريقة تختبروا فعلاً قبل أي اشتراك. "
-              "لو ما اقتنعتم خلال 3 أيام، استرجاع كامل. تجربة بدون مخاطرة فعلياً.",
+        "ar": "أفهم. نبدأ بتشخيص مختصر ومحدود بدون التزام، ثم نحدد نطاقًا واحدًا "
+              "وquote موثقًا بعد فهم الحالة. لا خصم ولا وعد بنتيجة.",
         "auto_send_allowed": False,
         "next_action": "reframe_pilot_as_low_risk", "deal_stage": "objection_handling",
         "followup_days": 5,

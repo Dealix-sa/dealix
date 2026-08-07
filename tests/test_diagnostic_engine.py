@@ -85,8 +85,8 @@ def test_markdown_contains_both_arabic_and_english_sections():
     assert "التشخيص الأوّليّ" in md
     # English section
     assert "Executive summary" in md
-    # Pricing visible
-    assert "499" in md
+    # Quote-only commercial contract is visible; pricing follows discovery.
+    assert "documented quote after discovery" in md
 
 
 def test_markdown_never_contains_forbidden_marketing_tokens():

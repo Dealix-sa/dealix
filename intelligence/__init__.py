@@ -18,6 +18,9 @@ Provides:
 - ExecutiveDashboardData: unified executive view
 """
 
+# Operating System modules
+from intelligence.bilingual import BilingualRenderer, BilingualText
+from intelligence.communication_hub import CommunicationHub
 from intelligence.competitor_battlecards import CompetitorBattlecards
 from intelligence.contract_risk_analyzer import (
     ContractAnalysis,
@@ -25,11 +28,13 @@ from intelligence.contract_risk_analyzer import (
     RiskFinding,
     RiskLevel,
 )
+from intelligence.customer_success_ops import CustomerSuccessOperatingSystem
 from intelligence.customer_success_scorecard import (
     CustomerHealthScore,
     CustomerSuccessScorecard,
     HealthTier,
 )
+from intelligence.deep_research import DeepResearchEngine
 from intelligence.evidence_synthesizer import (
     DecisionType,
     EvidenceItem,
@@ -38,11 +43,26 @@ from intelligence.evidence_synthesizer import (
     EvidenceType,
 )
 from intelligence.executive_dashboard import ExecutiveDashboardData
+from intelligence.growth_ops import GrowthOperatingSystem
 from intelligence.gtm_campaign_orchestrator import (
     CampaignStatus,
     CampaignStep,
     GTMCampaign,
     GTMCampaignOrchestrator,
+)
+from intelligence.knowledge_accumulator import KnowledgeAccumulator, KnowledgeEntry
+from intelligence.negotiation_engine import NegotiationEngine
+from intelligence.ops_adapters import (
+    BattlecardsAdapter,
+    CSScorecard,
+    ForecastingAdapter,
+    GTMAdapter,
+    LeadMachineAdapter,
+    PLGAdapter,
+    PricingAdapter,
+    ProposalsAdapter,
+    list_packages,
+    validate_sku,
 )
 from intelligence.pricing_engine import PackageTier, PricingEngine, PricingRecommendation
 from intelligence.product_led_growth import PLGRecommendation, ProductLedGrowthFlow
@@ -60,6 +80,7 @@ from intelligence.router import (
     TaskType,
     Urgency,
 )
+from intelligence.sales_ops import SalesOperatingSystem
 from intelligence.saudi_lead_machine import EnrichedLead, SaudiLeadMachine
 from intelligence.saudi_market_intelligence import (
     ICPScore,
@@ -67,28 +88,6 @@ from intelligence.saudi_market_intelligence import (
     SaudiMarketIntelligence,
     SectorSignal,
 )
-
-# Operating System modules
-from intelligence.bilingual import BilingualRenderer, BilingualText
-from intelligence.communication_hub import CommunicationHub
-from intelligence.customer_success_ops import CustomerSuccessOperatingSystem
-from intelligence.deep_research import DeepResearchEngine
-from intelligence.growth_ops import GrowthOperatingSystem
-from intelligence.knowledge_accumulator import KnowledgeAccumulator, KnowledgeEntry
-from intelligence.negotiation_engine import NegotiationEngine
-from intelligence.ops_adapters import (
-    BattlecardsAdapter,
-    CSScorecard,
-    ForecastingAdapter,
-    GTMAdapter,
-    LeadMachineAdapter,
-    PLGAdapter,
-    PricingAdapter,
-    ProposalsAdapter,
-    list_packages,
-    validate_sku,
-)
-from intelligence.sales_ops import SalesOperatingSystem
 from intelligence.send_gate import SendGate, SendGateViolation
 
 __all__ = [

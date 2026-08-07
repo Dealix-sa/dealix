@@ -3,9 +3,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
+from api.security.api_key import require_founder_admin_key
 from auto_client_acquisition.revenue_pipeline.pipeline import (
     get_default_pipeline,
 )
@@ -25,7 +26,16 @@ from auto_client_acquisition.revops.payment_confirmation import (
     list_confirmations,
 )
 
-router = APIRouter(prefix="/api/v1/revops", tags=["revops"])
+# Admin-gated at the router. Every route here is finance truth: invoice state
+# transitions, payment confirmation, margins, and the finance brief. `POST
+# /payment-confirm` recognises revenue, and the reads expose company financials
+# and other customers' invoices — neither belongs behind the shared platform
+# key, which is not an admin credential and is not tenant-bound.
+router = APIRouter(
+    prefix="/api/v1/revops",
+    dependencies=[Depends(require_founder_admin_key)],
+    tags=["revops"],
+)
 
 
 _HARD_GATES = {

@@ -74,9 +74,9 @@ async def sales_qualify(req: _QualifyRequest) -> dict[str, Any]:
     if req.urgency_signal:
         score += 15
     if score >= 75:
-        recommendation_ar = "مؤهَّل — قدّم Pilot 499 ريال"
-        recommendation_en = "Qualified — offer 499 SAR Pilot"
-        next_step = "offer_pilot"
+        recommendation_ar = "مؤهَّل — ابدأ discovery ثم جهّز نطاق Pilot لمدة 30 يومًا"
+        recommendation_en = "Qualified — run discovery, then prepare a 30-day Pilot scope"
+        next_step = "discovery_then_quote"
     elif score >= 40:
         recommendation_ar = "نصف مؤهَّل — قدّم Mini Diagnostic مجاني"
         recommendation_en = "Half-qualified — offer free Mini Diagnostic"
@@ -116,14 +116,12 @@ async def sales_objection_response(req: _ObjectionRequest) -> dict[str, Any]:
         return {
             "action_mode": "draft_only",
             "draft_ar": (
-                "أتفهّم. الـ Pilot 499 ريال لمدّة 7 أيّام مع استرجاع كامل لو "
-                "ما طابق التسليم المواصفات. هل نبدأ بـ Mini Diagnostic مجاني "
-                "لتقييم القيمة قبل الالتزام؟"
+                "أتفهّم. السعر يحدد بعد discovery وفهم الحالة والمتطلبات. "
+                "هل نبدأ بتشخيص مختصر، ثم نجهّز نطاق Pilot لمدة 30 يومًا وquote موثقًا للمراجعة؟"
             ),
             "draft_en": (
-                "Understood. The Pilot is 499 SAR for 7 days with a full "
-                "refund if delivery doesn't match spec. Want to start with "
-                "a free Mini Diagnostic first to evaluate value?"
+                "Understood. Price follows discovery and the specific requirements. "
+                "Shall we start with a bounded diagnostic, then prepare a 30-day Pilot scope and documented quote?"
             ),
             "hard_gates": _HARD_GATES,
         }
@@ -149,13 +147,13 @@ async def sales_meeting_prep(req: _MeetingPrepRequest) -> dict[str, Any]:
         "agenda_ar": [
             "5 د — تعريف Dealix والوضع الحالي",
             "10 د — ما الفرص الـ 3 التي ترى أنها تستحق؟",
-            "10 د — Pilot 499 ريال — ما هو، وما ليس",
+            "10 د — نطاق Revenue Command Pilot لمدة 30 يومًا — ما هو، وما ليس",
             "5 د — الخطوة التالية + اعتماد المسوّدة",
         ],
         "agenda_en": [
             "5 min — Dealix intro + current state",
             "10 min — Which 3 opportunities feel worth pursuing?",
-            "10 min — 499 SAR Pilot — what it is, what it isn't",
+            "10 min — 30-day Revenue Command Pilot scope — what it is and is not",
             "5 min — Next step + draft approval",
         ],
         "must_avoid_ar": [

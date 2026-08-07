@@ -92,10 +92,7 @@ curl -X POST https://api.dealix.me/api/v1/commercial/pilot/start \
   -d '{"account_id":"acc-001","company_name":"الشركة"}'
 
 # رابط دفع
-curl -X POST https://api.dealix.me/api/v1/commercial/payment/link \
-  -H "X-API-Key: $DEALIX_ADMIN_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"service_tier":"sprint_499","customer_name":"الاسم"}'
+محجوب — لا فاتورة ولا رابط دفع قبل جلسة الاكتشاف وquote موثق واعتماد مسار الدفع.
 
 # ملخص يومي
 curl https://api.dealix.me/api/v1/commercial/daily-brief \

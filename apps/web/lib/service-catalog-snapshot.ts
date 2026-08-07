@@ -1,5 +1,5 @@
 export const serviceCatalogSnapshot = {
-  "generated_at": "2026-07-16T09:38:13.210081+00:00",
+  "generated_at": "2026-07-28T00:08:53.619608+00:00",
   "total_offerings": 17,
   "is_estimate": true,
   "funnel_offerings": [
@@ -11,6 +11,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 1,
       "customer_journey_stage": "discovery",
+      "commercial_status": "free_entry",
       "deliverables": [
         "1-page sector-fit analysis",
         "3 ranked opportunities",
@@ -32,27 +33,26 @@ export const serviceCatalogSnapshot = {
       "is_estimate": true
     },
     {
-      "id": "revenue_proof_sprint_499",
-      "name_ar": "سبرنت إثبات الإيرادات (٤٩٩ ر.س)",
-      "name_en": "499 SAR Revenue Proof Sprint",
-      "price_sar": 499.0,
-      "price_unit": "one_time",
-      "duration_days": 7,
+      "id": "revenue_command_pilot_30d",
+      "name_ar": "تجربة مركز قيادة الإيرادات — 30 يومًا",
+      "name_en": "Revenue Command Pilot — 30 days",
+      "price_sar": 0.0,
+      "price_unit": "custom",
+      "duration_days": 30,
       "customer_journey_stage": "first_paid",
+      "commercial_status": "quote_only",
       "deliverables": [
         "Company Brain v1",
-        "Top 10 Opportunities (ranked)",
-        "Decision Passports for top 3",
-        "Arabic Draft Pack (5 messages)",
-        "Follow-up Plan (7-day timeline)",
-        "Risk + Objection Map",
-        "Executive Pack",
-        "Proof Pack",
-        "Next Best Offer recommendation"
+        "One ICP",
+        "One revenue workflow",
+        "One approval queue",
+        "One operational baseline",
+        "Weekly proof pack",
+        "End-of-pilot stop, extend, or redesign decision"
       ],
-      "kpi_commitment_en": "We deliver the approved scope and outputs within the agreed schedule, separating facts, hypotheses, and data gaps.",
-      "kpi_commitment_ar": "نلتزم بتسليم النطاق والمخرجات المعتمدة ضمن الجدول المتفق عليه، مع فصل الحقائق والفرضيات وفجوات البيانات.",
-      "refund_policy_en": "Refund or service-credit terms are defined in the approved order form; business outcomes are not promised automatically.",
+      "kpi_commitment_en": "We deliver the written post-discovery scope and an operational baseline; revenue and sales counts are outside the commitment.",
+      "kpi_commitment_ar": "نلتزم بتسليم النطاق المكتوب بعد جلسة الاكتشاف وقياس خط أساس تشغيلي؛ الإيراد وعدد المبيعات خارج نطاق الالتزام.",
+      "refund_policy_en": "Price, scope, and remedy terms are documented in a quote after discovery.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -72,6 +72,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 14,
       "customer_journey_stage": "expansion",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Clean Lead Board (deduplicated)",
         "Duplicate Report",
@@ -103,6 +104,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "per_month",
       "duration_days": 120,
       "customer_journey_stage": "monthly",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "4 Weekly Pipeline Audits",
         "Weekly Lead Board",
@@ -137,6 +139,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "per_month",
       "duration_days": 30,
       "customer_journey_stage": "support_addon",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Ticket Classification (12 categories)",
         "Suggested Replies (draft_only)",
@@ -166,6 +169,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "per_month",
       "duration_days": 120,
       "customer_journey_stage": "executive",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Daily founder brief (WhatsApp)",
         "Weekly Pipeline Audit",
@@ -204,6 +208,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "custom",
       "duration_days": 0,
       "customer_journey_stage": "channel",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Partner Intake doc",
         "Co-branded Diagnostic",
@@ -238,6 +243,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 60,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Executive command dashboard (Arabic-first)",
         "Daily action board across sales / follow-up / reviews / proposals",
@@ -271,6 +277,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 30,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Lead intake model + pipeline stages",
         "Follow-up task system (approval-gated drafts)",
@@ -305,6 +312,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 45,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Brand strategy + positioning map",
         "Visual identity direction",
@@ -338,6 +346,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 90,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Agent role map + task boundaries",
         "Human approval gates for high-risk actions",
@@ -371,6 +380,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 60,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Customer journey map (first contact → repeat purchase)",
         "Onboarding workflow",
@@ -403,6 +413,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 75,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Workflow map + automation blueprint",
         "Approval matrix",
@@ -435,6 +446,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 45,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "KPI model + data source map",
         "Weekly report template",
@@ -466,6 +478,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 60,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "AI usage policy",
         "Data handling map",
@@ -500,6 +513,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 60,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "ICP map + prospecting workflow",
         "Approved-draft outreach packs (draft_only, approval-gated)",
@@ -534,6 +548,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "custom",
       "duration_days": 0,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Paid discovery sprint",
         "Solution architecture",
@@ -568,6 +583,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 1,
       "customer_journey_stage": "discovery",
+      "commercial_status": "free_entry",
       "deliverables": [
         "1-page sector-fit analysis",
         "3 ranked opportunities",
@@ -589,27 +605,26 @@ export const serviceCatalogSnapshot = {
       "is_estimate": true
     },
     {
-      "id": "revenue_proof_sprint_499",
-      "name_ar": "سبرنت إثبات الإيرادات (٤٩٩ ر.س)",
-      "name_en": "499 SAR Revenue Proof Sprint",
-      "price_sar": 499.0,
-      "price_unit": "one_time",
-      "duration_days": 7,
+      "id": "revenue_command_pilot_30d",
+      "name_ar": "تجربة مركز قيادة الإيرادات — 30 يومًا",
+      "name_en": "Revenue Command Pilot — 30 days",
+      "price_sar": 0.0,
+      "price_unit": "custom",
+      "duration_days": 30,
       "customer_journey_stage": "first_paid",
+      "commercial_status": "quote_only",
       "deliverables": [
         "Company Brain v1",
-        "Top 10 Opportunities (ranked)",
-        "Decision Passports for top 3",
-        "Arabic Draft Pack (5 messages)",
-        "Follow-up Plan (7-day timeline)",
-        "Risk + Objection Map",
-        "Executive Pack",
-        "Proof Pack",
-        "Next Best Offer recommendation"
+        "One ICP",
+        "One revenue workflow",
+        "One approval queue",
+        "One operational baseline",
+        "Weekly proof pack",
+        "End-of-pilot stop, extend, or redesign decision"
       ],
-      "kpi_commitment_en": "We deliver the approved scope and outputs within the agreed schedule, separating facts, hypotheses, and data gaps.",
-      "kpi_commitment_ar": "نلتزم بتسليم النطاق والمخرجات المعتمدة ضمن الجدول المتفق عليه، مع فصل الحقائق والفرضيات وفجوات البيانات.",
-      "refund_policy_en": "Refund or service-credit terms are defined in the approved order form; business outcomes are not promised automatically.",
+      "kpi_commitment_en": "We deliver the written post-discovery scope and an operational baseline; revenue and sales counts are outside the commitment.",
+      "kpi_commitment_ar": "نلتزم بتسليم النطاق المكتوب بعد جلسة الاكتشاف وقياس خط أساس تشغيلي؛ الإيراد وعدد المبيعات خارج نطاق الالتزام.",
+      "refund_policy_en": "Price, scope, and remedy terms are documented in a quote after discovery.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -629,6 +644,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 14,
       "customer_journey_stage": "expansion",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Clean Lead Board (deduplicated)",
         "Duplicate Report",
@@ -660,6 +676,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "per_month",
       "duration_days": 120,
       "customer_journey_stage": "monthly",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "4 Weekly Pipeline Audits",
         "Weekly Lead Board",
@@ -694,6 +711,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "per_month",
       "duration_days": 30,
       "customer_journey_stage": "support_addon",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Ticket Classification (12 categories)",
         "Suggested Replies (draft_only)",
@@ -723,6 +741,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "per_month",
       "duration_days": 120,
       "customer_journey_stage": "executive",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Daily founder brief (WhatsApp)",
         "Weekly Pipeline Audit",
@@ -761,6 +780,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "custom",
       "duration_days": 0,
       "customer_journey_stage": "channel",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Partner Intake doc",
         "Co-branded Diagnostic",
@@ -793,6 +813,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 60,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Executive command dashboard (Arabic-first)",
         "Daily action board across sales / follow-up / reviews / proposals",
@@ -826,6 +847,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 30,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Lead intake model + pipeline stages",
         "Follow-up task system (approval-gated drafts)",
@@ -860,6 +882,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 45,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Brand strategy + positioning map",
         "Visual identity direction",
@@ -893,6 +916,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 90,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Agent role map + task boundaries",
         "Human approval gates for high-risk actions",
@@ -926,6 +950,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 60,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Customer journey map (first contact → repeat purchase)",
         "Onboarding workflow",
@@ -958,6 +983,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 75,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Workflow map + automation blueprint",
         "Approval matrix",
@@ -990,6 +1016,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 45,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "KPI model + data source map",
         "Weekly report template",
@@ -1021,6 +1048,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 60,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "AI usage policy",
         "Data handling map",
@@ -1055,6 +1083,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "one_time",
       "duration_days": 60,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "ICP map + prospecting workflow",
         "Approved-draft outreach packs (draft_only, approval-gated)",
@@ -1089,6 +1118,7 @@ export const serviceCatalogSnapshot = {
       "price_unit": "custom",
       "duration_days": 0,
       "customer_journey_stage": "transformation",
+      "commercial_status": "internal_experiment",
       "deliverables": [
         "Paid discovery sprint",
         "Solution architecture",

@@ -92,7 +92,7 @@ class DualProofLedger:
         return self._file.list_units(*args, **kwargs)
 
 
-ProofLedger = Union[FileProofLedger, PostgresProofLedger, DualProofLedger]
+ProofLedger = FileProofLedger | PostgresProofLedger | DualProofLedger
 
 _FILE_DEFAULT: FileProofLedger | None = None
 _POSTGRES_DEFAULT: PostgresProofLedger | None = None

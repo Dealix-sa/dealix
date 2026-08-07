@@ -1,0 +1,10 @@
+id,priority,type,decision,why_approval_is_required,approver,status,evidence
+AP-001,P0,Security,"Rotate/revoke potential historical credential material",Credential-provider mutation and revocation,Founder,awaiting_approval,Private scan; no value committed
+AP-002,P0,Production,"Change Railway service configuration and deploy approved main SHA",Production mutation,Founder,awaiting_approval,Railway deployment evidence
+AP-003,P0,Secret,"Update protected smoke credential without exposing its value",Production secret change,Founder,awaiting_approval,Production Smoke evidence
+AP-004,P1,GitHub,"Merge #1015 after exact-head official checks are green",Merge to main,Founder,in_progress,PR #1015 head e462936
+AP-005,P1,GitHub,"Merge refreshed #1011 after exact-head checks are green",Merge to main,Founder,in_progress,Validation-stage Business Model
+AP-006,P1,PostgreSQL,"Provide authorized ephemeral PostgreSQL for #1009 tests",Authorized database/secret use,Founder/Infra,awaiting_approval,Three PostgreSQL tests skipped
+AP-007,P1,Website,"Publish commercial-message and company-contact corrections",External publishing,Founder,awaiting_approval,Registry/site drift
+AP-008,P0,Sales,"Send first ten discovery invitations",External communication in Dealix name,Founder,draft_only,Approval-first outreach
+AP-009,P0,Contract,"Send Quote/SOW and accept pilot payment",Binding commercial and financial action,Founder,awaiting_qualified_opportunity,First paid proof

@@ -121,30 +121,15 @@ def test_no_guaranteed_language_anywhere():
 
 
 # ── Test 5 ────────────────────────────────────────────────────────────
-def test_price_ladder_ascending_for_core_funnel():
-    """Core funnel ladder: Free → 499 (Sprint) → 1500 (Data-to-Revenue).
-
-    The ascending invariant applies to the linear core funnel only.
-    Enterprise Transformation OS systems are a menu (not a funnel) priced as
-    setup *ranges*, so a global ascending ordering is the wrong invariant for them.
-    """
-    core_funnel_ids = (
-        "free_mini_diagnostic",
-        "revenue_proof_sprint_499",
-        "data_to_revenue_pack_1500",
-    )
-    one_time_paid = [
-        get_offering(cid)
-        for cid in core_funnel_ids
-        if get_offering(cid).price_unit == "one_time" and get_offering(cid).price_sar > 0
-    ]
-    prices = [o.price_sar for o in one_time_paid]
-    assert prices == sorted(prices), f"core funnel one-time prices not ascending: {prices}"
-    # Specifically: Sprint must be cheaper than Data-to-Revenue
-    sprint = get_offering("revenue_proof_sprint_499")
-    d2r = get_offering("data_to_revenue_pack_1500")
-    assert sprint is not None and d2r is not None
-    assert sprint.price_sar < d2r.price_sar
+def test_first_paid_motion_is_30_day_quote_only_pilot():
+    pilot = get_offering("revenue_command_pilot_30d")
+    assert pilot is not None
+    assert pilot.name_en == "Revenue Command Pilot — 30 days"
+    assert pilot.duration_days == 30
+    assert pilot.price_sar == 0
+    assert pilot.price_unit == "custom"
+    assert pilot.commercial_status == "quote_only"
+    assert get_offering("revenue_proof_sprint_499") is None
 
 
 # ── Test 6 ────────────────────────────────────────────────────────────
@@ -174,7 +159,7 @@ def test_every_offering_lists_relevant_hard_gates():
 # ── Test 8 ────────────────────────────────────────────────────────────
 def test_get_offering_lookup_works():
     """Helper function returns correct offering by id, None for unknown."""
-    assert get_offering("revenue_proof_sprint_499") is not None
+    assert get_offering("revenue_command_pilot_30d") is not None
     assert get_offering("free_mini_diagnostic") is not None
     assert get_offering("agency_partner_os") is not None
     assert get_offering("nonexistent_id") is None

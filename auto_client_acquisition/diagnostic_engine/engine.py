@@ -131,7 +131,7 @@ def _render_markdown(
     if bundle_summary_ar:
         md.append(f"> {bundle_summary_ar}")
     md.append("")
-    md.append("**ما يشمله الـ Pilot 7 أيّام (499 ريال):**")
+    md.append("**نطاق Revenue Command Pilot لمدة 30 يومًا — يحدد بعد discovery:**")
     for s in services[:7]:
         sid = s.get("service_id", "?")
         name_ar = s.get("name_ar", sid)
@@ -142,9 +142,9 @@ def _render_markdown(
     md.append("- ❌ لا cold WhatsApp ولا cold email — موافقة العميل شرط.")
     md.append("- ❌ لا scraping ولا قوائم مشتراة.")
     md.append("- ❌ لا التزام بأرقام/ترتيب — التزام بالعمل والـ Proof Pack.")
-    md.append("- ❌ لا خصم آليّ — الدفع عبر Moyasar test mode بإشراف المؤسس.")
+    md.append("- ❌ لا خصم ولا فاتورة أو رابط دفع قبل quote موثق واعتماد مسار الدفع.")
     md.append("")
-    md.append("**التسعير:** Pilot 499 ريال (سعر تعريفيّ ثابت حتّى العميل #5).")
+    md.append("**التسعير:** السعر والنطاق يحددان في quote موثق بعد discovery.")
     md.append("")
     md.append("---")
     md.append("")
@@ -167,7 +167,7 @@ def _render_markdown(
     if bundle_summary_en:
         md.append(f"> {bundle_summary_en}")
     md.append("")
-    md.append("**Pilot 7 days, 499 SAR — included:**")
+    md.append("**30-day Revenue Command Pilot scope — defined after discovery:**")
     for s in services[:7]:
         sid = s.get("service_id", "?")
         name_en = s.get("name_en", sid)
@@ -178,9 +178,9 @@ def _render_markdown(
     md.append("- ❌ No cold WhatsApp / cold email — explicit consent required.")
     md.append("- ❌ No scraping or purchased lists.")
     md.append("- ❌ No revenue / ranking commitment — only the work + Proof Pack.")
-    md.append("- ❌ No auto-charge — Moyasar test-mode invoice, founder-supervised.")
+    md.append("- ❌ No discount, invoice, or payment link before a documented quote and payment-path approval.")
     md.append("")
-    md.append("**Pricing:** 499 SAR Pilot (locked introductory price until customer #5).")
+    md.append("**Pricing:** Price and scope are set in a documented quote after discovery.")
     md.append("")
     md.append("---")
     md.append("")

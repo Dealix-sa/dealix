@@ -1,0 +1,13 @@
+id,date,domain,result,evidence,source,status
+P-001,2026-07-31,Repo,"Current main checkpoint verified",0a2d9c6509183bf91ceb25f02a8cfc0b4ac38cb0,GitHub,verified
+P-002,2026-07-31,CompanyOS,"Canonical entity ownership registry merged",PR #1014 merge 51300156d2cb1ea09a52538d15d64678426ca422,GitHub,executed
+P-003,2026-07-31,Testing,"Undefined-name runtime regression coverage merged",PR #1010 merge 2210cb3ab49c330275a14862d0d1e39ea70cd247,GitHub,executed
+P-004,2026-07-31,Architecture,"Open-source adoption delta and gates merged",PR #1013 merge 0a2d9c6509183bf91ceb25f02a8cfc0b4ac38cb0,GitHub,executed
+P-005,2026-07-31,CompanyBrain,"Canonical Company Brain facade rebuilt on current main",PR #1015 head e4629361250484836623a33bf2796395c365834d,GitHub,in_progress
+P-006,2026-07-31,CI,"#1015 official checks progressing without detected failure","10 completed success; CI and No-Crash finalizing",GitHub workflow runs,verified_partial
+P-007,2026-07-31,Testing,"TestSprite Pre-Check remains orphan external failure with no target URL",Issue #892 comment 5141278254,GitHub,tracked
+P-008,2026-07-31,Tenancy,"#1009 held pending PostgreSQL-only proof","three PostgreSQL tests must run without skips",GitHub,held
+P-009,2026-07-31,Portfolio,"#1016 held for decomposition","oversized overlapping plans-only monolith",GitHub,held
+P-010,2026-07-31,Commercial,"Validation-stage Business Model reapplied on current main","Free Mini Diagnostic -> quote-only 30-Day Pilot",PR #1011,executed_branch
+P-011,2026-07-31,Governance,"Founder 360 action/approval/proof queues refreshed",docs/ops/founder-360/2026-07-31,GitHub,executed_branch
+P-012,2026-07-31,Revenue,"No paid customer or recognized revenue claimed without evidence","payment evidence remains required",Truth-first rule,verified

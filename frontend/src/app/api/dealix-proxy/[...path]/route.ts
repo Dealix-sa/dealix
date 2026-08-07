@@ -9,6 +9,7 @@ const API_BASE = (process.env.DEALIX_API_URL || process.env.NEXT_PUBLIC_API_URL 
   "",
 );
 const ADMIN_KEY = process.env.DEALIX_ADMIN_API_KEY || "";
+const SERVICE_KEY = process.env.DEALIX_API_KEY || "";
 const OPS_PROXY_SECRET = process.env.DEALIX_OPS_PROXY_SECRET || "";
 
 const ALLOWED_PREFIXES = [
@@ -66,9 +67,9 @@ async function assertOperatorAccess(req: NextRequest): Promise<NextResponse | nu
 }
 
 async function proxy(req: NextRequest, pathSegments: string[]) {
-  if (!ADMIN_KEY) {
+  if (!ADMIN_KEY || !SERVICE_KEY) {
     return NextResponse.json(
-      { detail: "DEALIX_ADMIN_API_KEY not configured on server" },
+      { detail: "Dealix server credentials are not configured" },
       { status: 503 },
     );
   }
@@ -90,6 +91,7 @@ async function proxy(req: NextRequest, pathSegments: string[]) {
   req.nextUrl.searchParams.forEach((v, k) => url.searchParams.set(k, v));
 
   const headers: Record<string, string> = {
+    "X-API-Key": SERVICE_KEY,
     "X-Admin-API-Key": ADMIN_KEY,
     "Content-Type": req.headers.get("content-type") || "application/json",
   };

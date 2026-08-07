@@ -1,5 +1,5 @@
 from .langfuse_integration import LangfuseTracker
-from .sla_monitor import SLAMonitor, SLAContract, SLAStatus, SLABreach
+from .sla_monitor import SLABreach, SLAContract, SLAMonitor, SLAStatus
 
 __all__ = [
     "LangfuseTracker",

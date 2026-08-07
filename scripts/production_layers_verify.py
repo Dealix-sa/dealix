@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Production layer map — live probes + optional local env (--from-railway-env)."""
 
 from __future__ import annotations

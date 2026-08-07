@@ -35,7 +35,7 @@ Status taxonomy:
 | 10 | Proof + Expansion v2 | `auto_client_acquisition/proof_engine/auto_summary.py` + `expansion_engine/readiness_score.py` + Wave 12.7 router | `tests/test_proof_expansion_v2.py` (18) | `ENGINE_10_PROOF_EXPANSION_V2=PASS` | **PASS** |
 | 11 | Learning Flywheel v1 | `auto_client_acquisition/learning_flywheel/{aggregator,funnel_metrics,feature_gating}.py` | `tests/test_learning_flywheel_v1.py` (16) | `ENGINE_11_LEARNING_FLYWHEEL=PASS` | **PASS** |
 | 12 | Trust/Security v1 | `api/security/ssrf_guard.py` + `email/deliverability_check.py` | `tests/test_engine12_security_v1.py` (17) | `ENGINE_12_TRUST_SECURITY_V1=PASS` | **PASS** |
-| 12.6 | Tenant Isolation + BOPLA | `api/middleware/{tenant_isolation,bopla_redaction}.py` | `tests/test_tenant_isolation_v1.py` (18) + `test_bopla_redaction_v1.py` (12) | (folds into ENGINE_12) | **PASS** |
+| 12.6 | Tenant Isolation + BOPLA | `api/middleware/{tenant_isolation,bopla_redaction}.py` | `tests/test_tenant_isolation_helpers.py` (19) + `test_bopla_redaction_v1.py` (12) | (folds into ENGINE_12) | **PASS** |
 | ⭐ | Intelligence Layer | `auto_client_acquisition/intelligence/{dealix_task_registry,local_model_client,confidence,dealix_model_router}.py` + Wave 12.7 router | `tests/test_intelligence_layer_v1.py` (21) | `INTELLIGENCE_LAYER=PASS` | **PASS** |
 
 **Total: 13 layers · 215 tests · 215/215 PASS**
