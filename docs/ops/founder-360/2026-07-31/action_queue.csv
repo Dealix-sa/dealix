@@ -1,0 +1,16 @@
+id,priority,domain,action,owner,status,due,definition_of_done,evidence
+A-001,P0,Production,"Prove active Railway SHA matches approved main",Platform/Founder,approval_required,Immediate,"successful deploy + /version SHA match + protected smoke",Railway workflow evidence
+A-002,P0,Security,"Rotate and revoke potential historical credential material",Founder/Infra,approval_required,Immediate,"old credential rejected and access logs reviewed",Private scan; no value committed
+A-003,P0,Production,"Align protected smoke credential with production auth contract",Platform/Founder,approval_required,Immediate,"protected probes no longer fail because configured key is rejected",Production Smoke evidence
+A-004,P0,Architecture,"Adopt one canonical Vercel/Railway production topology",Founder/Platform,decision_required,Day 1,"one documented owner and route for public web and API",Deployment audit
+A-005,P0,CompanyBrain,"Finish #1015 exact-head CI and merge only if green",Engineering,in_progress,Day 1,"12 official workflows green; zero unresolved threads; expected SHA merge",PR #1015
+A-006,P0,Commercial,"Merge validation-stage Business Model and Founder 360 control",Founder/Engineering,in_progress,Day 1,"retired fixed-price ladder removed from canonical business model",PR #1011
+A-007,P1,Doctrine,"Rebuild #1005 after #1011 so agent doctrine matches business truth",Engineering,queued,Day 2,"CLAUDE.md and commercial rules contain no retired ladder",PR #1005
+A-008,P1,Testing,"Resolve TestSprite orphan status requiredness without exposing secrets",Platform,tracked,Days 1-3,"app owner and branch-protection requiredness documented",Issue #892
+A-009,P1,Tenancy,"Run three PostgreSQL-only tests for #1009",Engineering,authorized_db_required,Days 1-5,"3/3 PostgreSQL tests green; trusted tenant wiring reviewed",PR #1009
+A-010,P1,Portfolio,"Decompose #1016 into focused non-overlapping P0 PRs",Engineering,held,Days 1-5,"no oversized monolith remains mergeable",PR #1016
+A-011,P0,Market,"Load 30 legitimate target companies from warm network/referrals",Founder/Sales,founder_input_required,Days 1-3,"30 sourced accounts; 10 priority-A; no scraping/fabrication",Truth-first rule
+A-012,P0,Sales,"Prepare ten discovery invitations for founder approval",Sales,draft_only,Days 2-4,"10 drafts linked to sourced accounts; zero sends",Approval-first outreach
+A-013,P0,Revenue,"Close first paid 30-day pilot",Founder,external_contract_payment_required,Days 8-30,"signed scope + payment evidence + approved baseline",Revenue evidence gate
+A-014,P1,Delivery,"Prepare Pilot Delivery Room and weekly Proof Pack",Delivery,draft_internal,Days 1-7,"baseline, actions, approvals, outcomes, risks",Canonical pilot model
+A-015,P1,Finance,"Measure actual pilot economics",Founder/Finance,ready_to_measure,Days 1-30,"delivery hours and direct costs recorded from actuals",No invented economics

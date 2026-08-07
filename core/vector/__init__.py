@@ -1,10 +1,10 @@
 from .client import VectorClient
-from .schemas import VectorPoint, SearchResult, Document, DocumentEmbedding
-from .qdrant_client import QdrantVectorClient
-from .embedding_pipeline import EmbeddingPipeline
-from .search_router import SearchRouter
 from .document_ingester import DocumentIngester
+from .embedding_pipeline import EmbeddingPipeline
 from .multi_modal import MultiModalRAG
+from .qdrant_client import QdrantVectorClient
+from .schemas import Document, DocumentEmbedding, SearchResult, VectorPoint
+from .search_router import SearchRouter
 
 __all__ = [
     "VectorClient",

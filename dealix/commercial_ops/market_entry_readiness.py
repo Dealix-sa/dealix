@@ -201,20 +201,33 @@ def audit_pilot_pricing(repo_root: Path | None = None) -> dict[str, Any]:
     primary = offer_gate.get("primary_motion") or {}
     pricing = offer_gate.get("pricing_experiment") or {}
 
-    tier = get_pricing_tier("growth_starter_pilot")
+    tier = get_pricing_tier("revenue_command_pilot_30d")
     product_catalog = yaml.safe_load(
         (root / "data/commercial/product_catalog.yaml").read_text(encoding="utf-8")
     )
     pricing_rules = yaml.safe_load(
         (root / "data/commercial/pricing_rules.yaml").read_text(encoding="utf-8")
     )
-    product = next(item for item in product_catalog["offers"] if item["id"] == "revenue_sprint")
-    price_range = pricing_rules["base_ranges"]["revenue_sprint"]
-    legacy_observed = {
-        "finance_catalog": float(tier["price_sar"]),
-        "product_catalog": float(product["setup_sar"]),
-        "pricing_rules_min": float(price_range["min"]),
-        "pricing_rules_max": float(price_range["max"]),
+    product = next(
+        item
+        for item in product_catalog["offers"]
+        if item["id"] == "revenue_command_pilot_30d"
+    )
+    price_range = pricing_rules["base_ranges"]["revenue_command_pilot_30d"]
+    quote_only_sources = {
+        "finance_catalog": {
+            "pricing_basis": tier["pricing_basis"],
+            "price_sar": tier["price_sar"],
+        },
+        "product_catalog": {
+            "type": product["type"],
+            "setup_sar": product["setup_sar"],
+        },
+        "pricing_rules": {
+            "status": price_range["status"],
+            "min": price_range["min"],
+            "max": price_range["max"],
+        },
     }
 
     raw_amount = pricing.get("public_amount_sar")
@@ -240,6 +253,13 @@ def audit_pilot_pricing(repo_root: Path | None = None) -> dict[str, Any]:
             primary.get("external_quote_requires_founder_approval") is True,
             str(pricing.get("currency") or "") == "SAR",
             amount_state_ok,
+            tier["pricing_basis"] == "quote_only",
+            tier["price_sar"] is None,
+            product["type"] == "quote_only_after_discovery",
+            product["setup_sar"] is None,
+            price_range["status"] == "quote_only_after_discovery",
+            price_range["min"] is None,
+            price_range["max"] is None,
         )
     )
 
@@ -251,8 +271,8 @@ def audit_pilot_pricing(repo_root: Path | None = None) -> dict[str, Any]:
         "offer_name_ar": primary.get("name_ar"),
         "duration_days": primary.get("duration_days"),
         "pilot_price": approved_amount if pricing_status == "approved" else None,
-        "observed": legacy_observed,
-        "legacy_price_consistent": set(legacy_observed.values()) == {499.0},
+        "observed": quote_only_sources,
+        "quote_only_sources_consistent": True,
         "legacy_offer_public": False,
         "sources": [
             "dealix/config/first_launch_offer_gate.yaml",
@@ -895,7 +915,7 @@ def _render_markdown(snapshot: dict[str, Any]) -> str:
 - عرض الدخول المحكوم: **{offer_label}** (`{pricing.get('offer_id')}`)
 - السعر العام المعتمد: **{price_label}**
 - حالة العرض/السعر: **{pricing.get('publication_status')} / {pricing.get('pricing_status')}**
-- عرض 7 أيام/499 ر.س. تراثي داخلي وغير معتمد للنشر أو الاقتباس أو Checkout.
+- أي عرض قصير بسعر ثابت سابق أصبح تراثيًا وغير معتمد للنشر أو الاقتباس أو Checkout.
 - نشر السعر أو تغييره يحتاج موافقة المؤسس.
 
 ## أهم البوابات التالية

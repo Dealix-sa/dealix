@@ -87,14 +87,14 @@ GENERIC_TALKING_POINTS = [
      "en": "Start with a free diagnostic — a clear picture of your ops capability, no commitment."},
     {"ar": "كل إجراء خارجي بموافقتك أولاً — لا أتمتة بلا مراجعة.",
      "en": "Every external action needs your approval first — no automation without review."},
-    {"ar": "Sprint بـ 499 ريال يثبت القيمة خلال 7 أيام مع Proof Pack.",
-     "en": "A 499 SAR Sprint proves value in 7 days with a Proof Pack."},
+    {"ar": "نبدأ بـ discovery، ثم نطاق Revenue Command Pilot لمدة 30 يومًا وquote موثق.",
+     "en": "We start with discovery, then a 30-day Revenue Command Pilot scope and documented quote."},
 ]
 
 # 5-rung ladder labels (bilingual).
 RUNGS = {
     "diagnostic": {"ar": "تشخيص مجاني (0 ر.س)", "en": "Free Diagnostic (0 SAR)"},
-    "sprint": {"ar": "Revenue Intelligence Sprint (499 ر.س)", "en": "Revenue Intelligence Sprint (499 SAR)"},
+    "sprint": {"ar": "Revenue Command Pilot (30 يومًا، quote بعد discovery)", "en": "Revenue Command Pilot (30 days, quote after discovery)"},
     "data_pack": {"ar": "Data-to-Revenue Pack (1,500 ر.س)", "en": "Data-to-Revenue Pack (1,500 SAR)"},
     "managed": {"ar": "Managed Revenue Ops (2,999–4,999 ر.س/شهر)", "en": "Managed Revenue Ops (2,999–4,999 SAR/mo)"},
     "custom": {"ar": "Custom AI Project (5,000–25,000 ر.س)", "en": "Custom AI Project (5,000–25,000 SAR)"},

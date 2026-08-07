@@ -13,7 +13,7 @@ Every reply or booked-demo event POSTs to `/api/v1/pricing/usage`:
 ```http
 POST /api/v1/pricing/usage
 Content-Type: application/json
-Authorization: Bearer <ADMIN_API_KEY>
+X-Admin-API-Key: <one of ADMIN_API_KEYS, or DEALIX_ADMIN_API_KEY>
 
 {
   "plan": "laas_per_reply",
@@ -88,9 +88,16 @@ A demo counts ONLY IF:
 - The lead actually showed up (verified by customer post-meeting → "demo_held": true marked in tenant config)
 - The demo is in Customer's currency = Saudi B2B target (not internal team practice meetings)
 
-Customer marks demo_held=true via:
+Recorded on the customer's confirmation, by Dealix ops — not by the customer
+directly. `/api/v1/pricing/usage` is admin-gated because it takes
+`customer_handle` from the body, so an unauthenticated caller could add
+billable events to somebody else's account. A customer-facing
+`demo_held` confirmation needs its own tenant-scoped endpoint, deriving the
+handle from the caller's identity; it does not exist yet.
+
 ```http
 POST /api/v1/pricing/usage
+X-Admin-API-Key: <one of ADMIN_API_KEYS, or DEALIX_ADMIN_API_KEY>
 {
   "plan": "laas_per_demo",
   "event_id": "<calendly_event_id>",

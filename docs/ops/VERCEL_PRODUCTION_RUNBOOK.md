@@ -98,21 +98,29 @@ Keep the existing `dealix` FastAPI project only if it is used for staging/API pr
 
 ## Post-deploy smoke checks
 
-Run after every deployment:
+Run the frontend checks against the separate `dealix-web` preview before any
+domain cutover:
 
 ```bash
-curl -fsS https://dealix.vercel.app/health
-curl -fsS https://dealix.vercel.app/version
-curl -fsS https://dealix.vercel.app/api/v1/meta
-curl -fsS https://dealix.vercel.app/api/v1/business/pricing
+curl -fsS https://<dealix-web-preview>.vercel.app/
+curl -fsS https://<dealix-web-preview>.vercel.app/healthz
+curl -fsS https://<dealix-web-preview>.vercel.app/signup
+```
+
+Verify the canonical backend independently on Railway:
+
+```bash
+curl -fsS https://api.dealix.me/healthz
+curl -fsS https://api.dealix.me/version
+curl -fsS https://api.dealix.me/api/v1/meta
 ```
 
 Expected for production:
 
 ```text
-/health.status = ok
-/health.env = production
-/health.git_sha != unknown
+frontend /healthz.service = dealix-web
+backend /healthz.status = ok
+backend /version.git_sha != unknown
 runtime errors = 0
 live outbound = disabled unless a separate controlled-live PR is approved
 ```
@@ -145,8 +153,9 @@ vercel deploy --prebuilt
 
 Vercel production is accepted only when:
 
-- `/health` returns `env=production`.
-- `/health` returns a non-unknown git SHA.
+- frontend `/healthz` returns `service=dealix-web`.
+- Railway backend `/healthz` returns `status=ok`.
+- Railway backend `/version` returns a non-unknown `git_sha`.
 - runtime error scan is clean.
 - Vercel public frontend points to the Railway API base.
 - outbound remains draft-only by default.

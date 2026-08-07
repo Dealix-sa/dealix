@@ -146,7 +146,14 @@ def test_router_readiness_survives_and_writes_return_sanitized_503(
     app.include_router(ops_research.router)
     client = TestClient(app, raise_server_exceptions=False)
 
-    route_paths = {route.path for route in app.routes}
+    # Read the paths from the routers themselves. FastAPI >= 0.140 defers
+    # route materialisation, so `app.routes` holds `_IncludedRouter` stubs
+    # with no `.path` until the app starts.
+    route_paths = {
+        route.path
+        for router in (ops_knowledge.router, ops_research.router)
+        for route in router.routes
+    }
     assert "/api/v1/ops/knowledge/readiness" in route_paths
     assert "/api/v1/ops/research/readiness" in route_paths
 

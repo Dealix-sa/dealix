@@ -9,7 +9,6 @@ from typing import Any
 
 from dealix.visual_rag.contracts import VisualRAGResult, VisualRAGTile
 
-
 VISUAL_EVIDENCE_SECTION_ID = "visual_evidence_appendix"
 
 

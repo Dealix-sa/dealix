@@ -103,6 +103,25 @@ def resolve_request_tenant_id(
     return tenant_id, "authenticated_user"
 
 
+def resolve_tenant_for_request(
+    request: Any, user: Any, declared_tenant_id: str | None = None
+) -> tuple[str, TenantSource]:
+    """``resolve_tenant_for_user`` that also honours the override header.
+
+    A super admin must name their target tenant explicitly. They can do so
+    in a request body or query string, but the canonical place is the
+    ``X-Tenant-ID`` header — so read it here rather than making every route
+    remember to. For a normal user the header changes nothing: a value that
+    differs from their own tenant is still a cross-tenant denial.
+    """
+    declared = declared_tenant_id
+    if not declared:
+        headers = getattr(request, "headers", None)
+        if headers is not None:
+            declared = headers.get(TENANT_OVERRIDE_HEADER)
+    return resolve_tenant_for_user(user, declared)
+
+
 def resolve_tenant_for_user(
     user: Any, requested_tenant_id: str | None = None
 ) -> tuple[str, TenantSource]:

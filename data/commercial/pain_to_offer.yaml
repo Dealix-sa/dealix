@@ -5,8 +5,8 @@
 # Every pain category has at least one mapped offer.
 primary_mapping:
   - pain: lead_leakage
-    offer: revenue_sprint
-    rationale_ar: التقاط وتوزيع الـ leads قبل ما تضيع.
+    offer: revenue_command_pilot_30d
+    rationale_ar: تجربة محدودة لمدة 30 يوماً لقياس نقطة تسرب واحدة بعد الاكتشاف وعرض موثق.
   - pain: follow_up_chaos
     offer: revenue_os
     rationale_ar: متابعة منظّمة بدل العشوائية.

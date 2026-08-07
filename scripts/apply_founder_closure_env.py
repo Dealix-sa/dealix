@@ -32,6 +32,7 @@ ENV_KEYS = (
     "APP_SECRET_KEY",
     "ENVIRONMENT",
     "CORS_ORIGINS",
+    "API_KEYS",
     "ADMIN_API_KEYS",
     "DEALIX_ADMIN_API_KEY",
     "DEALIX_API_KEY",
@@ -41,8 +42,8 @@ FE_KEYS = (
     "NEXT_PUBLIC_API_URL",
     "NEXT_PUBLIC_SITE_URL",
     "NEXT_PUBLIC_USE_DEALIX_OPS_PROXY",
-    "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY",
     "DEALIX_ADMIN_API_KEY",
+    "DEALIX_API_KEY",
 )
 
 SOURCE_FILES = (
@@ -117,18 +118,33 @@ def main() -> int:
 
     api_updates = {k: sources[k] for k in ENV_KEYS if k in sources}
     fe_updates = {k: sources[k] for k in FE_KEYS if k in sources}
+    for key in ("DEALIX_API_KEY", "DEALIX_ADMIN_API_KEY"):
+        api_updates.pop(key, None)
+    for key in ("DEALIX_API_KEY", "DEALIX_ADMIN_API_KEY"):
+        fe_updates.pop(key, None)
 
-    admin = (
-        sources.get("DEALIX_ADMIN_API_KEY")
-        or sources.get("ADMIN_API_KEYS", "").split(",")[0].strip()
-        or sources.get("DEALIX_API_KEY")
-    )
+    admin_list = [
+        item.strip()
+        for item in sources.get("ADMIN_API_KEYS", "").split(",")
+        if item.strip()
+    ]
+    service_list = [
+        item.strip()
+        for item in sources.get("API_KEYS", "").split(",")
+        if item.strip()
+    ]
+    admin = sources.get("DEALIX_ADMIN_API_KEY") or next(iter(admin_list), "")
+    service = next(iter(service_list), "") or sources.get("DEALIX_API_KEY")
+    if set(service_list or [service]) & set(admin_list or [admin]):
+        service = ""
     if admin:
-        api_updates.setdefault("ADMIN_API_KEYS", admin)
+        api_updates.setdefault("ADMIN_API_KEYS", ",".join(admin_list) or admin)
         api_updates.setdefault("DEALIX_ADMIN_API_KEY", admin)
-        api_updates.setdefault("DEALIX_API_KEY", admin)
-        fe_updates.setdefault("NEXT_PUBLIC_DEALIX_ADMIN_API_KEY", admin)
         fe_updates.setdefault("DEALIX_ADMIN_API_KEY", admin)
+    if service:
+        api_updates.setdefault("API_KEYS", ",".join(service_list) or service)
+        api_updates.setdefault("DEALIX_API_KEY", service)
+        fe_updates.setdefault("DEALIX_API_KEY", service)
 
     api_updates.setdefault("NEXT_PUBLIC_API_URL", "https://api.dealix.me")
     fe_updates.setdefault("NEXT_PUBLIC_API_URL", "https://api.dealix.me")

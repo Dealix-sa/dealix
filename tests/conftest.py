@@ -113,7 +113,6 @@ def sample_lead_payload_en() -> dict[str, Any]:
 # ════════════════════════════════════════════════════════════════════
 _CI_QUARANTINE: dict[str, str] = {
     # ── Still genuinely failing / slow external verifier scripts ──────────
-    'tests/test_founder_commercial_digest.py::test_scope_requested_within_days': "external verify-script output/assertion drift — pre-existing on main",
     'tests/test_integration_upgrade_verify_script.py::test_script_emits_required_pass_lines': "external verify-script runs full pytest suite (>120 s) — keep parked to avoid CI timeout cascades",
     'tests/test_integration_upgrade_verify_script.py::test_script_runs_pass': "external verify-script runs full pytest suite (>120 s) — keep parked to avoid CI timeout cascades",
     'tests/test_ultimate_upgrade_verify.py::test_script_emits_required_pass_lines': "external verify-script runs full pytest suite (>120 s) — keep parked to avoid CI timeout cascades",
