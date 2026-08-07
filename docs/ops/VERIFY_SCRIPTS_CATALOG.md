@@ -7,7 +7,7 @@ regenerate with:
 python3 scripts/ops/build_verify_catalog.py > docs/ops/VERIFY_SCRIPTS_CATALOG.md
 ```
 
-Total scripts: 59
+Total scripts: 60
 
 | Script | Purpose |
 |---|---|
@@ -18,6 +18,7 @@ Total scripts: 59
 | `scripts/verify_commercial_fe_be.py` | Commercial FE/BE readiness — env matrix, import smoke, optional frontend build. |
 | `scripts/verify_commercial_launch_ready.py` | Soft commercial launch readiness — config, digest tests, smoke imports (no Moyasar claim). |
 | `scripts/verify_commercial_os_ready.py` | (no docstring — needs one) |
+| `scripts/verify_company_intelligence_adapters.py` | Validate that every Company Intelligence adapter produces valid canonical entities. |
 | `scripts/verify_company_intelligence_entity_ownership.py` | Validate the canonical Company Intelligence entity ownership registry. |
 | `scripts/verify_company_launch_ready.py` | Conservative company launch readiness gate for Dealix test matrix. |
 | `scripts/verify_company_os.py` | Verify Company OS files exist. |
