@@ -198,6 +198,7 @@ Use the narrowest relevant commands first, then repository gates:
 
 ```bash
 python scripts/verify_company_intelligence_entity_ownership.py
+python scripts/verify_company_intelligence_adapters.py
 pytest -q tests/test_company_intelligence_entity_ownership.py
 pytest -q tests/test_canonical_company_brain_facade.py
 python scripts/verify_no_auto_external_send.py

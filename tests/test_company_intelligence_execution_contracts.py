@@ -7,9 +7,11 @@ import pytest
 from auto_client_acquisition.approval_center.schemas import ApprovalRequest
 from dealix.company_intelligence import (
     DraftChannel,
+    DraftStatus,
     LawfulContactBasis,
     build_draft,
     normalize_approval,
+    normalize_draft,
     normalize_opportunity,
 )
 
@@ -21,7 +23,7 @@ def _opportunity_record(**overrides: object) -> SimpleNamespace:
         "account_id": "company-1",
         "company_name": "Acme Saudi",
         "offer_id": "revenue_command_pilot_30d",
-        "stage": "qualified",
+        "stage": "qualify",
         "score": 82,
         "score_components_json": {"pain": 30, "access": 22, "evidence": 30},
         "source_signal_ids_json": ["sig-1", "sig-2"],
@@ -197,3 +199,113 @@ def test_approval_adapter_rejects_missing_tenant_or_proof() -> None:
     request.customer_id = "tenant-a"
     with pytest.raises(ValueError, match="proof_target"):
         normalize_approval(request)
+
+
+# ---------------------------------------------------------------------------
+# Draft adapter tests
+# ---------------------------------------------------------------------------
+
+
+def _operational_draft(**overrides: object) -> SimpleNamespace:
+    """Simulate an operational Draft from distribution_os.draft_factory."""
+    values: dict[str, object] = {
+        "id": "draft_abc123",
+        "prospect_id": "prospect-1",
+        "draft_type": "outreach_first",
+        "channel": "email",
+        "locale": "ar",
+        "subject": "Quick idea about pipeline",
+        "body": "Hello, would you like a free diagnostic?",
+        "status": "generated",
+        "governance_status": "pending_approval",
+        "quality_issues": [],
+        "evidence_level": 1,
+        "product_id": "free_mini_diagnostic",
+        "created_at": "2026-08-06T12:00:00Z",
+    }
+    values.update(overrides)
+    return SimpleNamespace(**values)
+
+
+def test_normalize_draft_produces_canonical_contract() -> None:
+    operational = _operational_draft()
+    canonical = normalize_draft(
+        operational,
+        tenant_id="tenant-a",
+        action_id="action-1",
+        opportunity_id="opp-1",
+        lawful_contact_basis=LawfulContactBasis.EXISTING_RELATIONSHIP,
+        source_evidence=["crm-record-123"],
+    )
+
+    assert canonical.tenant_id == "tenant-a"
+    assert canonical.action_id == "action-1"
+    assert canonical.opportunity_id == "opp-1"
+    assert canonical.channel == DraftChannel.EMAIL
+    assert canonical.content == "Hello, would you like a free diagnostic?"
+    assert canonical.lawful_contact_basis == LawfulContactBasis.EXISTING_RELATIONSHIP
+    assert canonical.source_evidence == ["crm-record-123"]
+    assert canonical.execution_allowed is False
+    assert canonical.approval_required is True
+    assert canonical.status == DraftStatus.GENERATED
+
+
+def test_normalize_draft_maps_channels() -> None:
+    for channel_str, expected, basis in [
+        ("email", DraftChannel.EMAIL, LawfulContactBasis.EXISTING_RELATIONSHIP),
+        ("whatsapp", DraftChannel.WHATSAPP, LawfulContactBasis.EXPLICIT_OPT_IN),
+        ("proposal", DraftChannel.PROPOSAL, LawfulContactBasis.EXISTING_RELATIONSHIP),
+    ]:
+        operational = _operational_draft(channel=channel_str)
+        canonical = normalize_draft(
+            operational,
+            tenant_id="t",
+            action_id="a",
+            opportunity_id="o",
+            lawful_contact_basis=basis,
+            source_evidence=["e1"],
+        )
+        assert canonical.channel == expected
+
+
+def test_normalize_draft_linkedin_is_manual() -> None:
+    operational = _operational_draft(channel="linkedin")
+    canonical = normalize_draft(
+        operational,
+        tenant_id="t",
+        action_id="a",
+        opportunity_id="o",
+        lawful_contact_basis=LawfulContactBasis.MANUAL_RESEARCH_ONLY,
+        source_evidence=["e1"],
+    )
+    assert canonical.channel == DraftChannel.LINKEDIN
+    assert canonical.is_manual_task is True
+    assert canonical.execution_allowed is False
+
+
+def test_normalize_draft_rejects_empty_body() -> None:
+    operational = _operational_draft(body="")
+    with pytest.raises(ValueError, match="content.*required"):
+        normalize_draft(
+            operational,
+            tenant_id="t",
+            action_id="a",
+            opportunity_id="o",
+            lawful_contact_basis=LawfulContactBasis.EXISTING_RELATIONSHIP,
+            source_evidence=["e1"],
+        )
+
+
+def test_normalize_draft_is_deterministic() -> None:
+    operational = _operational_draft()
+    kwargs = dict(
+        tenant_id="t",
+        action_id="a",
+        opportunity_id="o",
+        lawful_contact_basis=LawfulContactBasis.EXISTING_RELATIONSHIP,
+        source_evidence=["e1"],
+    )
+    first = normalize_draft(operational, **kwargs)
+    second = normalize_draft(operational, **kwargs)
+    assert first.draft_id == second.draft_id
+    assert first.content_hash == second.content_hash

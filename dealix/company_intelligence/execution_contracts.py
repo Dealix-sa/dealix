@@ -2,6 +2,11 @@
 
 The contracts normalize existing Opportunity and Approval owners without
 replacing their storage. Drafts remain approval-first and execution-disabled.
+
+State machines:
+  OpportunityStage — research → qualify → … → won | lost | parked
+  CanonicalApprovalStatus — pending → granted | rejected | timed_out | withdrawn
+  DraftStatus — generated → … → archived (execution_allowed always False)
 """
 from __future__ import annotations
 
@@ -22,6 +27,54 @@ from pydantic import (
 NonEmptyString = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 
 
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+
+class OpportunityStage(StrEnum):
+    """Sales pipeline stages aligned with ``dealix.commercial_intelligence``."""
+
+    RESEARCH = "research"
+    QUALIFY = "qualify"
+    APPROVAL = "approval"
+    CONVERSATION = "conversation"
+    PILOT = "pilot"
+    PROOF = "proof"
+    COMMERCIAL = "commercial"
+    WON = "won"
+    LOST = "lost"
+    PARKED = "parked"
+
+
+class CanonicalApprovalStatus(StrEnum):
+    """Approval lifecycle aligned with ``dealix.trust.approval``."""
+
+    PENDING = "pending"
+    GRANTED = "granted"
+    REJECTED = "rejected"
+    TIMED_OUT = "timed_out"
+    WITHDRAWN = "withdrawn"
+
+
+class DraftStatus(StrEnum):
+    """Draft lifecycle aligned with ``distribution_os.draft_factory``.
+
+    Regardless of status, ``execution_allowed`` remains ``False`` and
+    ``approval_required`` remains ``True`` on every canonical draft.
+    """
+
+    GENERATED = "generated"
+    PENDING_APPROVAL = "pending_approval"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    NEEDS_EDIT = "needs_edit"
+    COPIED_MANUALLY = "copied_manually"
+    SENT_VIA_INTEGRATION = "sent_via_integration"
+    REPLIED = "replied"
+    ARCHIVED = "archived"
+
+
 class DraftChannel(StrEnum):
     EMAIL = "email"
     WHATSAPP = "whatsapp"
@@ -35,6 +88,92 @@ class LawfulContactBasis(StrEnum):
     APPROVED_TEMPLATE = "approved_template"
     MANUAL_RESEARCH_ONLY = "manual_research_only"
     NOT_APPLICABLE = "not_applicable"
+
+
+# ---------------------------------------------------------------------------
+# State machine transition maps
+# ---------------------------------------------------------------------------
+
+_OPPORTUNITY_TRANSITIONS: dict[OpportunityStage, frozenset[OpportunityStage]] = {
+    OpportunityStage.RESEARCH: frozenset(
+        {OpportunityStage.QUALIFY, OpportunityStage.LOST, OpportunityStage.PARKED}
+    ),
+    OpportunityStage.QUALIFY: frozenset(
+        {OpportunityStage.APPROVAL, OpportunityStage.LOST, OpportunityStage.PARKED}
+    ),
+    OpportunityStage.APPROVAL: frozenset(
+        {OpportunityStage.CONVERSATION, OpportunityStage.LOST, OpportunityStage.PARKED}
+    ),
+    OpportunityStage.CONVERSATION: frozenset(
+        {OpportunityStage.PILOT, OpportunityStage.LOST, OpportunityStage.PARKED}
+    ),
+    OpportunityStage.PILOT: frozenset(
+        {OpportunityStage.PROOF, OpportunityStage.LOST, OpportunityStage.PARKED}
+    ),
+    OpportunityStage.PROOF: frozenset(
+        {OpportunityStage.COMMERCIAL, OpportunityStage.LOST, OpportunityStage.PARKED}
+    ),
+    OpportunityStage.COMMERCIAL: frozenset(
+        {OpportunityStage.WON, OpportunityStage.LOST, OpportunityStage.PARKED}
+    ),
+    OpportunityStage.WON: frozenset(),  # terminal
+    OpportunityStage.LOST: frozenset({OpportunityStage.PARKED}),
+    OpportunityStage.PARKED: frozenset(
+        {OpportunityStage.RESEARCH, OpportunityStage.QUALIFY}
+    ),
+}
+
+_APPROVAL_TRANSITIONS: dict[
+    CanonicalApprovalStatus, frozenset[CanonicalApprovalStatus]
+] = {
+    CanonicalApprovalStatus.PENDING: frozenset(
+        {
+            CanonicalApprovalStatus.GRANTED,
+            CanonicalApprovalStatus.REJECTED,
+            CanonicalApprovalStatus.TIMED_OUT,
+            CanonicalApprovalStatus.WITHDRAWN,
+        }
+    ),
+    CanonicalApprovalStatus.GRANTED: frozenset(),  # terminal
+    CanonicalApprovalStatus.REJECTED: frozenset(),  # terminal
+    CanonicalApprovalStatus.TIMED_OUT: frozenset(
+        {CanonicalApprovalStatus.PENDING}
+    ),  # can re-request
+    CanonicalApprovalStatus.WITHDRAWN: frozenset(),  # terminal
+}
+
+_DRAFT_TRANSITIONS: dict[DraftStatus, frozenset[DraftStatus]] = {
+    DraftStatus.GENERATED: frozenset(
+        {
+            DraftStatus.PENDING_APPROVAL,
+            DraftStatus.NEEDS_EDIT,
+            DraftStatus.REJECTED,
+            DraftStatus.ARCHIVED,
+        }
+    ),
+    DraftStatus.PENDING_APPROVAL: frozenset(
+        {DraftStatus.APPROVED, DraftStatus.REJECTED, DraftStatus.NEEDS_EDIT}
+    ),
+    DraftStatus.APPROVED: frozenset(
+        {
+            DraftStatus.COPIED_MANUALLY,
+            DraftStatus.SENT_VIA_INTEGRATION,
+            DraftStatus.ARCHIVED,
+        }
+    ),
+    DraftStatus.REJECTED: frozenset({DraftStatus.ARCHIVED}),
+    DraftStatus.NEEDS_EDIT: frozenset(
+        {DraftStatus.GENERATED, DraftStatus.ARCHIVED}
+    ),
+    DraftStatus.COPIED_MANUALLY: frozenset(
+        {DraftStatus.REPLIED, DraftStatus.ARCHIVED}
+    ),
+    DraftStatus.SENT_VIA_INTEGRATION: frozenset(
+        {DraftStatus.REPLIED, DraftStatus.ARCHIVED}
+    ),
+    DraftStatus.REPLIED: frozenset({DraftStatus.ARCHIVED}),
+    DraftStatus.ARCHIVED: frozenset(),  # terminal
+}
 
 
 def _normalize_evidence(source_evidence: list[str]) -> list[str]:
@@ -83,14 +222,14 @@ def _draft_digest(
 class CanonicalOpportunity(BaseModel):
     """Read-only normalized view over the existing opportunity owner."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", frozen=True)
 
     tenant_id: NonEmptyString
     opportunity_id: NonEmptyString
     company_id: NonEmptyString
     company_name: str = ""
     offer_id: NonEmptyString
-    stage: NonEmptyString
+    stage: OpportunityStage
     score: int = Field(..., ge=0, le=100)
     score_reasons: dict[str, Any] = Field(default_factory=dict)
     signal_ids: list[str] = Field(default_factory=list)
@@ -116,7 +255,7 @@ class CanonicalDraft(BaseModel):
     Approval owner before any external operation is considered.
     """
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", frozen=True)
 
     tenant_id: NonEmptyString
     draft_id: NonEmptyString
@@ -131,7 +270,7 @@ class CanonicalDraft(BaseModel):
     approval_required: bool = True
     execution_allowed: bool = False
     is_manual_task: bool = False
-    status: str = "draft"
+    status: DraftStatus = DraftStatus.GENERATED
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     @model_validator(mode="after")
@@ -176,7 +315,7 @@ class CanonicalDraft(BaseModel):
 class CanonicalApproval(BaseModel):
     """Normalized view over the existing ApprovalRequest contract."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", frozen=True)
 
     tenant_id: NonEmptyString
     approval_id: NonEmptyString
@@ -186,7 +325,7 @@ class CanonicalApproval(BaseModel):
     action_type: NonEmptyString
     channel: str | None = None
     risk_level: str = "low"
-    status: str = "pending"
+    status: CanonicalApprovalStatus = CanonicalApprovalStatus.PENDING
     proof_target: NonEmptyString
     audit_ref: str | None = None
     decision_at: datetime | None = None
@@ -194,8 +333,8 @@ class CanonicalApproval(BaseModel):
 
     @model_validator(mode="after")
     def require_explicit_execution_decision(self) -> CanonicalApproval:
-        if self.execution_allowed and self.status != "approved":
-            raise ValueError("execution requires approved status")
+        if self.execution_allowed and self.status != CanonicalApprovalStatus.GRANTED:
+            raise ValueError("execution requires granted status")
         return self
 
 
@@ -251,6 +390,54 @@ def normalize_approval(request: Any, *, tenant_id: str | None = None) -> Canonic
     )
 
 
+def normalize_draft(
+    draft: Any,
+    *,
+    tenant_id: str,
+    action_id: str,
+    opportunity_id: str,
+    lawful_contact_basis: LawfulContactBasis,
+    source_evidence: list[str],
+) -> CanonicalDraft:
+    """Adapt an operational ``Draft`` into a canonical draft.
+
+    The operational ``Draft`` (from ``distribution_os.draft_factory``) lacks
+    tenant context, action linkage, compliance basis, and provenance evidence.
+    These must be supplied by the caller — typically the orchestration layer
+    that created the draft.
+
+    Channel mapping::
+
+      email → EMAIL, whatsapp → WHATSAPP, linkedin → LINKEDIN,
+      phone → PHONE, proposal → PROPOSAL
+
+    Safety: execution is always disabled; approval is always required.
+    """
+    channel_str = str(getattr(draft, "channel", "email")).lower()
+    try:
+        channel = DraftChannel(channel_str)
+    except ValueError:
+        channel = DraftChannel.EMAIL
+
+    content = getattr(draft, "body", "") or getattr(draft, "content", "")
+    if not content:
+        raise ValueError("draft content (body) is required")
+
+    is_manual = channel is DraftChannel.LINKEDIN
+
+    return build_draft(
+        tenant_id=tenant_id,
+        action_id=action_id,
+        opportunity_id=opportunity_id,
+        channel=channel,
+        content=content,
+        lawful_contact_basis=lawful_contact_basis,
+        source_evidence=source_evidence,
+        risk_level=str(getattr(draft, "risk_level", "medium")),
+        is_manual_task=is_manual,
+    )
+
+
 def build_draft(
     *,
     tenant_id: str,
@@ -291,4 +478,128 @@ def build_draft(
         approval_required=True,
         execution_allowed=False,
         is_manual_task=is_manual_task,
+        status=DraftStatus.GENERATED,
     )
+
+
+# ---------------------------------------------------------------------------
+# Opportunity transition helpers
+# ---------------------------------------------------------------------------
+
+
+def valid_opportunity_transitions_from(
+    stage: OpportunityStage,
+) -> frozenset[OpportunityStage]:
+    """Return the set of stages reachable from *stage*."""
+    return _OPPORTUNITY_TRANSITIONS.get(stage, frozenset())
+
+
+def is_valid_opportunity_transition(
+    from_stage: OpportunityStage,
+    to_stage: OpportunityStage,
+) -> bool:
+    """Check whether *from_stage* → *to_stage* is a valid transition."""
+    return to_stage in valid_opportunity_transitions_from(from_stage)
+
+
+def transition_opportunity(
+    opportunity: CanonicalOpportunity,
+    *,
+    to_stage: OpportunityStage,
+) -> CanonicalOpportunity:
+    """Return a new opportunity with *to_stage* applied.
+
+    Raises ``ValueError`` if the transition is invalid.
+    """
+    if not is_valid_opportunity_transition(opportunity.stage, to_stage):
+        raise ValueError(
+            f"invalid opportunity transition: "
+            f"{opportunity.stage.value} → {to_stage.value}"
+        )
+    updates: dict[str, Any] = {"stage": to_stage}
+    return type(opportunity).model_validate({**opportunity.model_dump(), **updates})
+
+
+# ---------------------------------------------------------------------------
+# Approval transition helpers
+# ---------------------------------------------------------------------------
+
+
+def valid_approval_transitions_from(
+    status: CanonicalApprovalStatus,
+) -> frozenset[CanonicalApprovalStatus]:
+    """Return the set of statuses reachable from *status*."""
+    return _APPROVAL_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_approval_transition(
+    from_status: CanonicalApprovalStatus,
+    to_status: CanonicalApprovalStatus,
+) -> bool:
+    """Check whether *from_status* → *to_status* is a valid transition."""
+    return to_status in valid_approval_transitions_from(from_status)
+
+
+def transition_approval(
+    approval: CanonicalApproval,
+    *,
+    to_status: CanonicalApprovalStatus,
+    decision_at: datetime | None = None,
+) -> CanonicalApproval:
+    """Return a new approval with *to_status* applied.
+
+    When transitioning to ``GRANTED``, ``decision_at`` is auto-set if not
+    provided. Raises ``ValueError`` if the transition is invalid.
+    """
+    if not is_valid_approval_transition(approval.status, to_status):
+        raise ValueError(
+            f"invalid approval transition: "
+            f"{approval.status.value} → {to_status.value}"
+        )
+    updates: dict[str, Any] = {"status": to_status}
+    if to_status == CanonicalApprovalStatus.GRANTED or to_status in (
+        CanonicalApprovalStatus.REJECTED,
+        CanonicalApprovalStatus.WITHDRAWN,
+    ):
+        updates["decision_at"] = decision_at or datetime.now(UTC)
+    return type(approval).model_validate({**approval.model_dump(), **updates})
+
+
+# ---------------------------------------------------------------------------
+# Draft transition helpers
+# ---------------------------------------------------------------------------
+
+
+def valid_draft_transitions_from(
+    status: DraftStatus,
+) -> frozenset[DraftStatus]:
+    """Return the set of statuses reachable from *status*."""
+    return _DRAFT_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_draft_transition(
+    from_status: DraftStatus,
+    to_status: DraftStatus,
+) -> bool:
+    """Check whether *from_status* → *to_status* is a valid transition."""
+    return to_status in valid_draft_transitions_from(from_status)
+
+
+def transition_draft(
+    draft: CanonicalDraft,
+    *,
+    to_status: DraftStatus,
+) -> CanonicalDraft:
+    """Return a new draft with *to_status* applied.
+
+    The safety invariants ``execution_allowed=False`` and
+    ``approval_required=True`` are preserved regardless of status.
+    Raises ``ValueError`` if the transition is invalid.
+    """
+    if not is_valid_draft_transition(draft.status, to_status):
+        raise ValueError(
+            f"invalid draft transition: "
+            f"{draft.status.value} → {to_status.value}"
+        )
+    updates: dict[str, Any] = {"status": to_status}
+    return type(draft).model_validate({**draft.model_dump(), **updates})
