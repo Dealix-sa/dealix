@@ -516,7 +516,8 @@ def transition_opportunity(
             f"invalid opportunity transition: "
             f"{opportunity.stage.value} → {to_stage.value}"
         )
-    return opportunity.model_copy(update={"stage": to_stage})
+    updates: dict[str, Any] = {"stage": to_stage}
+    return type(opportunity).model_validate({**opportunity.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------
@@ -561,7 +562,7 @@ def transition_approval(
         CanonicalApprovalStatus.WITHDRAWN,
     ):
         updates["decision_at"] = decision_at or datetime.now(UTC)
-    return approval.model_copy(update=updates)
+    return type(approval).model_validate({**approval.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------
@@ -600,4 +601,5 @@ def transition_draft(
             f"invalid draft transition: "
             f"{draft.status.value} → {to_status.value}"
         )
-    return draft.model_copy(update={"status": to_status})
+    updates: dict[str, Any] = {"status": to_status}
+    return type(draft).model_validate({**draft.model_dump(), **updates})

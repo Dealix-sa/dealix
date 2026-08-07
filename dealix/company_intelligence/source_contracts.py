@@ -276,7 +276,8 @@ def transition_source(
             f"invalid source transition: "
             f"{source.status.value} → {to_status.value}"
         )
-    return source.model_copy(update={"status": to_status})
+    updates: dict[str, Any] = {"status": to_status}
+    return type(source).model_validate({**source.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------

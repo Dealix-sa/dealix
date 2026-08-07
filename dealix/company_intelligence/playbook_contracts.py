@@ -218,7 +218,7 @@ def transition_playbook(
     updates: dict[str, Any] = {"approval_status": to_status}
     if to_status == PlaybookApprovalStatus.APPROVED:
         updates["approved_at"] = approved_at or datetime.now(UTC)
-    return playbook.model_copy(update=updates)
+    return type(playbook).model_validate({**playbook.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------

@@ -254,7 +254,8 @@ def transition_plan(
             f"invalid plan transition: "
             f"{plan.status.value} → {to_status.value}"
         )
-    return plan.model_copy(update={"status": to_status})
+    updates: dict[str, Any] = {"status": to_status}
+    return type(plan).model_validate({**plan.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------

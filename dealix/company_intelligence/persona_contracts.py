@@ -170,7 +170,8 @@ def transition_persona(
         raise ValueError(
             f"invalid persona transition: {persona.status.value} → {to_status.value}"
         )
-    return persona.model_copy(update={"status": to_status})
+    updates: dict[str, Any] = {"status": to_status}
+    return type(persona).model_validate({**persona.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------

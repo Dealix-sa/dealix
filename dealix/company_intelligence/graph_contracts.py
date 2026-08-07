@@ -367,7 +367,8 @@ def transition_company(
             f"invalid company transition: "
             f"{company.status.value} → {to_status.value}"
         )
-    return company.model_copy(update={"status": to_status})
+    updates: dict[str, Any] = {"status": to_status}
+    return type(company).model_validate({**company.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------
@@ -427,7 +428,8 @@ def transition_contact(
             f"invalid contact transition: "
             f"{contact.status.value} → {to_status.value}"
         )
-    return contact.model_copy(update={"status": to_status})
+    updates: dict[str, Any] = {"status": to_status}
+    return type(contact).model_validate({**contact.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------

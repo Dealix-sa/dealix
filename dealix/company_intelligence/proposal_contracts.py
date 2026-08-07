@@ -271,4 +271,4 @@ def transition_proposal(
     updates: dict[str, Any] = {"status": to_status}
     if sent_at is not None:
         updates["sent_at"] = sent_at
-    return proposal.model_copy(update=updates)
+    return type(proposal).model_validate({**proposal.model_dump(), **updates})

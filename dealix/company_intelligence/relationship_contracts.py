@@ -217,7 +217,8 @@ def transition_relationship(
             f"invalid relationship transition: "
             f"{relationship.status.value} → {to_status.value}"
         )
-    return relationship.model_copy(update={"status": to_status})
+    updates: dict[str, Any] = {"status": to_status}
+    return type(relationship).model_validate({**relationship.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------

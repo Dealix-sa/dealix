@@ -188,7 +188,7 @@ def transition_tenant(
         updates["suspended_at"] = suspended_at or datetime.now(UTC)
     elif to_status == TenantStatus.ACTIVE:
         updates["suspended_at"] = None
-    return tenant.model_copy(update=updates)
+    return type(tenant).model_validate({**tenant.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------

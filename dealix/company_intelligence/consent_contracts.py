@@ -253,7 +253,7 @@ def transition_consent_basis(
         updates["withdrawn_at"] = datetime.now(UTC)
         updates["withdrawn_reason"] = withdrawn_reason
 
-    return consent.model_copy(update=updates)
+    return type(consent).model_validate({**consent.model_dump(), **updates})
 
 
 # ---------------------------------------------------------------------------

@@ -284,4 +284,5 @@ def transition_partnership(
             f"invalid partnership transition: "
             f"{partnership.stage.value} → {to_stage.value}"
         )
-    return partnership.model_copy(update={"stage": to_stage})
+    updates: dict[str, Any] = {"stage": to_stage}
+    return type(partnership).model_validate({**partnership.model_dump(), **updates})

@@ -288,7 +288,8 @@ def transition_signal(
             f"allowed: {sorted(s.value for s in valid_signal_transitions_from(signal.status))}"
         )
 
-    return signal.model_copy(update={"status": to_status})
+    updates: dict[str, Any] = {"status": to_status}
+    return type(signal).model_validate({**signal.model_dump(), **updates})
 
 
 def is_signal_stale(

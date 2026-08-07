@@ -385,7 +385,5 @@ def transition_action(
     if action.status == ActionStatus.FAILED and to_status == ActionStatus.QUEUED:
         retry_count = action.retry_count + 1
 
-    return action.model_copy(update={
-        "status": to_status,
-        "retry_count": retry_count,
-    })
+    updates = {"status": to_status, "retry_count": retry_count}
+    return type(action).model_validate({**action.model_dump(), **updates})
