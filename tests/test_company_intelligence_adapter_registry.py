@@ -15,7 +15,6 @@ from pathlib import Path
 import pytest
 
 from dealix.company_intelligence.adapter_registry import (
-    AdapterEntry,
     AdapterStatus,
     get_active_adapters,
     get_adapter_entry,
