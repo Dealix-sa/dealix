@@ -4,14 +4,12 @@
 #   - Hero H1 + single primary CTA
 #   - WADL section + DEMO label
 #   - No horizontal scroll (320 / 768 / 1280)
-#   - Pricing → /checkout flow
+#   - Pricing → diagnostic/discovery flow, with no public Checkout
 #   - Customer Portal Today's Decision above ops grid
 #   - Customer Decisions DEMO fallback
 #   - Proof L1-L5 ladder
 #   - Trust Center 8 gates
 #   - Login magic-link UX
-#
-# Plan: /root/.claude/plans/vivid-baking-quokka.md Track D5.
 
 name: Playwright Tier-1 smoke
 

@@ -3,149 +3,53 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dealix للمسوقين وفرق النمو — بايلوت محكوم بالموافقة</title>
-  <meta name="description" content="Dealix للمسوقين وفرق النمو: غرفة قيادة مُدارة ترتب الفرص والمتابعات وتجهز المسودات والأدلة ضمن مرحلة بايلوت محدودة وApproval-first." />
-  <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://dealix.me/marketers.html" />
+  <title>Dealix لفرق التسويق والنمو — مرحلة بايلوت محكومة</title>
+  <meta name="description" content="صفحة قطاعية مرجعية توضّح كيف يدعم Dealix فرق التسويق والنمو عبر مسودات وموافقات وإثبات ضمن مرحلة بايلوت محدودة، ثم توجّه إلى التشخيص المجاني الحالي." />
+  <meta name="robots" content="noindex,follow" />
+  <link rel="canonical" href="https://dealix.me/diagnostic.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://dealix.me/marketers.html" />
-  <meta property="og:title" content="Dealix للمسوقين — غرفة قيادة Pilot محكومة بالموافقة" />
-  <meta property="og:description" content="فرص مرتبة، مسودات قابلة للمراجعة، وProof Pack واضح قبل أي إجراء خارجي." />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Dealix للمسوقين — Pilot محكوم بالموافقة" />
-  <meta name="twitter:description" content="تشغيل Draft-first وApproval-first لفرق التسويق والنمو." />
+  <meta property="og:title" content="Dealix لفرق التسويق والنمو — مرحلة بايلوت" />
+  <meta property="og:description" content="مسار Draft-first وApproval-first يبدأ بتشخيص محدود، من دون Checkout عام أو إرسال حيّ أو ضمان لنتيجة تجارية." />
+  <meta name="twitter:card" content="summary" />
   <style>
-    :root {
-      color-scheme: dark;
-      --bg: #090909;
-      --surface: #131313;
-      --surface-2: #191919;
-      --border: #2d2d2d;
-      --text: #f6f4ed;
-      --muted: #b8b6ae;
-      --gold: #d9bb72;
-      --safe: #8fd4aa;
-      --danger: #efaaaa;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif; background: radial-gradient(circle at 12% 0%, rgba(217,187,114,.14), transparent 34rem), var(--bg); color: var(--text); line-height: 1.8; }
-    a { color: inherit; }
-    .container { width: min(1100px, calc(100% - 32px)); margin-inline: auto; }
-    header { position: sticky; top: 0; z-index: 5; background: rgba(9,9,9,.92); border-bottom: 1px solid var(--border); backdrop-filter: blur(14px); }
-    nav { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-    .brand { text-decoration: none; font-size: 1.25rem; font-weight: 900; }
-    .brand span { color: var(--gold); }
-    .links { display: flex; gap: 18px; color: var(--muted); }
-    .links a { text-decoration: none; }
-    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid var(--gold); background: var(--gold); color: #17130b; text-decoration: none; font-weight: 900; }
-    .button.secondary { background: transparent; color: var(--text); border-color: var(--border); }
-    .hero { padding: 96px 0 72px; }
-    .badge { display: inline-flex; padding: 7px 13px; border: 1px solid rgba(217,187,114,.4); border-radius: 999px; color: var(--gold); background: rgba(217,187,114,.08); font-weight: 800; }
-    h1 { max-width: 900px; margin: 24px 0 18px; font-size: clamp(2.6rem, 7vw, 5.5rem); line-height: 1.05; letter-spacing: -.04em; }
-    .lead { max-width: 780px; color: var(--muted); font-size: 1.2rem; }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-    .micro { color: var(--muted); font-size: .92rem; margin-top: 14px; }
-    section { padding: 72px 0; }
-    .section-title { margin: 0 0 14px; font-size: clamp(2rem, 4vw, 3.1rem); }
-    .section-copy { color: var(--muted); max-width: 760px; margin-bottom: 30px; }
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .card { padding: 26px; border: 1px solid var(--border); border-radius: 20px; background: linear-gradient(180deg, var(--surface-2), var(--surface)); }
-    .card strong { color: var(--gold); }
-    .card h3 { margin: 12px 0 8px; }
-    .card p { margin: 0; color: var(--muted); }
-    .workflow { display: grid; gap: 12px; }
-    .row { display: grid; grid-template-columns: 56px 1fr auto; gap: 16px; align-items: center; padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
-    .step { color: var(--gold); font-weight: 900; }
-    .row h3 { margin: 0; }
-    .row p { margin: 3px 0 0; color: var(--muted); }
-    .status { color: var(--safe); font-weight: 800; }
-    .boundary { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .boundary .card:last-child { border-color: rgba(239,170,170,.35); }
-    .boundary .card:last-child h3 { color: var(--danger); }
-    .pilot { padding: clamp(28px, 5vw, 52px); border: 1px solid rgba(217,187,114,.45); border-radius: 26px; background: linear-gradient(135deg, rgba(217,187,114,.13), rgba(255,255,255,.02)); }
-    .pilot ul { color: var(--muted); }
-    footer { padding: 38px 0 50px; border-top: 1px solid var(--border); color: var(--muted); }
-    .footer-row { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-    .footer-links { display: flex; gap: 16px; }
-    @media (max-width: 820px) { .links { display: none; } .grid, .boundary { grid-template-columns: 1fr; } .row { grid-template-columns: 44px 1fr; } .status { grid-column: 2; } }
+    :root{color-scheme:light;--ink:#0f172a;--muted:#5b6b80;--line:#dbe3ec;--soft:#f8fafc;--accent:#0f766e;--navy:#0b1324}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"IBM Plex Sans Arabic",Tahoma,Arial,sans-serif;background:#fff;color:var(--ink);line-height:1.8}
+    a{color:inherit}.container{width:min(980px,calc(100% - 36px));margin-inline:auto}
+    header{border-bottom:1px solid var(--line);background:#fff}
+    nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{text-decoration:none;font-weight:800;font-size:1.25rem}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px;border-radius:11px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700}
+    .button--ghost{background:#fff;color:var(--ink);border:1px solid #cbd5e1}
+    .hero{padding:82px 0 60px;background:linear-gradient(180deg,var(--soft),#fff)}
+    .eyebrow{font-weight:700;color:var(--accent)}
+    h1{font-size:clamp(2.35rem,6vw,4.4rem);line-height:1.12;max-width:820px;margin:14px 0}
+    .lead{max-width:760px;color:var(--muted);font-size:1.12rem}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+    section{padding:60px 0}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .card{border:1px solid var(--line);border-radius:17px;padding:22px;background:#fff}.card h2{font-size:1.15rem;margin:0 0 8px}.card p{margin:0;color:var(--muted)}
+    .boundary{background:var(--navy);color:#e2e8f0}.boundary p{color:#94a3b8;max-width:800px}
+    footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted)}
+    .footer-row{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.footer-links{display:flex;gap:14px;flex-wrap:wrap}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <header>
-    <nav class="container">
-      <a class="brand" href="/">Dealix<span>.</span></a>
-      <div class="links"><a href="#value">القيمة</a><a href="#workflow">طريقة العمل</a><a href="#governance">الضوابط</a><a href="#pilot">البايلوت</a></div>
-      <a class="button" href="mailto:sami.assiri11@gmail.com?subject=طلب%20Mini%20Diagnostic%20لفريق%20التسويق">اطلب Mini Diagnostic</a>
-    </nav>
-  </header>
-
+  <header><nav class="container"><a class="brand" href="/">Dealix</a><a class="button" href="/diagnostic.html">ابدأ التشخيص</a></nav></header>
   <main>
-    <section class="hero">
-      <div class="container">
-        <div class="badge">مرحلة بايلوت · Saudi-first · Approval-first</div>
-        <h1>حوّل عمل التسويق من محادثات متفرقة إلى قرارات ومسودات وأدلة قابلة للمراجعة.</h1>
-        <p class="lead">Dealix طبقة تشغيل فوق أدوات فريقك الحالية. يرتب الفرص والمتابعات، يجهز الرسائل والعروض، ويجمع الدليل في مسار واحد من دون استبدال CRM أو تنفيذ خارجي غير معتمد.</p>
-        <div class="actions">
-          <a class="button" href="mailto:sami.assiri11@gmail.com?subject=طلب%20Mini%20Diagnostic%20لفريق%20التسويق">ابدأ Mini Diagnostic مجانياً</a>
-          <a class="button secondary" href="#pilot">شاهد نطاق البايلوت</a>
-        </div>
-        <p class="micro">لا بطاقة ائتمان · لا إرسال حيّ · لا يوجد ضمان لنتيجة تجارية · يبدأ أي تنفيذ خارجي فقط بعد موافقة صريحة ونطاق مكتوب.</p>
-      </div>
-    </section>
-
-    <section id="value">
-      <div class="container">
-        <h2 class="section-title">مخرجات تشغيلية يمكن مراجعتها</h2>
-        <p class="section-copy">القيمة هنا ليست وعد أداء؛ هي وضوح أفضل في الأولويات، جودة أعلى للمسودات، وسجل قرار قابل للتدقيق.</p>
-        <div class="grid">
-          <article class="card"><strong>01</strong><h3>Daily Command</h3><p>أهم الفرص والمتابعات والمخاطر وما ينتظر قرار الفريق.</p></article>
-          <article class="card"><strong>02</strong><h3>Draft Queue</h3><p>رسائل وعروض وخيارات متابعة تبقى Draft-first حتى اعتمادها.</p></article>
-          <article class="card"><strong>03</strong><h3>Proof Pack</h3><p>مصادر وقرارات ومخرجات ونتائج فعلية، مع فصل الحقائق عن الافتراضات.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section id="workflow">
-      <div class="container">
-        <h2 class="section-title">طريقة العمل</h2>
-        <div class="workflow">
-          <article class="row"><div class="step">1</div><div><h3>تشخيص محدود</h3><p>نختار ألمًا واحدًا ومعيار نجاح يمكن إثباته.</p></div><div class="status">Scope</div></article>
-          <article class="row"><div class="step">2</div><div><h3>تشغيل داخلي</h3><p>تحليل وترتيب ومسودات وتقارير من البيانات المصرح بها.</p></div><div class="status">Internal</div></article>
-          <article class="row"><div class="step">3</div><div><h3>Approval Queue</h3><p>كل رسالة أو عرض أو تغيير خارجي يتوقف عند الشخص المسؤول.</p></div><div class="status">Review</div></article>
-          <article class="row"><div class="step">4</div><div><h3>مراجعة دليل</h3><p>نقارن ما تم فعليًا بمعيار النجاح ونقرر التوسع أو التعديل أو التوقف.</p></div><div class="status">Proof</div></article>
-        </div>
-      </div>
-    </section>
-
-    <section id="governance">
-      <div class="container">
-        <h2 class="section-title">حدود واضحة قبل التنفيذ</h2>
-        <div class="boundary">
-          <article class="card"><h3>ينفذ داخليًا</h3><p>تجميع السياق، ترتيب الفرص، إنشاء المسودات، تجهيز التقارير، وتوثيق المصادر.</p></article>
-          <article class="card"><h3>يتوقف عند الموافقة</h3><p>الإرسال والنشر وتغيير الحملات والأسعار والأنظمة والإجراءات الحساسة.</p></article>
-        </div>
-        <p class="section-copy" style="margin-top:24px">أي سعر أو مدة أو تكامل أو SLA أو التزام أمني أو تنظيمي لا يصبح التزامًا إلا داخل اتفاق مكتوب ومعتمد. هذه الصفحة ليست إعلانًا عن منصة مكتملة ذاتية الخدمة.</p>
-      </div>
-    </section>
-
-    <section id="pilot">
-      <div class="container">
-        <div class="pilot">
-          <h2 class="section-title">ابدأ بمشكلة واحدة قابلة للإثبات</h2>
-          <p class="section-copy">نحدد المشكلة، البيانات المتاحة، حدود الصلاحيات، والمخرجات المطلوبة قبل أي التزام. بعد المراجعة تحصل على قرار واضح: نستمر، نعدّل، أو نتوقف.</p>
-          <ul><li>Company Brain مختصر</li><li>قائمة فرص ومتابعات مرتبة</li><li>مسودات Approval-first</li><li>Proof Review نهائي</li></ul>
-          <a class="button" href="mailto:sami.assiri11@gmail.com?subject=طلب%20Pilot%20لفريق%20التسويق">ناقش Pilot محدود</a>
-        </div>
-      </div>
-    </section>
+    <section class="hero"><div class="container">
+      <div class="eyebrow">مرحلة بايلوت · noindex · Approval-first</div>
+      <h1>رتّب عمل التسويق والنمو حول القرار والإثبات، لا حول المزيد من الأتمتة.</h1>
+      <p class="lead">يدعم Dealix فرق B2B في جمع السياق وترتيب الفرص وتجهيز المسودات وحصر ما يحتاج موافقة. التشغيل Draft-first وApproval-first: لا إرسال حيّ، ولا يمنح وجود مسودة أي صلاحية تنفيذ.</p>
+      <div class="actions"><a class="button" href="/diagnostic.html">ابدأ Free Mini Diagnostic</a><a class="button button--ghost" href="/proof.html">راجع سياسة الإثبات</a></div>
+    </div></section>
+    <section><div class="container"><div class="grid">
+      <article class="card"><h2>Daily Command</h2><p>أولوية واضحة، مالك، blocker، وخطوة داخلية تالية مرتبطة بالسياق.</p></article>
+      <article class="card"><h2>Draft Queue</h2><p>رسائل وعروض تبقى Draft-first حتى موافقة الشخص المخوّل.</p></article>
+      <article class="card"><h2>Proof Status</h2><p>نفصل الفرضية والملاحظة والدليل المؤكد؛ العرض أو الفاتورة المسودة ليسا إيرادًا.</p></article>
+    </div></div></section>
+    <section class="boundary"><div class="container"><h2>المسار التجاري الحالي</h2><p>يبدأ العمل بتشخيص مصغّر مجاني. إذا ثبتت الملاءمة، يُحدّد Revenue Command Pilot لمدة 30 يومًا بعرض سعر مكتوب بعد الاكتشاف. لا Checkout عام، ولا سعر ثابت منشور، ولا يوجد ضمان لنتيجة تجارية. أي سعر أو نطاق أو مدة أو تكامل أو SLA لا يصبح التزامًا إلا داخل اتفاق مكتوب ومعتمد. هذه الصفحة ليست إعلانًا عن منصة مكتملة ذاتية الخدمة.</p><a class="button" href="/diagnostic.html">انتقل إلى التشخيص الحالي</a></div></section>
   </main>
-
-  <footer>
-    <div class="container footer-row">
-      <div>© 2026 Dealix · تشغيل مُدار · Draft-first · Approval-first</div>
-      <div class="footer-links"><a href="/trust-center.html">مركز الثقة</a><a href="/privacy.html">الخصوصية</a><a href="mailto:sami.assiri11@gmail.com">تواصل</a></div>
-    </div>
-  </footer>
+  <footer><div class="container footer-row"><div>© 2026 Dealix · Draft-first · Approval-first · Proof-backed</div><div class="footer-links"><a href="/trust-center.html">مركز الثقة</a><a href="/privacy.html">الخصوصية</a><a href="/terms.html">الشروط</a></div></div></footer>
 </body>
 </html>

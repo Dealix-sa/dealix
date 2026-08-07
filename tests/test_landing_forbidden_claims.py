@@ -112,6 +112,7 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     "index.html": {
         "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
         "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+        "مضمون": "negation/disclaimer (FAQ asks about guarantees and the answer explicitly denies them)",
     },
     "launch-status.html": {
         "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
@@ -121,10 +122,6 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "blast": "negation/disclaimer context (verified)",
         "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
         "scraping": "doctrine negation ('no scraping' / policy-blocked)",
-    },
-    "pricing.html": {
-        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
-        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
     },
     "privacy.html": {
         "scraping": "doctrine negation ('no scraping' / policy-blocked)",

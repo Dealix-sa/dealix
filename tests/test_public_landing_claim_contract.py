@@ -62,13 +62,13 @@ def test_public_landing_does_not_publish_unverified_benchmark_claims() -> None:
 def test_public_landing_labels_measurement_and_approval_boundaries() -> None:
     visible = _visible_text()
     required = (
-        "دون وعد مسبق بنتيجة زمنية",
-        "تُقاس النسبة من بيانات الشركة",
-        "نثبّت baseline في البايلوت",
-        "لا إرسال أو التزام أو شحن بدون الموافقة المطلوبة",
-        "الإرسال الحي غير مفعّل افتراضيًا",
-        "ليس نتيجة متحققة أو وعد أداء",
-        "لا نعطي وعدًا زمنيًا قبل هذا الفحص",
+        "لا cold WhatsApp",
+        "لا تنفيذ خارجي من دون المسار والموافقة المناسبين",
+        "DEMO only · no live send · no customer activity",
+        "لا fake proof",
+        "لا يوجد سعر عام ثابت",
+        "من دون ضمان مبيعات أو عائد",
+        "العرض أو الفاتورة المسودة أو الـdemo لا يساوي دفعًا أو تسليمًا أو نجاح عميل",
     )
     missing = [boundary for boundary in required if boundary not in visible]
     assert not missing, f"missing public claim boundary: {missing}"
@@ -76,10 +76,11 @@ def test_public_landing_labels_measurement_and_approval_boundaries() -> None:
 
 def test_public_landing_makes_free_diagnostic_the_primary_entry() -> None:
     html = LANDING.read_text(encoding="utf-8")
-    assert html.count('href="/diagnostic.html"') >= 9
+    assert html.count('href="/diagnostic.html"') >= 5
     assert "ابدأ الفحص المجاني المبدئي" in html
-    assert "بدون بطاقة أو دفع" in html
-    assert "مراجعة بشرية قبل أي عرض مدفوع" in html
+    assert "لا بطاقة أو دفع" in html
+    assert "يبدأ فقط بعد اكتشاف المشكلة" in html
+    assert "عرض سعر وموافقة واضحة" in html
 
 
 def test_public_landing_has_no_live_prospect_or_paid_shortcut() -> None:

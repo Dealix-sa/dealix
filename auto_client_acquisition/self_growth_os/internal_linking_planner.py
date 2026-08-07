@@ -23,15 +23,15 @@ LANDING = REPO_ROOT / "landing"
 
 SKIP_PAGES = {"posthog_snippet.html"}
 
-# Pages considered "core" for the internal-link audit. Each MUST be
-# linked from at least one other page; orphan core pages are bugs.
+# Pages considered canonical/core for the internal-link audit. Each MUST be
+# linked from at least one other page; noindex compatibility/segment pages are
+# intentionally excluded from this authority set.
 CORE_PAGES = {
     "index.html",
     "status.html",
     "pricing.html",
     "trust-center.html",
     "founder.html",
-    "marketers.html",
 }
 
 # Pages considered "service-page-class" — each must contain a CTA.
