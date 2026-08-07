@@ -46,7 +46,6 @@ from dealix.company_intelligence.tenant_contracts import (
     transition_tenant,
 )
 
-
 # ---------------------------------------------------------------------------
 # Action: retry exhaustion bypass
 # ---------------------------------------------------------------------------
