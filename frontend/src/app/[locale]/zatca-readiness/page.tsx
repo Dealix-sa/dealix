@@ -159,13 +159,13 @@ export default function ZatcaReadinessPage() {
               </h3>
               <p className="text-sm text-muted-foreground mb-6">
                 {isAr
-                  ? "Sprint ٧ أيام يتضمن ZATCA readiness check + Proof Pack + Company Brain v1 · فقط ٤٩٩ ر.س"
-                  : "7-day Sprint includes ZATCA readiness check + Proof Pack + Company Brain v1 · Only 499 SAR"}
+                  ? "Revenue Command Pilot لمدة 30 يومًا يتضمن مراجعة ZATCA ضمن النطاق المكتوب + Proof Pack أسبوعي · السعر بعد جلسة الاكتشاف"
+                  : "The 30-day Revenue Command Pilot can include a scoped ZATCA review and weekly Proof Pack · Quote after discovery"}
               </p>
               <div className="flex flex-wrap gap-3">
                 <Button asChild size="lg" className="font-semibold">
                   <Link href={`/${locale}/offer/lead-intelligence-sprint`}>
-                    {isAr ? "ابدأ Sprint 499 SAR ←" : "Start Sprint 499 SAR →"}
+                    {isAr ? "احجز جلسة الاكتشاف ←" : "Book discovery →"}
                   </Link>
                 </Button>
                 <Button

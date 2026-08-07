@@ -65,29 +65,33 @@ def main() -> None:
     try:
         tracker = PipelineTracker(path=tmp_path)
 
+        # NOTE: value_sar below are illustrative internal pipeline deal-size
+        # estimates only — deliberately not equal to any published/retired
+        # offer price point. Actual pricing is discovery-first, quote-only
+        # per #996; never hardcode a public price here.
         # Seed sample pipeline.
         tracker.add(
-            "riyadh_motors_01", "Riyadh Motors Group",
+            "Riyadh Motors Group",
             offer_id="REVENUE_LEAK_AUDIT",
-            value_sar=15_000, icp_score=82,
+            value_sar=14_300, icp_score=82,
             next_action="Send intro email today",
         )
-        tracker.add(
-            "golden_realty_01", "Golden Realty Co",
+        golden_realty = tracker.add(
+            "Golden Realty Co",
             offer_id="SALES_COMMAND_CENTER",
-            value_sar=25_000, icp_score=70,
+            value_sar=21_600, icp_score=70,
             next_action="Book discovery call",
         )
-        tracker.add(
-            "clinic_care_01", "Clinic Care Network",
+        clinic_care = tracker.add(
+            "Clinic Care Network",
             offer_id="WHATSAPP_FOLLOWUP_OS",
-            value_sar=12_000, icp_score=60,
+            value_sar=9_800, icp_score=60,
             next_action="Send proposal draft",
         )
-        tracker.advance("golden_realty_01", to_stage=PipelineStage.OUTREACH,
-                        next_action="Follow up on intro email")
-        tracker.advance("clinic_care_01", to_stage=PipelineStage.PROPOSAL,
-                        next_action="Get feedback on proposal")
+        tracker.update_stage(golden_realty.id, PipelineStage.OUTREACH,
+                              next_action="Follow up on intro email")
+        tracker.update_stage(clinic_care.id, PipelineStage.PROPOSAL,
+                              next_action="Get feedback on proposal")
 
         approval_queue = [
             {"item": "Email draft for Acme Motors (REVENUE_LEAK_AUDIT) — awaiting founder sign-off"},

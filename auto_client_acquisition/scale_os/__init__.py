@@ -22,6 +22,13 @@ from auto_client_acquisition.scale_os.saas_transition_score import (
     compute_saas_transition_score,
     saas_readiness_band,
 )
+from auto_client_acquisition.scale_os.scale_dominance_audit import (
+    FinalScaleInputs,
+    ScaleAuditReport,
+    ScaleCriterionResult,
+    report_as_dict,
+    run_final_scale_test,
+)
 from auto_client_acquisition.scale_os.scale_gates import (
     Gate1FounderToProductized,
     Gate2ProductizedToTool,
@@ -39,13 +46,6 @@ from auto_client_acquisition.scale_os.scale_gates import (
     evaluate_gate5,
     evaluate_gate6,
     evaluate_gate7,
-)
-from auto_client_acquisition.scale_os.scale_dominance_audit import (
-    FinalScaleInputs,
-    ScaleAuditReport,
-    ScaleCriterionResult,
-    report_as_dict,
-    run_final_scale_test,
 )
 
 __all__ = [

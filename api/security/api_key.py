@@ -84,6 +84,18 @@ def _configured_admin_keys() -> list[str]:
     return [k.strip() for k in raw.split(",") if k.strip()]
 
 
+def _matches_any(candidate: str, allowed: Iterable[str]) -> bool:
+    """Constant-time membership test.
+
+    Compares bytes rather than ``str``: ``hmac.compare_digest`` rejects a
+    ``str`` containing any code point above U+007F with ``TypeError``, and
+    header values reach us decoded as latin-1, so a single high byte from a
+    caller would otherwise turn a rejection into a 500.
+    """
+    supplied = candidate.encode("utf-8", "surrogateescape")
+    return any(hmac.compare_digest(k.encode("utf-8"), supplied) for k in allowed)
+
+
 def verify_api_key(key: str | None, allowed: Iterable[str] | None = None) -> bool:
     if not key:
         return False
@@ -91,7 +103,7 @@ def verify_api_key(key: str | None, allowed: Iterable[str] | None = None) -> boo
     if not allowed_keys:
         # No keys configured → allow (dev mode). Production MUST set API_KEYS.
         return True
-    return any(hmac.compare_digest(k, key) for k in allowed_keys)
+    return _matches_any(key, allowed_keys)
 
 
 def verify_admin_key(key: str | None) -> bool:
@@ -105,7 +117,65 @@ def verify_admin_key(key: str | None) -> bool:
     if not admin_keys:
         # No admin keys configured → allow (dev mode).
         return True
-    return any(hmac.compare_digest(k, key) for k in admin_keys)
+    return _matches_any(key, admin_keys)
+
+
+def founder_admin_keys() -> list[str]:
+    """Admin keys accepted by the founder-internal routers.
+
+    Two names are in play. ``ADMIN_API_KEYS`` is the server-side allowlist —
+    the one ``_validate_production_secrets`` already requires to be non-empty
+    in production. ``DEALIX_ADMIN_API_KEY`` is the single-key form the founder
+    scripts and the ops proxy export for *calling* the API. Some routers were
+    reading only the latter, so a deployment that set just the server-side
+    allowlist left them with no key at all. Accept either, so a host that
+    configures one of the two is still gated instead of wide open.
+    """
+    keys = _configured_admin_keys()
+    single = os.getenv("DEALIX_ADMIN_API_KEY", "").strip()
+    if single and single not in keys:
+        keys.append(single)
+    return keys
+
+
+async def require_founder_admin_key(
+    request: Request,
+    admin_key: str | None = Depends(_admin_key_header),
+) -> None:
+    """Admin gate for founder-internal routers — fails closed in production.
+
+    Mirrors :class:`APIKeyMiddleware`'s rule for an unconfigured deployment:
+    with no admin key configured the request is refused in production, because
+    a production service that accepts every caller is worse than one that
+    accepts none; in dev/test it is allowed through, since local runs
+    deliberately leave the key unset.
+
+    Keys are read per request rather than captured at import, so rotating the
+    env var takes effect without a restart and tests can set it directly.
+    """
+    keys = founder_admin_keys()
+    if not keys:
+        if os.getenv("APP_ENV", "").lower() == "production":
+            logger.warning("admin_key_unconfigured_production", path=request.url.path)
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Admin authentication is not configured",
+            )
+        return
+
+    if not admin_key:
+        logger.warning("admin_key_missing", path=request.url.path)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing X-Admin-API-Key",
+        )
+
+    if not _matches_any(admin_key, keys):
+        logger.warning("admin_key_invalid", path=request.url.path)
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Invalid X-Admin-API-Key",
+        )
 
 
 async def require_admin_key(

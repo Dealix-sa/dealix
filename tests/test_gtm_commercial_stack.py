@@ -1,4 +1,4 @@
-"""GTM sovereign stack — KPI snapshot, daily pack, auto-send gate."""
+"""GTM sovereign stack — KPI snapshot, daily pack, outbound safety."""
 
 from __future__ import annotations
 
@@ -56,19 +56,23 @@ def test_gtm_import_payload_valid():
 
 
 def test_auto_send_low_risk_disabled_by_default(monkeypatch) -> None:
-    from api.routers.drafts import _auto_send_low_risk_enabled
+    from api.routers import drafts
+    from api.routers.domains import admin as admin_domain
 
+    assert admin_domain.get_routers()
     monkeypatch.delenv("DEALIX_ENABLE_AUTO_SEND_LOW_RISK", raising=False)
-    assert _auto_send_low_risk_enabled("draft_only") is False
-    assert _auto_send_low_risk_enabled("auto_send_low_risk") is False
+    assert drafts._auto_send_low_risk_enabled("draft_only") is False
+    assert drafts._auto_send_low_risk_enabled("auto_send_low_risk") is False
 
 
-def test_auto_send_low_risk_requires_env(monkeypatch) -> None:
-    from api.routers.drafts import _auto_send_low_risk_enabled
+def test_auto_send_low_risk_cannot_be_enabled_by_env(monkeypatch) -> None:
+    from api.routers import drafts
+    from api.routers.domains import admin as admin_domain
 
+    assert admin_domain.get_routers()
     monkeypatch.setenv("DEALIX_ENABLE_AUTO_SEND_LOW_RISK", "1")
-    assert _auto_send_low_risk_enabled("auto_send_low_risk") is True
-    assert _auto_send_low_risk_enabled("draft_only") is False
+    assert drafts._auto_send_low_risk_enabled("auto_send_low_risk") is False
+    assert drafts._auto_send_low_risk_enabled("draft_only") is False
 
 
 def test_targeting_rotation_p0():

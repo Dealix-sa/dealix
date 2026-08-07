@@ -1,4 +1,4 @@
-﻿"""Dealix LLM Strategy - Fallback chains per task type."""
+"""Dealix LLM Strategy - Fallback chains per task type."""
 
 import os
 from enum import Enum

@@ -107,7 +107,7 @@ def _next_step(dq_overall: float, decision: GovernanceDecision) -> str:
         return "data_cleanup_required_before_scoring"
     if dq_overall < 75:
         return "proceed_with_caveats_recommended_data_pack_1500_sar"
-    return "data_is_score_ready_recommend_revenue_sprint_499_sar"
+    return "data_is_score_ready_recommend_discovery_then_revenue_command_pilot_30d_quote_only"
 
 
 @router.post("/import-preview")

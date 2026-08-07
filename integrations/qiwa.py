@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, ClassVar
 
 import httpx
 
@@ -26,7 +26,7 @@ class NitaqatStatus:
     errors: list[str] = field(default_factory=list)
     raw_response: dict[str, Any] | None = None
 
-    NITAQAT_LEVELS: dict[str, tuple[str, bool]] = {
+    NITAQAT_LEVELS: ClassVar[dict[str, tuple[str, bool]]] = {
         "platinum": ("بلاتيني", True),
         "green": ("أخضر", True),
         "green_low": ("أخضر منخفض", True),

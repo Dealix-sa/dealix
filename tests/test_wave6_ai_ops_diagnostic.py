@@ -117,7 +117,7 @@ def test_diagnostic_what_not_to_automate_includes_gates(tmp_path) -> None:
     assert "NO_SCRAPING" in blob
 
 
-def test_diagnostic_recommends_499_sprint(tmp_path) -> None:
+def test_diagnostic_recommends_quote_only_pilot(tmp_path) -> None:
     out_json = tmp_path / "d.json"
     _run([
         "--company", "Test Co",
@@ -127,8 +127,8 @@ def test_diagnostic_recommends_499_sprint(tmp_path) -> None:
         "--out-json", str(out_json),
     ])
     d = json.loads(out_json.read_text(encoding="utf-8"))
-    assert "499" in d["recommended_offer"]
-    assert "Sprint" in d["recommended_offer"]
+    assert "30-day Revenue Command Pilot" in d["recommended_offer"]
+    assert "quote after discovery" in d["recommended_offer"]
 
 
 def test_diagnostic_works_without_api_keys(tmp_path) -> None:

@@ -18,9 +18,10 @@ import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from fastapi import APIRouter, Body, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy import func, select
 
+from api.security.api_key import require_admin_key
 from auto_client_acquisition.email.compliance import (
     append_opt_out_line,
     check_outreach,
@@ -48,7 +49,12 @@ from db.models import (
 )
 from db.session import async_session_factory
 
-router = APIRouter(prefix="/api/v1", tags=["automation"])
+# Founder-internal cross-tenant tooling must stay behind the admin plane.
+router = APIRouter(
+    prefix="/api/v1",
+    tags=["automation"],
+    dependencies=[Depends(require_admin_key)],
+)
 log = logging.getLogger(__name__)
 
 
@@ -355,9 +361,9 @@ def _followup_template(step: int, prev_subject: str) -> str:
         )
     if step == 5:
         return (
-            "أرسل لكم مثال سريع: عميل عقاري في الرياض شغّل Pilot أسبوع، رد على 23 lead، "
-            "حجز 4 demos، صفقة واحدة من الأسبوع الأول. تجربتكم غالباً مشابهة.\n\n"
-            "تبغوا تجربة 7 أيام بـ 499 ريال؟\n\n"
+            "متابعة أخيرة بخصوص التشخيص المختصر لمسار الإيراد. "
+            "بعد discovery نجهّز نطاق Pilot لمدة 30 يومًا وquote موثقًا فقط إذا كان مناسبًا.\n\n"
+            "هل يناسبكم وقت قصير للمراجعة؟\n\n"
             "سامي\n— لإلغاء الاستلام: ردّ بـ STOP."
         )
     if step == 10:

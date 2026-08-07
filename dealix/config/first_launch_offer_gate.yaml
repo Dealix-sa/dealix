@@ -1,8 +1,8 @@
 # Governance checkpoint for Dealix's first paid launch motion.
 # This file is not a pricing catalogue and cannot authorize checkout or a quote.
 
-version: "1.0"
-updated: "2026-07-15"
+version: "1.1"
+updated: "2026-07-27"
 status: founder_approval_required
 decision_issue: "https://github.com/Dealix-sa/dealix/issues/917"
 
@@ -15,6 +15,7 @@ primary_motion:
   public: false
   checkout_enabled: false
   external_quote_requires_founder_approval: true
+  quote_only_after_discovery: true
   scope:
     - one_icp
     - one_revenue_workflow
@@ -55,15 +56,46 @@ pricing_experiment:
   margin_floor_review_required: true
   tax_and_einvoice_review_required: true
 
-known_conflicts:
-  - surface: docs/01_go_to_market/COMMAND_SPRINT_OFFER.md
-    observed_offer: "7-day sprint at SAR 499-1,500"
-  - surface: auto_client_acquisition/service_catalog/registry.py
-    observed_offer: "Revenue Proof Sprint at SAR 499"
-  - surface: dealix/config/pricing.yaml
-    observed_offer: "Governed diagnostic from SAR 4,999"
-  - surface: broader_product_catalogues
-    observed_offer: "setup and monthly ranges for Revenue OS and Command Center"
+conversation_policy:
+  audience: warm_consented_only
+  external_send_allowed: false
+  approved_draft_ar: >-
+    السلام عليكم [الاسم]، نقدر نبدأ معكم بتشخيص مختصر ومحدود لفهم مسار
+    الإيراد الحالي وتحديد نقطة تشغيل واحدة مناسبة للتجربة. بعد جلسة الاكتشاف
+    نجهز نطاق Revenue Command Pilot لمدة 30 يومًا للمراجعة، بدون تغيير
+    أنظمتكم الحالية أو أي إرسال خارجي قبل الموافقة. السعر والنطاق يحددان بعد
+    فهم الحالة والمتطلبات.
+  negotiation:
+    fixed_price_allowed: false
+    discount_allowed: false
+    outcome_promise_allowed: false
+    sequence:
+      - discovery
+      - one_bounded_scope
+      - documented_quote
+  objections:
+    price:
+      ar: "السعر يحدد بعد جلسة الاكتشاف وتوثيق النطاق المطلوب."
+    results:
+      ar: "لا نضمن إيرادًا أو عدد مبيعات؛ نلتزم بنطاق تشغيل وقياس موثق."
+    integrations:
+      ar: "نبدأ بأقل بيانات وصلاحيات ممكنة، وأي ربط يعتمد كتابيًا بعد المراجعة."
+
+runtime_blocks:
+  production_sales_proof: blocked_until_last_successful_build_and_failure_logs_reviewed
+  real_customer_data: blocked_by_issue_918
+  live_checkout: blocked_by_issues_84_110_865_917
+  invoice_or_payment_link: blocked_until_documented_payment_path_is_approved
+
+reconciliation_status:
+  canonical_sources_updated:
+    - auto_client_acquisition/service_catalog/registry.py
+    - auto_client_acquisition/finance_os/pricing_catalog.py
+    - data/commercial/product_catalog.yaml
+    - data/commercial/pricing_rules.yaml
+    - api/routers/pricing.py
+  legacy_documents_are_not_launch_authority: true
+  public_and_draft_surface_guard_required: true
 
 successor_motion:
   id: monthly_revenue_governance

@@ -1,132 +1,110 @@
-# Dealix Business Model
+# Dealix Business Model — Market Validation Edition
 
-**Version**: 1.0  
-**Last updated**: 2026-06-10
+**Version:** 2.0-draft  
+**Date:** 2026-07-31  
+**Status:** Founder-governed draft; no public pricing or binding commitment is created by this document.
 
----
+## 1. Mission
 
-## Company Mission
+Turn one painful Saudi B2B operating problem into a measurable, approval-governed workflow with evidence in days—not a broad AI transformation promise.
 
-Turn Saudi companies into AI-powered operations — starting with the most painful
-problem, delivering measurable results in days, not months.
+## 2. Category and wedge
 
----
+Dealix is a **Saudi Revenue Command OS** delivered first as a concierge-assisted operating service. It overlays the client's existing CRM, ERP, email, WhatsApp, spreadsheets, and reporting; it is not a CRM replacement, generic chatbot, blind automation agency, or self-serve SaaS at this stage.
 
-## What We Build
+Initial wedge:
 
-We build **Operating Systems** (OS) — not apps, not chatbots, not dashboards.
-Each OS is a structured, repeatable AI workflow that replaces a broken or missing
-business process.
+- revenue leakage, follow-up, prioritization, decision visibility, and proof;
+- Arabic-first / Saudi-context execution;
+- human approval before external action, production change, payment, or commitment;
+- audit-ready decision and proof records.
 
-| OS Name | Problem It Solves |
-|---------|------------------|
-| WhatsApp Revenue OS | Lost leads, missed follow-ups via WhatsApp |
-| Review Intelligence OS | Unmonitored reviews hurting reputation & SEO |
-| AI Business Command Center | No unified view of business KPIs |
-| Brand Intelligence OS | Inconsistent brand voice, slow content production |
-| Growth Engine OS | No systematic outbound or referral process |
-| Customer Experience OS | Poor onboarding, high churn, low NPS |
-| AI Agent Workforce OS | Manual repetitive tasks eating staff time |
-| Custom Enterprise System | Unique business problem requiring custom AI pipeline |
+## 3. First ICP — approved focus for the first five customers
 
----
+Saudi B2B SaaS and business-service companies with approximately 20–200 employees, founder/GM-led decision access, an identifiable revenue-operations pain, usable data, and an owner willing to run a 30-day measured pilot.
 
-## Offer Ladder
+Defer for the first five customers: banks, government, heavily regulated enterprise transformation, anonymous mass outbound, and any customer requesting guaranteed revenue.
 
-### Rung 1 — Free Diagnostic (Lead Magnet)
-- Price: Free
-- Format: 30-min Zoom or WhatsApp conversation
-- Output: 3 identified revenue leaks + recommended first OS
-- Purpose: Build trust, qualify, convert to paid sprint
+## 4. Commercial path — single source of truth
 
-### Rung 2 — Micro Sprint (Proof of Concept)
-- Price: **499 SAR**
-- Duration: 1–2 days
-- Output: One quick-win AI workflow, documented + delivered
-- Purpose: Prove capability fast, low-risk entry
+### A. Free Mini Diagnostic
 
-### Rung 3 — Data Intelligence Pack
-- Price: **1,500 SAR** (one-time)
-- Duration: 2–3 days
-- Output: Lead scoring, CRM enrichment, or data audit pack
-- Purpose: Data asset for client's sales or ops team
+- short discovery and evidence intake;
+- identifies one credible operational/revenue leak;
+- returns a written diagnosis, missing evidence, and a pilot hypothesis;
+- free entry; no guaranteed outcome.
 
-### Rung 4 — Managed AI Operations
-- Price: **2,999–4,999 SAR/month** (retainer)
-- Duration: Ongoing monthly
-- Output: Weekly AI-generated reports, maintained workflows, monthly review
-- Purpose: Recurring revenue, sticky client relationship
+### B. 30-Day Revenue Command Pilot
 
-### Rung 5 — Transformation Diagnostic Sprint (Primary Paid Entry)
-- Price: **7,500–25,000 SAR**
-- Duration: 3–7 days
-- Output: Full workflow map, leakage map, KPI model, first system recommendation, implementation quote, 14-day pilot plan
-- Purpose: Enterprise entry, creates roadmap for multi-system engagement
+- quote only after discovery;
+- explicit scope, baseline, owner, data boundary, approvals, acceptance criteria, and proof cadence;
+- weekly proof pack and final outcome review;
+- expansion is proposed only if the evidence supports it.
 
-### Rung 6 — Custom Enterprise AI System
-- Price: **25,000–100,000+ SAR**
-- Duration: 4–12 weeks
-- Output: Production AI system integrated into client's operations
-- Purpose: Largest revenue, reference client creation
+All other catalog entries remain internal experiments or future offers until separately approved in the canonical registry.
 
----
+## 5. Revenue model
 
-## Unit Economics (Target)
+1. Paid 30-day pilot after a free diagnostic.
+2. Evidence-based extension: managed Revenue Command Room, implementation, or integration by quote.
+3. Future licensing/partner models only after repeatability is proven.
 
-| Metric | Target |
-|--------|--------|
-| Avg sprint value | 12,500 SAR |
-| Avg retainer value | 3,500 SAR/month |
-| Client LTV (12 months) | 50,000+ SAR |
-| CAC (founder-led) | <2,000 SAR |
-| Gross margin | >70% |
+No fixed public ladder is approved. No revenue is recorded without payment evidence. A proposal is not an invoice; an invoice is not revenue.
 
----
+## 6. Pricing mechanism
 
-## Revenue Model
+Price is determined after discovery from delivery scope, data readiness, integration complexity, risk, required operator time, and proof obligations. The first two pilots are measurement instruments: record actual labor, tools, contractor cost, support, payment collection time, and rework before setting margin targets.
 
-Primary: **Project-based** (sprints, custom systems)  
-Secondary: **Retainer** (managed ops, monthly OS maintenance)  
-Tertiary: **Licensing** (future — white-label OS for agencies)
+## 7. Founder-led GTM
 
----
+- warm introductions and legitimate referrals first;
+- a bounded list of 30 target companies, with source and relationship context;
+- 10 discovery conversations before expanding channels;
+- educational Arabic content after public-message reconciliation;
+- no scraping, mass cold WhatsApp, fake proof, or automated external sending.
 
-## GTM (Go-to-Market) Strategy
+## 8. Sales qualification exit criteria
 
-1. **Warm network first**: Sami's existing contacts in Saudi B2B
-2. **LinkedIn thought leadership**: Arabic posts on AI for Saudi business
-3. **Referral engine**: Each client refers 1–2 peers
-4. **Content proof**: Public case studies (anonymized), LinkedIn posts
-5. **Inbound via website**: Diagnostic sprint CTA on every page
+A pilot opportunity is qualified only when all are present:
 
----
+- painful and specific business problem;
+- accountable decision owner;
+- relevant data can be used lawfully;
+- measurable baseline and proof path;
+- willingness to operate with approval gates;
+- budget/timing discussion completed;
+- no guarantee, compliance bypass, or prohibited-data request.
 
-## Competitive Position
+## 9. Delivery model
 
-| Dimension | Dealix | Generic AI Agencies |
-|-----------|--------|---------------------|
-| Language | Arabic-first | English-first |
-| Compliance | PDPL-native | Generic |
-| Delivery speed | 3–7 days | Weeks/months |
-| Output format | Structured OS | Ad-hoc projects |
-| Saudi context | Deep | Surface |
-| Approval model | Human-first | Automated |
+Day 0–3: baseline, access boundary, operating map, success criteria.  
+Day 4–7: first reviewable output target.  
+Weeks 2–3: governed operating loop, approvals, proof packs, issue log.  
+Week 4: outcome review, economics, renewal/stop/expand decision.
 
----
+The ≤7-business-day result is an operating target, not a guarantee.
 
-## PDPL & Compliance Position
+## 10. Compliance and trust
 
-- No client data stored without explicit classification
-- Approval-first execution: AI recommends, human approves external actions
-- ZATCA-aware for invoicing
-- No overclaiming AI capabilities
-- Audit trail on all client deliverables
+- PDPL-aligned data classification, purpose limitation, retention, and access control;
+- explicit human approval for sensitive/external actions;
+- no secrets or customer PII in Git;
+- tenant isolation must be proven on PostgreSQL before RLS activation;
+- no public case study without client consent;
+- evidence log for claims, actions, outcomes, and approvals.
 
----
+## 11. 90-day validation gates
 
-## Financial Commitments
+- 10 discovery conversations;
+- 3 qualified pilot opportunities;
+- 3 paid pilots in total;
+- 1 renewal/expansion;
+- 1 consented case study;
+- exact production SHA and full protected smoke pass;
+- measured delivery hours and direct costs for at least two pilots.
 
-- Invoices issued via Zoho/Wave manually by founder
-- No auto-billing
-- Payment terms: 50% upfront, 50% on delivery (sprints)
-- Retainers: monthly in advance
+Failure to reach these gates triggers narrower ICP/offer correction—not a larger feature build.
+
+## 12. Capital and hiring discipline
+
+No permanent hiring or paid acquisition before two repeatable paid pilots. Use founder-led selling and delivery, with bounded contractors only where delivery risk or specialist review requires them.

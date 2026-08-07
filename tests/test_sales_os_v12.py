@@ -35,7 +35,7 @@ async def test_qualify_high_score_recommends_pilot() -> None:
         )
     body = r.json()
     assert body["score"] >= 75
-    assert body["next_step"] == "offer_pilot"
+    assert body["next_step"] == "discovery_then_quote"
 
 
 @pytest.mark.asyncio

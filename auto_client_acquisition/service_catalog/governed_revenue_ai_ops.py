@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from typing import Any
 
-
 _POSITIONING = {
     "name_en": "Dealix — Governed Revenue & AI Operations",
     "name_ar": "Dealix — تشغيل إيراد وذكاء اصطناعي محكوم",

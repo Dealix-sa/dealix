@@ -47,7 +47,7 @@ FOUNDER_ACTIONS: list[dict[str, str]] = [
 # The 6-rung offer ladder (docs/DEALIX_BUSINESS_MODEL.md).
 OFFER_LADDER: list[dict[str, str]] = [
     {"name": "التشخيص المجاني / Free Diagnostic", "detail": "مغناطيس عملاء · 30 دقيقة"},
-    {"name": "Micro Sprint", "detail": "499 SAR · إثبات سريع"},
+    {"name": "Revenue Command Pilot", "detail": "30 يومًا · Quote بعد discovery"},
     {"name": "Data Pack", "detail": "1,500 SAR · أصل بيانات لمرة واحدة"},
     {"name": "Managed Ops", "detail": "2,999–4,999 SAR/شهر"},
     {"name": "Transformation Diagnostic Sprint", "detail": "7,500–25,000 SAR · المدخل المدفوع الأساسي"},
@@ -72,6 +72,25 @@ class FounderCommandRoomOut(BaseModel):
     )
 
 
+def _lead_field(lead: Any, name: str, default: Any = None) -> Any:
+    """Read a field from a lead that may be a pydantic record or a dict."""
+    if isinstance(lead, dict):
+        return lead.get(name, default)
+    return getattr(lead, name, default)
+
+
+def _as_utc(value: Any, fallback: datetime) -> datetime:
+    """Coerce a stored timestamp to an aware UTC datetime."""
+    if isinstance(value, str):
+        try:
+            value = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return fallback
+    if not isinstance(value, datetime):
+        return fallback
+    return value if value.tzinfo is not None else value.replace(tzinfo=UTC)
+
+
 @router.get("/command-room", response_model=FounderCommandRoomOut)
 async def founder_command_room() -> dict[str, Any]:
     """Return the unified founder command room snapshot."""
@@ -85,22 +104,15 @@ async def founder_command_room() -> dict[str, Any]:
     deals = []
     now = datetime.now(UTC)
     for lead in leads:
-        stage = lead.get("stage", "lead")
-        value = float(lead.get("estimated_value_sar", 2500) or 2500)
-        last_activity = lead.get("last_activity_at")
-        if last_activity is None:
-            last_activity = now
-        elif isinstance(last_activity, str):
-            last_activity = datetime.fromisoformat(last_activity.replace("Z", "+00:00"))
         deals.append(Deal(
-            deal_id=lead.get("id", "unknown"),
-            company_name=lead.get("company_name", "Unknown"),
-            stage=stage,
-            value_sar=value,
-            created_at=now,
-            last_activity_at=last_activity,
-            activities_count=lead.get("activities_count", 0),
-            days_in_stage=lead.get("days_in_stage", 0),
+            deal_id=_lead_field(lead, "id", "unknown"),
+            company_name=_lead_field(lead, "company") or "Unknown",
+            stage=_lead_field(lead, "stage", "lead"),
+            value_sar=float(_lead_field(lead, "estimated_value_sar", 0) or 2500),
+            created_at=_as_utc(_lead_field(lead, "created_at"), now),
+            last_activity_at=_as_utc(_lead_field(lead, "updated_at"), now),
+            activities_count=int(_lead_field(lead, "activities_count", 0) or 0),
+            days_in_stage=int(_lead_field(lead, "days_in_stage", 0) or 0),
         ))
     engine.load_deals(deals)
     intel = engine.analyze()
@@ -131,4 +143,3 @@ async def founder_command_room() -> dict[str, Any]:
         },
         "summary": summary,
     }
-
