@@ -68,10 +68,6 @@ from dealix.company_intelligence.graph_adapter import (
     normalize_lead_to_company,
     normalize_lead_to_contact,
 )
-from dealix.company_intelligence.learning_adapter import (
-    normalize_learning_event,
-    normalize_win_loss,
-)
 from dealix.company_intelligence.graph_contracts import (
     CanonicalCompany,
     CanonicalContact,
@@ -87,6 +83,10 @@ from dealix.company_intelligence.graph_contracts import (
     transition_contact,
     valid_company_transitions_from,
     valid_contact_transitions_from,
+)
+from dealix.company_intelligence.learning_adapter import (
+    normalize_learning_event,
+    normalize_win_loss,
 )
 from dealix.company_intelligence.offer_adapter import (
     normalize_catalog,

@@ -7,7 +7,7 @@ canonical contract invariants.
 from __future__ import annotations
 
 import types
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -23,7 +23,6 @@ from dealix.company_intelligence.outcome_contracts import (
     CanonicalLearningEvent,
     LearningEventType,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers
