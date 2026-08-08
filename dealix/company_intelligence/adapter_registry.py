@@ -198,6 +198,21 @@ def _build_registry() -> dict[str, AdapterEntry]:
             status=AdapterStatus.NO_OPERATIONAL_SOURCE,
             notes="New entity; no legacy source exists yet",
         ),
+        AdapterEntry(
+            entity_name="CommunicationStyle",
+            status=AdapterStatus.BUILDER_ONLY,
+            notes="Built via build_communication_style; tenant-scoped tone/style config",
+        ),
+        AdapterEntry(
+            entity_name="NegotiationStrategy",
+            status=AdapterStatus.BUILDER_ONLY,
+            notes="Built via build_negotiation_strategy; per-opportunity negotiation intelligence",
+        ),
+        AdapterEntry(
+            entity_name="HumanLoopPolicy",
+            status=AdapterStatus.BUILDER_ONLY,
+            notes="Built via build_human_loop_policy; tenant-scoped autonomy/escalation governance",
+        ),
     ]
 
     return {entry.entity_name: entry for entry in entries}

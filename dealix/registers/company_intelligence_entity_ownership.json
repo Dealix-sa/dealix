@@ -209,6 +209,33 @@
       "external_source_of_truth_allowed": false,
       "required_fields": ["tenant_id", "command_date", "priorities", "approval_items", "proof_summary", "learning_summary"],
       "forbidden_parallel_names": ["DailyBrief", "CEOReport", "FounderCommand"]
+    },
+    {
+      "name": "CommunicationStyle",
+      "owner": "company_brain",
+      "canonical_boundary": "communication style and tone configuration per tenant",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "tone", "formality_level", "source_id"],
+      "forbidden_parallel_names": ["MessageTone", "VoiceProfile"]
+    },
+    {
+      "name": "NegotiationStrategy",
+      "owner": "deal_intelligence",
+      "canonical_boundary": "negotiation intelligence, boundaries and tactics per opportunity",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "opportunity_id", "approach", "approval_required", "source_id"],
+      "forbidden_parallel_names": ["BargainStrategy", "DealTactics"]
+    },
+    {
+      "name": "HumanLoopPolicy",
+      "owner": "approval_center",
+      "canonical_boundary": "configurable human-in-the-loop policies and escalation rules",
+      "status": "create_or_consolidate_contract",
+      "external_source_of_truth_allowed": false,
+      "required_fields": ["tenant_id", "default_autonomy_level", "source_id"],
+      "forbidden_parallel_names": ["ApprovalPolicy", "HumanGatePolicy"]
     }
   ]
 }

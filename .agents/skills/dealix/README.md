@@ -7,6 +7,7 @@ These project-level skills tell coding agents how to work on Dealix safely and r
 | Skill | Purpose |
 |---|---|
 | `dealix-release-engineer` | Stabilize branches, PRs, CI, build, Railway, and safe release gates |
+| `dealix-reviewed-execution` | Run non-trivial changes through bounded implementation, parent diff/test verification, fresh read-only review, and a review receipt |
 | `dealix-revenue-command-room` | Run target scoring, drafts, follow-ups, proposal briefs, and revenue reports |
 | `dealix-company-brain-os` | Convert operating signals into daily founder decisions and weekly memos |
 | `dealix-client-growth-operator` | Prepare controlled channel actions for email, WhatsApp, LinkedIn, phone, and proposals |
@@ -29,10 +30,11 @@ OUTBOUND_MODE=draft_only
 ## Recommended order
 
 1. Start with `dealix-release-engineer` when the repo, PR, CI, or deployment is unstable.
-2. Use `dealix-loop-operating-system` to turn repeated work into bounded loops.
-3. Use `dealix-revenue-command-room` to run the daily sales machine.
-4. Use `dealix-company-brain-os` for daily decisions and board-level summaries.
-5. Use `dealix-client-growth-operator` for client growth actions.
-6. Use `dealix-client-delivery-os` for client implementation.
-7. Use `dealix-design-command-room` for UI, dashboards, pages, decks, and proof-pack artifacts.
-8. Use `dealix-trust-and-outbound-safety` before any external communication or public claim.
+2. Use `dealix-reviewed-execution` for non-trivial implementation so scope, diff verification, independent review, and acceptance evidence stay explicit.
+3. Use `dealix-loop-operating-system` to turn repeated work into bounded loops.
+4. Use `dealix-revenue-command-room` to run the daily sales machine.
+5. Use `dealix-company-brain-os` for daily decisions and board-level summaries.
+6. Use `dealix-client-growth-operator` for client growth actions.
+7. Use `dealix-client-delivery-os` for client implementation.
+8. Use `dealix-design-command-room` for UI, dashboards, pages, decks, and proof-pack artifacts.
+9. Use `dealix-trust-and-outbound-safety` before any external communication or public claim.

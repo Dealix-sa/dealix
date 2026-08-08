@@ -36,9 +36,9 @@ class TestRegistryCoverage:
         missing = validate_coverage(entity_names)
         assert missing == [], f"Entities missing from adapter registry: {missing}"
 
-    def test_registry_has_22_entities(self) -> None:
+    def test_registry_has_25_entities(self) -> None:
         registry = get_adapter_registry()
-        assert len(registry) == 22
+        assert len(registry) == 25
 
     def test_no_extra_entities_beyond_ownership(self) -> None:
         ownership = json.loads(OWNERSHIP_PATH.read_text(encoding="utf-8"))

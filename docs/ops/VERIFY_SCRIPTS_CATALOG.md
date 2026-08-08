@@ -7,7 +7,7 @@ regenerate with:
 python3 scripts/ops/build_verify_catalog.py > docs/ops/VERIFY_SCRIPTS_CATALOG.md
 ```
 
-Total scripts: 60
+Total scripts: 61
 
 | Script | Purpose |
 |---|---|
@@ -60,6 +60,7 @@ Total scripts: 60
 | `scripts/verify_railway_surfaces.py` | Verify Railway deploy surfaces for API and canonical web services. |
 | `scripts/verify_reference_library_70.py` | Verify the v10 Reference Library YAML. |
 | `scripts/verify_repo_large_files.py` | Gate: no large binary files committed to the repo. |
+| `scripts/verify_reviewed_execution_gate.py` | Verify Dealix reviewed-execution agent and skill acceptance invariants. |
 | `scripts/verify_saas_foundation.py` | Verify Dealix SaaS foundation contracts without external services. |
 | `scripts/verify_sales_machine.py` | Verify Stage 2 — Automated Sales Machine files exist. |
 | `scripts/verify_scale_company_layer.py` | (no docstring — needs one) |
