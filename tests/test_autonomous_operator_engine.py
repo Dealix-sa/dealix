@@ -10,8 +10,6 @@ import pytest
 from dealix.company_intelligence.autonomous_operator import (
     ActionCategory,
     ActionPriority,
-    CycleStage,
-    FounderAction,
     FounderActionPack,
     OperatingCycle,
     run_operating_cycle,
@@ -246,12 +244,6 @@ class TestDealStages:
 
 class TestDeliveryGrowthStages:
     def test_assesses_engagements(self):
-        eng = create_engagement(
-            tenant_id=TENANT, client_name="Client1",
-            client_company="ClientCo",
-            offer_type="revenue_command_pilot",
-            source_id=SOURCE,
-        )
         # Create an active engagement
         active_eng = ClientEngagement(
             tenant_id=TENANT, client_name="Client1",

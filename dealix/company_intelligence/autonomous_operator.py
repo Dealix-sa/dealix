@@ -55,7 +55,6 @@ from dealix.company_intelligence.followup_engine import (
     FollowUpAction,
     ObjectionCategory,
     assess_deal_progression,
-    generate_closing_plan,
     handle_response,
 )
 from dealix.company_intelligence.fulfillment_engine import (
@@ -63,16 +62,11 @@ from dealix.company_intelligence.fulfillment_engine import (
     EngagementStatus,
     RenewalAssessment,
     assess_renewal,
-    calculate_engagement_health,
-    create_engagement,
-    generate_progress_report,
 )
 from dealix.company_intelligence.outreach_engine import (
     CadenceSpeed,
     OutreachChannel,
     OutreachSequence,
-    SequenceAnalysis,
-    analyze_sequences,
     plan_sequence,
 )
 from dealix.company_intelligence.research_engine import (
@@ -82,7 +76,6 @@ from dealix.company_intelligence.research_engine import (
     ResearchBrief,
     batch_research,
     rank_prospects,
-    score_prospect,
 )
 
 NonEmptyString = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]

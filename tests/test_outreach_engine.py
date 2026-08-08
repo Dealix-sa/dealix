@@ -8,7 +8,6 @@ from __future__ import annotations
 import pytest
 
 from dealix.company_intelligence.outreach_engine import (
-    CADENCE_GAPS,
     DEFAULT_SEQUENCE_TEMPLATE,
     CadenceSpeed,
     OutreachChannel,

@@ -9,14 +9,10 @@ import pytest
 
 from dealix.company_intelligence.fulfillment_engine import (
     ClientEngagement,
-    DeliveryMilestone,
     EngagementStatus,
-    MilestoneStatus,
     ProgressReport,
     RenewalAssessment,
-    RenewalRisk,
     SatisfactionLevel,
-    UpsellSignal,
     assess_renewal,
     calculate_engagement_health,
     create_engagement,
