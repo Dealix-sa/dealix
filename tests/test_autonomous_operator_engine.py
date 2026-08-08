@@ -18,7 +18,6 @@ from dealix.company_intelligence.autonomous_operator import (
 from dealix.company_intelligence.fulfillment_engine import (
     ClientEngagement,
     EngagementStatus,
-    create_engagement,
 )
 from dealix.company_intelligence.research_engine import (
     CompanyProfile,
