@@ -85,19 +85,6 @@ from dealix.company_intelligence.execution_contracts import (
     valid_draft_transitions_from,
     valid_opportunity_transitions_from,
 )
-from dealix.company_intelligence.human_loop_contracts import (
-    CanonicalHumanLoopPolicy,
-    EscalationRule,
-    EscalationTrigger,
-    HumanLoopMode,
-    HumanLoopPolicyStatus,
-    TimeoutAction,
-    build_human_loop_policy,
-    is_valid_policy_transition,
-    requires_human_approval,
-    transition_policy,
-    valid_policy_transitions_from,
-)
 from dealix.company_intelligence.graph_adapter import (
     normalize_lead_to_company,
     normalize_lead_to_contact,
@@ -118,6 +105,23 @@ from dealix.company_intelligence.graph_contracts import (
     valid_company_transitions_from,
     valid_contact_transitions_from,
 )
+from dealix.company_intelligence.human_loop_contracts import (
+    CanonicalHumanLoopPolicy,
+    EscalationRule,
+    EscalationTrigger,
+    HumanLoopMode,
+    HumanLoopPolicyStatus,
+    TimeoutAction,
+    build_human_loop_policy,
+    is_valid_policy_transition,
+    requires_human_approval,
+    transition_policy,
+    valid_policy_transitions_from,
+)
+from dealix.company_intelligence.learning_adapter import (
+    normalize_learning_event,
+    normalize_win_loss,
+)
 from dealix.company_intelligence.negotiation_contracts import (
     CanonicalNegotiationStrategy,
     NegotiationApproach,
@@ -132,10 +136,6 @@ from dealix.company_intelligence.negotiation_contracts import (
     transition_negotiation_status,
     valid_negotiation_stage_transitions_from,
     valid_strategy_transitions_from,
-)
-from dealix.company_intelligence.learning_adapter import (
-    normalize_learning_event,
-    normalize_win_loss,
 )
 from dealix.company_intelligence.offer_adapter import (
     normalize_catalog,
