@@ -16,7 +16,6 @@ from dealix.company_intelligence.communication_contracts import (
     valid_style_transitions_from,
 )
 
-
 # ---------------------------------------------------------------------------
 # Builder
 # ---------------------------------------------------------------------------
