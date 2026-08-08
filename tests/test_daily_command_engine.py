@@ -28,7 +28,6 @@ from dealix.company_intelligence.department_contracts import Department
 from dealix.company_intelligence.execution_contracts import OpportunityStage
 from dealix.company_intelligence.outcome_contracts import EvidenceState
 from dealix.company_intelligence.pipeline_engine import (
-    PipelineHealth,
     analyze_pipeline,
     forecast_revenue,
     score_opportunity,

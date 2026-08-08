@@ -29,11 +29,6 @@ from pydantic import (
     model_validator,
 )
 
-from dealix.company_intelligence.outcome_contracts import (
-    LearningEventType,
-    OutcomeEventType,
-)
-
 NonEmptyString = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 
 
