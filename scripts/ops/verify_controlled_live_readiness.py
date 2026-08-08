@@ -25,7 +25,7 @@ FAIL = 0
 
 
 def check(label: str, condition: bool, detail: str = "") -> None:
-    global PASS, FAIL  # noqa: PLW0603
+    global PASS, FAIL
     if condition:
         PASS += 1
         print(f"  ✅ {label}")
@@ -45,15 +45,8 @@ try:
     from app.outbound.policy_gate import (
         BLOCKED_CLAIMS,
         CHANNELS,
-        GateResult,
-        SendEvaluation,
-        can_send_email,
-        can_send_whatsapp,
         default_safety_status,
-        evaluate_channel_send,
         evaluate_email_send,
-        evaluate_sms_send,
-        evaluate_whatsapp_send,
         get_outbound_mode,
         is_external_send_enabled,
     )
@@ -121,11 +114,12 @@ check("mode is draft_only", eval_result.mode == "draft_only")
 # 7. Company Intelligence safety
 print("\n[7] Company Intelligence safety invariants")
 try:
+    from datetime import date
+
     from dealix.company_intelligence.daily_command_engine import (
         DailyCommandBrief,
         DailyHealthAssessment,
     )
-    from datetime import date
 
     try:
         DailyCommandBrief(
