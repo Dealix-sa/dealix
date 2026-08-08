@@ -13,49 +13,6 @@ from dealix.company_intelligence.action_contracts import (
     transition_action,
     valid_transitions_from,
 )
-from dealix.company_intelligence.autonomy_engine import (
-    ActionEvaluation,
-    AutonomyDecisionType,
-    EscalationReason,
-    can_auto_execute,
-    classify_risk,
-    evaluate_action,
-)
-from dealix.company_intelligence.communication_engine import (
-    GeneratedDraft,
-    MessageChannel,
-    MessageIntent,
-    MessagePurpose,
-    MessageUrgency,
-    build_message_intent,
-    compose_message,
-    resolve_channel_tone,
-    select_greeting,
-    select_sign_off,
-)
-from dealix.company_intelligence.company_operator import (
-    CompanyOperatingSnapshot,
-    DepartmentSnapshot,
-    OperatingHealth,
-    TaskRouteResult,
-    TaskRoutingDecision,
-    build_department_snapshot,
-    generate_operating_snapshot,
-    get_capable_departments,
-    prioritize_actions,
-    route_task,
-)
-from dealix.company_intelligence.negotiation_engine import (
-    BoundaryCheckResult,
-    BoundaryStatus,
-    MoveType,
-    NegotiationAssessment,
-    PositionStrength,
-    RecommendedMove,
-    assess_position,
-    check_boundaries,
-    recommend_move,
-)
 from dealix.company_intelligence.adapter_registry import (
     AdapterEntry,
     AdapterStatus,
@@ -64,6 +21,14 @@ from dealix.company_intelligence.adapter_registry import (
     get_adapter_registry,
     get_all_normalize_functions,
     validate_coverage,
+)
+from dealix.company_intelligence.autonomy_engine import (
+    ActionEvaluation,
+    AutonomyDecisionType,
+    EscalationReason,
+    can_auto_execute,
+    classify_risk,
+    evaluate_action,
 )
 from dealix.company_intelligence.communication_contracts import (
     CanonicalCommunicationStyle,
@@ -77,10 +42,34 @@ from dealix.company_intelligence.communication_contracts import (
     transition_style,
     valid_style_transitions_from,
 )
+from dealix.company_intelligence.communication_engine import (
+    GeneratedDraft,
+    MessageChannel,
+    MessageIntent,
+    MessagePurpose,
+    MessageUrgency,
+    build_message_intent,
+    compose_message,
+    resolve_channel_tone,
+    select_greeting,
+    select_sign_off,
+)
 from dealix.company_intelligence.company_brain import (
     CanonicalCompanyBrain,
     build_customer_company_brain,
     build_internal_company_brain,
+)
+from dealix.company_intelligence.company_operator import (
+    CompanyOperatingSnapshot,
+    DepartmentSnapshot,
+    OperatingHealth,
+    TaskRouteResult,
+    TaskRoutingDecision,
+    build_department_snapshot,
+    generate_operating_snapshot,
+    get_capable_departments,
+    prioritize_actions,
+    route_task,
 )
 from dealix.company_intelligence.consent_adapter import normalize_consent
 from dealix.company_intelligence.consent_contracts import (
@@ -179,6 +168,17 @@ from dealix.company_intelligence.negotiation_contracts import (
     transition_negotiation_status,
     valid_negotiation_stage_transitions_from,
     valid_strategy_transitions_from,
+)
+from dealix.company_intelligence.negotiation_engine import (
+    BoundaryCheckResult,
+    BoundaryStatus,
+    MoveType,
+    NegotiationAssessment,
+    PositionStrength,
+    RecommendedMove,
+    assess_position,
+    check_boundaries,
+    recommend_move,
 )
 from dealix.company_intelligence.offer_adapter import (
     normalize_catalog,
