@@ -84,6 +84,17 @@ from dealix.company_intelligence.consent_contracts import (
     valid_consent_transitions_from,
 )
 from dealix.company_intelligence.contracts import CompanyBrainSource, ProvenanceRef
+from dealix.company_intelligence.daily_command_engine import (
+    ApprovalQueueSummary,
+    AttentionItem,
+    AttentionUrgency,
+    CommandSection,
+    DailyCommandBrief,
+    DailyHealthAssessment,
+    generate_daily_command,
+    prioritize_attention_items,
+    summarize_for_founder,
+)
 from dealix.company_intelligence.department_contracts import (
     CanonicalDepartmentPlan,
     Department,
@@ -154,6 +165,19 @@ from dealix.company_intelligence.learning_adapter import (
     normalize_learning_event,
     normalize_win_loss,
 )
+from dealix.company_intelligence.learning_engine import (
+    InsightCategory,
+    LearningVelocity,
+    PatternInsight,
+    PatternStrength,
+    StrategyAdjustmentType,
+    StrategyRecommendation,
+    WinLossAnalysis,
+    analyze_win_loss,
+    compute_learning_velocity,
+    extract_patterns,
+    generate_insights,
+)
 from dealix.company_intelligence.negotiation_contracts import (
     CanonicalNegotiationStrategy,
     NegotiationApproach,
@@ -209,6 +233,23 @@ from dealix.company_intelligence.persona_contracts import (
     valid_persona_transitions_from,
 )
 from dealix.company_intelligence.pipeline_adapter import normalize_pipeline_lead
+from dealix.company_intelligence.pipeline_engine import (
+    DealHealth,
+    DealVelocity,
+    ForecastConfidence,
+    OpportunityScore,
+    PipelineActionType,
+    PipelineAnalysis,
+    PipelineHealth,
+    PipelineRecommendation,
+    RevenueForecast,
+    analyze_pipeline,
+    assess_deal_velocity,
+    forecast_revenue,
+    identify_at_risk_deals,
+    recommend_pipeline_actions,
+    score_opportunity,
+)
 from dealix.company_intelligence.playbook_adapter import normalize_sector_playbook
 from dealix.company_intelligence.playbook_contracts import (
     CanonicalPlaybookVersion,
@@ -219,6 +260,19 @@ from dealix.company_intelligence.playbook_contracts import (
     valid_playbook_transitions_from,
 )
 from dealix.company_intelligence.proof_adapter import normalize_proof_event
+from dealix.company_intelligence.proof_engine import (
+    EvidenceAssessment,
+    EvidenceStrength,
+    OutcomeValidation,
+    ProofCompleteness,
+    ProofCompletionStatus,
+    ProofPack,
+    ValidationResult,
+    assess_evidence_strength,
+    build_proof_pack,
+    check_proof_completeness,
+    validate_outcome,
+)
 from dealix.company_intelligence.proposal_adapter import normalize_proposal
 from dealix.company_intelligence.proposal_contracts import (
     CanonicalProposal,
@@ -300,7 +354,7 @@ build_proof_event = _outcome_contracts.build_proof_event
 _outcome_contracts.normalize_proof_event = normalize_proof_event
 
 __all__ = [
-    # Engines
+    # Engines — Communication, Negotiation, Autonomy, Company Operator
     "ActionEvaluation",
     "AutonomyDecisionType",
     "BoundaryCheckResult",
@@ -336,6 +390,56 @@ __all__ = [
     "route_task",
     "select_greeting",
     "select_sign_off",
+    # Engines — Pipeline Intelligence
+    "DealHealth",
+    "DealVelocity",
+    "ForecastConfidence",
+    "OpportunityScore",
+    "PipelineActionType",
+    "PipelineAnalysis",
+    "PipelineHealth",
+    "PipelineRecommendation",
+    "RevenueForecast",
+    "analyze_pipeline",
+    "assess_deal_velocity",
+    "forecast_revenue",
+    "identify_at_risk_deals",
+    "recommend_pipeline_actions",
+    "score_opportunity",
+    # Engines — Learning Intelligence
+    "InsightCategory",
+    "LearningVelocity",
+    "PatternInsight",
+    "PatternStrength",
+    "StrategyAdjustmentType",
+    "StrategyRecommendation",
+    "WinLossAnalysis",
+    "analyze_win_loss",
+    "compute_learning_velocity",
+    "extract_patterns",
+    "generate_insights",
+    # Engines — Proof & Outcome Validation
+    "EvidenceAssessment",
+    "EvidenceStrength",
+    "OutcomeValidation",
+    "ProofCompleteness",
+    "ProofCompletionStatus",
+    "ProofPack",
+    "ValidationResult",
+    "assess_evidence_strength",
+    "build_proof_pack",
+    "check_proof_completeness",
+    "validate_outcome",
+    # Engines — Daily Command (Capstone)
+    "ApprovalQueueSummary",
+    "AttentionItem",
+    "AttentionUrgency",
+    "CommandSection",
+    "DailyCommandBrief",
+    "DailyHealthAssessment",
+    "generate_daily_command",
+    "prioritize_attention_items",
+    "summarize_for_founder",
     # Contracts & adapters
     "AdapterEntry",
     "AdapterStatus",
